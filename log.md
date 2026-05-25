@@ -2196,3 +2196,7 @@ All wikilinks updated via sed across the entire wiki. `CLAUDE.md` updated with n
 ## [2026-05-25] schema-update | Correction: all books fully ingested
 
 Correction to earlier log entry which stated "10 chapters remain in Foundations of Scalable Systems." Verified 2026-05-25: `_incoming/processing/` is empty. All 19 books in the wiki are fully ingested with no outstanding chapters.
+
+## [2026-05-25] ingest | Created missing source page: Software Architecture Metrics
+
+`wiki/sources/software-architecture-metrics.md` was referenced across 21 pages and 30 wikilinks but the file itself was missing — it was listed as created in the Batch 1 log entry (2026-05-21) but never committed. Reconstructed from author pages, concept pages, and log entries. The page covers all 10 chapters: Harmel-Law (four key metrics), Weiss (fitness function testing pyramid), Farley (testability/deployability), Lilienthal (MMI), Ciceri (private builds), Rosa (KPI Value Tree + EventStorming), Woods (measurement taxonomy), Ford (metrics → engineering), von Zitzewitz (structural metrics), Keeling (GQM + Foo Service case study). Build now produces 172 pages with zero broken wikilinks.
