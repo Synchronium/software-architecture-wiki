@@ -2,6 +2,12 @@
 
 A personal knowledge base on software architecture — patterns, principles, distributed systems, data systems, and engineering trade-offs. Built from careful reading of key books in the field.
 
+## Website
+
+The wiki is hosted as a static site on GitHub Pages: **[synchronium.github.io/software-architecture-wiki](https://synchronium.github.io/software-architecture-wiki/)**
+
+It has full-text search, dark/light/auto theme switching, and cross-page backlinks. No JavaScript framework, no external dependencies — just HTML, CSS, and a small amount of vanilla JS.
+
 ## Reading the wiki
 
 The wiki uses [Obsidian](https://obsidian.md)-style `[[wikilinks]]` throughout. To get working links and the full graph view:
@@ -79,6 +85,31 @@ The pages here weren't written by hand — they were generated through a structu
 - **overview.md is a living document.** It's updated whenever a new source meaningfully shifts the overall picture, so it reflects current understanding rather than accumulating stale claims.
 
 The full schema — page templates, frontmatter conventions, placement rules, and workflow steps — lives in [CLAUDE.md](CLAUDE.md). The ingestion workflow is not intended for general use — the wiki is the output.
+
+## Building the site
+
+The Markdown source files are compiled to a static HTML site by a small TypeScript build script.
+
+```bash
+npm install
+npm run build   # compiles HTML → site/, then indexes with Pagefind
+npm run serve   # serves site/ on http://localhost:8000
+```
+
+**What the build does:**
+
+1. Parses all `wiki/**/*.md` files — frontmatter via `gray-matter`, body via `marked`
+2. Resolves `[[wikilinks]]` to relative HTML paths
+3. Renders each page with a hand-authored HTML/CSS shell (no framework)
+4. Auto-generates section index pages and tag index pages
+5. Copies `templates/style.css` to `site/assets/`
+6. Runs [Pagefind](https://pagefind.app) to build a full-text search index into `site/pagefind/`
+
+The `site/` directory is git-ignored — it is never committed to `main`.
+
+## Deployment
+
+Pushing to `main` triggers a GitHub Actions workflow (`.github/workflows/deploy.yml`) that runs the build and pushes `site/` to the `gh-pages` branch via [`peaceiris/actions-gh-pages`](https://github.com/peaceiris/actions-gh-pages). GitHub Pages serves the site from that branch.
 
 ### That said...
 
