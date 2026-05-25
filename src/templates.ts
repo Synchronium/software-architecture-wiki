@@ -198,6 +198,37 @@ function renderBase(opts: {
     dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
     document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
   })();</script>
+  <script>(function(){
+    var btn=document.querySelector('.listen-btn');
+    var sb=document.querySelector('.listen-stop');
+    if(!btn)return;
+    if(!('speechSynthesis' in window)){btn.closest('.listen-bar').hidden=true;return;}
+    var state='idle';
+    function reset(){state='idle';btn.textContent='Listen';btn.setAttribute('aria-label','Listen to this page');sb.hidden=true;}
+    function getText(){
+      var body=document.querySelector('.page-body');
+      if(!body)return '';
+      var c=body.cloneNode(true);
+      c.querySelectorAll('pre').forEach(function(el){el.remove();});
+      var h1=document.querySelector('h1');
+      return (h1?h1.textContent+'. ':'')+c.innerText;
+    }
+    btn.addEventListener('click',function(){
+      if(state==='idle'){
+        speechSynthesis.cancel();
+        var u=new SpeechSynthesisUtterance(getText());
+        u.addEventListener('end',reset);u.addEventListener('error',reset);
+        speechSynthesis.speak(u);
+        state='playing';btn.textContent='Pause';btn.setAttribute('aria-label','Pause listening');sb.hidden=false;
+      } else if(state==='playing'){
+        speechSynthesis.pause();state='paused';btn.textContent='Resume';btn.setAttribute('aria-label','Resume listening');
+      } else {
+        speechSynthesis.resume();state='playing';btn.textContent='Pause';btn.setAttribute('aria-label','Pause listening');
+      }
+    });
+    sb.addEventListener('click',function(){speechSynthesis.cancel();reset();});
+    window.addEventListener('pagehide',function(){speechSynthesis.cancel();});
+  })();</script>
 </body>
 </html>`;
 }
@@ -237,8 +268,13 @@ export function renderPage(
       </aside>`
     : "";
 
+  const listenBar = `<div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div>`;
+
   const wrappedBody = wrapTables(bodyHtml);
-  const content = `${header}<div class="page-body">${wrappedBody}</div>${backlinksHtml}`;
+  const content = `${header}${listenBar}<div class="page-body">${wrappedBody}</div>${backlinksHtml}`;
   return renderBase({ title: meta.title, urlPath, content, nav, description });
 }
 
