@@ -111,12 +111,30 @@ async function build(): Promise<void> {
     linkMap.set(page.urlPath, page.urlPath);
   }
 
-  // 5. Extract summaries from the index page body (before _body is deleted in step 6)
+  // 5. Extract summaries + build backlink map from raw bodies (before _body is deleted in step 6)
   const indexRawBody = (pages as Array<PageData & { _body?: string }>)
     .find(p => p.urlPath === "index")?._body ?? "";
   const summaryMap = indexRawBody
     ? buildSummaryMap(indexRawBody)
     : new Map<string, string>();
+
+  const wikilinkRe = /\[\[([^\]|#]+?)(?:#[^\]|]+?)?(?:\|[^\]]+?)?\]\]/g;
+  const backlinkMap = new Map<string, Array<{ title: string; urlPath: string }>>();
+  const backLinkExclude = new Set(["index", "overview"]);
+  for (const page of pages as Array<PageData & { _body?: string }>) {
+    if (backLinkExclude.has(page.urlPath)) continue;
+    const seen = new Set<string>();
+    let m: RegExpExecArray | null;
+    wikilinkRe.lastIndex = 0;
+    while ((m = wikilinkRe.exec(page._body ?? "")) !== null) {
+      const target = m[1].trim();
+      if (linkMap.has(target) && !seen.has(target)) {
+        seen.add(target);
+        if (!backlinkMap.has(target)) backlinkMap.set(target, []);
+        backlinkMap.get(target)!.push({ title: page.meta.title, urlPath: page.urlPath });
+      }
+    }
+  }
 
   // 6. Resolve wikilinks + convert Markdown → HTML
   for (const page of pages as Array<PageData & { _body?: string }>) {
@@ -133,7 +151,7 @@ async function build(): Promise<void> {
   for (const page of pages) {
     const html = page.urlPath === "index"
       ? renderHome(page, nav)
-      : renderPage(page, nav, summaryMap.get(page.urlPath));
+      : renderPage(page, nav, summaryMap.get(page.urlPath), backlinkMap.get(page.urlPath));
     write(page.outPath, html);
 
     // Accumulate tag entries

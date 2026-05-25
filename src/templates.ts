@@ -127,15 +127,21 @@ function renderBase(opts: {
 
   const sidebar = renderSidebar(opts.nav, opts.urlPath);
   const metaRobots = opts.noindex ? '\n  <meta name="robots" content="noindex">' : "";
-  const metaDesc = opts.description
-    ? `\n  <meta name="description" content="${escapeHtml(truncDesc(opts.description))}">`
+  const desc = opts.description ? truncDesc(opts.description) : "";
+  const metaDesc = desc
+    ? `\n  <meta name="description" content="${escapeHtml(desc)}">`
     : "";
+  const ogType = opts.urlPath === "index" ? "website" : "article";
+  const ogTags = `
+  <meta property="og:title" content="${escapeHtml(pageTitle)}">
+  <meta property="og:type" content="${ogType}">
+  <meta property="og:site_name" content="Software Architecture">${desc ? `\n  <meta property="og:description" content="${escapeHtml(desc)}">` : ""}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">${metaRobots}${metaDesc}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">${metaRobots}${metaDesc}${ogTags}
   <title>${escapeHtml(pageTitle)}</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="${prefix}assets/style.css">
@@ -176,7 +182,12 @@ function renderBase(opts: {
 
 // ─── Wiki page ────────────────────────────────────────────────────────────────
 
-export function renderPage(page: PageData, nav: NavSection[], description?: string): string {
+export function renderPage(
+  page: PageData,
+  nav: NavSection[],
+  description?: string,
+  backlinks?: Array<{ title: string; urlPath: string }>
+): string {
   const { meta, bodyHtml, urlPath } = page;
 
   // Badge links to the section index if this page lives inside a section
@@ -196,8 +207,16 @@ export function renderPage(page: PageData, nav: NavSection[], description?: stri
       ${tagChips(meta.tags ?? [], urlPath)}
     </div>`;
 
+  const sorted = [...(backlinks ?? [])].sort((a, b) => a.title.localeCompare(b.title));
+  const backlinksHtml = sorted.length > 0
+    ? `<aside class="backlinks">
+        <h2>Referenced by</h2>
+        <ul>${sorted.map(b => `<li><a href="${relativeUrl(urlPath, b.urlPath)}">${escapeHtml(b.title)}</a></li>`).join("")}</ul>
+      </aside>`
+    : "";
+
   const wrappedBody = wrapTables(bodyHtml);
-  const content = `${header}<div class="page-body">${wrappedBody}</div>`;
+  const content = `${header}<div class="page-body">${wrappedBody}</div>${backlinksHtml}`;
   return renderBase({ title: meta.title, urlPath, content, nav, description });
 }
 
