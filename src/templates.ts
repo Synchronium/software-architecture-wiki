@@ -1,6 +1,6 @@
 import { relativeUrl } from "./wikilinks.js";
 import { escapeHtml, toTitleCase } from "./utils.js";
-import type { PageData, PageMeta, PageType, TagEntry, NavSection } from "./types.js";
+import type { PageData, PageType, TagEntry, NavSection } from "./types.js";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -41,16 +41,16 @@ function breadcrumb(urlPath: string, title: string): string {
 
   const homeLink = `<a href="${prefix}index.html">Software Architecture</a>`;
   if (parts.length === 1) {
-    return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
+    return `<nav class="breadcrumb" aria-label="Breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
   }
   const sectionSlug = parts[0];
   const sectionLabel = toTitleCase(sectionSlug);
   // On a section index page itself, don't turn the section label into a self-link
   if (parts[1] === "index") {
-    return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(sectionLabel)}</nav>`;
+    return `<nav class="breadcrumb" aria-label="Breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(sectionLabel)}</nav>`;
   }
   const sectionHref = relativeUrl(urlPath, `${sectionSlug}/index`);
-  return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> <a href="${sectionHref}">${escapeHtml(sectionLabel)}</a> <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
+  return `<nav class="breadcrumb" aria-label="Breadcrumb">${homeLink} <span class="sep">›</span> <a href="${sectionHref}">${escapeHtml(sectionLabel)}</a> <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -91,16 +91,16 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
       <li><a href="${overviewHref}"${currentUrlPath === "overview" ? ' aria-current="page"' : ""}>Overview</a></li>
     </ul>`;
 
-  // Script runs synchronously during parse (before first paint) — sets 'open'
-  // on desktop so the nav is visible; leaves it unset on mobile so it stays collapsed.
-  return `<details class="sidebar-wrapper">
+  // Rendered open so desktop shows the sidebar without JS.
+  // The script collapses it on mobile before first paint.
+  return `<details class="sidebar-wrapper" open>
     <summary class="sidebar-toggle">Navigation</summary>
     <nav class="sidebar" aria-label="Wiki sections">
     <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
     ${topLinks}${sections}
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');function f(){q.matches?s?.setAttribute('open',''):s?.removeAttribute('open');}f();q.addEventListener('change',f);})();</script>`;
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>`;
 }
 
 // ─── Base shell ───────────────────────────────────────────────────────────────
@@ -137,11 +137,14 @@ function renderBase(opts: {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">${metaRobots}${metaDesc}
   <title>${escapeHtml(pageTitle)}</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="${prefix}assets/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <a class="site-title" href="${prefix}index.html">Software Architecture</a>
+    <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
   </header>
   <div class="layout">
     ${sidebar}
@@ -152,6 +155,21 @@ function renderBase(opts: {
   <footer class="site-footer">
     ${opts.footerNote ?? "A personal knowledge base synthesised from key books in the field."}
   </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
 </body>
 </html>`;
 }
