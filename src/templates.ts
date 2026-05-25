@@ -157,6 +157,7 @@ function renderBase(opts: {
     </div>
   </header>
   <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
     <div id="search"></div>
   </dialog>
   <div class="layout">
@@ -191,6 +192,7 @@ function renderBase(opts: {
     var dlg=document.getElementById('search-dialog');
     function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
     btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
     dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
     document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
   })();</script>
@@ -227,7 +229,7 @@ export function renderPage(
 
   const sorted = [...(backlinks ?? [])].sort((a, b) => a.title.localeCompare(b.title));
   const backlinksHtml = sorted.length > 0
-    ? `<aside class="backlinks" data-pagefind-ignore>
+    ? `<aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
         <ul>${sorted.map(b => `<li><a href="${relativeUrl(urlPath, b.urlPath)}">${escapeHtml(b.title)}</a></li>`).join("")}</ul>
       </aside>`

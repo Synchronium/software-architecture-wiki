@@ -62,7 +62,7 @@
 
 /* ─── Focus ─────────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--link);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -95,7 +95,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--link);
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
@@ -161,6 +161,21 @@ body {
 }
 
 /* ─── Search button + dialog ─────────────────────────────────────────────── */
+.search-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0.4rem;
+  border-radius: 3px;
+}
+.search-close:hover { color: var(--text); }
+
 .search-dialog {
   position: fixed;
   inset: 0;
