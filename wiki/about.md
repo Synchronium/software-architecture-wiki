@@ -7,18 +7,18 @@ updated: 2026-05-25
 
 # About
 
-Hi, I'm [John](https://github.com/Synchronium). I'm an engineering manager. I used to be a software engineer, favouring frontend work. I've been on a personal mission to learn more about software architecture - I figured it would be some useful knowledge to have at this point in my career. And now AI is everywhere, it seems more important than ever to have a strong foundation in architecture and engineering fundimentals, so you can validate the plans made by AI, spot its mistakes and just generally be in a better position to direct it towards the goals you want. 
+Hi, I'm [John](https://github.com/Synchronium). I'm an engineering manager. I used to be a software engineer, favouring frontend work. I've been reading a lot about software architecture lately, partly because it seemed like useful knowledge to have at this stage of my career, and partly because it feels more important than ever now that AI can write code faster than most people can review it. A solid understanding of architecture means you can actually evaluate what it's producing, catch the mistakes, and point it in the right direction.
 
-So I've been reading a lot of books. Books are great, I love books. (No, they're not as effective as "learning by doing", but they occupy a niche that I will never fill with coding: winding down for half an hour before bed, not staring at a screen.) The more I read about software architecture, the more I noticed a lot of books overlapped in the topics they covered. But some books go into greater depth than others, some books are more opinionated, and some books disagree with others. 
+So I've been reading a lot of books. Books are great, I love books. (No, they're not as effective as "learning by doing", but they occupy a niche that I will never fill with coding: winding down for half an hour before bed, not staring at a screen.) The more I read about software architecture, the more I noticed that a lot of books cover the same ground. But some go into greater depth, some are more opinionated, and occasionally they just disagree with each other.
 
 Rather than just agree with the last thing I'd read, while previous books fade from memory, I wanted a way to combine all that knowledge in a single place for easy reference.
 
 ## What This Is
 This is a wiki full of software architecture concepts, split into rough sections that seem to make some sense. All the material comes from relevant books, referenced throughout. 
 
-I used AI to read ebooks, split them out into chapters and process the chapters in batches. For each chapter, the AI will pull out any interesting concepts and create new pages for them, or update an existing page in a way that synthesises something useful from their different perspectives. 
+I used AI to read ebooks, split them into chapters and process them in batches. For each chapter, the AI pulls out interesting concepts and either creates new pages or updates existing ones, combining perspectives from different sources rather than just summarising each one in isolation.
 
-I believe that this methodical approach, based on solid source material, elevates this beyond the usual AI slop and has greated a genuinely useful resource. It is for me, anyway. Hopefully you find it useful too.
+Whether that makes it better than the usual AI-generated content is for you to judge. It works for me, anyway. Hopefully you find it useful too.
 
 ## How to Use It
 You can click around the website, hosted on [GitHub Pages](https://synchronium.github.io/software-architecture-wiki/). Or you can clone the underlying repo and point something like Obsidian at the wiki directory. You can also spawn an AI agent within the project to ask it questions about the content.
