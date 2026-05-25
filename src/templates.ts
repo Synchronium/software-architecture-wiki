@@ -171,64 +171,8 @@ function renderBase(opts: {
   <footer class="site-footer">
     ${opts.footerNote ?? `A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>`}
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="${prefix}pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('${prefix}pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
-  <script>(function(){
-    var btn=document.querySelector('.listen-btn');
-    var sb=document.querySelector('.listen-stop');
-    if(!btn)return;
-    if(!('speechSynthesis' in window)){btn.closest('.listen-bar').hidden=true;return;}
-    var state='idle';
-    function reset(){state='idle';btn.textContent='Listen';btn.setAttribute('aria-label','Listen to this page');sb.hidden=true;}
-    function getText(){
-      var body=document.querySelector('.page-body');
-      if(!body)return '';
-      var c=body.cloneNode(true);
-      c.querySelectorAll('pre').forEach(function(el){el.remove();});
-      var h1=document.querySelector('h1');
-      return (h1?h1.textContent+'. ':'')+c.innerText;
-    }
-    btn.addEventListener('click',function(){
-      if(state==='idle'){
-        speechSynthesis.cancel();
-        var u=new SpeechSynthesisUtterance(getText());
-        u.addEventListener('end',reset);u.addEventListener('error',reset);
-        speechSynthesis.speak(u);
-        state='playing';btn.textContent='Pause';btn.setAttribute('aria-label','Pause listening');sb.hidden=false;
-      } else if(state==='playing'){
-        speechSynthesis.pause();state='paused';btn.textContent='Resume';btn.setAttribute('aria-label','Resume listening');
-      } else {
-        speechSynthesis.resume();state='playing';btn.textContent='Pause';btn.setAttribute('aria-label','Pause listening');
-      }
-    });
-    sb.addEventListener('click',function(){speechSynthesis.cancel();reset();});
-    window.addEventListener('pagehide',function(){speechSynthesis.cancel();});
-  })();</script>
+  <script src="${prefix}assets/main.js"></script>
 </body>
 </html>`;
 }

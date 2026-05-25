@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
+import { build as esbuild } from "esbuild";
 import { resolveWikilinks } from "./wikilinks.js";
 import { renderPage, renderHome, renderTagIndex, renderTagAllIndex, renderSectionIndex } from "./templates.js";
 import { toIsoDate, buildSummaryMap, buildNav } from "./utils.js";
@@ -194,11 +195,18 @@ async function build(): Promise<void> {
     write(path.join(SITE_DIR, section.slug, "index.html"), html);
   }
 
-  // 10. Copy stylesheet
+  // 10. Copy / compile static assets
   fs.copyFileSync(
     path.join(TEMPLATES_DIR, "style.css"),
     path.join(SITE_DIR, "assets", "style.css")
   );
+  await esbuild({
+    entryPoints: [path.join(ROOT, "src", "main.ts")],
+    bundle: false,
+    format: "iife",
+    target: "es2020",
+    outfile: path.join(SITE_DIR, "assets", "main.js"),
+  });
 
   // 11. Report
   const pageCount = pages.length;
