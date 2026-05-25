@@ -171,8 +171,8 @@ function renderBase(opts: {
   <footer class="site-footer">
     ${opts.footerNote ?? `A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>`}
   </footer>
-  <script src="${prefix}pagefind/pagefind-ui.js"></script>
-  <script src="${prefix}assets/main.js"></script>
+  <script defer src="${prefix}pagefind/pagefind-ui.js"></script>
+  <script defer src="${prefix}assets/main.js"></script>
 </body>
 </html>`;
 }
