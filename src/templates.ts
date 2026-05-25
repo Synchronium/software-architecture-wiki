@@ -86,9 +86,11 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
 
   const homeHref = relativeUrl(currentUrlPath, "index");
   const overviewHref = relativeUrl(currentUrlPath, "overview");
+  const aboutHref = relativeUrl(currentUrlPath, "about");
   const topLinks = `<ul class="nav-top-links">
       <li><a href="${homeHref}"${currentUrlPath === "index" ? ' aria-current="page"' : ""}>Home</a></li>
       <li><a href="${overviewHref}"${currentUrlPath === "overview" ? ' aria-current="page"' : ""}>Overview</a></li>
+      <li><a href="${aboutHref}"${currentUrlPath === "about" ? ' aria-current="page"' : ""}>About</a></li>
     </ul>`;
 
   // Rendered open so desktop shows the sidebar without JS.
@@ -162,7 +164,7 @@ function renderBase(opts: {
   </dialog>
   <div class="layout">
     ${sidebar}
-    <main id="main-content"${!opts.noindex && opts.urlPath !== "index" && opts.urlPath !== "overview" ? " data-pagefind-body" : ""}>
+    <main id="main-content"${!opts.noindex && opts.urlPath !== "index" && opts.urlPath !== "overview" && opts.urlPath !== "about" ? " data-pagefind-body" : ""}>
       ${opts.content}
     </main>
   </div>
