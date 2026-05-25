@@ -132,6 +132,14 @@ body {
   gap: 1rem;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.search-toggle,
 .theme-toggle {
   font-family: var(--font-ui);
   font-size: 0.72rem;
@@ -145,11 +153,43 @@ body {
   padding: 0.2em 0.6em;
   cursor: pointer;
   line-height: 1.5;
-  flex-shrink: 0;
 }
+.search-toggle:hover,
 .theme-toggle:hover {
   color: var(--text);
   border-color: var(--text-muted);
+}
+
+/* ─── Search button + dialog ─────────────────────────────────────────────── */
+.search-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: min(620px, 90vw);
+  max-height: 80vh;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  overflow-y: auto;
+}
+.search-dialog::backdrop {
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(3px);
+}
+
+/* Map Pagefind UI tokens to our design tokens */
+#search {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-primary: var(--link);
+  --pagefind-ui-text: var(--text);
+  --pagefind-ui-background: var(--bg);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--bg-tag);
+  --pagefind-ui-font: var(--font-ui);
 }
 
 .site-title {
@@ -502,6 +542,9 @@ a.page-type-badge:hover {
 }
 .backlinks ul { list-style: none; padding: 0; margin: 0; }
 .backlinks li { margin: 0.3rem 0; font-size: 0.9rem; }
+.backlinks a         { color: var(--link); }
+.backlinks a:visited { color: var(--link-visited); }
+.backlinks a:hover   { text-decoration: none; }
 
 /* ─── Broken wikilinks ───────────────────────────────────────────────────── */
 .broken-link {

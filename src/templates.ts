@@ -145,16 +145,23 @@ function renderBase(opts: {
   <title>${escapeHtml(pageTitle)}</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="${prefix}assets/style.css">
+  <link rel="stylesheet" href="${prefix}pagefind/pagefind-ui.css">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <a class="site-title" href="${prefix}index.html">Software Architecture</a>
-    <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
   </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <div id="search"></div>
+  </dialog>
   <div class="layout">
     ${sidebar}
-    <main id="main-content">
+    <main id="main-content"${!opts.noindex && opts.urlPath !== "index" && opts.urlPath !== "overview" ? " data-pagefind-body" : ""}>
       ${opts.content}
     </main>
   </div>
@@ -175,6 +182,17 @@ function renderBase(opts: {
     }
     btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
     apply(get());
+  })();</script>
+  <script src="${prefix}pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('${prefix}pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
   })();</script>
 </body>
 </html>`;
@@ -209,7 +227,7 @@ export function renderPage(
 
   const sorted = [...(backlinks ?? [])].sort((a, b) => a.title.localeCompare(b.title));
   const backlinksHtml = sorted.length > 0
-    ? `<aside class="backlinks">
+    ? `<aside class="backlinks" data-pagefind-ignore>
         <h2>Referenced by</h2>
         <ul>${sorted.map(b => `<li><a href="${relativeUrl(urlPath, b.urlPath)}">${escapeHtml(b.title)}</a></li>`).join("")}</ul>
       </aside>`

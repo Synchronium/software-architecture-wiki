@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "A personal knowledge base on software architecture — patterns, principles, distributed systems, data systems, and engineering trade-offs. Built from careful reading of key books in the field.",
   "scripts": {
-    "build": "tsx src/build.ts",
+    "build": "tsx src/build.ts && pagefind --site site",
+    "serve": "python3 -m http.server 8000 --directory site",
     "test": "vitest run"
   },
   "license": "ISC",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "pagefind": "^1.5.2",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7"
