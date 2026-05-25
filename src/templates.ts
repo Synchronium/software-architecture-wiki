@@ -1,4 +1,5 @@
-import type { PageData, PageMeta, PageType, TagEntry } from "./types.js";
+import { relativeUrl } from "./wikilinks.js";
+import type { PageData, PageMeta, PageType, TagEntry, NavSection } from "./types.js";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -56,12 +57,57 @@ function breadcrumb(urlPath: string, title: string): string {
   return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(section)} <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
 }
 
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+
+function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
+  const currentSection = currentUrlPath.split("/").length > 1
+    ? currentUrlPath.split("/")[0]
+    : "";
+
+  const sections = nav.map(section => {
+    const isOpen = section.slug === currentSection;
+    const items = section.pages.map(page => {
+      const isCurrent = page.urlPath === currentUrlPath;
+      const href = relativeUrl(currentUrlPath, page.urlPath);
+      const current = isCurrent ? ' aria-current="page"' : "";
+      return `<li><a href="${href}"${current}>${escapeHtml(page.title)}</a></li>`;
+    }).join("\n        ");
+
+    return `
+    <details${isOpen ? " open" : ""}>
+      <summary>${escapeHtml(section.label)}</summary>
+      <ul>
+        ${items}
+      </ul>
+    </details>`;
+  }).join("");
+
+  const homeHref = relativeUrl(currentUrlPath, "index");
+  const overviewHref = relativeUrl(currentUrlPath, "overview");
+  const topLinks = `<ul class="nav-top-links">
+      <li><a href="${homeHref}"${currentUrlPath === "index" ? ' aria-current="page"' : ""}>Home</a></li>
+      <li><a href="${overviewHref}"${currentUrlPath === "overview" ? ' aria-current="page"' : ""}>Overview</a></li>
+    </ul>`;
+
+  // Script runs synchronously during parse (before first paint) — sets 'open'
+  // on desktop so the nav is visible; leaves it unset on mobile so it stays collapsed.
+  return `<details class="sidebar-wrapper">
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    ${topLinks}${sections}
+    </nav>
+  </details>
+  <script>if(matchMedia('(min-width:721px)').matches)document.querySelector('.sidebar-wrapper').setAttribute('open','');</script>`;
+}
+
 // ─── Base shell ───────────────────────────────────────────────────────────────
 
 function renderBase(opts: {
   title: string;
   urlPath: string;
   content: string;
+  nav: NavSection[];
   footerNote?: string;
 }): string {
   const depth = opts.urlPath.split("/").length - 1;
@@ -69,6 +115,8 @@ function renderBase(opts: {
   const pageTitle = opts.urlPath === "index"
     ? "Software Architecture"
     : `${opts.title} — Software Architecture`;
+
+  const sidebar = renderSidebar(opts.nav, opts.urlPath);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -82,9 +130,12 @@ function renderBase(opts: {
   <header class="site-header">
     <a class="site-title" href="${prefix}index.html">Software Architecture</a>
   </header>
-  <main>
-    ${opts.content}
-  </main>
+  <div class="layout">
+    ${sidebar}
+    <main id="main-content">
+      ${opts.content}
+    </main>
+  </div>
   <footer class="site-footer">
     ${opts.footerNote ?? "A personal knowledge base synthesised from key books in the field."}
   </footer>
@@ -94,7 +145,7 @@ function renderBase(opts: {
 
 // ─── Wiki page ────────────────────────────────────────────────────────────────
 
-export function renderPage(page: PageData): string {
+export function renderPage(page: PageData, nav: NavSection[]): string {
   const { meta, bodyHtml, urlPath } = page;
 
   const header = `
@@ -112,12 +163,12 @@ export function renderPage(page: PageData): string {
 
   const content = `${header}<div class="page-body">${wrappedBody}</div>`;
 
-  return renderBase({ title: meta.title, urlPath, content });
+  return renderBase({ title: meta.title, urlPath, content, nav });
 }
 
 // ─── Home / index page ────────────────────────────────────────────────────────
 
-export function renderHome(page: PageData): string {
+export function renderHome(page: PageData, nav: NavSection[]): string {
   const wrappedBody = wrapTables(page.bodyHtml);
   const content = `
     <div class="page-header">
@@ -125,12 +176,12 @@ export function renderHome(page: PageData): string {
     </div>
     <div class="page-body home-body">${wrappedBody}</div>`;
 
-  return renderBase({ title: "Software Architecture", urlPath: "index", content });
+  return renderBase({ title: "Software Architecture", urlPath: "index", content, nav });
 }
 
 // ─── Tag index page ───────────────────────────────────────────────────────────
 
-export function renderTagIndex(tag: string, entries: TagEntry[]): string {
+export function renderTagIndex(tag: string, entries: TagEntry[], nav: NavSection[]): string {
   const sorted = [...entries].sort((a, b) => a.title.localeCompare(b.title));
   const count = sorted.length;
 
@@ -158,6 +209,7 @@ export function renderTagIndex(tag: string, entries: TagEntry[]): string {
     title: toTitleCase(tag),
     urlPath: `tags/${tag}`,
     content,
+    nav,
   });
 }
 

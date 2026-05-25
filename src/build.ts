@@ -4,8 +4,8 @@ import matter from "gray-matter";
 import { marked } from "marked";
 import { resolveWikilinks } from "./wikilinks.js";
 import { renderPage, renderHome, renderTagIndex } from "./templates.js";
-import { toIsoDate, buildSummaryMap } from "./utils.js";
-import type { PageData, PageMeta, LinkMap, TagEntry } from "./types.js";
+import { toIsoDate, buildSummaryMap, buildNav } from "./utils.js";
+import type { PageData, PageMeta, LinkMap, TagEntry, NavSection } from "./types.js";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -122,12 +122,13 @@ async function build(): Promise<void> {
       )
     : new Map<string, string>();
 
-  // 7. Render and write each page
+  // 7. Build nav + render each page
+  const nav = buildNav(pages);
   const tagMap = new Map<string, TagEntry[]>();
 
   for (const page of pages) {
     const html =
-      page.urlPath === "index" ? renderHome(page) : renderPage(page);
+      page.urlPath === "index" ? renderHome(page, nav) : renderPage(page, nav);
     write(page.outPath, html);
 
     // Accumulate tag entries
@@ -145,7 +146,7 @@ async function build(): Promise<void> {
   // 8. Render tag index pages
   fs.mkdirSync(path.join(SITE_DIR, "tags"), { recursive: true });
   for (const [tag, entries] of tagMap) {
-    const html = renderTagIndex(tag, entries);
+    const html = renderTagIndex(tag, entries, nav);
     write(path.join(SITE_DIR, "tags", `${tag}.html`), html);
   }
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toIsoDate, buildSummaryMap } from "./utils.js";
+import { toIsoDate, buildSummaryMap, buildNav } from "./utils.js";
 import { formatDate, escapeHtml } from "./templates.js";
 import { resolveWikilinks } from "./wikilinks.js";
 
@@ -112,6 +112,68 @@ describe("buildSummaryMap", () => {
     expect(map.size).toBe(2);
     expect(map.get("sources/ddia")).toBe("Designing Data-Intensive Applications");
     expect(map.get("concepts/replication")).toBe("Replication strategies");
+  });
+});
+
+// ─── buildNav ─────────────────────────────────────────────────────────────────
+
+const page = (urlPath: string, title: string) => ({ urlPath, meta: { title } });
+
+describe("buildNav", () => {
+  it("groups pages by section slug", () => {
+    const nav = buildNav([
+      page("concepts/coupling", "Coupling"),
+      page("concepts/modularity", "Modularity"),
+      page("distributed/replication", "Replication"),
+    ]);
+    const concepts = nav.find(s => s.slug === "concepts");
+    expect(concepts?.pages).toHaveLength(2);
+    const distributed = nav.find(s => s.slug === "distributed");
+    expect(distributed?.pages).toHaveLength(1);
+  });
+
+  it("excludes root-level pages (index, overview)", () => {
+    const nav = buildNav([
+      page("index", "Index"),
+      page("overview", "Overview"),
+      page("concepts/coupling", "Coupling"),
+    ]);
+    expect(nav.find(s => s.slug === "index")).toBeUndefined();
+    expect(nav.find(s => s.slug === "overview")).toBeUndefined();
+    expect(nav).toHaveLength(1);
+  });
+
+  it("sorts pages alphabetically within each section", () => {
+    const nav = buildNav([
+      page("concepts/modularity", "Modularity"),
+      page("concepts/coupling", "Coupling"),
+      page("concepts/abstraction", "Abstraction"),
+    ]);
+    const titles = nav[0].pages.map(p => p.title);
+    expect(titles).toEqual(["Abstraction", "Coupling", "Modularity"]);
+  });
+
+  it("respects the canonical section order", () => {
+    const nav = buildNav([
+      page("authors/someone", "Someone"),
+      page("concepts/coupling", "Coupling"),
+      page("styles/microservices-architecture", "Microservices"),
+    ]);
+    const slugs = nav.map(s => s.slug);
+    expect(slugs.indexOf("styles")).toBeLessThan(slugs.indexOf("concepts"));
+    expect(slugs.indexOf("concepts")).toBeLessThan(slugs.indexOf("authors"));
+  });
+
+  it("omits sections that have no pages", () => {
+    const nav = buildNav([page("concepts/coupling", "Coupling")]);
+    const slugs = nav.map(s => s.slug);
+    expect(slugs).not.toContain("distributed");
+    expect(slugs).not.toContain("sources");
+  });
+
+  it("attaches the correct display label to each section", () => {
+    const nav = buildNav([page("distributed/replication", "Replication")]);
+    expect(nav[0].label).toBe("Distributed");
   });
 });
 

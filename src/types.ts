@@ -31,6 +31,17 @@ export interface PageData {
 // wikilink path (e.g. "concepts/coupling") → urlPath
 export type LinkMap = Map<string, string>;
 
+export interface NavEntry {
+  title: string;
+  urlPath: string;
+}
+
+export interface NavSection {
+  slug: string;
+  label: string;
+  pages: NavEntry[];
+}
+
 export interface TagEntry {
   title: string;
   urlPath: string;
