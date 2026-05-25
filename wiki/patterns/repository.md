@@ -1,7 +1,7 @@
 ---
 title: "Repository Pattern"
 type: pattern
-tags: [ddd, domain-driven-design, persistence, aggregate, tactical-design]
+tags: [ddd, persistence, aggregate, tactical-design]
 sources: [domain-driven-design, patterns-of-enterprise-application-architecture]
 created: 2026-05-14
 updated: 2026-05-18

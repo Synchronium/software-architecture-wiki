@@ -1,7 +1,7 @@
 ---
 title: "Architecture Styles"
 type: style
-tags: [architecture, styles, overview]
+tags: [trade-offs, microservices, monolith, distributed-systems, modularity]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-13

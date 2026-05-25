@@ -1,7 +1,7 @@
 ---
 title: "Technology Glossary"
 type: reference
-tags: [tools, glossary, reference]
+tags: [glossary]
 sources: [mastering-api-architecture, understanding-distributed-systems, fundamentals-of-software-architecture, foundations-of-scalable-systems, designing-data-intensive-applications, building-event-driven-microservices, monolith-to-microservices, release-it, learning-domain-driven-design, accelerate]
 created: 2026-05-13
 updated: 2026-05-19

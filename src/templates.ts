@@ -1,19 +1,8 @@
 import { relativeUrl } from "./wikilinks.js";
+import { escapeHtml, toTitleCase } from "./utils.js";
 import type { PageData, PageMeta, PageType, TagEntry, NavSection } from "./types.js";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-export function escapeHtml(s: string): string {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function toTitleCase(s: string): string {
-  return s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 export function formatDate(iso: string): string {
   const [year, month, day] = String(iso ?? "").split("-").map(Number);
@@ -27,18 +16,19 @@ export function formatDate(iso: string): string {
   return `${day}<sup>${suffix}</sup> ${months[month - 1]} ${year}`;
 }
 
-function typeBadge(type: PageType): string {
-  return `<span class="page-type-badge">${escapeHtml(type)}</span>`;
+// href makes the badge a link (to the section index); omit for a plain label
+function typeBadge(type: PageType, href?: string): string {
+  const text = escapeHtml(type);
+  if (href) return `<a class="page-type-badge" href="${escapeHtml(href)}">${text}</a>`;
+  return `<span class="page-type-badge">${text}</span>`;
 }
 
 function tagChips(tags: string[], fromPath: string): string {
   if (!tags.length) return "";
-  const depth = fromPath.split("/").length - 1;
-  const prefix = depth > 0 ? "../".repeat(depth) : "";
   const chips = tags
     .map(
       (t) =>
-        `<a class="tag-chip" href="${prefix}tags/${encodeURIComponent(t)}.html">${escapeHtml(t)}</a>`
+        `<a class="tag-chip" href="${relativeUrl(fromPath, `tags/${t}`)}">${escapeHtml(t)}</a>`
     )
     .join("");
   return `<ul class="tag-list" aria-label="Tags">${chips}</ul>`;
@@ -53,8 +43,14 @@ function breadcrumb(urlPath: string, title: string): string {
   if (parts.length === 1) {
     return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
   }
-  const section = toTitleCase(parts[0]);
-  return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(section)} <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
+  const sectionSlug = parts[0];
+  const sectionLabel = toTitleCase(sectionSlug);
+  // On a section index page itself, don't turn the section label into a self-link
+  if (parts[1] === "index") {
+    return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> ${escapeHtml(sectionLabel)}</nav>`;
+  }
+  const sectionHref = relativeUrl(urlPath, `${sectionSlug}/index`);
+  return `<nav class="breadcrumb">${homeLink} <span class="sep">›</span> <a href="${sectionHref}">${escapeHtml(sectionLabel)}</a> <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -66,6 +62,11 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
 
   const sections = nav.map(section => {
     const isOpen = section.slug === currentSection;
+    const indexHref = relativeUrl(currentUrlPath, `${section.slug}/index`);
+    const isOnIndex = currentUrlPath === `${section.slug}/index`;
+
+    const indexLink = `<li><a class="section-index-link" href="${indexHref}"${isOnIndex ? ' aria-current="page"' : ""}>Index</a></li>`;
+
     const items = section.pages.map(page => {
       const isCurrent = page.urlPath === currentUrlPath;
       const href = relativeUrl(currentUrlPath, page.urlPath);
@@ -77,6 +78,7 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
     <details${isOpen ? " open" : ""}>
       <summary>${escapeHtml(section.label)}</summary>
       <ul>
+        ${indexLink}
         ${items}
       </ul>
     </details>`;
@@ -98,7 +100,7 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
     ${topLinks}${sections}
     </nav>
   </details>
-  <script>if(matchMedia('(min-width:721px)').matches)document.querySelector('.sidebar-wrapper').setAttribute('open','');</script>`;
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');function f(){q.matches?s?.setAttribute('open',''):s?.removeAttribute('open');}f();q.addEventListener('change',f);})();</script>`;
 }
 
 // ─── Base shell ───────────────────────────────────────────────────────────────
@@ -148,21 +150,25 @@ function renderBase(opts: {
 export function renderPage(page: PageData, nav: NavSection[]): string {
   const { meta, bodyHtml, urlPath } = page;
 
+  // Badge links to the section index if this page lives inside a section
+  const sectionParts = urlPath.split("/");
+  const badgeHref = sectionParts.length > 1
+    ? relativeUrl(urlPath, `${sectionParts[0]}/index`)
+    : undefined;
+
   const header = `
     <div class="page-header">
       <div class="breadcrumb-row">${breadcrumb(urlPath, meta.title)}</div>
       <h1>${escapeHtml(meta.title)}</h1>
       <div class="page-meta">
-        ${typeBadge(meta.type)}
+        ${typeBadge(meta.type, badgeHref)}
         ${meta.updated ? `<span class="page-updated">Updated ${formatDate(meta.updated)}</span>` : ""}
       </div>
       ${tagChips(meta.tags ?? [], urlPath)}
     </div>`;
 
   const wrappedBody = wrapTables(bodyHtml);
-
   const content = `${header}<div class="page-body">${wrappedBody}</div>`;
-
   return renderBase({ title: meta.title, urlPath, content, nav });
 }
 
@@ -211,6 +217,67 @@ export function renderTagIndex(tag: string, entries: TagEntry[], nav: NavSection
     content,
     nav,
   });
+}
+
+// ─── Section index page ───────────────────────────────────────────────────────
+
+export function renderSectionIndex(
+  sectionSlug: string,
+  label: string,
+  entries: Array<{ title: string; urlPath: string; summary: string }>,
+  nav: NavSection[]
+): string {
+  const urlPath = `${sectionSlug}/index`;
+  const sorted = [...entries].sort((a, b) => a.title.localeCompare(b.title));
+  const count = sorted.length;
+
+  const items = sorted.map(e => {
+    const href = relativeUrl(urlPath, e.urlPath);
+    return `
+    <li class="tag-index-item">
+      <a href="${href}">${escapeHtml(e.title)}</a>
+      ${e.summary ? `<p class="summary">${escapeHtml(e.summary)}</p>` : ""}
+    </li>`;
+  }).join("");
+
+  const content = `
+    <div class="tag-index-header">
+      ${breadcrumb(urlPath, label)}
+      <h1>${escapeHtml(label)}</h1>
+      <p class="tag-count">${count} ${count === 1 ? "page" : "pages"}</p>
+    </div>
+    <ul class="tag-index-list">${items}</ul>`;
+
+  return renderBase({ title: label, urlPath, content, nav });
+}
+
+// ─── All-tags index page ──────────────────────────────────────────────────────
+
+export function renderTagAllIndex(tagMap: Map<string, TagEntry[]>, nav: NavSection[]): string {
+  const sorted = [...tagMap.entries()].sort(([a], [b]) => a.localeCompare(b));
+  const totalTags = sorted.length;
+
+  const items = sorted
+    .map(([tag, entries]) => {
+      const count = entries.length;
+      const href = `${escapeHtml(tag)}.html`;
+      return `
+      <li class="tag-index-item">
+        <a href="${href}">${escapeHtml(tag)}</a>
+        <span class="page-type-badge">${count} ${count === 1 ? "page" : "pages"}</span>
+      </li>`;
+    })
+    .join("");
+
+  const content = `
+    <div class="tag-index-header">
+      ${breadcrumb("tags/index", "Tags")}
+      <h1>Tags</h1>
+      <p class="tag-count">${totalTags} ${totalTags === 1 ? "tag" : "tags"}</p>
+    </div>
+    <ul class="tag-index-list">${items}</ul>`;
+
+  return renderBase({ title: "Tags", urlPath: "tags/index", content, nav });
 }
 
 // ─── Table wrapper (for overflow-x scroll on mobile) ─────────────────────────

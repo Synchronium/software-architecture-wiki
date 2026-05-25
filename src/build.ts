@@ -3,9 +3,9 @@ import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 import { resolveWikilinks } from "./wikilinks.js";
-import { renderPage, renderHome, renderTagIndex } from "./templates.js";
+import { renderPage, renderHome, renderTagIndex, renderTagAllIndex, renderSectionIndex } from "./templates.js";
 import { toIsoDate, buildSummaryMap, buildNav } from "./utils.js";
-import type { PageData, PageMeta, LinkMap, TagEntry, NavSection } from "./types.js";
+import type { PageData, PageMeta, LinkMap, TagEntry } from "./types.js";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -53,13 +53,23 @@ function toOutPath(urlPath: string): string {
 
 // ─── Frontmatter parsing ──────────────────────────────────────────────────────
 
-function parsePage(absPath: string): { meta: PageMeta; body: string } | null {
+function parsePage(absPath: string): { meta: PageMeta; body: string } {
   const raw = fs.readFileSync(absPath, "utf8");
   const { data, content } = matter(raw);
 
-  // Root pages (index, overview) may lack full frontmatter — supply defaults
+  // Derive title from the first # H1 in the body so the template's <h1> and
+  // the markdown heading are never duplicated. Falls back to frontmatter title
+  // or filename for pages that have no H1.
+  const h1Match = content.match(/^#[ \t]+(.+)$/m);
+  const title = h1Match
+    ? h1Match[1].trim()
+    : String(data.title ?? path.basename(absPath, ".md"));
+  const body = h1Match
+    ? content.replace(/^#[ \t]+.+\r?\n?/m, "").replace(/^\n+/, "")
+    : content;
+
   const meta: PageMeta = {
-    title: String(data.title ?? path.basename(absPath, ".md")),
+    title,
     type: (data.type as PageMeta["type"]) ?? "overview",
     tags: (data.tags as string[]) ?? [],
     sources: (data.sources as string[]) ?? [],
@@ -67,7 +77,7 @@ function parsePage(absPath: string): { meta: PageMeta; body: string } | null {
     updated: toIsoDate(data.updated),
   };
 
-  return { meta, body: content };
+  return { meta, body };
 }
 
 // ─── Main build ───────────────────────────────────────────────────────────────
@@ -84,11 +94,10 @@ async function build(): Promise<void> {
   const pages: PageData[] = [];
   for (const absPath of allFiles) {
     const parsed = parsePage(absPath);
-    if (!parsed) continue;
     const urlPath = toUrlPath(absPath);
     pages.push({
       meta: parsed.meta,
-      bodyHtml: "", // filled in step 5
+      bodyHtml: "", // filled in step 6
       srcPath: path.relative(ROOT, absPath),
       outPath: toOutPath(urlPath),
       urlPath,
@@ -102,25 +111,20 @@ async function build(): Promise<void> {
     linkMap.set(page.urlPath, page.urlPath);
   }
 
-  // 5. Resolve wikilinks + convert Markdown → HTML
+  // 5. Extract summaries from the index page body (before _body is deleted in step 6)
+  const indexRawBody = (pages as Array<PageData & { _body?: string }>)
+    .find(p => p.urlPath === "index")?._body ?? "";
+  const summaryMap = indexRawBody
+    ? buildSummaryMap(resolveWikilinks(indexRawBody, linkMap, "index"))
+    : new Map<string, string>();
+
+  // 6. Resolve wikilinks + convert Markdown → HTML
   for (const page of pages as Array<PageData & { _body?: string }>) {
     const rawBody = page._body ?? "";
     delete page._body;
     const resolved = resolveWikilinks(rawBody, linkMap, page.urlPath);
     page.bodyHtml = await marked.parse(resolved);
   }
-
-  // 6. Extract summaries from the index page body
-  const indexPage = pages.find((p) => p.urlPath === "index");
-  const summaryMap = indexPage
-    ? buildSummaryMap(
-        resolveWikilinks(
-          (parsePage(path.join(WIKI_DIR, "index.md")) as { body: string }).body,
-          linkMap,
-          "index"
-        )
-      )
-    : new Map<string, string>();
 
   // 7. Build nav + render each page
   const nav = buildNav(pages);
@@ -143,20 +147,41 @@ async function build(): Promise<void> {
     }
   }
 
-  // 8. Render tag index pages
+  // 8. Render tag index pages + all-tags index
   fs.mkdirSync(path.join(SITE_DIR, "tags"), { recursive: true });
   for (const [tag, entries] of tagMap) {
     const html = renderTagIndex(tag, entries, nav);
     write(path.join(SITE_DIR, "tags", `${tag}.html`), html);
   }
+  write(path.join(SITE_DIR, "tags", "index.html"), renderTagAllIndex(tagMap, nav));
 
-  // 9. Copy stylesheet
+  // 9. Render section index pages (auto-generated from all pages in each section)
+  const sectionPageMap = new Map<string, PageData[]>();
+  for (const page of pages) {
+    const parts = page.urlPath.split("/");
+    if (parts.length < 2) continue;
+    const section = parts[0];
+    if (!sectionPageMap.has(section)) sectionPageMap.set(section, []);
+    sectionPageMap.get(section)!.push(page);
+  }
+  for (const section of nav) {
+    const sectionPages = sectionPageMap.get(section.slug) ?? [];
+    const entries = sectionPages.map(p => ({
+      title: p.meta.title,
+      urlPath: p.urlPath,
+      summary: summaryMap.get(p.urlPath) ?? "",
+    }));
+    const html = renderSectionIndex(section.slug, section.label, entries, nav);
+    write(path.join(SITE_DIR, section.slug, "index.html"), html);
+  }
+
+  // 10. Copy stylesheet
   fs.copyFileSync(
     path.join(TEMPLATES_DIR, "style.css"),
     path.join(SITE_DIR, "assets", "style.css")
   );
 
-  // 10. Report
+  // 11. Report
   const pageCount = pages.length;
   const tagCount = tagMap.size;
   console.log(`Built ${pageCount} pages, ${tagCount} tag indexes → site/`);

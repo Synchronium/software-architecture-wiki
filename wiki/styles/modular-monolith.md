@@ -1,7 +1,7 @@
 ---
 title: "Modular Monolith Architecture"
 type: style
-tags: [architecture, monolith, modularity, evolutionary-architecture, coupling]
+tags: [monolith, modularity, evolutionary-architecture, coupling]
 sources: [building-evolutionary-architectures, fundamentals-of-software-architecture]
 created: 2026-05-14
 updated: 2026-05-14

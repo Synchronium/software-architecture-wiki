@@ -1,12 +1,8 @@
-# Architecture Wiki — HTML Site Plan
+# Architecture Wiki — Project Reference
 
 ## Goal
 
-Convert the Markdown wiki into a deployable static HTML site:
-- Wikilinks become real hyperlinks
-- Tag index pages list and link every page carrying that tag
-- Clean, readable typography — self-contained, no external dependencies
-- Free hosting via GitHub Pages
+A personal knowledge base on software architecture — patterns, principles, distributed systems, and engineering trade-offs — built from careful reading of key books. Markdown source files are compiled into a clean, self-hosted static HTML site.
 
 ---
 
@@ -16,68 +12,93 @@ Convert the Markdown wiki into a deployable static HTML site:
 |----------|--------|
 | Build language | TypeScript |
 | Body typography | Georgia (serif) |
-| Dark mode | Yes — via `prefers-color-scheme` |
+| Dark mode | Yes — `prefers-color-scheme` |
 | Site title | "Software Architecture" |
+| Hosting | GitHub Pages (`gh-pages` branch via Actions) |
+| Test framework | Vitest |
 
 ---
 
-## Tech Stack
-
-### Build: TypeScript (`src/build.ts`)
-
-**Why not a third-party SSG:**
-The wiki has bespoke wikilink syntax, custom frontmatter conventions, and a non-standard directory layout. A custom script gives full control over wikilink resolution and tag page generation, with no SSG opinions to fight.
-
-**Why TypeScript over Python:**
-User preference. TypeScript's type system makes the frontmatter schema, page data shapes, and template contracts explicit and checkable.
-
-**npm packages:**
-| Package | Purpose |
-|---------|---------|
-| `marked` | Markdown → HTML |
-| `gray-matter` | YAML frontmatter parsing |
-| `tsx` | Run TypeScript directly (no compile step) |
-| `typescript` | Type checking |
-| `@types/node` | Node.js types |
-
-```bash
-npm install marked gray-matter
-npm install -D typescript tsx @types/node
-```
-
-### Templates: TypeScript functions (`src/templates.ts`)
-
-HTML is composed in TypeScript using tagged template literals — no separate template engine needed. This keeps templates type-safe and co-located with the data shapes they consume.
-
-Composable structure:
-- `renderBase(content, meta)` — page shell: `<html>`, `<head>`, nav, footer
-- `renderPage(page)` — wiki content page (sources, concepts, patterns, authors, etc.)
-- `renderHome(page)` — wiki index/home page (from `index.md`)
-- `renderTagIndex(tag, pages)` — tag index page
-
-One external file: `templates/style.css` — the only non-TypeScript template asset, copied to `site/assets/style.css` at build time.
-
-### Project layout
+## Project Layout
 
 ```
 src/
 ├── build.ts        ← entry point; orchestrates all steps
 ├── templates.ts    ← HTML rendering functions
-├── wikilinks.ts    ← wikilink resolution logic
-└── types.ts        ← shared types (PageMeta, PageData, LinkMap, etc.)
+├── wikilinks.ts    ← wikilink resolution and relative URL helpers
+├── utils.ts        ← pure utilities: buildNav, toIsoDate, buildSummaryMap
+├── types.ts        ← shared types
+└── build.test.ts   ← Vitest test suite (26 tests)
 templates/
-└── style.css       ← stylesheet (hand-authored)
+└── style.css       ← hand-authored stylesheet; copied to site/assets/ at build time
+wiki/               ← Markdown source files (the actual wiki content)
+site/               ← build output (git-ignored; deployed via gh-pages)
 ```
 
-### Output directory: `site/`
+### npm packages
 
-(`dist/` implies a compiled artefact; `public/` is Netlify-specific; `site/` is the natural English word for what this is.)
+| Package | Purpose |
+|---------|---------|
+| `marked` | Markdown → HTML |
+| `gray-matter` | YAML frontmatter parsing |
+| `tsx` | Run TypeScript directly (no compile step) |
+| `vitest` | Test runner |
+| `typescript` | Type checking |
+| `@types/node` | Node.js types |
 
-### Hosting: GitHub Pages
+```bash
+npm run build   # tsx src/build.ts
+npm test        # vitest run
+```
 
-- Free, no build server required, custom domain support
-- Serve from a `gh-pages` branch so `main` stays clean (no committed build output)
-- Build and deploy via a single GitHub Actions workflow (`.github/workflows/deploy.yml`)
+---
+
+## Types (`src/types.ts`)
+
+```typescript
+type PageType = "source" | "concept" | "pattern" | "style" | "author"
+              | "comparison" | "overview" | "reference" | "index"
+              | "database" | "stream";
+
+interface PageMeta {
+  title: string;
+  type: PageType;
+  tags: string[];
+  sources: string[];
+  created: string;   // always coerced to "YYYY-MM-DD" string via toIsoDate()
+  updated: string;   // gray-matter parses unquoted YAML dates as Date objects
+}
+
+interface PageData {
+  meta: PageMeta;
+  bodyHtml: string;
+  srcPath: string;   // "wiki/concepts/coupling.md"
+  outPath: string;   // "site/concepts/coupling.html"
+  urlPath: string;   // "concepts/coupling" — the wikilink key
+}
+
+type LinkMap = Map<string, string>;  // urlPath → urlPath (identity; relativeUrl does the rest)
+
+interface NavEntry   { title: string; urlPath: string; }
+interface NavSection { slug: string; label: string; pages: NavEntry[]; }
+interface TagEntry   { title: string; urlPath: string; type: PageType; summary: string; }
+```
+
+---
+
+## Build Steps (`src/build.ts`)
+
+1. **Clean** — `fs.rmSync(site/, { recursive: true, force: true })` — full wipe before every build; no stale files can accumulate.
+2. **Scan** — `walkMd(wiki/)` collects all `.md` files recursively.
+3. **Parse** — `gray-matter` extracts YAML frontmatter; `toIsoDate()` coerces `Date` objects from gray-matter into `"YYYY-MM-DD"` strings.
+4. **Build link map** — `Map<urlPath, urlPath>`; used by `relativeUrl()` at render time.
+5. **Resolve wikilinks + convert** — `resolveWikilinks()` replaces `[[...]]` patterns with Markdown anchors; `marked.parse()` converts to HTML.
+6. **Extract summaries** — `buildSummaryMap()` parses `index.md` for one-line summaries (`- [[path]] — Summary text`) used on tag and section index pages.
+7. **Build nav** — `buildNav(pages)` groups pages by section, sorts alphabetically within each section, and respects a canonical section order.
+8. **Render pages** — `renderPage()` for content pages, `renderHome()` for `index.md`.
+9. **Render tag pages** — one `site/tags/<tag>.html` per unique tag.
+10. **Render section index pages** — one `site/<section>/index.html` per nav section; auto-generated from page metadata. **No markdown source files for these** — do not create manually.
+11. **Copy stylesheet** — `templates/style.css` → `site/assets/style.css`.
 
 ---
 
@@ -85,201 +106,93 @@ templates/
 
 ```
 site/
-├── index.html              ← wiki home (from index.md)
+├── index.html
 ├── overview.html
-├── assets/
-│   └── style.css
-├── sources/
-│   └── *.html
-├── concepts/
-│   └── *.html
-├── distributed/
-│   └── *.html
-├── operations/
-│   └── *.html
-├── patterns/
-│   └── *.html
-├── styles/
-│   └── *.html
-├── databases/
-│   └── *.html
-├── streams/
-│   └── *.html
-├── authors/
-│   └── *.html
-├── comparisons/
-│   └── *.html
-├── reference/
-│   └── *.html
+├── assets/style.css
+├── {section}/
+│   ├── index.html      ← auto-generated section index
+│   └── {page}.html
 └── tags/
-    └── <tag-name>.html     ← one per tag, e.g. tags/microservices.html
+    └── {tag}.html
 ```
 
-File paths mirror the source layout exactly, with `.md` replaced by `.html`.
+Sections: `styles`, `concepts`, `distributed`, `operations`, `patterns`, `databases`, `streams`, `comparisons`, `reference`, `sources`, `authors`.
 
 ---
 
-## Build Script (`src/build.ts`)
+## Templates (`src/templates.ts`)
 
-### Steps (in order)
+### Exported render functions
 
-1. **Scan** — glob `wiki/**/*.md`, plus `index.md` and `overview.md` at root.
-2. **Parse** — for each file: extract YAML frontmatter via `gray-matter`; type the result as `PageMeta`; keep remaining text as the Markdown body string.
-3. **Build link map** — construct `Map<string, string>` of wikilink path → output path, e.g. `"concepts/coupling"` → `"concepts/coupling.html"`. Used to compute relative URLs at render time.
-4. **Resolve wikilinks** — replace all `[[...]]` patterns with Markdown link syntax before passing to `marked`. Three forms handled (see Wikilink Resolution section).
-5. **Convert** — run resolved Markdown through `marked.parse()` with `gfm: true` (GitHub Flavoured Markdown — tables, fenced code, strikethrough).
-6. **Render** — call the appropriate template function with typed page data; write the resulting HTML string to `site/`.
-7. **Generate tag pages** — aggregate all pages by tag; for each tag call `renderTagIndex()` and write to `site/tags/<tag>.html`.
-8. **Copy assets** — copy `templates/style.css` → `site/assets/style.css`.
+| Function | Output |
+|----------|--------|
+| `renderPage(page, nav)` | Content page with breadcrumb, type badge, tag chips, page body |
+| `renderHome(page, nav)` | Index/home page (no breadcrumb) |
+| `renderTagIndex(tag, entries, nav)` | Tag listing page |
+| `renderSectionIndex(slug, label, entries, nav)` | Section listing page |
 
-### Types (`src/types.ts`)
+### Key helpers
 
-```typescript
-interface PageMeta {
-  title: string;
-  type: "source" | "concept" | "pattern" | "style" | "author" |
-        "comparison" | "overview" | "reference" | "index";
-  tags: string[];
-  sources: string[];
-  created: string;
-  updated: string;
-}
-
-interface PageData {
-  meta: PageMeta;
-  bodyHtml: string;
-  srcPath: string;   // e.g. "wiki/concepts/coupling.md"
-  outPath: string;   // e.g. "site/concepts/coupling.html"
-  urlPath: string;   // e.g. "concepts/coupling"
-}
-
-type LinkMap = Map<string, string>;  // wikilink path → urlPath
-```
-
-### Running it
-
-```bash
-npm run build       # runs: tsx src/build.ts
-```
+- **`renderBase(opts)`** — page shell: `<html>`, `<head>`, sidebar, `<main>`, `<footer>`
+- **`renderSidebar(nav, currentUrlPath)`** — collapsible `<details>`/`<summary>` nav; current section auto-expanded via inline synchronous script (avoids UA `details` hiding rules that cannot be reliably overridden with CSS alone)
+- **`breadcrumb(urlPath, title)`** — `Home › Section › Page`; section label links to section index; special-cased on section index pages to avoid self-links
+- **`typeBadge(type, href?)`** — `<a>` when href provided (links to section index), otherwise `<span>`
+- **`tagChips(tags, fromPath)`** — pill links to `tags/<tag>.html`
+- **`formatDate(iso)`** — `"2026-05-22"` → `"22<sup>nd</sup> May 2026"`
+- **`wrapTables(html)`** — wraps `<table>` in `<div class="table-wrapper">` for horizontal scroll on mobile
 
 ---
 
-## CSS / Typography
+## CSS Architecture (`templates/style.css`)
 
-Design principles:
-- Self-contained: no Google Fonts, no CDN, no JavaScript
-- Optimised for long-form reading
-- Mobile-first, single column; centred on wider screens
-- Dark mode via `@media (prefers-color-scheme: dark)`
+- **No external dependencies** — no Google Fonts, no CDN, no runtime JS
+- **Custom properties** — all colours and key sizes in `:root` / dark-mode block
+- **Flex layout** — `.layout` is a row flex container; sidebar is `flex-shrink: 0`; `<main>` is `flex: 1; min-width: 0; max-width: 100%`
+- **`max-width: 100%` on `<main>`** — prevents wide `<pre>` blocks from overflowing; do not add `overflow-x: clip` to `<body>` as it breaks horizontal scrolling of code blocks
+- **Sticky sidebar** — `position: sticky; top: 0; max-height: 100vh; overflow-y: auto`
+- **Mobile** (`≤720px`) — sidebar becomes full-width block above main; collapsible via `<details>`; "Jump to content ↓" link skips navigation
+- **Inline script** in sidebar — `if(matchMedia('(min-width:721px)').matches) document.querySelector('.sidebar-wrapper').setAttribute('open','')` — sets sidebar `open` on desktop before first paint, reliably, without CSS cascade issues
 
-Key rules:
+### Colour palette
 
-| Property | Light | Dark | Rationale |
-|----------|-------|------|-----------|
-| Body font | `Georgia, 'Times New Roman', serif` | same | Designed for reading; familiar to book readers |
-| UI font | `system-ui, sans-serif` | same | Nav, metadata, tags — screen-native |
-| Max content width | `70ch` | same | Optimal line length |
-| Background | `#fafaf8` | `#1a1a18` | Off-white / off-black |
-| Text | `#1a1a1a` | `#e8e8e4` | Near-black / near-white |
-| Link | `#2a5db0` | `#7aaaef` | Readable in both modes |
-| Code block bg | `#f0f0ec` | `#252522` | Distinct from prose |
-| Blockquote border | `#c8a96e` | `#8a6e3a` | Warm accent for callouts |
-
-Additional elements:
-- **Tag chips** — small pill labels in the page header, each linking to `tags/<tag>.html`
-- **Breadcrumb** — `Software Architecture > Concepts > Coupling`
-- **Source citation style** — `(→ source-name)` in muted colour with `↗` glyph, distinct from regular links
-- **Blockquotes** — left border in accent colour; `**Contradiction:**` and `**Open question:**` prefixes rendered in bold
+| Token | Light | Dark |
+|-------|-------|------|
+| `--bg` | `#fafaf8` | `#1a1a18` |
+| `--text` | `#1a1a1a` | `#e8e8e4` |
+| `--link` | `#2a5db0` | `#7aaaef` |
+| `--accent` | `#b87820` | `#c8922a` |
+| `--sidebar-bg` | `#f2f2ee` | `#141412` |
+| `--code-bg` | `#f0f0ec` | `#252522` |
 
 ---
 
-## Wikilink Resolution Detail (`src/wikilinks.ts`)
+## Wikilink Resolution (`src/wikilinks.ts`)
 
 Regex: `/\[\[([^\]|#]+?)(?:#([^\]|]+?))?(?:\|([^\]]+?))?\]\]/g`
 
-Capture groups:
-1. Path — e.g. `concepts/coupling`
-2. Anchor — optional, e.g. `Evans-Elaborations`
-3. Display text — optional, e.g. `coupling`
+- Group 1: path (`concepts/coupling`)
+- Group 2: anchor (optional, `#Evans-Elaborations`)
+- Group 3: display text (optional)
 
-Resolution:
-```typescript
-function resolveWikilink(
-  path: string, anchor: string | undefined,
-  display: string | undefined,
-  linkMap: LinkMap, currentUrlPath: string
-): string {
-  const targetUrl = linkMap.get(path);
-  if (!targetUrl) {
-    const slug = path.split("/").at(-1) ?? path;
-    return `<span class="broken-link">${display ?? slug}</span>`;
-  }
-  const rel = relativeUrl(currentUrlPath, targetUrl)
-    + (anchor ? `#${anchor}` : "");
-  const label = display ?? path.split("/").at(-1)!
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, c => c.toUpperCase());
-  return `[${label}](${rel})`;
-}
-```
+Unknown paths → `<span class="broken-link">...</span>`.
 
-Relative URL computation ensures the site works opened from the filesystem (`file://`) and when hosted at a subpath.
+`relativeUrl(fromPath, toPath)` computes the correct `../`-prefixed relative URL so the site works both on the filesystem (`file://`) and when hosted at a subpath.
 
 ---
 
-## Tag Pages
+## GitHub Actions (`/.github/workflows/deploy.yml`)
 
-Each `site/tags/<tag>.html` contains:
-- H1: tag name (de-hyphenated, title-cased)
-- Subtitle: "N pages"
-- Alphabetically sorted list; each entry:
-  - **Title** (linked to the page)
-  - One-line summary drawn from the `index.md` entry for that page (the text after the `—`)
-  - Type badge (concept, pattern, source, etc.)
+Triggers on push to `main` and `workflow_dispatch`. Runs `npm ci && npm run build`, then publishes `./site` to the `gh-pages` branch via `peaceiris/actions-gh-pages@v4`.
 
 ---
 
-## GitHub Actions Deploy Workflow
+## Pending Work
 
-File: `.github/workflows/deploy.yml`
-
-```yaml
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-```
-
-Every push to `main` rebuilds and redeploys. `site/` stays out of `main`'s tree.
-
----
-
-## Implementation Order
-
-- [ ] 1. `npm init`, install dependencies, write `tsconfig.json` and `package.json` scripts
-- [ ] 2. Write `src/types.ts`
-- [ ] 3. Write `templates/style.css` (light + dark mode)
-- [ ] 4. Write `src/templates.ts` (base shell + page + home + tag index)
-- [ ] 5. Write `src/wikilinks.ts` (regex, resolver, relative URL helper)
-- [ ] 6. Write `src/build.ts` (scanner → parser → link-map → resolver → renderer → tag generator → asset copy)
-- [ ] 7. Run `npm run build` locally; open `site/index.html` in browser
-- [ ] 8. Fix broken links, rendering issues, layout problems
-- [ ] 9. Add `site/` and `node_modules/` to `.gitignore`
-- [ ] 10. Write `.github/workflows/deploy.yml`
-- [ ] 11. Push to GitHub; enable Pages (Settings → Pages → source: `gh-pages` branch)
-- [ ] 12. Update `README.md` with the live URL
+| Priority | Task |
+|----------|------|
+| 1 | **Code review** — principal engineer review of build code and HTML output ✓ |
+| 2 | **Fix duplicate H1** — `parsePage` extracts the first `# H1` from the body as `meta.title`, strips it from the body; template renders it once ✓ |
+| 3 | **Accent colour** — pick a new accent colour; apply it in more places (links, active nav items, focus rings, etc.) ✓ |
+| 4 | **Accessibility review** — full WCAG audit: heading hierarchy (now fixed by H1 change), colour contrast ratios, ARIA landmarks and labels, keyboard navigation, screen reader testing. `:focus-visible` outline added; deeper audit still needed. |
+| 5 | **Tag scan** — review remaining singleton tags; identify pages that should adopt more tags from the canonical set ✓ |
+| 6 | **SEO audit** — review all page types for appropriate meta tags. Key known issues: (a) tag index pages (`tags/*.html`) are thin, auto-generated content and should carry `<meta name="robots" content="noindex">` to avoid being indexed as low-quality pages; the all-tags index (`tags/index.html`) could go either way; (b) author and source pages are internal reference pages and may also warrant `noindex`; (c) all content pages lack `<meta name="description">` — consider generating from the first paragraph or the summary map; (d) no `<link rel="canonical">` — needed if the site is ever served at multiple URLs. |

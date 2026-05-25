@@ -1,7 +1,7 @@
 ---
 title: "Team Topologies: Organising Business and Technology Teams for Fast Flow"
 type: source
-tags: [architecture, teams, organizational-design, conways-law, cognitive-load, flow]
+tags: [teams, organisational-design, conways-law, cognitive-load, flow]
 sources: [team-topologies]
 created: 2026-05-14
 updated: 2026-05-14

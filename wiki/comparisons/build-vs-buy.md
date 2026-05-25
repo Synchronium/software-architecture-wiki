@@ -1,7 +1,7 @@
 ---
 title: "Build vs Buy vs Adopt (Open-Source)"
 type: comparison
-tags: [architecture, strategy, ddd, bounded-contexts, subdomains, make-or-buy, vendor, open-source]
+tags: [strategy, ddd, bounded-contexts, subdomains, make-or-buy, vendor, open-source]
 sources: [learning-domain-driven-design, domain-driven-design, software-architecture-the-hard-parts, building-evolutionary-architectures, team-topologies]
 created: 2026-05-19
 updated: 2026-05-19

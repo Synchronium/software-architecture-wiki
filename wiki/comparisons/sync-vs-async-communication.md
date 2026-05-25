@@ -1,7 +1,7 @@
 ---
 title: "Synchronous vs Asynchronous Communication"
 type: comparison
-tags: [architecture, coupling, messaging, distributed-systems, integration, resilience, temporal-coupling]
+tags: [coupling, messaging, distributed-systems, integration, resiliency, temporal-coupling]
 sources: [enterprise-integration-patterns, monolith-to-microservices, software-architecture-the-hard-parts, building-event-driven-microservices, understanding-distributed-systems, release-it, mastering-api-architecture]
 created: 2026-05-19
 updated: 2026-05-19

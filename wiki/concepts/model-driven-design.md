@@ -1,7 +1,7 @@
 ---
 title: "Model-Driven Design"
 type: concept
-tags: [ddd, domain-driven-design, modeling, implementation, architecture]
+tags: [ddd, modeling, domain-model, ubiquitous-language, bounded-contexts, tactical-design]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

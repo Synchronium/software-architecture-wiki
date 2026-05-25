@@ -1,7 +1,7 @@
 ---
 title: "Failure Detection"
 type: concept
-tags: [distributed-systems, fault-tolerance, timeouts, heartbeats, resiliency]
+tags: [distributed-systems, fault-tolerance, resiliency, monitoring, operations]
 sources: [understanding-distributed-systems]
 created: 2026-05-14
 updated: 2026-05-14

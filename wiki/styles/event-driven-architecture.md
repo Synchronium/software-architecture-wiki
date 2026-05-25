@@ -1,7 +1,7 @@
 ---
 title: "Event-Driven Architecture"
 type: style
-tags: [architecture, distributed, events, async, messaging, domain-partitioning, microservices, streaming]
+tags: [distributed-systems, events, async, messaging, domain-partitioning, microservices, streaming, ddd, coupling]
 sources: [fundamentals-of-software-architecture, understanding-distributed-systems, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design]
 created: 2026-05-13
 updated: 2026-05-14

@@ -1,7 +1,7 @@
 ---
 title: "System Models"
 type: concept
-tags: [distributed-systems, theory, fault-tolerance, correctness]
+tags: [distributed-systems, fault-tolerance, correctness, consensus, replication]
 sources: [understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-14
 updated: 2026-05-19

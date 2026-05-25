@@ -1,11 +1,8 @@
 import type { LinkMap } from "./types.js";
+import { escapeHtml, toTitleCase } from "./utils.js";
 
 // Matches: [[path/slug]], [[path/slug|Display]], [[path/slug#Anchor|Display]]
 const WIKILINK_RE = /\[\[([^\]|#]+?)(?:#([^\]|]+?))?(?:\|([^\]]+?))?\]\]/g;
-
-function toTitleCase(s: string): string {
-  return s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 /**
  * Compute a relative URL from one urlPath to another.
@@ -51,7 +48,7 @@ export function resolveWikilinks(
       const label = display ?? toTitleCase(slug);
 
       // Use HTML anchor directly so it survives marked's Markdown parsing
-      return `<a href="${href}">${label}</a>`;
+      return `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
     }
   );
 }

@@ -1,7 +1,7 @@
 ---
 title: "Timeout"
 type: pattern
-tags: [resiliency, stability, distributed-systems, fault-tolerance, integration-points]
+tags: [resiliency, stability, distributed-systems, fault-tolerance, integration-points, microservices]
 sources: [release-it, understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-18
 updated: 2026-05-18

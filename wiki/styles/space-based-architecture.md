@@ -1,7 +1,7 @@
 ---
 title: "Space-Based Architecture"
 type: style
-tags: [architecture, distributed, in-memory, high-performance, elasticity]
+tags: [distributed-systems, in-memory, high-performance, elasticity]
 sources: [fundamentals-of-software-architecture, software-architecture-patterns]
 created: 2026-05-13
 updated: 2026-05-14

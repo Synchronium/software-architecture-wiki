@@ -1,7 +1,7 @@
 ---
 title: "Domain-Driven Design: Tackling Complexity in the Heart of Software"
 type: source
-tags: [architecture, ddd, domain-model, ubiquitous-language, strategic-design, tactical-design]
+tags: [ddd, domain-model, ubiquitous-language, strategic-design, tactical-design]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

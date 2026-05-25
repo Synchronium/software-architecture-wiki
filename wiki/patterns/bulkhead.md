@@ -1,7 +1,7 @@
 ---
 title: "Bulkhead Pattern"
 type: pattern
-tags: [resiliency, fault-isolation, distributed-systems, availability]
+tags: [resiliency, fault-isolation, distributed-systems, availability, microservices, stability]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-19

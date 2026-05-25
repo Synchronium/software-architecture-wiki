@@ -1,7 +1,7 @@
 ---
 title: "Core Domain and Strategic Distillation"
 type: concept
-tags: [ddd, domain-driven-design, strategic-design, core-domain, distillation]
+tags: [ddd, strategic-design, core-domain, distillation, bounded-contexts, subdomains]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

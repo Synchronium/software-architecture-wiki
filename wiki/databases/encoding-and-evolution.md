@@ -1,7 +1,7 @@
 ---
 title: "Encoding and Evolution"
 type: database
-tags: [databases, encoding, serialisation, schema-evolution, compatibility, avro, protobuf]
+tags: [databases, encoding, serialisation, schema-evolution, compatibility]
 sources: [designing-data-intensive-applications]
 created: 2026-05-13
 updated: 2026-05-14

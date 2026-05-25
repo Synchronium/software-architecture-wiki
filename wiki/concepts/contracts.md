@@ -1,7 +1,7 @@
 ---
 title: "Contracts in Distributed Architecture"
 type: concept
-tags: [architecture, contracts, coupling, microservices, api, integration, events, schema-evolution]
+tags: [contracts, coupling, microservices, api, integration, events, schema-evolution]
 sources: [software-architecture-the-hard-parts, mastering-api-architecture, building-event-driven-microservices, monolith-to-microservices, enterprise-integration-patterns]
 created: 2026-05-14
 updated: 2026-05-15

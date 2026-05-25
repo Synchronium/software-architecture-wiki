@@ -1,7 +1,7 @@
 ---
 title: "Fracture Planes"
 type: concept
-tags: [architecture, decomposition, monolith, teams, boundaries, flow]
+tags: [decomposition, monolith, teams, boundaries, flow, microservices, migration]
 sources: [team-topologies, monolith-to-microservices]
 created: 2026-05-14
 updated: 2026-05-15

@@ -1,7 +1,7 @@
 ---
 title: "Monolith to Microservices"
 type: source
-tags: [architecture, microservices, migration, decomposition, ddd]
+tags: [microservices, migration, decomposition, ddd]
 sources: [monolith-to-microservices]
 created: 2026-05-15
 updated: 2026-05-15

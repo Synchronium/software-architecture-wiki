@@ -1,7 +1,7 @@
 ---
 title: "Software Architecture Metrics"
 type: source
-tags: [architecture, metrics, fitness-functions, modularity, evolutionary-architecture, devops, ddd]
+tags: [metrics, fitness-functions, modularity, evolutionary-architecture, devops, ddd]
 sources: [software-architecture-metrics]
 created: 2026-05-21
 updated: 2026-05-22

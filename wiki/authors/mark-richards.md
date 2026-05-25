@@ -1,7 +1,7 @@
 ---
 title: "Mark Richards"
 type: author
-tags: [author, architecture, patterns, microservices]
+tags: [author, microservices]
 sources: [fundamentals-of-software-architecture, software-architecture-patterns, software-architecture-the-hard-parts]
 created: 2026-05-13
 updated: 2026-05-14

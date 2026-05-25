@@ -1,7 +1,7 @@
 ---
 title: "Foundations of Scalable Systems"
 type: source
-tags: [scalability, distributed-systems, architecture, performance, databases]
+tags: [scalability, distributed-systems, performance, databases]
 sources: [foundations-of-scalable-systems]
 created: 2026-05-19
 updated: 2026-05-21

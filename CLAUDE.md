@@ -101,6 +101,32 @@ updated: YYYY-MM-DD
 
 ---
 
+## H1 and Title Convention
+
+**The build script derives the page title from the first `# H1` in the markdown body, not from the `title` frontmatter field.** The H1 is stripped from the body before rendering so the template's `<h1>` is never duplicated.
+
+This means:
+
+- Every page **must** have exactly one `# H1` at or near the top of the body.
+- The `# H1` text **must exactly match** the `title` frontmatter field (the frontmatter field is retained for cataloguing tools that read it directly, e.g. `index.md` summaries and linting scripts, but the HTML site ignores it).
+- **Never use `##` or deeper headings as the first heading** — the H1 is the page title; all subsequent sections should be `##`.
+
+Example — correct:
+
+```markdown
+---
+title: "API Testing"
+...
+---
+
+# API Testing
+
+## Why It Matters
+...
+```
+
+---
+
 ## Naming Conventions
 
 - Filenames: `kebab-case.md`
@@ -161,6 +187,10 @@ When the user asks to ingest a chapter (or set of chapters):
 8. **Update README.md** — when the last chapter of a book is ingested, update the `## Sources ingested so far` table in `README.md`: add the book if it's not listed, or remove any "in progress" marker if it was already listed
 
 A single ingest typically touches 10–20 pages. Prefer updating existing pages over creating new ones when a concept is already covered.
+
+**H1 rule for every page you create or update:** The first line of the body must be `# Page Title` and must exactly match the `title` frontmatter field. The build script uses the H1 as the rendered page title and strips it from the body — the template then renders it as `<h1>`. A missing or mismatched H1 means the HTML title will be wrong. Never put more than one `#`-level heading in a file.
+
+**Section index pages are auto-generated.** The build script produces `site/{section}/index.html` for every section (concepts, styles, patterns, etc.) directly from the pages it finds. There are no markdown source files for these — do not create or update them manually. They are always up-to-date after a build.
 
 **Placement rules for new pages created during ingest:**
 - Architecture styles (layered, microservices, event-driven, etc.) → `wiki/styles/`

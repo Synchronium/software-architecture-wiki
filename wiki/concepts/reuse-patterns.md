@@ -1,7 +1,7 @@
 ---
 title: "Code Reuse Patterns"
 type: concept
-tags: [architecture, coupling, reuse, microservices, distributed-systems]
+tags: [coupling, reuse, microservices, distributed-systems]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
 updated: 2026-05-14

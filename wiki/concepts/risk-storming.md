@@ -1,7 +1,7 @@
 ---
 title: "Risk Storming"
 type: concept
-tags: [architecture, risk, governance, collaboration]
+tags: [risk, governance, collaboration]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-14

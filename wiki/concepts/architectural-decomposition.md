@@ -1,7 +1,7 @@
 ---
 title: "Architectural Decomposition"
 type: concept
-tags: [architecture, decomposition, modularity, migration, monolith, microservices]
+tags: [decomposition, modularity, migration, monolith, microservices]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
 updated: 2026-05-14

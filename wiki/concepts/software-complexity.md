@@ -1,7 +1,7 @@
 ---
 title: "Software Complexity"
 type: concept
-tags: [complexity, design, modularity, cognitive-load, technical-debt, strategic-programming]
+tags: [complexity, modularity, cognitive-load, technical-debt, strategic-programming]
 sources: [a-philosophy-of-software-design]
 created: 2026-05-18
 updated: 2026-05-18

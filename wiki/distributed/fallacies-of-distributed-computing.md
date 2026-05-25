@@ -1,7 +1,7 @@
 ---
 title: "Fallacies of Distributed Computing"
 type: concept
-tags: [architecture, distributed-systems, networking, microservices]
+tags: [distributed-systems, networking, microservices]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-14
 updated: 2026-05-14

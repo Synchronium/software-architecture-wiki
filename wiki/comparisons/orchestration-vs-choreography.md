@@ -1,7 +1,7 @@
 ---
 title: "Orchestration vs Choreography"
 type: comparison
-tags: [distributed-systems, saga, coordination, microservices, workflow]
+tags: [distributed-systems, sagas, coordination, microservices, workflow]
 sources: [understanding-distributed-systems, software-architecture-the-hard-parts, building-event-driven-microservices, learning-domain-driven-design, monolith-to-microservices, fundamentals-of-software-architecture]
 created: 2026-05-18
 updated: 2026-05-18

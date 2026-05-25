@@ -1,7 +1,7 @@
 ---
 title: "Coupling"
 type: concept
-tags: [architecture, coupling, distributed-systems, microservices, modularity, integration]
+tags: [coupling, distributed-systems, microservices, modularity, integration]
 sources: [fundamentals-of-software-architecture, software-architecture-the-hard-parts, monolith-to-microservices, building-evolutionary-architectures, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, a-philosophy-of-software-design]
 created: 2026-05-15
 updated: 2026-05-18

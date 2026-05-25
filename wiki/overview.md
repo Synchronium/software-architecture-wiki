@@ -1,7 +1,7 @@
 ---
 title: "Overview — Software Architecture"
 type: overview
-tags: [overview, architecture]
+tags: []
 sources: [understanding-distributed-systems, fundamentals-of-software-architecture, mastering-api-architecture, building-evolutionary-architectures, designing-data-intensive-applications, software-architecture-the-hard-parts, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design, team-topologies, domain-driven-design, monolith-to-microservices, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, release-it, foundations-of-scalable-systems, software-architecture-metrics, accelerate, a-philosophy-of-software-design]
 updated: 2026-05-18
 ---

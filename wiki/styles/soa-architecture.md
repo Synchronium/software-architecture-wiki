@@ -1,7 +1,7 @@
 ---
 title: "Orchestration-Driven Service-Oriented Architecture (SOA)"
 type: style
-tags: [architecture, distributed, soa, enterprise, technical-partitioning, legacy]
+tags: [distributed-systems, soa, enterprise, technical-partitioning, legacy]
 sources: [fundamentals-of-software-architecture, enterprise-integration-patterns]
 created: 2026-05-13
 updated: 2026-05-14

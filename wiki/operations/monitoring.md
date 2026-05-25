@@ -1,7 +1,7 @@
 ---
 title: "Monitoring"
 type: concept
-tags: [monitoring, sli, slo, alerting, dashboards, observability, reliability, on-call]
+tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call]
 sources: [understanding-distributed-systems, release-it]
 created: 2026-05-14
 updated: 2026-05-19

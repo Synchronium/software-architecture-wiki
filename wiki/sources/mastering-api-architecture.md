@@ -1,7 +1,7 @@
 ---
 title: "Mastering API Architecture"
 type: source
-tags: [api, architecture, gateway, service-mesh, security, microservices, distributed-systems]
+tags: [api, gateway, service-mesh, security, microservices, distributed-systems]
 sources: [mastering-api-architecture]
 created: 2026-05-13
 updated: 2026-05-13

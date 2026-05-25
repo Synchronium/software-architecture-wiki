@@ -1,7 +1,7 @@
 ---
 title: "Context Map and Bounded Context Integration Patterns"
 type: pattern
-tags: [ddd, bounded-contexts, integration, context-map, anticorruption-layer, open-host-service, partnership, shared-kernel]
+tags: [ddd, bounded-contexts, integration, context-map, microservices, coupling]
 sources: [domain-driven-design, learning-domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

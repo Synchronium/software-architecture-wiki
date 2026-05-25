@@ -1,7 +1,7 @@
 ---
 title: "API Design"
 type: concept
-tags: [api, rest, grpc, graphql, oas, versioning, design]
+tags: [api, rest, grpc, graphql, oas, versioning]
 sources: [mastering-api-architecture, understanding-distributed-systems, building-event-driven-microservices]
 created: 2026-05-13
 updated: 2026-05-14

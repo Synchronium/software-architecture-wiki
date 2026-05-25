@@ -1,7 +1,7 @@
 ---
 title: "Software Architecture: The Hard Parts"
 type: source
-tags: [architecture, distributed-systems, decomposition, trade-offs, data, sagas, coupling]
+tags: [distributed-systems, decomposition, trade-offs, data, sagas, coupling]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
 updated: 2026-05-14

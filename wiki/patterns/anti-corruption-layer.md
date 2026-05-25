@@ -1,7 +1,7 @@
 ---
 title: "Anticorruption Layer (ACL)"
 type: pattern
-tags: [ddd, bounded-contexts, integration, translation, domain-model, legacy]
+tags: [ddd, bounded-contexts, integration, translation, domain-model, legacy, microservices, migration, coupling]
 sources: [domain-driven-design, learning-domain-driven-design, monolith-to-microservices, building-evolutionary-architectures]
 created: 2026-05-18
 updated: 2026-05-18

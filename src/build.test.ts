@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { toIsoDate, buildSummaryMap, buildNav } from "./utils.js";
-import { formatDate, escapeHtml } from "./templates.js";
+import { formatDate } from "./templates.js";
+import { escapeHtml } from "./utils.js";
 import { resolveWikilinks } from "./wikilinks.js";
 
 // ─── toIsoDate ────────────────────────────────────────────────────────────────

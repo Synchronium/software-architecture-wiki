@@ -1,7 +1,7 @@
 ---
 title: "Ports and Adapters (Hexagonal Architecture)"
 type: style
-tags: [architecture, ddd, hexagonal, onion, clean-architecture, ports-adapters, domain-model, dependency-inversion]
+tags: [ddd, hexagonal, onion, clean-architecture, ports-adapters, domain-model, dependency-inversion]
 sources: [learning-domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

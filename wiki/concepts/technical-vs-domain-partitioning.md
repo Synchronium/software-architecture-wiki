@@ -1,7 +1,7 @@
 ---
 title: "Technical vs Domain Partitioning"
 type: concept
-tags: [architecture, components, partitioning, domain-driven-design]
+tags: [components, partitioning, ddd, microservices, modularity]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-13

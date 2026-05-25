@@ -1,7 +1,7 @@
 ---
 title: "Integration Styles"
 type: concept
-tags: [architecture, integration, messaging, coupling, enterprise, distributed-systems]
+tags: [integration, messaging, coupling, enterprise, distributed-systems]
 sources: [enterprise-integration-patterns]
 created: 2026-05-15
 updated: 2026-05-15

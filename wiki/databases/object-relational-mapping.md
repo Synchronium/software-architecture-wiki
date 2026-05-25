@@ -1,7 +1,7 @@
 ---
 title: "Object-Relational Mapping Patterns"
 type: database
-tags: [orm, persistence, relational, domain-model, active-record, data-mapper]
+tags: [orm, persistence, relational, domain-model, databases, ddd, enterprise]
 sources: [patterns-of-enterprise-application-architecture]
 created: 2026-05-17
 updated: 2026-05-17

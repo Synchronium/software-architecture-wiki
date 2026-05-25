@@ -1,7 +1,7 @@
 ---
 title: "Manuel Pais"
 type: author
-tags: [author, teams, organizational-design, devops, flow]
+tags: [author, teams, organisational-design, devops, flow]
 sources: [team-topologies]
 created: 2026-05-14
 updated: 2026-05-14

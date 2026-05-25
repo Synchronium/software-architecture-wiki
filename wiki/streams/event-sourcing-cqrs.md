@@ -1,7 +1,7 @@
 ---
 title: "Event Sourcing and CQRS"
 type: stream
-tags: [event-sourcing, cqrs, cdc, immutability, audit, derived-data, streams, ddd, domain-model]
+tags: [event-sourcing, cqrs, cdc, immutability, audit, derived-data, streaming, ddd, domain-model]
 sources: [designing-data-intensive-applications, learning-domain-driven-design]
 created: 2026-05-13
 updated: 2026-05-14

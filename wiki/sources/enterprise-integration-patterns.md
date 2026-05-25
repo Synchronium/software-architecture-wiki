@@ -1,7 +1,7 @@
 ---
 title: "Enterprise Integration Patterns"
 type: source
-tags: [architecture, integration, messaging, patterns, distributed-systems, enterprise]
+tags: [integration, messaging, distributed-systems, enterprise]
 sources: [enterprise-integration-patterns]
 created: 2026-05-15
 updated: 2026-05-15

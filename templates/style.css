@@ -8,11 +8,13 @@
   --bg-tag:      #eeeee9;
   --text:        #1a1a1a;
   --text-muted:  #666660;
-  --link:        #2a5db0;
-  --link-visited:#5a3e8a;
-  --border:      #d8d8d2;
-  --accent:      #b87820;   /* blockquote / callout border */
-  --tag-text:    #444440;
+  --link:         #5ce3c4;
+  --link-visited: #20bb97;
+  --border:       #d8d8d2;
+  --accent:       #5ce3c4;
+  --accent-dim:   #17a085;
+  --accent-muted: #92ecd7;
+  --tag-text:     #444440;
   --broken:      #cc3333;
 
   --font-body: Georgia, 'Times New Roman', serif;
@@ -31,13 +33,22 @@
     --bg-tag:      #2a2a27;
     --text:        #e8e8e4;
     --text-muted:  #999994;
-    --link:        #7aaaef;
-    --link-visited:#b898e8;
-    --border:      #3a3a36;
-    --accent:      #c8922a;
+    --link:         #5ce3c4;
+    --link-visited: #3ccbb5;
+    --border:       #3a3a36;
+    --accent:       #5ce3c4;
+    --accent-dim:   #2cb5a0;
+    --accent-muted: #86e9d6;
     --tag-text:    #b8b8b2;
     --broken:      #ff6b6b;
   }
+}
+
+/* ─── Focus ─────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
@@ -77,7 +88,7 @@ body {
   color: var(--text-muted);
   text-decoration: none;
 }
-.site-title:hover { color: var(--text); }
+.site-title:hover { color: var(--accent); }
 
 .layout {
   display: flex;
@@ -116,11 +127,6 @@ main {
 }
 
 .sidebar {
-  position: sticky;
-  top: 0;
-  max-height: 100vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
   padding: 2rem 1rem 4rem;
 }
 
@@ -144,7 +150,6 @@ main {
   text-transform: uppercase;
   color: var(--text-muted);
 }
-.sidebar details summary::-webkit-details-marker { display: none; }
 .sidebar details summary::before {
   content: "›";
   display: inline-block;
@@ -152,7 +157,7 @@ main {
   transition: transform 0.12s ease;
   transform-origin: center 45%;
 }
-.sidebar details[open] > summary::before { transform: rotate(90deg); }
+.sidebar details[open] > summary::before { transform: rotate(90deg); color: var(--accent); }
 .sidebar details summary:hover { color: var(--text); }
 
 .sidebar details ul {
@@ -176,8 +181,15 @@ main {
 }
 .sidebar details a:hover { color: var(--text); }
 .sidebar details a[aria-current="page"] {
-  color: var(--text);
+  color: var(--accent-dim);
   font-weight: 600;
+}
+
+.section-index-link {
+  font-style: italic;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.2rem;
+  padding-bottom: 0.3rem !important;
 }
 
 .nav-top-links {
@@ -197,7 +209,7 @@ main {
   border-radius: 3px;
 }
 .nav-top-links a:hover { color: var(--text); }
-.nav-top-links a[aria-current="page"] { color: var(--text); font-weight: 600; }
+.nav-top-links a[aria-current="page"] { color: var(--accent-dim); font-weight: 600; }
 
 .breadcrumb {
   font-family: var(--font-ui);
@@ -244,6 +256,15 @@ main {
 }
 
 .page-updated { color: var(--text-muted); }
+
+a.page-type-badge {
+  text-decoration: none;
+  cursor: pointer;
+}
+a.page-type-badge:hover {
+  background: var(--border);
+  color: var(--text);
+}
 
 .tag-list {
   display: flex;
@@ -307,7 +328,7 @@ main {
 
 .page-body a            { color: var(--link); }
 .page-body a:visited    { color: var(--link-visited); }
-.page-body a:hover      { text-decoration: none; }
+.page-body a:hover      { text-decoration: none; color: var(--accent-muted); }
 
 .page-body hr {
   border: none;
@@ -448,20 +469,6 @@ main {
   white-space: nowrap;
 }
 
-/* ─── Home / index page ──────────────────────────────────────────────────── */
-.home-section { margin-bottom: 2.5rem; }
-.home-section h2 {
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--border);
-}
-
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
   html { font-size: 16px; }
@@ -486,7 +493,6 @@ main {
     font-weight: 600;
     color: var(--text-muted);
   }
-  .sidebar-toggle::-webkit-details-marker { display: none; }
   .sidebar-toggle::before {
     content: "›";
     display: inline-block;

@@ -1,7 +1,7 @@
 ---
 title: "Batch Processing"
 type: stream
-tags: [batch, mapreduce, hadoop, spark, flink, data-processing, etl]
+tags: [batch, mapreduce, data-processing, etl, distributed-systems, databases]
 sources: [designing-data-intensive-applications]
 created: 2026-05-13
 updated: 2026-05-13

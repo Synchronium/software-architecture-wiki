@@ -1,7 +1,7 @@
 ---
 title: "Modularity"
 type: concept
-tags: [architecture, modularity, coupling, cohesion, connascence, mmi, technical-debt, deep-modules, information-hiding]
+tags: [modularity, coupling, cohesion, connascence, mmi, technical-debt, deep-modules, information-hiding]
 sources: [fundamentals-of-software-architecture, monolith-to-microservices, software-architecture-metrics, a-philosophy-of-software-design]
 created: 2026-05-13
 updated: 2026-05-18

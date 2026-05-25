@@ -2200,3 +2200,51 @@ Correction to earlier log entry which stated "10 chapters remain in Foundations 
 ## [2026-05-25] ingest | Created missing source page: Software Architecture Metrics
 
 `wiki/sources/software-architecture-metrics.md` was referenced across 21 pages and 30 wikilinks but the file itself was missing — it was listed as created in the Batch 1 log entry (2026-05-21) but never committed. Reconstructed from author pages, concept pages, and log entries. The page covers all 10 chapters: Harmel-Law (four key metrics), Weiss (fitness function testing pyramid), Farley (testability/deployability), Lilienthal (MMI), Ciceri (private builds), Rosa (KPI Value Tree + EventStorming), Woods (measurement taxonomy), Ford (metrics → engineering), von Zitzewitz (structural metrics), Keeling (GQM + Foo Service case study). Build now produces 172 pages with zero broken wikilinks.
+
+## [2026-05-25] lint | Tag scan — reduced singletons, expanded canonical coverage
+
+Audited tags across all 172 wiki pages. Started with 188 singleton tags and 306 unique tags total.
+
+**Near-duplicate tag consolidations (4 files):**
+- `resilience` → `resiliency` (comparisons/sync-vs-async-communication)
+- `apis` → `api` (distributed/idempotency)
+- `partitions` → `partitioning` (distributed/cap-theorem)
+- `streams` → `streaming` (streams/event-sourcing-cqrs)
+
+**Severely under-tagged pages expanded (4 files):**
+- `sources/fundamentals-of-software-architecture`: `[soft-skills]` → added `quality-attributes, modularity, coupling, microservices, distributed-systems, trade-offs`
+- `sources/software-architecture-patterns`: `[trade-offs]` → added `microservices, monolith, distributed-systems`
+- `comparisons/architecture-styles-comparison`: `[trade-offs]` → added `microservices, monolith, distributed-systems`
+- `styles/architecture-styles`: `[]` → added `trade-offs, microservices, monolith, distributed-systems, modularity`
+
+**Concept pages — added missing canonical tags (10 files):**
+- `concepts/deployment-pipelines`: added `devops, testing, evolutionary-architecture`
+- `concepts/model-driven-design`: added `domain-model, ubiquitous-language, bounded-contexts, tactical-design`
+- `concepts/architecture-characteristics`: added `distributed-systems, trade-offs`
+- `concepts/adrs`: added `architecture-process, evolutionary-architecture`
+- `concepts/cognitive-load`: added `modularity, microservices`
+- `concepts/fracture-planes`: added `microservices, migration`
+- `concepts/core-domain`: added `bounded-contexts, subdomains`
+- `concepts/technical-vs-domain-partitioning`: added `microservices, modularity`
+- `concepts/service-granularity`: added `coupling, decomposition`
+- `styles/event-driven-architecture`: added `ddd, coupling`
+
+**Pattern pages — added `microservices` and/or `stability` (6 files):**
+- `patterns/circuit-breaker`, `patterns/bulkhead`: added `microservices, stability`
+- `patterns/timeout`, `patterns/retry`: added `microservices`
+- `patterns/anti-corruption-layer`: added `microservices, migration, coupling`
+- `patterns/context-map`: replaced pattern-name nonce tags with `microservices, coupling`
+
+**Distributed/operations pages (5 files):**
+- `distributed/serverless`: added `distributed-systems, deployment`
+- `operations/manageability`: replaced `a-b-testing` with `testing`; added `operations, distributed-systems, deployment`
+- `distributed/system-models`: added `consensus, replication`
+- `distributed/failure-detection`: replaced `timeouts, heartbeats` with `monitoring, operations`
+- `concepts/api-gateway`: replaced `north-south, ingress` with `microservices, distributed-systems`
+
+**Streams/database pages (3 files):**
+- `streams/batch-processing`: added `distributed-systems, databases`
+- `streams/stream-processing`: removed 6 hyper-specific nonce tags; added `distributed-systems, databases, messaging`
+- `databases/object-relational-mapping`: added `databases, ddd, enterprise`
+
+Result: 167 singleton tags remaining (down from 188), 266 unique tags total (down from 306). Remaining singletons are legitimately unique technical terms (acid, mvcc, chaos-engineering, zero-trust, raft, oauth2, etc.) covering concepts specific to a single page. Build: 172 pages, 266 tag indexes.

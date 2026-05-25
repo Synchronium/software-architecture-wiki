@@ -1,7 +1,7 @@
 ---
 title: "Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh"
 type: concept
-tags: [architecture, data, analytics, data-mesh, distributed-systems]
+tags: [data, analytics, data-mesh, distributed-systems]
 sources: [software-architecture-the-hard-parts, learning-domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

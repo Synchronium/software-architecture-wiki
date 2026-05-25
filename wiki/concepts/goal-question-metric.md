@@ -1,7 +1,7 @@
 ---
 title: "Goal-Question-Metric (GQM)"
 type: concept
-tags: [architecture, metrics, measurement, architecture-process, fitness-functions]
+tags: [metrics, measurement, architecture-process, fitness-functions]
 sources: [software-architecture-metrics]
 created: 2026-05-22
 updated: 2026-05-22

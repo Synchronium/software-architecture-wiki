@@ -1,7 +1,7 @@
 ---
 title: "Bounded Contexts and Domain-Driven Design"
 type: concept
-tags: [architecture, ddd, bounded-contexts, domain, subdomains, microservices, coupling, conways-law, ubiquitous-language]
+tags: [ddd, bounded-contexts, domain, subdomains, microservices, coupling, conways-law, ubiquitous-language]
 sources: [domain-driven-design, building-event-driven-microservices, learning-domain-driven-design, monolith-to-microservices]
 created: 2026-05-14
 updated: 2026-05-15

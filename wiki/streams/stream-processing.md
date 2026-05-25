@@ -1,7 +1,7 @@
 ---
 title: "Stream Processing"
 type: stream
-tags: [streaming, kafka, events, windowing, exactly-once, cep, stateful-processing, determinism, repartitioning, copartitioning, late-events, reprocessing]
+tags: [streaming, kafka, events, windowing, exactly-once, stateful-processing, distributed-systems, databases, messaging]
 sources: [designing-data-intensive-applications, building-event-driven-microservices, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-21

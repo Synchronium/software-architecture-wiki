@@ -1,7 +1,7 @@
 ---
 title: "Ubiquitous Language"
 type: concept
-tags: [ddd, domain-driven-design, communication, modeling, knowledge-sharing, bounded-contexts]
+tags: [ddd, communication, modeling, knowledge-sharing, bounded-contexts]
 sources: [domain-driven-design, learning-domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

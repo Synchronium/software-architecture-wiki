@@ -1,7 +1,7 @@
 ---
 title: "Architecture Characteristics"
 type: concept
-tags: [architecture, characteristics, ilities, quality-attributes]
+tags: [characteristics, ilities, quality-attributes, distributed-systems, trade-offs]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-14

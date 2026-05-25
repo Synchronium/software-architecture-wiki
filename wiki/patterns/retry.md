@@ -1,7 +1,7 @@
 ---
 title: "Retry"
 type: pattern
-tags: [resiliency, stability, distributed-systems, fault-tolerance, transient-failures]
+tags: [resiliency, stability, distributed-systems, fault-tolerance, transient-failures, microservices]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
 created: 2026-05-18
 updated: 2026-05-18

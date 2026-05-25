@@ -1,7 +1,7 @@
 ---
 title: "Designing Data-Intensive Applications"
 type: source
-tags: [databases, distributed-systems, storage, streaming, fundamentals]
+tags: [databases, distributed-systems, storage, streaming]
 sources: [designing-data-intensive-applications]
 created: 2026-05-13
 updated: 2026-05-14

@@ -1,7 +1,7 @@
 ---
 title: "Manageability"
 type: concept
-tags: [manageability, configuration, feature-flags, dynamic-config, canary, a-b-testing]
+tags: [manageability, configuration, feature-flags, dynamic-config, canary, testing, operations, distributed-systems, deployment]
 sources: [understanding-distributed-systems, release-it]
 created: 2026-05-14
 updated: 2026-05-19

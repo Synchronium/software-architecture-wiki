@@ -1,7 +1,7 @@
 ---
 title: "Specification Pattern"
 type: pattern
-tags: [ddd, domain-driven-design, business-logic, value-object, tactical-design]
+tags: [ddd, business-logic, value-object, tactical-design]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

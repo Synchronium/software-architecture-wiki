@@ -1,7 +1,7 @@
 ---
 title: "Circuit Breaker"
 type: pattern
-tags: [resiliency, distributed-systems, fault-tolerance, downstream-dependencies]
+tags: [resiliency, distributed-systems, fault-tolerance, downstream-dependencies, microservices, stability]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-19

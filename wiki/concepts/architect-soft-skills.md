@@ -1,7 +1,7 @@
 ---
 title: "Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career"
 type: concept
-tags: [architecture, soft-skills, leadership, negotiation, diagramming, career, teams]
+tags: [soft-skills, leadership, negotiation, diagramming, career, teams]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-14
 updated: 2026-05-14

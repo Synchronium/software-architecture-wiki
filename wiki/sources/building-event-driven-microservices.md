@@ -1,7 +1,7 @@
 ---
 title: "Building Event-Driven Microservices"
 type: source
-tags: [architecture, event-driven, microservices, streaming, kafka, bounded-contexts, ddd]
+tags: [event-driven, microservices, streaming, kafka, bounded-contexts, ddd]
 sources: [building-event-driven-microservices]
 created: 2026-05-14
 updated: 2026-05-14

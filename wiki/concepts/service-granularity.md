@@ -1,7 +1,7 @@
 ---
 title: "Service Granularity"
 type: concept
-tags: [architecture, granularity, microservices, distributed-systems, service-design]
+tags: [granularity, microservices, distributed-systems, service-design, coupling, decomposition]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
 updated: 2026-05-14

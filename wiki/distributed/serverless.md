@@ -1,7 +1,7 @@
 ---
 title: "Serverless Computing"
 type: concept
-tags: [cloud, scalability, serverless, functions-as-a-service, aws-lambda, google-app-engine]
+tags: [scalability, serverless, functions-as-a-service, distributed-systems, deployment]
 sources: [foundations-of-scalable-systems]
 created: 2026-05-20
 updated: 2026-05-20

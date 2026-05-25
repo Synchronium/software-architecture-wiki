@@ -1,7 +1,7 @@
 ---
 title: "Architecture Fitness Functions"
 type: concept
-tags: [architecture, governance, testing, evolutionary-architecture]
+tags: [governance, testing, evolutionary-architecture]
 sources: [building-evolutionary-architectures, fundamentals-of-software-architecture, mastering-api-architecture, software-architecture-the-hard-parts, software-architecture-metrics]
 created: 2026-05-13
 updated: 2026-05-18

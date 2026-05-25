@@ -1,7 +1,7 @@
 ---
 title: "Consensus Algorithms"
 type: concept
-tags: [distributed-systems, consensus, raft, paxos, zookeeper, coordination, fault-tolerance]
+tags: [distributed-systems, consensus, raft, coordination, fault-tolerance]
 sources: [designing-data-intensive-applications, understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-18

@@ -1,7 +1,7 @@
 ---
 title: "Zero Trust"
 type: concept
-tags: [security, zero-trust, networking, cloud, service-mesh, mtls]
+tags: [security, zero-trust, networking, service-mesh, mtls]
 sources: [mastering-api-architecture]
 created: 2026-05-13
 updated: 2026-05-13

@@ -1,7 +1,7 @@
 ---
 title: "MVC and Web Presentation Patterns"
 type: pattern
-tags: [web, mvc, presentation, frontend, http]
+tags: [mvc, presentation, frontend, http]
 sources: [patterns-of-enterprise-application-architecture]
 created: 2026-05-17
 updated: 2026-05-17

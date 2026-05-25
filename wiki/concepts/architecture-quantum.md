@@ -1,7 +1,7 @@
 ---
 title: "Architecture Quantum"
 type: concept
-tags: [architecture, quantum, coupling, distributed-systems, evolutionary-architecture]
+tags: [quantum, coupling, distributed-systems, evolutionary-architecture]
 sources: [fundamentals-of-software-architecture, building-evolutionary-architectures, software-architecture-the-hard-parts, building-event-driven-microservices]
 created: 2026-05-13
 updated: 2026-05-14

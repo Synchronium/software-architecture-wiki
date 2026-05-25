@@ -1,7 +1,7 @@
 ---
 title: "Layered Architecture"
 type: style
-tags: [architecture, monolith, technical-partitioning, n-tier]
+tags: [monolith, technical-partitioning, n-tier]
 sources: [fundamentals-of-software-architecture, software-architecture-patterns, domain-driven-design, patterns-of-enterprise-application-architecture]
 created: 2026-05-13
 updated: 2026-05-17

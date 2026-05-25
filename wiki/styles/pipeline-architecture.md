@@ -1,7 +1,7 @@
 ---
 title: "Pipeline Architecture"
 type: style
-tags: [architecture, monolith, pipeline, etl, technical-partitioning]
+tags: [monolith, pipeline, etl, technical-partitioning]
 sources: [fundamentals-of-software-architecture, enterprise-integration-patterns]
 created: 2026-05-13
 updated: 2026-05-15

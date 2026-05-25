@@ -1,7 +1,7 @@
 ---
 title: "Team Topologies Model"
 type: concept
-tags: [architecture, teams, organizational-design, cognitive-load, flow, conways-law]
+tags: [teams, organisational-design, cognitive-load, flow, conways-law]
 sources: [team-topologies]
 created: 2026-05-14
 updated: 2026-05-14

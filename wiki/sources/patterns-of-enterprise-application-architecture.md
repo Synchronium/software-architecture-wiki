@@ -1,7 +1,7 @@
 ---
 title: "Patterns of Enterprise Application Architecture"
 type: source
-tags: [architecture, patterns, enterprise, oop, persistence, web]
+tags: [enterprise, oop, persistence]
 sources: [patterns-of-enterprise-application-architecture]
 created: 2026-05-17
 updated: 2026-05-18

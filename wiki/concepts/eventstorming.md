@@ -1,7 +1,7 @@
 ---
 title: "EventStorming"
 type: concept
-tags: [ddd, domain-driven-design, workshop, modeling, ubiquitous-language, bounded-contexts, collaboration, metrics, kpi]
+tags: [ddd, workshop, modeling, ubiquitous-language, bounded-contexts, collaboration, metrics, kpi]
 sources: [learning-domain-driven-design, monolith-to-microservices, software-architecture-metrics]
 created: 2026-05-14
 updated: 2026-05-22

@@ -1,7 +1,7 @@
 ---
 title: "Team Cognitive Load"
 type: concept
-tags: [architecture, teams, organizational-design, cognitive-load, flow]
+tags: [teams, organisational-design, cognitive-load, flow, modularity, microservices]
 sources: [team-topologies]
 created: 2026-05-14
 updated: 2026-05-14

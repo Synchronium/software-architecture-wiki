@@ -1,7 +1,7 @@
 ---
 title: "Large-Scale Structure"
 type: concept
-tags: [ddd, domain-driven-design, strategic-design, architecture-patterns, responsibility-layers]
+tags: [ddd, strategic-design, architecture-patterns, responsibility-layers]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

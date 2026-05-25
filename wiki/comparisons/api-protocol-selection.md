@@ -1,7 +1,7 @@
 ---
 title: "API Protocol Selection: REST vs gRPC vs GraphQL"
 type: comparison
-tags: [api, rest, grpc, graphql, design, integration]
+tags: [api, rest, grpc, graphql, integration]
 sources: [mastering-api-architecture, understanding-distributed-systems, building-event-driven-microservices, foundations-of-scalable-systems]
 created: 2026-05-18
 updated: 2026-05-18

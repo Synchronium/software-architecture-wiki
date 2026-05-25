@@ -1,7 +1,7 @@
 ---
 title: "Architecture Decision Records (ADRs)"
 type: concept
-tags: [architecture, decisions, documentation, governance]
+tags: [decisions, documentation, governance, architecture-process, evolutionary-architecture]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-14

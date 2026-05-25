@@ -1,7 +1,7 @@
 ---
 title: "API Gateway"
 type: concept
-tags: [api, gateway, traffic-management, security, north-south, ingress]
+tags: [api, gateway, traffic-management, security, microservices, distributed-systems]
 sources: [mastering-api-architecture, understanding-distributed-systems]
 created: 2026-05-13
 updated: 2026-05-14

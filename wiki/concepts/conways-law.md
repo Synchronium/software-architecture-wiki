@@ -1,7 +1,7 @@
 ---
 title: "Conway's Law"
 type: concept
-tags: [architecture, teams, organizational-design, coupling, evolutionary-architecture]
+tags: [teams, organisational-design, coupling, evolutionary-architecture]
 sources: [building-evolutionary-architectures, fundamentals-of-software-architecture, building-event-driven-microservices, team-topologies, accelerate]
 created: 2026-05-13
 updated: 2026-05-18

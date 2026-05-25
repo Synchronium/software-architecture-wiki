@@ -1,7 +1,7 @@
 ---
 title: "Deployment Pipelines"
 type: concept
-tags: [continuous-delivery, deployment, fitness-functions, automation, ci-cd]
+tags: [continuous-delivery, deployment, fitness-functions, automation, ci-cd, devops, testing, evolutionary-architecture]
 sources: [building-evolutionary-architectures, understanding-distributed-systems, mastering-api-architecture, building-event-driven-microservices, release-it, software-architecture-metrics]
 created: 2026-05-13
 updated: 2026-05-19

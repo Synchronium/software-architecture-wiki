@@ -1,7 +1,7 @@
 ---
 title: "Architecture Styles Comparison"
 type: comparison
-tags: [architecture, styles, trade-offs, comparison]
+tags: [trade-offs, microservices, monolith, distributed-systems]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-13

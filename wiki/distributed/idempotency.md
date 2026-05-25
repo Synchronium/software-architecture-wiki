@@ -1,7 +1,7 @@
 ---
 title: "Idempotency"
 type: concept
-tags: [distributed-systems, reliability, apis, messaging, correctness]
+tags: [distributed-systems, reliability, api, messaging, correctness]
 sources: [understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-19

@@ -1,7 +1,7 @@
 ---
 title: "Neal Ford"
 type: author
-tags: [author, architecture, evolutionary-architecture, soft-skills]
+tags: [author, evolutionary-architecture, soft-skills]
 sources: [fundamentals-of-software-architecture, building-evolutionary-architectures, software-architecture-the-hard-parts, software-architecture-metrics]
 created: 2026-05-13
 updated: 2026-05-22

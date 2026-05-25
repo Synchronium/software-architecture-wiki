@@ -1,7 +1,7 @@
 ---
 title: "Supple Design"
 type: concept
-tags: [ddd, domain-driven-design, design-quality, value-object, side-effects]
+tags: [ddd, design-quality, value-object, side-effects]
 sources: [domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

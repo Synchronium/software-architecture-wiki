@@ -1,7 +1,7 @@
 ---
 title: "Fundamentals of Software Architecture"
 type: source
-tags: [architecture, patterns, soft-skills, fundamentals]
+tags: [soft-skills, quality-attributes, modularity, coupling, microservices, distributed-systems, trade-offs]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-14

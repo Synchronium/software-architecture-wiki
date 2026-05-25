@@ -1,7 +1,7 @@
 ---
 title: "Scalability"
 type: concept
-tags: [scalability, distributed-systems, architecture, performance, quality-attributes]
+tags: [scalability, distributed-systems, performance, quality-attributes]
 sources: [foundations-of-scalable-systems]
 created: 2026-05-19
 updated: 2026-05-19

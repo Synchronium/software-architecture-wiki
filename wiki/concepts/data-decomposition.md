@@ -1,7 +1,7 @@
 ---
 title: "Data Decomposition"
 type: concept
-tags: [architecture, data, databases, distributed-systems, decomposition, bounded-context]
+tags: [data, databases, distributed-systems, decomposition, bounded-contexts]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
 updated: 2026-05-14

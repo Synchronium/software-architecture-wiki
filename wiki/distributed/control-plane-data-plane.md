@@ -1,7 +1,7 @@
 ---
 title: "Control Plane / Data Plane"
 type: concept
-tags: [distributed-systems, architecture, availability, scalability, operations]
+tags: [distributed-systems, availability, scalability, operations]
 sources: [understanding-distributed-systems, mastering-api-architecture]
 created: 2026-05-14
 updated: 2026-05-14

@@ -1,7 +1,7 @@
 ---
 title: "Learning Domain-Driven Design"
 type: source
-tags: [architecture, ddd, domain-driven-design, bounded-contexts, strategic-design, tactical-design, microservices, event-driven]
+tags: [ddd, bounded-contexts, strategic-design, tactical-design, microservices, event-driven]
 sources: [learning-domain-driven-design]
 created: 2026-05-14
 updated: 2026-05-14

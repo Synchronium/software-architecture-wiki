@@ -1,7 +1,7 @@
 ---
 title: "Building Evolutionary Architectures"
 type: source
-tags: [architecture, evolutionary-architecture, fitness-functions, governance, coupling]
+tags: [evolutionary-architecture, fitness-functions, governance, coupling]
 sources: [building-evolutionary-architectures]
 created: 2026-05-13
 updated: 2026-05-14

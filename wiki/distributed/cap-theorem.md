@@ -1,7 +1,7 @@
 ---
 title: "CAP Theorem"
 type: concept
-tags: [distributed-systems, consistency, availability, partitions, fundamentals]
+tags: [distributed-systems, consistency, availability, partitioning]
 sources: [understanding-distributed-systems, designing-data-intensive-applications]
 created: 2026-05-13
 updated: 2026-05-13

@@ -1,7 +1,7 @@
 ---
 title: "Release It! Design and Deploy Production-Ready Software"
 type: source
-tags: [architecture, reliability, stability, production, operations, resiliency]
+tags: [reliability, stability, operations, resiliency]
 sources: [release-it]
 created: 2026-05-18
 updated: 2026-05-19

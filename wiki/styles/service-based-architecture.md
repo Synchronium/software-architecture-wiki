@@ -1,7 +1,7 @@
 ---
 title: "Service-Based Architecture"
 type: style
-tags: [architecture, distributed, services, domain-partitioning, pragmatic]
+tags: [distributed-systems, domain-partitioning, pragmatic]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
 updated: 2026-05-14

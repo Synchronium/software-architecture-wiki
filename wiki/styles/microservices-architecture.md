@@ -1,7 +1,7 @@
 ---
 title: "Microservices Architecture"
 type: style
-tags: [architecture, distributed, microservices, domain-partitioning, bounded-context, devops]
+tags: [distributed-systems, microservices, domain-partitioning, bounded-contexts, devops]
 sources: [fundamentals-of-software-architecture, understanding-distributed-systems, software-architecture-patterns, learning-domain-driven-design, monolith-to-microservices, foundations-of-scalable-systems]
 created: 2026-05-13
 updated: 2026-05-15

@@ -1,7 +1,7 @@
 ---
 title: "Software Architecture Patterns"
 type: source
-tags: [architecture, patterns, styles, trade-offs]
+tags: [trade-offs, microservices, monolith, distributed-systems]
 sources: [software-architecture-patterns]
 created: 2026-05-14
 updated: 2026-05-14
