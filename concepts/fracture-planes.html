@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/decomposition.html">decomposition</a><a class="tag-chip" href="../tags/monolith.html">monolith</a><a class="tag-chip" href="../tags/teams.html">teams</a><a class="tag-chip" href="../tags/boundaries.html">boundaries</a><a class="tag-chip" href="../tags/flow.html">flow</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/migration.html">migration</a></ul>
-    </div><div class="page-body"><h2>Definition</h2>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><h2>Definition</h2>
 <p>A <strong>fracture plane</strong> is a natural seam in a software system that allows it to be split cleanly into two or more parts — analogous to the natural cleavage planes stonemasons exploit when splitting stone. Team Topologies uses the term to describe where to draw software responsibility boundaries that enable autonomous, cognitively bounded teams (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 6).</p>
 <p>The primary goal: find splits that produce parts that can be <em>owned and evolved independently by a single team</em>, reducing inter-team dependencies and improving flow.</p>
 <p><strong>Litmus test</strong>: <em>Could we, as a team, effectively consume or provide this subsystem as a service?</em> If yes, it is a candidate fracture plane.</p>
@@ -421,32 +424,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

@@ -563,6 +563,34 @@ a.page-type-badge:hover {
 .backlinks a:visited { color: var(--link-visited); }
 .backlinks a:hover   { text-decoration: none; }
 
+/* ─── Listen bar ─────────────────────────────────────────────────────────── */
+.listen-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.listen-btn,
+.listen-stop {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2em 0.6em;
+  cursor: pointer;
+  line-height: 1.5;
+}
+.listen-btn:hover,
+.listen-stop:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
 /* ─── Broken wikilinks ───────────────────────────────────────────────────── */
 .broken-link {
   color: var(--broken);

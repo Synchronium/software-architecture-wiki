@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/event-sourcing.html">event-sourcing</a><a class="tag-chip" href="../tags/cqrs.html">cqrs</a><a class="tag-chip" href="../tags/cdc.html">cdc</a><a class="tag-chip" href="../tags/immutability.html">immutability</a><a class="tag-chip" href="../tags/audit.html">audit</a><a class="tag-chip" href="../tags/derived-data.html">derived-data</a><a class="tag-chip" href="../tags/streaming.html">streaming</a><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/domain-model.html">domain-model</a></ul>
-    </div><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
 <h2>Change Data Capture (CDC)</h2>
 <p>CDC is the <strong>low-level</strong> version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems.</p>
 <p><strong>Problem solved</strong>: dual writes — when an application writes to a database and separately writes to a message broker, the two writes can fail independently, creating inconsistency. CDC eliminates the dual write: the database is the <strong>only</strong> write target, and the CDC mechanism reads the database&#39;s own write-ahead log to produce events.</p>
@@ -575,32 +578,7 @@ Change stream = d(State) / dt
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

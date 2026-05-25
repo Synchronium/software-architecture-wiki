@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/metrics.html">metrics</a><a class="tag-chip" href="../tags/devops.html">devops</a><a class="tag-chip" href="../tags/dora.html">dora</a><a class="tag-chip" href="../tags/deployment.html">deployment</a><a class="tag-chip" href="../tags/delivery-performance.html">delivery-performance</a><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a></ul>
-    </div><div class="page-body"><p>The four key metrics (from <em>Accelerate</em>, Forsgren, Humble &amp; Kim; validated by DORA — DevOps Research and Assessment) are the standard framework for measuring software delivery performance. They are process fitness functions (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>) that assess an architecture&#39;s deployability, testability, and overall health as a delivery system.</p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p>The four key metrics (from <em>Accelerate</em>, Forsgren, Humble &amp; Kim; validated by DORA — DevOps Research and Assessment) are the standard framework for measuring software delivery performance. They are process fitness functions (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>) that assess an architecture&#39;s deployability, testability, and overall health as a delivery system.</p>
 <h2>Origin and Empirical Basis</h2>
 <p>Defined and validated by Forsgren, Humble, and Kim over four years of research (2014–2017) in the State of DevOps Report programme (→ <a href="../sources/accelerate.html">Accelerate</a>). 23,000+ survey responses; 2,000+ organisations across industries (regulated and unregulated), sizes (startup to enterprise), and technology stacks (mainframe to greenfield). Cluster analysis across all four years consistently found three distinct performance clusters (high, medium, low) — statistically significantly different across all four dimensions. This is not anecdote; it is one of the most rigorously constructed empirical studies in the field.</p>
 <p><strong>The foundational finding:</strong> high performers are better on <em>all four metrics simultaneously</em>. Speed and stability are positively correlated, not in tension. This directly refutes the bimodal IT hypothesis and much industry dogma. (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 2)</p>
@@ -415,32 +418,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

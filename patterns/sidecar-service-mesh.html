@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/networking.html">networking</a><a class="tag-chip" href="../tags/load-balancing.html">load-balancing</a><a class="tag-chip" href="../tags/resiliency.html">resiliency</a><a class="tag-chip" href="../tags/observability.html">observability</a><a class="tag-chip" href="../tags/security.html">security</a><a class="tag-chip" href="../tags/east-west.html">east-west</a></ul>
-    </div><div class="page-body"><p>The Sidecar pattern places a proxy process alongside each service instance to handle cross-cutting network concerns — load balancing, retries, circuit breaking, mTLS, observability — transparently, without requiring service code to implement them. When deployed uniformly across all services, the collection of sidecars and their shared control plane forms a <strong>service mesh</strong>: the standard solution for managing east–west (service-to-service) traffic in distributed systems.</p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p>The Sidecar pattern places a proxy process alongside each service instance to handle cross-cutting network concerns — load balancing, retries, circuit breaking, mTLS, observability — transparently, without requiring service code to implement them. When deployed uniformly across all services, the collection of sidecars and their shared control plane forms a <strong>service mesh</strong>: the standard solution for managing east–west (service-to-service) traffic in distributed systems.</p>
 <h2>Historical Motivation: The 8 Fallacies of Distributed Computing</h2>
 <p>In the 1990s, Peter Deutsch and colleagues at Sun Microsystems catalogued eight assumptions engineers tend to make about distributed networks — all of which prove false in practice. See <a href="../distributed/fallacies-of-distributed-computing.html">Fallacies Of Distributed Computing</a> for the full treatment.</p>
 <p>These are not theoretical concerns. Every one of them produces real production failures. The service mesh pattern exists largely to operationalise the handling of fallacies 1, 4, and 5 — unreliable networks, insecure networks, and topology change — without requiring every service to implement the mitigations independently.</p>
@@ -551,32 +554,7 @@ Sidecar ↔ Sidecar ↔ Sidecar  (data plane)
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

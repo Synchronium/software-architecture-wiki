@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/schema-evolution.html">schema-evolution</a><a class="tag-chip" href="../tags/data.html">data</a><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a><a class="tag-chip" href="../tags/coupling.html">coupling</a></ul>
-    </div><div class="page-body"><h2>Definition</h2>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><h2>Definition</h2>
 <p>Evolutionary database design treats schemas as evolvable artifacts — changed incrementally and safely over time using version-controlled migration scripts, without requiring downtime or coordinated consumer changes. It is the data complement to evolutionary architecture: just as <a href="../concepts/fitness-functions.html">Fitness Functions</a> govern code quality continuously, migration tools govern schema drift as part of the <a href="../concepts/deployment-pipelines.html">deployment pipeline</a>.</p>
 <h2>Why It Matters</h2>
 <p>Databases are often the hardest coupling point in a distributed system. A shared schema couples every consumer to the same data model; any field change requires coordinated deployment of all consumers. Without an explicit evolutionary approach, schemas calcify: developers fear touching them, legacy columns accumulate, and data inconsistencies compound over time (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 5).</p>
@@ -503,32 +506,7 @@ FOR EACH ROW
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

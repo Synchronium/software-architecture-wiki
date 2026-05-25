@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 13<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/author.html">author</a><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/streaming.html">streaming</a></ul>
-    </div><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></p>
 <h2>Background</h2>
 <p>Martin Kleppmann is a researcher at the University of Cambridge, working on distributed systems, CRDTs, and local-first software. Before academia, he was an engineer and entrepreneur at LinkedIn (where he worked on distributed data infrastructure) and at Rapportive (acquired by LinkedIn). He is also the creator of Apache Avro&#39;s schema evolution mechanism and has made contributions to the Kafka ecosystem. He co-authored a foundational paper on CRDTs with Shapiro et al. and maintains an active research program on conflict-free collaborative editing (automerge).</p>
 <p>His public engineering writing (at martin.kleppmann.com) predates and informed DDIA. His Strange Loop 2014 talk &quot;Turning the Database Inside-Out with Apache Samza&quot; is the conceptual seed of DDIA&#39;s Ch. 12 unbundling thesis.</p>
@@ -312,32 +315,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

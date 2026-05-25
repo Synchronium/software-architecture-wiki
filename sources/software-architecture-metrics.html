@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 22<sup>nd</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/metrics.html">metrics</a><a class="tag-chip" href="../tags/fitness-functions.html">fitness-functions</a><a class="tag-chip" href="../tags/modularity.html">modularity</a><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a><a class="tag-chip" href="../tags/devops.html">devops</a><a class="tag-chip" href="../tags/ddd.html">ddd</a></ul>
-    </div><div class="page-body"><p><strong>Editor:</strong> <a href="../authors/christian-ciceri.html">Christian Ciceri</a>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p><strong>Editor:</strong> <a href="../authors/christian-ciceri.html">Christian Ciceri</a>
 <strong>Contributing authors:</strong> <a href="../authors/andrew-harmel-law.html">Andrew Harmel Law</a> (ch. 1), <a href="../authors/rene-weiss.html">Rene Weiss</a> (ch. 2), <a href="../authors/dave-farley.html">Dave Farley</a> (ch. 3), <a href="../authors/carola-lilienthal.html">Carola Lilienthal</a> (ch. 4), <a href="../authors/christian-ciceri.html">Christian Ciceri</a> (ch. 5), <a href="../authors/joao-rosa.html">Joao Rosa</a> (ch. 6), <a href="../authors/eoin-woods.html">Eoin Woods</a> (ch. 7), <a href="../authors/neal-ford.html">Neal Ford</a> (ch. 8), <a href="../authors/alexander-von-zitzewitz.html">Alexander Von Zitzewitz</a> (ch. 9), <a href="../authors/michael-keeling.html">Michael Keeling</a> (ch. 10)
 <strong>Published:</strong> 2022 (O&#39;Reilly)
 <strong>Slug:</strong> <code>software-architecture-metrics</code></p>
@@ -379,32 +382,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

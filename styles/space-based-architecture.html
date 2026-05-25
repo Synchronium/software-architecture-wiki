@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/in-memory.html">in-memory</a><a class="tag-chip" href="../tags/high-performance.html">high-performance</a><a class="tag-chip" href="../tags/elasticity.html">elasticity</a></ul>
-    </div><div class="page-body"><h2>Definition</h2>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><h2>Definition</h2>
 <p>Space-based architecture (SBA) eliminates the central database as the scalability bottleneck by distributing data across in-memory replicated caches that each processing unit carries. Multiple instances of a processing unit run simultaneously, each with a full copy of the shared data in memory. Requests are routed to any available processing unit, which reads from and writes to its local cache; asynchronous data writers persist changes to the database in the background.</p>
 <p>The name comes from <em>tuple space</em> — a shared distributed memory model from parallel computing. Also called <em>cloud architecture pattern</em>, though Richards prefers &quot;space-based&quot; because processing units do not need to run on cloud infrastructure — they can reside on local servers.</p>
 <p><strong>The problem it solves:</strong> conventional web applications form a triangle-shaped scaling topology — web servers are easiest and cheapest to scale (the wide base), application servers are harder (the middle), and the database is the narrowest and hardest to scale (the apex). Scaling out the web layer just pushes the bottleneck to the app layer; scaling the app layer pushes it to the database. SBA dissolves the database from the hot path entirely, eliminating the apex of the triangle.</p>
@@ -463,32 +466,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

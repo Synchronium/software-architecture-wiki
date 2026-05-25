@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/messaging.html">messaging</a><a class="tag-chip" href="../tags/async.html">async</a><a class="tag-chip" href="../tags/decoupling.html">decoupling</a><a class="tag-chip" href="../tags/queues.html">queues</a><a class="tag-chip" href="../tags/events.html">events</a><a class="tag-chip" href="../tags/integration.html">integration</a></ul>
-    </div><div class="page-body"><p>Messaging is a form of indirect, asynchronous communication in which a <strong>producer</strong> writes a message to a <strong>channel</strong> (message broker), and a <strong>consumer</strong> reads from it. Unlike direct request-response, messaging does not require the producer and consumer to be simultaneously available — the channel acts as a buffer.</p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p>Messaging is a form of indirect, asynchronous communication in which a <strong>producer</strong> writes a message to a <strong>channel</strong> (message broker), and a <strong>consumer</strong> reads from it. Unlike direct request-response, messaging does not require the producer and consumer to be simultaneously available — the channel acts as a buffer.</p>
 <p>Messages have a header (metadata: unique message ID, timestamps, source identifier) and a body (content). A message is either:</p>
 <ul>
 <li>A <strong>command</strong>: specifies an operation to be performed by the consumer.</li>
@@ -660,32 +663,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

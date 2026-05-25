@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/resiliency.html">resiliency</a><a class="tag-chip" href="../tags/rate-limiting.html">rate-limiting</a><a class="tag-chip" href="../tags/load-shedding.html">load-shedding</a><a class="tag-chip" href="../tags/upstream.html">upstream</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/scalability.html">scalability</a></ul>
-    </div><div class="page-body"><p>Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 28)</p>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><p>Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 28)</p>
 <h2>Load Shedding</h2>
 <p>When a server is at capacity, it should reject excess requests immediately rather than queueing them — queued requests under overload only delay the inevitable and consume resources needed to serve the requests already in-flight.</p>
 <p><strong>Implementation</strong>: maintain a counter of concurrent requests currently being processed. When the counter exceeds a configured threshold (approximating the server&#39;s capacity), return HTTP 503 (Service Unavailable) immediately without processing the request.</p>
@@ -380,32 +383,7 @@ Data plane:    reads full dump every N seconds (same work, always)
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>

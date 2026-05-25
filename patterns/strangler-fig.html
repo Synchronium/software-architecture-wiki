@@ -285,7 +285,10 @@
         <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/migration.html">migration</a><a class="tag-chip" href="../tags/decomposition.html">decomposition</a><a class="tag-chip" href="../tags/monolith.html">monolith</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/incremental.html">incremental</a><a class="tag-chip" href="../tags/proxy.html">proxy</a><a class="tag-chip" href="../tags/ui-composition.html">ui-composition</a></ul>
-    </div><div class="page-body"><h2>Definition</h2>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+  </div><div class="page-body"><h2>Definition</h2>
 <p>The <strong>Strangler Fig</strong> (Martin Fowler) is an incremental migration pattern where a new system grows around an existing one, gradually taking over its behaviour until the old system can be removed — analogous to the strangler fig tree that wraps a host tree and eventually replaces it. (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>)</p>
 <p>The pattern is the primary vehicle for safe, incremental microservice extraction. Its defining property: the old system continues to run throughout the migration; there is no moment where everything switches at once.</p>
 <h2>The Three Steps</h2>
@@ -361,32 +364,7 @@
   <footer class="site-footer">
     A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
   </footer>
-  <script>(function(){
-    var btn=document.querySelector('.theme-toggle');
-    if(!btn)return;
-    var labels={auto:'Auto',light:'Light',dark:'Dark'};
-    var cycle={auto:'light',light:'dark',dark:'auto'};
-    function get(){return localStorage.getItem('theme')||'auto';}
-    function apply(t){
-      if(t==='auto')document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme',t);
-      btn.textContent=labels[t];
-      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
-    }
-    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
-    apply(get());
-  })();</script>
   <script src="../pagefind/pagefind-ui.js"></script>
-  <script>(function(){
-    if(!window.PagefindUI)return;
-    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
-    var btn=document.querySelector('.search-toggle');
-    var dlg=document.getElementById('search-dialog');
-    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
-    btn?.addEventListener('click',openSearch);
-    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
-    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
-    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
-  })();</script>
+  <script src="../assets/main.js"></script>
 </body>
 </html>
