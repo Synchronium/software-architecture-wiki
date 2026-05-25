@@ -28,7 +28,7 @@ function tagChips(tags: string[], fromPath: string): string {
   const chips = tags
     .map(
       (t) =>
-        `<a class="tag-chip" href="${relativeUrl(fromPath, `tags/${t}`)}">${escapeHtml(t)}</a>`
+        `<li><a class="tag-chip" href="${relativeUrl(fromPath, `tags/${t}`)}">${escapeHtml(t)}</a></li>`
     )
     .join("");
   return `<ul class="tag-list" aria-label="Tags">${chips}</ul>`;
