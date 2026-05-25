@@ -1,39 +1,18 @@
 ---
 title: "Wiki Index"
 type: index
-updated: 2026-05-18
+updated: 2026-05-25
 
 ---
 
 # Wiki Index
 
-The LLM reads this file first when answering queries to identify relevant pages. Updated on every ingest.
-
 ---
 
-## Sources
+## Overview
 
-- [[sources/a-philosophy-of-software-design]] — *A Philosophy of Software Design* — John Ousterhout (fully ingested 2026-05-18)
-- [[sources/understanding-distributed-systems]] — *Understanding Distributed Systems* — Roberto Vitillo (ingested 2026-05-13)
-- [[sources/fundamentals-of-software-architecture]] — *Fundamentals of Software Architecture* — Richards & Ford (ingested 2026-05-13)
-- [[sources/mastering-api-architecture]] — *Mastering API Architecture* — Gough, Bryant, Auburn (ingested 2026-05-13)
-- [[sources/building-evolutionary-architectures]] — *Building Evolutionary Architectures* — Ford, Parsons, Kua (ingested 2026-05-13; re-ingested 2026-05-14)
-- [[sources/designing-data-intensive-applications]] — *Designing Data-Intensive Applications* — Martin Kleppmann (ingested 2026-05-13; re-ingested 2026-05-14)
-- [[sources/software-architecture-patterns]] — *Software Architecture Patterns* — Mark Richards (ingested 2026-05-14)
-- [[sources/software-architecture-the-hard-parts]] — *Software Architecture: The Hard Parts* — Ford, Richards, Sadalage, Dehghani (ingested 2026-05-14; fully ingested)
-- [[sources/building-event-driven-microservices]] — *Building Event-Driven Microservices* — Adam Bellemare (fully ingested 2026-05-14)
-- [[sources/learning-domain-driven-design]] — *Learning Domain-Driven Design* — Vlad Khononov (fully ingested 2026-05-14)
-- [[sources/team-topologies]] — *Team Topologies* — Skelton & Pais (fully ingested 2026-05-14)
-- [[sources/domain-driven-design]] — *Domain-Driven Design* — Eric Evans (fully ingested 2026-05-14)
-- [[sources/monolith-to-microservices]] — *Monolith to Microservices* — Sam Newman (fully ingested 2026-05-15)
-- [[sources/enterprise-integration-patterns]] — *Enterprise Integration Patterns* — Hohpe & Woolf (fully ingested 2026-05-15)
-- [[sources/patterns-of-enterprise-application-architecture]] — *Patterns of Enterprise Application Architecture* — Martin Fowler et al. (fully ingested 2026-05-18)
-- [[sources/release-it]] — *Release It! Design and Deploy Production-Ready Software* — Michael Nygard (fully ingested 2026-05-19)
-- [[sources/foundations-of-scalable-systems]] — *Foundations of Scalable Systems* — Ian Gorton (fully ingested 2026-05-21)
-- [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
-- [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
+- [[overview]] — Evolving synthesis of software architecture as a discipline
 
----
 
 ## Architecture Styles
 
@@ -207,6 +186,30 @@ The LLM reads this file first when answering queries to identify relevant pages.
 
 ---
 
+## Sources
+
+- [[sources/a-philosophy-of-software-design]] — *A Philosophy of Software Design* — John Ousterhout (fully ingested 2026-05-18)
+- [[sources/understanding-distributed-systems]] — *Understanding Distributed Systems* — Roberto Vitillo (ingested 2026-05-13)
+- [[sources/fundamentals-of-software-architecture]] — *Fundamentals of Software Architecture* — Richards & Ford (ingested 2026-05-13)
+- [[sources/mastering-api-architecture]] — *Mastering API Architecture* — Gough, Bryant, Auburn (ingested 2026-05-13)
+- [[sources/building-evolutionary-architectures]] — *Building Evolutionary Architectures* — Ford, Parsons, Kua (ingested 2026-05-13; re-ingested 2026-05-14)
+- [[sources/designing-data-intensive-applications]] — *Designing Data-Intensive Applications* — Martin Kleppmann (ingested 2026-05-13; re-ingested 2026-05-14)
+- [[sources/software-architecture-patterns]] — *Software Architecture Patterns* — Mark Richards (ingested 2026-05-14)
+- [[sources/software-architecture-the-hard-parts]] — *Software Architecture: The Hard Parts* — Ford, Richards, Sadalage, Dehghani (ingested 2026-05-14; fully ingested)
+- [[sources/building-event-driven-microservices]] — *Building Event-Driven Microservices* — Adam Bellemare (fully ingested 2026-05-14)
+- [[sources/learning-domain-driven-design]] — *Learning Domain-Driven Design* — Vlad Khononov (fully ingested 2026-05-14)
+- [[sources/team-topologies]] — *Team Topologies* — Skelton & Pais (fully ingested 2026-05-14)
+- [[sources/domain-driven-design]] — *Domain-Driven Design* — Eric Evans (fully ingested 2026-05-14)
+- [[sources/monolith-to-microservices]] — *Monolith to Microservices* — Sam Newman (fully ingested 2026-05-15)
+- [[sources/enterprise-integration-patterns]] — *Enterprise Integration Patterns* — Hohpe & Woolf (fully ingested 2026-05-15)
+- [[sources/patterns-of-enterprise-application-architecture]] — *Patterns of Enterprise Application Architecture* — Martin Fowler et al. (fully ingested 2026-05-18)
+- [[sources/release-it]] — *Release It! Design and Deploy Production-Ready Software* — Michael Nygard (fully ingested 2026-05-19)
+- [[sources/foundations-of-scalable-systems]] — *Foundations of Scalable Systems* — Ian Gorton (fully ingested 2026-05-21)
+- [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
+- [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
+
+---
+
 ## Authors
 
 - [[authors/adam-bellemare]] — Author of *Building Event-Driven Microservices*; event-driven architecture specialist; event schema design and data liberation
@@ -244,9 +247,3 @@ The LLM reads this file first when answering queries to identify relevant pages.
 - [[authors/nicole-forsgren]] — Co-author of *Accelerate*; PhD in MIS; DORA research programme; psychometric and statistical rigour applied to DevOps; four key metrics originator
 - [[authors/jez-humble]] — Co-author of *Accelerate*; co-author of *Continuous Delivery*; CI/CD, Lean, DevOps practitioner; DORA research programme
 - [[authors/gene-kim]] — Co-author of *Accelerate*; founder and CTO of Tripwire; co-author of *The Phoenix Project* and *The DevOps Handbook*; high-performing technology organisation researcher
-
----
-
-## Overview
-
-- [[overview]] — Evolving synthesis of software architecture as a discipline
