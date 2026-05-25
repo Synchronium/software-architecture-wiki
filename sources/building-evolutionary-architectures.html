@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Building Evolutionary Architectures* — Ford, Parsons, Kua">
+  <meta property="og:title" content="Building Evolutionary Architectures — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Building Evolutionary Architectures* — Ford, Parsons, Kua">
+  <title>Building Evolutionary Architectures — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html" aria-current="page">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Building Evolutionary Architectures</nav></div>
+      <h1>Building Evolutionary Architectures</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a><a class="tag-chip" href="../tags/fitness-functions.html">fitness-functions</a><a class="tag-chip" href="../tags/governance.html">governance</a><a class="tag-chip" href="../tags/coupling.html">coupling</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/neal-ford.html">Neal Ford</a>, <a href="../authors/rebecca-parsons.html">Rebecca Parsons</a>, <a href="../authors/patrick-kua.html">Patrick Kua</a>
+<strong>Published:</strong> 2017
+<strong>Slug:</strong> <code>building-evolutionary-architectures</code></p>
+<h2>Overview</h2>
+<p><em>Building Evolutionary Architectures</em> is the originating text for the fitness function concept as applied to software architecture. Its central argument is that architectural governance must be continuous and automated, not episodic and manual. The book defines <strong>evolutionary architecture</strong> as an architecture that &quot;supports guided, incremental change across multiple dimensions&quot; — guided (not chaotic), incremental (not big-bang), across multiple dimensions (technical, data, security, performance, and more, not just structure).</p>
+<p>Authored by three ThoughtWorks practitioners, the book draws on real-world migration and refactoring work across large enterprises. It is more prescriptive and practice-focused than <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, which incorporates fitness functions as one governance subsystem; here they are the organising principle of the entire work.</p>
+<p>The three pillars of evolutionary architecture:</p>
+<ol>
+<li><strong>Incremental change</strong> — small, safe changes supported by deployment pipelines and automated fitness functions</li>
+<li><strong>Fitness functions</strong> — any mechanism that provides objective assessment of an architectural property</li>
+<li><strong>Appropriate coupling</strong> — matching coupling to business context; inappropriate coupling is the root cause of non-evolvability</li>
+</ol>
+<h2>Key Claims</h2>
+<ul>
+<li>An evolutionary architecture supports guided, incremental change across multiple dimensions</li>
+<li>Fitness functions are any mechanism (test, metric, monitor, tool) that objectively assesses an architectural characteristic — the abstraction unifies previously ad-hoc tooling under one umbrella</li>
+<li>Inappropriate coupling is the primary cause of architectural non-evolvability; this includes code reuse abuse, vendor lock-in, and shared databases</li>
+<li>Team structure encodes itself in system structure (Conway&#39;s Law); the Inverse Conway Maneuver deliberately restructures teams to produce the desired architecture</li>
+<li>The architectural quantum is defined by bounded contexts (DDD) in microservices; smaller quanta enable faster cycle times but increase coordination cost — a sweet spot exists</li>
+<li>Duplication is preferable to coupling in microservices; the Code Reuse Abuse antipattern describes shared libraries that bind independent services together</li>
+<li>Cycle time is proportional to evolution speed: <strong>v ∝ c</strong>; fast deployment pipelines are a competitive business differentiator</li>
+<li>Fitness functions should be intentional (identified upfront for key dimensions), not emergent (discovered only after problems manifest)</li>
+<li>Transactions are the &quot;strong nuclear force&quot; binding quanta — 2PC across services effectively merges them into a single quantum</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 1 — Software Architecture</h3>
+<p>Establishes evolvability as a new architectural &quot;-ility&quot; — and specifically as a <strong>meta-characteristic</strong> that wraps and protects all other characteristics. The bit-rot problem: architects design for scalability, security, and performance at project inception, but ongoing development erodes those qualities without active protection. Fitness functions are the protection mechanism.</p>
+<p>The definition: &quot;An evolutionary architecture supports guided, incremental change across multiple dimensions.&quot; Each word is deliberate — &quot;evolutionary&quot; was chosen over &quot;adaptable&quot; (no directionality), &quot;emergent&quot; (no guidance), &quot;incremental&quot; (only one of three pillars). Multiple dimensions: technical, data, security, operational — all must evolve, not just code structure.</p>
+<p>Introduces the PenultimateWidgets example (a large widget retailer used throughout the book) and their Inverse Conway Moment: reorganising from functional silos (frontend/DBA/backend/ops) to cross-functional teams aligned to service boundaries. Changes that previously required cross-team coordination for simple domain changes became intra-team changes, dramatically reducing cycle time.</p>
+<h3>Chapter 2 — Fitness Functions</h3>
+<p>Introduces the formal definition: &quot;An architectural fitness function provides an objective integrity assessment of some architectural characteristic(s).&quot;</p>
+<p>The <strong>system-wide fitness function</strong> is the aggregate of all individual functions, providing a framework for trade-offs. When security and scalability fitness functions conflict (caching enables scale but introduces data staleness that fails the security fitness function), the system-wide function provides the language for resolving the conflict. It is not a numeric score; it is a governance framework.</p>
+<p>Classification across five dimensions: atomic vs holistic, triggered vs continual, static vs dynamic, automated vs manual, temporal (license monitors, break-on-upgrade tests). Also: intentional vs emergent (emergent = governance failure), domain-specific (custom stress tests for high-security domains).</p>
+<p>Priority tiers: <strong>Key</strong> (blocks promotion), <strong>Relevant</strong> (tracked, non-blocking), <strong>Not Relevant</strong> (excluded). Teams should identify fitness functions <em>before</em> first development iteration — identifying them early is far cheaper than retrofitting them. <strong>Fitness Function Review</strong>: a formal stakeholder meeting, held at least annually, to re-evaluate priority assignments and discover new dimensions.</p>
+<h3>Chapter 3 — Engineering Incremental Change</h3>
+<p>Deployment pipelines vs CI servers: CI servers handle commit → test result; pipelines extend to commit → production. Pipeline stages are ordered by scope and cost — fast atomic functions first, slow holistic functions later. Fan-out (parallel execution within a stage) and fan-in (all must pass before proceeding) enable both speed and completeness.</p>
+<p><strong>Feature toggles</strong>: enable QA in production by hiding new features behind flags; QA team is granted access while normal users see the existing version. Enables continuous deployment of incomplete features safely.</p>
+<p><strong>GitHub Scientist</strong>: the canonical holistic+continual fitness function for refactoring. Runs old (control) and new (candidate) code paths simultaneously at a configured percentage of production traffic. The control value is always returned; the candidate runs out-of-band with results compared and divergences logged. GitHub used it to replace their shell-script-based Git merge implementation with libgit2 — 1% of production merges ran through the new implementation; after 4 days with zero divergences for 24 hours, the old code was removed. (See <a href="../reference/technology-glossary.html">Technology Glossary</a>)</p>
+<p><strong>Hypothesis-driven development</strong>: replaces requirements with experiments. Capabilities are expressed as falsifiable hypotheses (&quot;if we increase the image size, sales will increase by 5%&quot;). A/B testing provides the measurement. Requires evolutionary architecture to support multiple simultaneous variants. The mobile.de case study: rather than debating three UI approaches, they built all three and let user behaviour decide (→ <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a>).</p>
+<h3>Chapter 4 — Architectural Coupling</h3>
+<p>Establishes the vocabulary: <strong>module</strong> = logical grouping of related code; <strong>component</strong> = physical packaging of a module; <strong>quantum</strong> = independently deployable unit with high functional cohesion (the full deployment unit including database and dependent infrastructure).</p>
+<p>Evolvability ratings for each major architecture style:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Style</th>
+<th>Evolvability</th>
+<th>Primary Limiting Factor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Big Ball of Mud</td>
+<td>None</td>
+<td>No coupling control</td>
+</tr>
+<tr>
+<td>ESB-driven SOA</td>
+<td>Poor</td>
+<td>Central orchestration hub; vendor coupling</td>
+</tr>
+<tr>
+<td>Mediator EDA</td>
+<td>Low</td>
+<td>Mediator reintroduces coupling</td>
+</tr>
+<tr>
+<td>Layered monolith</td>
+<td>Low–Medium</td>
+<td>Technical partitioning; full deployment</td>
+</tr>
+<tr>
+<td>Modular monolith</td>
+<td>Medium</td>
+<td>Single quantum; discipline must be enforced by fitness functions</td>
+</tr>
+<tr>
+<td>Microkernel</td>
+<td>Medium</td>
+<td>Plug-in coupling through contracts</td>
+</tr>
+<tr>
+<td>Service-based</td>
+<td>Medium–High</td>
+<td>Shared database; coarse quanta</td>
+</tr>
+<tr>
+<td>Broker EDA</td>
+<td>High</td>
+<td>Decoupled event channels</td>
+</tr>
+<tr>
+<td>Microservices</td>
+<td>Highest</td>
+<td>Maximum decoupling; fine-grained quanta</td>
+</tr>
+</tbody></table></div>
+<p>Transactions as &quot;strong nuclear force&quot;: two-phase commit across services effectively merges their quanta. Service-based architectures can support ACID transactions within coarse services — the pragmatic middle ground. Microservices require saga/eventual consistency.</p>
+<p><strong>Modular monolith</strong>: achieves domain isolation within a single deployable unit through disciplined coupling enforcement. The key insight: IDEs encourage imports that violate module discipline; coding standards alone fail; fitness functions (ArchUnit, JDepend) are required to prevent degradation. Recommended as the intermediate migration step before extracting services (→ <a href="../styles/modular-monolith.html">Modular Monolith</a>).</p>
+<p><strong>Serverless architectures</strong>: two forms — BaaS (Backend as a Service, wiring together third-party cloud services with little custom code) and FaaS (Function as a Service, stateless functions triggered by events, infrastructure fully managed). FaaS eliminates technical architecture, operational, and security dimensions from consideration — but shifts transactional coordination burden to the caller and suffers from the Last 10% Trap (most capabilities are easy; edge cases require painful workarounds).</p>
+<p><strong>Service templates</strong>: in microservices, each service needs monitoring, logging, auth, and other plumbing. Service templates (DropWizard, Spring Boot) encode these consistently across all services, managed by a platform/infrastructure team. Domain teams extend the template and write only business behaviour. When infrastructure upgrades occur, the template absorbs the change without requiring per-service coordination. This is &quot;appropriate coupling&quot; — coupling that provides architectural value without harming evolvability.</p>
+<h3>Chapter 5 — Evolutionary Data</h3>
+<p>Three forms of inappropriate data coupling that resist evolution: <strong>shared schema coupling</strong> (multiple services sharing tables without ownership), <strong>age/quality of legacy data</strong> (historical schemas encoding defunct business logic in null patterns and inconsistent formats), and <strong>vendor coupling</strong> (proprietary SQL syntax coupling the schema to a specific database engine).</p>
+<p>Inappropriate data coupling is the hardest form of coupling to address:</p>
+<ul>
+<li><strong>Shared schema coupling</strong>: multiple services sharing tables without schema ownership</li>
+<li><strong>Age/quality of legacy data</strong>: historical schemas encode past business logic in null patterns and inconsistent formats</li>
+<li><strong>Vendor coupling</strong>: proprietary SQL syntax couples the schema to a specific database vendor</li>
+</ul>
+<p>The <strong>expand/contract pattern</strong> enables zero-downtime schema evolution (see <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>). The three steps — expand (add new structure), migrate (dual-write + backfill consumers), contract (remove old structure) — never break any consumer at any step. The pattern applies to columns, tables, foreign keys, and denormalisation changes.</p>
+<p>Three scenarios for shared database decomposition: (1) clean — no legacy data or integration points, straightforward table claim; (2) legacy data without integration points — use expand/contract at team&#39;s own pace; (3) legacy data with integration points — must introduce a service API seam first, migrate all consumers to use the API, then evolve the schema behind it. In Scenario 3, <strong>database triggers</strong> can serve as a temporary transition mechanism: insert-triggers populate the new schema from the old during the migration window, preserving both structures without changing consumer code until they are ready to migrate.</p>
+<p>Database migrations should be treated as code: version-controlled, tested, applied sequentially in the deployment pipeline. Flyway (numbered scripts, immutable once applied) and Liquibase (change sets with optional rollback; checksummed) are the primary tools.</p>
+<p>The <strong>Reporting antipattern</strong>: OLTP and OLAP in the same service create inadvertent coupling; analytical queries contend with transactional writes, schema changes for operational needs break analytical queries, and analysts couple directly to operational data models. Solution: separate reporting services with their own data stores, fed via event streaming or CDC from the operational service (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>).</p>
+<h3>Chapter 6 — Building Evolvable Architectures</h3>
+<p>Three-step operationalisation: (1) identify dimensions affected by evolution, (2) define fitness functions for each dimension, (3) automate via deployment pipelines.</p>
+<p><strong>Refactoring vs restructuring</strong>: refactoring preserves external behaviour while improving internal structure (Martin Fowler&#39;s definition). Architectural changes are more properly called <em>restructuring</em> — they change the priorities and characteristics of the system, not just its internals. Fitness functions protect the existing architectural characteristics during restructuring (the GitHub Scientist case study from Ch 3 is the canonical example).</p>
+<p>Guidelines:</p>
+<ul>
+<li><strong>Remove needless variability</strong>: immutable infrastructure; snowflake servers (unique manual configurations) prevent reproducible deployments. The Knight Capital incident: one of eight servers was not updated, causing the old feature-flag path to re-activate on that server. $440M loss in 45 minutes. Snowflake servers + retained feature flags = latent catastrophe.</li>
+<li><strong>Make decisions reversible</strong>: blue-green deployments, feature flags; feature flags accumulate technical debt — clean up promptly after each migration (Knight Capital as cautionary tale)</li>
+<li><strong>Prefer evolvable over predictable</strong>: unknown unknowns dominate long-horizon planning; design for changeability, not predicted requirements</li>
+<li><strong>Build anticorruption layers JIT</strong>: abstract external dependencies behind internal interfaces; delay commitment until the last responsible moment. The BackgrounDRb → Starling case: one ThoughtWorks project extracted a background job processing abstraction at the last responsible moment rather than coupling to a specific implementation upfront. When the third-party background job library changed its API, only the anticorruption layer needed updating, not every job implementation.</li>
+<li><strong>Build sacrificial architectures</strong>: intentional throw-away systems for MVP and market validation; replace when validated. Twitter&#39;s first architecture was deliberately sacrificial — when the service grew beyond the prototype&#39;s capacity, they rebuilt. Fred Brooks&#39; second system syndrome is the failure mode: over-engineering the replacement after a successful sacrifice.</li>
+<li><strong>Mitigate external change</strong>: prefer pull updates (libraries) to push updates (frameworks); wrap transitive dependencies behind stable internal interfaces. The npm left-pad incident (2016): an 11-line utility package removal broke thousands of builds worldwide because projects directly depended on a package with no stable owner. Pull model: update libraries when <em>you</em> choose; push model (frameworks) requires updating when the framework provider decides.</li>
+<li><strong>Libraries vs frameworks</strong>: libraries are passive (called by your code; update when you choose); frameworks are active (call your code via IoC/plugin interfaces; drive your architecture; update aggressively). Prefer libraries for non-differentiating concerns; accept framework coupling only where the framework provides significant value on all its dimensions.</li>
+<li><strong>Prefer Continuous Delivery over snapshots</strong>: snapshots create speculative dependency updates and stale lockfiles; fluid dependencies (always latest) cause unpredictable breakage. CD forces regular integration and keeps the delta small.</li>
+<li><strong>Version services internally</strong>: hide multiple API versions within the service; expose a stable external interface; support no more than two versions simultaneously; drive consumer migration before adding a third</li>
+</ul>
+<h3>Chapter 7 — Evolutionary Architecture Pitfalls and Antipatterns</h3>
+<p><strong>Pitfall vs antipattern</strong>: pitfalls are outcomes of well-intentioned but misapplied practices (easy to fall into, not obvious until you&#39;re in them); antipatterns are practices that seem beneficial but produce actively harmful results. The distinction matters because fixes differ — pitfalls require process adjustment; antipatterns require deliberate reversal.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vendor King</td>
+<td>Antipattern</td>
+<td>Architecture coupled to a vendor&#39;s product roadmap; vendor constraints become architectural constraints</td>
+</tr>
+<tr>
+<td>Leaky Abstractions</td>
+<td>Pitfall</td>
+<td>Abstractions that expose implementation details; all non-trivial abstractions eventually leak (Spolsky&#39;s Law); the &quot;abstraction distraction antipattern&quot; is a variant where developers chase abstraction purity at the expense of solving real problems</td>
+</tr>
+<tr>
+<td>Last 10% Trap</td>
+<td>Antipattern</td>
+<td>Frameworks handling 90% elegantly but requiring painful workarounds for the remaining 10%; IBM San Francisco Project as example</td>
+</tr>
+<tr>
+<td>Code Reuse Abuse</td>
+<td>Antipattern</td>
+<td>Shared libraries coupling microservices together; code reuse and code usability are <em>inversely proportional</em> — the more reusable a component must be, the less optimised it is for any specific use case; prefer duplication to coupling in distributed architectures</td>
+</tr>
+<tr>
+<td>Resume-Driven Development</td>
+<td>Pitfall</td>
+<td>Selecting technologies for CV value rather than architectural fit</td>
+</tr>
+<tr>
+<td>Inappropriate Governance</td>
+<td>Antipattern</td>
+<td>One-size-fits-all technology mandates; solution is <strong>Goldilocks Governance</strong>: maintain three approved technology stacks (simple/medium/complex) rather than a single standard; teams pick the level matching their service&#39;s complexity; the PenultimateWidgets case study tracks cycle time per tier as an atomic process-based fitness function — if any tier&#39;s cycle time exceeds a threshold, a fitness function alerts the enterprise architect</td>
+</tr>
+<tr>
+<td>Reporting</td>
+<td>Antipattern</td>
+<td>OLTP and OLAP in the same service; analytical queries create inadvertent coupling; solution: event-stream the operational data to a separate denormalised reporting database owned by a reporting service</td>
+</tr>
+<tr>
+<td>Planning Horizons</td>
+<td>Pitfall</td>
+<td>Sunk cost fallacy applied to architecture; irrational artifact attachment (continuing to invest in a failed architectural decision rather than restructuring) prevents needed change; Rumsfeld&#39;s &quot;unknown unknowns&quot; dominate long-horizon plans</td>
+</tr>
+<tr>
+<td>Lack of Speed to Release</td>
+<td>Pitfall</td>
+<td>Slow cycle time is itself an architectural fitness function failure; if the pipeline takes too long, fitness functions are run less frequently, degrading their value; treat cycle time as a key process fitness function with an explicit threshold alert</td>
+</tr>
+</tbody></table></div>
+<h3>Chapter 8 — Putting Evolutionary Architecture into Practice</h3>
+<p><strong>Organisational and team factors</strong>: domain-centric cross-functional teams (business analyst, architecture, testing, operations, data) eliminate coordination friction. The goal is for the common unit of change — a business capability — to be handled entirely within one team. Traditional siloed teams mean a simple domain change requires cross-silo coordination (developers wait on DBAs; operations wait on developers), which Conway&#39;s Law predicts will produce coupling at those same seams.</p>
+<p><strong>Product over project</strong>: software <em>projects</em> have a lifecycle — team forms, builds, hands off to ops, disbands. Software <em>products</em> live forever: the team stays associated with the product, maintains ownership of quality metrics, and builds long-term pride. Amazon&#39;s <strong>two-pizza teams</strong> operationalise this: no team larger than can be fed by two pizzas; cross-functional; &quot;you build it, you run it.&quot; When developers can look across the table at a tired colleague whose sleep they ruined with a 3 AM outage, social accountability replaces institutional accountability.</p>
+<p><strong>Dealing with external change</strong> — consumer-driven contracts as fitness functions: in microservices, consumers provide the provider with a suite of tests expressing what they need from the API. The provider runs all consumer test suites as fitness functions. Any provider change that breaks a consumer&#39;s tests fails the pipeline. This is the &quot;engineering safety net&quot; — integration protocol consistency enforced automatically without manual per-release coordination.</p>
+<p><strong>Team coupling and culture</strong>: <a href="../concepts/conways-law.html">Conways Law</a> and the Inverse Conway Maneuver; teams structured around service boundaries, not functional skills. Goldratt&#39;s dictum: &quot;Tell me how you measure me, and I will tell you how I will behave&quot; — architects must design metrics and incentives deliberately. Culture of experimentation: kaizen (continuous improvement), spike solutions (XP throw-away experiments for learning), set-based development (explore multiple approaches in parallel for a few days), 20% time / hackathons, hypothesis-driven development (→ <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a>).</p>
+<p><strong>Enterprise fitness functions</strong>: enterprise architects inject cross-cutting fitness functions into a shared deployment pipeline template that all services inherit — security scans, license legality monitors (temporal), compliance checks. Teams add service-specific fitness functions on top. The PenultimateWidgets platform case study: selling the platform to third parties with its deployment pipeline and embedded fitness functions; certification requires preserving the existing fitness functions.</p>
+<p><strong>Starting points</strong>: (1) <em>low-hanging fruit</em> — least coupled, not on critical path; use as proof of concept; gather before/after metrics (&quot;demonstration defeats discussion&quot;); (2) <em>highest value first</em> — validate the approach against the most critical part; (3) <em>testing first</em> — add coarse-grained functional tests before restructuring, not as a standalone project; (4) <em>infrastructure first</em> — if DevOps is broken (outsourced ops, dev/ops firewall, massive technical debt), address it first.</p>
+<p><strong>Business case</strong>: cycle time as competitive differentiator (3-hour vs 6-week cycle time); scale (coupling at any point eventually limits scale — Amazon&#39;s monolith-to-microservices as example); advanced capabilities (A/B testing, hypothesis-driven development) only possible with evolvable architecture; reduced risk through incremental change.</p>
+<p><strong>When NOT to build evolutionary architecture</strong>: irredeemable Big Ball of Mud (restructuring costs more than rewriting); other characteristics dominate (LMAX — 6 million transactions/second on a single Java thread by fitting logic in CPU cache — sacrifices evolvability for performance); deliberate sacrificial architecture; planning to close the business.</p>
+<p><strong>Convincing others</strong> — consulting judo: don&#39;t lecture; find a pain point, fix it as an exemplar, then demonstrate. The QA environment case study: instead of arguing about DevOps practices, one consultant found that QA environments were the universal pain point, automated provisioning with modern tooling, and demonstrated that both objections (&quot;we don&#39;t have time&quot; and &quot;our setup is too complex&quot;) were false. Demonstration defeats discussion.</p>
+<p><strong>Future directions</strong>: AI-based fitness functions looking for anomalous architectural behaviour; generative testing (run large numbers of tests, capture outcomes, apply statistical analysis to find unexpected edge cases — complements traditional assertion-based tests).</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;An evolutionary architecture supports guided, incremental change across multiple dimensions.&quot; (Ch 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Transactions represent the strong nuclear force in architecture — they bind architectural quanta together.&quot; (Ch 4)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Cycle time proportional to evolution speed: v ∝ c.&quot; (Ch 3)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Tell me how you measure me, and I will tell you how I will behave.&quot; — Dr. Eliyahu M. Goldratt (cited Ch 8)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Demonstration defeats discussion.&quot; (Ch 8)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — the core governance mechanism introduced by this book</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — the broader concept; evo-arch is now the primary source</li>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — quantum size, bounded context as quantum boundary, cost sweet spot</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the automation mechanism for fitness functions</li>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — team structure → system structure; Inverse Conway Maneuver</li>
+<li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — expand/contract, schema migration tools, shared DB decomposition</li>
+<li><a href="../styles/modular-monolith.html">Modular Monolith</a> — introduced as a pattern in Ch 4</li>
+<li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+<li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+<li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../authors/neal-ford.html">Neal Ford</a></li><li><a href="../authors/patrick-kua.html">Patrick Kua</a></li><li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

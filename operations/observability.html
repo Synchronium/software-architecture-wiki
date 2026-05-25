@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Observability as superset of monitoring; three telemetry sources (metrics, logs, traces); structured event logs (one event per work unit, request ID,…">
+  <meta property="og:title" content="Observability — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Observability as superset of monitoring; three telemetry sources (metrics, logs, traces); structured event logs (one event per work unit, request ID,…">
+  <title>Observability — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html" aria-current="page">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../operations/index.html">Operations</a> <span class="sep">›</span> Observability</nav></div>
+      <h1>Observability</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../operations/index.html">concept</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/observability.html">observability</a><a class="tag-chip" href="../tags/logging.html">logging</a><a class="tag-chip" href="../tags/tracing.html">tracing</a><a class="tag-chip" href="../tags/telemetry.html">telemetry</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/debugging.html">debugging</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>Observability is a set of tools that provide granular insights into a distributed system in production, enabling operators to understand emergent behaviours and validate hypotheses about root causes. Monitoring detects that something is wrong; observability explains why. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 32)</p>
+<p>Observability is a superset of monitoring: monitoring focuses on tracking health via aggregated metrics; observability adds event logs and distributed traces for diagnosis and debugging.</p>
+<h2>Three Telemetry Sources</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Storage characteristics</th>
+<th>Primary use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Metrics</strong></td>
+<td>High throughput, low dimensionality; time-series stores</td>
+<td>Monitoring, alerting, dashboards</td>
+</tr>
+<tr>
+<td><strong>Event logs</strong></td>
+<td>High dimensionality, service-specific; columnar/event stores</td>
+<td>Debugging individual requests, long-tail behaviour</td>
+</tr>
+<tr>
+<td><strong>Traces</strong></td>
+<td>Assembled from spans across services</td>
+<td>End-to-end request flow, bottleneck identification</td>
+</tr>
+</tbody></table></div>
+<p><strong>Relationship</strong>: metrics and traces are derived views built from event logs — a metric is event log counters aggregated over time into summary statistics; a trace is spans (individual log events) stitched together by trace ID. Some observability backends derive all three from a single structured event stream.</p>
+<h2>Event Logs</h2>
+<p>A log is an immutable, time-stamped sequence of events. Events can be free-form text or structured (JSON, Protobuf). Structured events are represented as key-value bags:</p>
+<pre><code class="language-json">{
+  &quot;requestId&quot;: &quot;abc-123&quot;,
+  &quot;failureCount&quot;: 1,
+  &quot;serviceRegion&quot;: &quot;EastUs2&quot;,
+  &quot;durationMs&quot;: 342,
+  &quot;timestamp&quot;: 1614438079
+}
+</code></pre>
+<p>Logs provide the richest context for debugging but have a low signal-to-noise ratio and are expensive to ingest and store at scale.</p>
+<h3>Best Practices</h3>
+<p><strong>One event per work unit</strong>: collate all data for a single request (or message) into one event rather than emitting many small events. This minimises the need for joins during debugging. Implement by passing a context object through the call chain, accumulating fields as the request progresses.</p>
+<p><strong>Include a request ID</strong>: every event must include the unique identifier of the work unit. Cross-service debugging requires joining the caller&#39;s event log with the callee&#39;s — the request ID is the join key.</p>
+<p><strong>Instrument every network call</strong>: log response time, status code, and error type for every outbound call. This is critical for diagnosing latency and failure in downstream dependencies.</p>
+<p><strong>Sanitize sensitive data</strong>: strip PII and credentials from events before emission. Logs are accessible to a broader set of engineers than user data access controls typically allow.</p>
+<h3>Cost Management</h3>
+<ul>
+<li><strong>Log levels</strong> (debug, info, warning, error): controlled by a dynamic knob; increase verbosity for investigation, reduce under normal load.</li>
+<li><strong>Sampling</strong>: log every nth event. Failed requests should have a higher sampling frequency than successful ones (higher signal-to-noise).</li>
+<li><strong>Rate-limiting on log collectors</strong>: a single runaway bug can produce catastrophic log volume; the log collector must be able to shed excess load.</li>
+<li><strong>Trade-off</strong>: aggregating in-memory into metrics reduces cost but loses the ability to drill down into individual events.</li>
+</ul>
+<p><strong>Infrastructure risks</strong>: logging libraries that write synchronously to disk block the calling thread. A full disk causes log loss at best, service failure at worst. Use asynchronous logging libraries.</p>
+<h2>Distributed Traces</h2>
+<p>Tracing captures the complete lifecycle of a request as it flows through multiple services in a distributed system. A trace is a list of causally-related spans.</p>
+<p><strong>Span</strong>: a time interval representing a logical operation or work unit. Contains a bag of key-value attributes: operation name, service name, start/end timestamps, status code, and arbitrary labels.</p>
+<p><strong>Trace propagation</strong>:</p>
+<ol>
+<li>When a request begins, it is assigned a unique <strong>trace ID</strong>.</li>
+<li>The trace ID is propagated to every downstream service call, typically via an HTTP header (e.g., <code>X-Trace-ID</code> or <code>traceparent</code> in W3C format).</li>
+<li>At every fork in the local execution flow (thread handoff, async continuation) the trace context is also propagated.</li>
+<li>When a span ends, it is emitted to a collector.</li>
+<li>The collector assembles all spans sharing a trace ID into a complete trace.</li>
+</ol>
+<p>Popular collectors: OpenZipkin, AWS X-Ray. See also OpenTelemetry in <a href="../reference/technology-glossary.html">Technology Glossary</a>.</p>
+<h3>Use Cases for Traces</h3>
+<ul>
+<li>Debug failures or latency for a <strong>specific user request</strong> (e.g., a customer support ticket).</li>
+<li>Debug <strong>rare issues</strong> affecting a tiny fraction of requests — surfaced by filtering traces on error status.</li>
+<li>Debug issues affecting a <strong>subset of instances</strong> — identified by filtering on instance label.</li>
+<li><strong>Identify bottlenecks</strong> in the end-to-end request path — the flame graph view shows where time is spent.</li>
+<li><strong>Resource attribution</strong>: trace which users drive load to which downstream services — useful for billing and fine-grained rate limiting.</li>
+</ul>
+<h3>Retrofitting Tracing</h3>
+<p>Tracing is harder to add to an existing system than metrics or logs because it requires every component in the request path — including third-party frameworks, libraries, and external services — to propagate the trace context. A <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> can handle trace context propagation transparently at the network layer, reducing the amount of application code that must be modified.</p>
+<h2>Transparency (Nygard&#39;s Framing)</h2>
+<p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 8) uses &quot;transparency&quot; as a broader term than observability: &quot;the qualities that allow operators, developers, and business sponsors to gain understanding of the system&#39;s historical trends, present conditions, instantaneous state, and future projections.&quot;</p>
+<p><strong>Transparency must be designed in, not added later.</strong> Adding it late is as effective as &quot;adding quality&quot; — possible, but only at much greater cost. A transparent system matures faster because problems become visible and diagnosable; an opaque system drifts into decay.</p>
+<p><strong>System-level visibility &gt; per-instance visibility.</strong> Local visibility only produces local optimisation. Example 1: a retailer optimised a batch pipeline to finish two hours earlier, yet items still appeared on the site at the same time — a parallel process not visible in per-batch metrics was the actual bottleneck. Example 2: cache flushes looked normal on individual servers, but no single server could see that each display event was causing a cross-server cache invalidation — every server was knocking items out of all other servers&#39; caches. Only a system-wide view revealed the pattern.</p>
+<p><strong>Monitoring as exoskeleton, not woven in.</strong> Alert thresholds, rollup policies, and health status decisions change at a different rate than application code. Keep them in the control plane outside the instance. Tightly coupling monitoring to application internals creates maintenance burden and slows both systems.</p>
+<h2>Logging Best Practices (Nygard)</h2>
+<p><strong>Log level discipline</strong>: ERROR should mean &quot;operator action required.&quot; Not every exception is an error. A user entering a bad credit card number is a WARNING at most. A circuit breaker tripping to OPEN is an ERROR — it should not happen under normal conditions and means action is required on the other end of the connection. Database connection failure is an ERROR. NullPointerException is not automatically an ERROR. (→ <a href="../sources/release-it.html">Release It</a> ch. 8)</p>
+<p><strong>No debug logs in production.</strong> Debug-level output creates noise that buries real signals. Add a CI build step that automatically strips configs enabling debug or trace levels.</p>
+<p><strong>Voodoo operations</strong>: ambiguous log messages create false temporal correlations that become operational folklore and cause incorrect remediation. Nygard&#39;s example: a debug message reading &quot;Data channel lifetime limit reached. Reset required&quot; — meaning the application was about to rotate its own encryption key — coincidentally preceded a database crash. For six months, operators performed weekly database failovers in response to that message. Root causes: (1) the message said &quot;reset required&quot; without specifying the actor; (2) debug logs were left on in production. Unclear log messages create superstitious operations. Write log messages as a human interface under stress, not as developer notes to self.</p>
+<p><strong>Include request/trace IDs in every log message.</strong> When reading thousands of lines post-incident, a grep key saves hours. (Aligned with the &quot;correlation ID&quot; recommendation from <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>.)</p>
+<h2>Health Check Design</h2>
+<p>A health check is more than &quot;is the process running?&quot; It should expose (→ <a href="../sources/release-it.html">Release It</a> ch. 8):</p>
+<ul>
+<li>Host IP address(es)</li>
+<li>Runtime/interpreter version (JVM, Go, Python, etc.)</li>
+<li>Application version or commit ID</li>
+<li>Whether the instance is currently accepting work</li>
+<li>Status of connection pools, caches, and circuit breakers</li>
+</ul>
+<p><strong>Go-live transition</strong>: load balancers use health checks not just for crash detection but for startup readiness. When the health check transitions from failing to passing, the instance signals it is ready for traffic. This is safer than a fixed startup delay.</p>
+<p>This connects to Nygard&#39;s Handshaking stability pattern (→ <a href="../sources/release-it.html">Release It</a> ch. 5): when a service is overloaded, it should fail its health check (return 503) so the load balancer stops routing to it — a server-initiated signal rather than waiting for the caller to time out.</p>
+<h2>Observability vs Monitoring</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>Monitoring</th>
+<th>Observability</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Purpose</strong></td>
+<td>Detect failure symptoms</td>
+<td>Understand and diagnose root cause</td>
+</tr>
+<tr>
+<td><strong>Data type</strong></td>
+<td>Aggregated metrics (time series)</td>
+<td>Events, logs, traces</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>High throughput, low dimensionality</td>
+<td>High dimensionality, moderate throughput</td>
+</tr>
+<tr>
+<td><strong>Primary tools</strong></td>
+<td>Dashboards, SLO burn rate alerts</td>
+<td>Log search, trace flame graphs, hypothesis testing</td>
+</tr>
+</tbody></table></div>
+<h2>Observability in Microservice Migration (Newman)</h2>
+<p>Newman provides a practitioner hierarchy of observability investments for microservice architectures, ordered by implementation priority (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 5):</p>
+<p><strong>Log aggregation first</strong>: implement a log aggregation system before going to microservices — it is useful from day one and is a litmus test for organisational readiness. &quot;If your organisation struggles to implement a suitable log aggregation system, you might want to reconsider whether you&#39;re ready for microservices.&quot; Tools: ELK stack (Elasticsearch, Logstash/Fluentd, Kibana), Humio.</p>
+<p><strong>Correlation IDs as the foundation</strong>: generate a correlation ID for every inbound request at the API gateway or service mesh. Propagate it through all downstream calls (HTTP header, message payload field, or other mechanism). Use it as the join key in log aggregation queries, and also for tracking choreographed saga instances across services. This is the prerequisite for distributed tracing.</p>
+<p><strong>Distributed tracing for latency</strong>: distributed tracing tools (Newman recommends Jaeger) assemble the timing of each call in a chain, making it possible to identify where latency is occurring. Existing correlation ID infrastructure makes adopting a tracing tool easier — the tracing integration points are already in place. Service meshes can handle trace context propagation transparently.</p>
+<p><strong>Synthetic transactions for production testing</strong>: script fake user behaviour (create controlled test accounts, execute user flows end-to-end, clean up after each run) on a regular automated schedule. This catches issues with real user flows without impacting real users. The Atomist example: scripted fake customer sign-up (GitHub + Slack OAuth) ran periodically to detect issues in a complex multi-step onboarding process before real customers encountered them.</p>
+<p><strong>Observability as open-ended questioning</strong>: the goal of observability is not just pre-defined alerts for known failure modes but the ability to ask unknown questions after unexpected events. Collect enough data (logs, traces, metrics) to reason about novel failure modes. Tool chains must support ad hoc querying.</p>
+<blockquote>
+<p><strong>Contradiction (perspective difference):</strong> Vitillo (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>) provides the theoretical grounding — structured events, one event per work unit, sampling — from a distributed systems researcher&#39;s perspective. Newman provides the practitioner priority order (log aggregation → correlation IDs → tracing → production testing → observability) from a migration consultant&#39;s perspective. Both are compatible; Newman&#39;s is more actionable for teams getting started.</p>
+</blockquote>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../operations/monitoring.html">Monitoring</a> — monitoring (SLIs, SLOs, alerts, dashboards) is the first-layer tool; observability extends it</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — deployment events are annotated in dashboards; distributed traces are a key debugging tool after a rollout</li>
+<li><a href="../operations/manageability.html">Manageability</a> — manageability completes the operate-understand-control triad: monitoring detects, observability diagnoses, manageability corrects</li>
+<li><a href="../reference/technology-glossary.html">Technology Glossary</a> — OpenTelemetry, Prometheus, Grafana, Jaeger/Zipkin, ELK Stack, AWS X-Ray</li>
+<li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — can propagate trace context transparently; also a source of network-level telemetry</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

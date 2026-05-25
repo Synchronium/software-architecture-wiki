@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Full classification taxonomy; priority tiers; enterprise fitness functions; mechanism and concern taxonomies; fitness function testing pyramid…">
+  <meta property="og:title" content="Architecture Fitness Functions — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Full classification taxonomy; priority tiers; enterprise fitness functions; mechanism and concern taxonomies; fitness function testing pyramid…">
+  <title>Architecture Fitness Functions — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html" aria-current="page">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Architecture Fitness Functions</nav></div>
+      <h1>Architecture Fitness Functions</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/governance.html">governance</a><a class="tag-chip" href="../tags/testing.html">testing</a><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>An architecture fitness function is any mechanism that provides an objective integrity assessment of one or more architecture characteristics. The term is borrowed from evolutionary computation: just as a genetic algorithm&#39;s fitness function scores a candidate solution against a goal, an architecture fitness function scores a system against an architectural decision.</p>
+<p>The abstraction is deliberately broad: a fitness function may be a unit test, an architectural test (ArchUnit), a performance benchmark, a <a href="../operations/chaos-engineering.html">Chaos Engineering</a> run, a monitoring alert, a license text monitor, or a manual architectural review. The key property is objectivity — the result is measurable and repeatable, not a matter of opinion (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 1–2).</p>
+<p>Fitness functions are the primary mechanism for governing <a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> over time without relying on manual review.</p>
+<h2>Why It Matters</h2>
+<p>Architects make decisions, but codebases drift. Without automated enforcement, architectural rules — no direct database calls from the UI layer, no cyclic package dependencies, services must not exceed 99ms p99 latency — degrade silently. Fitness functions turn these rules into living tests that run continuously in <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>, making governance automated and objective.</p>
+<blockquote>
+<p>&quot;Every important architectural decision should have a corresponding fitness function.&quot; (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 6)</p>
+</blockquote>
+<h2>System-Wide Fitness Function</h2>
+<p>Individual fitness functions each govern one characteristic; the <strong>system-wide fitness function</strong> is the aggregate of all of them, understood as a unified whole (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 2). It serves two purposes:</p>
+<ol>
+<li><strong>Trade-off framework</strong>: when individual fitness functions conflict (e.g., performance vs security — encryption degrades throughput), the system-wide function provides the language for comparing them. All concerns use the same mechanism, making the prioritisation exercise an apples-to-apples comparison rather than a debate between incommensurable qualities.</li>
+<li><strong>Priority signalling</strong>: it encodes which characteristics are <em>key</em> (block promotion on failure), which are <em>relevant</em> (tracked but non-blocking), and which are <em>not relevant</em> (excluded). This is not a numeric score — it is an understanding of how architectural trade-offs should be resolved.</li>
+</ol>
+<blockquote>
+<p>&quot;A system is never the sum of its parts. It is the product of the interactions of its parts.&quot; — Dr. Russell Ackoff (cited Ch 2)</p>
+</blockquote>
+<p>Architects will likely never &quot;evaluate&quot; the system-wide fitness function as a single number. It is a mental model and governance framework, not a dashboard metric.</p>
+<h2>Classification (evo-arch)</h2>
+<p><em>Building Evolutionary Architectures</em> classifies fitness functions across five independent dimensions (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 2):</p>
+<h3>Atomic vs Holistic</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Atomic</strong></td>
+<td>Tests one architectural characteristic in isolation</td>
+<td>JDepend cycle check; ArchUnit layer enforcement</td>
+</tr>
+<tr>
+<td><strong>Holistic</strong></td>
+<td>Tests multiple interacting characteristics together</td>
+<td>Chaos Monkey testing resilience under realistic load; GitHub Scientist running old and new code paths simultaneously</td>
+</tr>
+</tbody></table></div>
+<p>Holistic fitness functions catch emergent behaviours that atomic functions miss — the system may pass every individual test but still fail under realistic combined conditions.</p>
+<h3>Triggered vs Continual</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Triggered</strong></td>
+<td>Runs on a specific event: commit, merge, deploy</td>
+<td>Unit test suite triggered on commit</td>
+</tr>
+<tr>
+<td><strong>Continual</strong></td>
+<td>Always running; never stops</td>
+<td>Chaos Monkey terminating instances randomly in production; monitoring alerts on p99 latency</td>
+</tr>
+</tbody></table></div>
+<p>Triggered functions are the standard pipeline gate. Continual functions implement monitoring-driven development: the system is permanently under test in production.</p>
+<h3>Static vs Dynamic</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Static</strong></td>
+<td>Fixed threshold that does not change</td>
+<td>Cyclic dependency count must be zero</td>
+</tr>
+<tr>
+<td><strong>Dynamic</strong></td>
+<td>Threshold adjusts based on context</td>
+<td>Test coverage must not drop by more than 2% per quarter; acceptable latency scales with data size</td>
+</tr>
+</tbody></table></div>
+<p>Dynamic fitness functions capture intent better when absolute thresholds are arbitrary or when improvement is expected over time.</p>
+<h3>Automated vs Manual</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Automated</strong></td>
+<td>Runs without human intervention</td>
+<td>Pipeline gate; continuous monitor</td>
+</tr>
+<tr>
+<td><strong>Manual</strong></td>
+<td>Requires human judgment</td>
+<td>Architecture review board; security audit</td>
+</tr>
+</tbody></table></div>
+<p>Automated is strongly preferred; manual fitness functions are used when the characteristic being assessed is not yet machine-verifiable (legal review, usability assessment).</p>
+<h3>Temporal</h3>
+<p>Time-sensitive fitness functions that trigger based on the passage of time or an external event rather than a code change:</p>
+<ul>
+<li><strong>License text monitor</strong>: a temporal fitness function checks the license text of each open-source library; any change triggers a review</li>
+<li><strong>Break-on-upgrade test</strong>: a temporal test fails automatically when a dependency version changes, prompting explicit verification before the upgrade is accepted</li>
+</ul>
+<p>Temporal fitness functions are the mechanism for governing external change (library upgrades, vendor dependency changes).</p>
+<h2>Priority Tiers</h2>
+<p>Not every fitness function should block every pipeline stage (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 2):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Pipeline behaviour</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Key</strong></td>
+<td>Must pass at every stage; blocks promotion on failure</td>
+</tr>
+<tr>
+<td><strong>Relevant</strong></td>
+<td>Tracked and measured; does not block promotion</td>
+</tr>
+<tr>
+<td><strong>Not relevant</strong></td>
+<td>Excluded from this pipeline</td>
+</tr>
+</tbody></table></div>
+<p>Priority is assigned per fitness function per pipeline context; the same fitness function may be &quot;key&quot; in a security-critical service and &quot;relevant&quot; in an internal tooling service.</p>
+<h2>Combining Categories</h2>
+<p>Fitness function categories frequently intersect in practice. The most common and important combinations (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 3):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Combination</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Atomic + Triggered</strong></td>
+<td>Runs on a specific event; tests one characteristic</td>
+<td>JDepend cycle check on commit; ArchUnit layer enforcement in CI</td>
+</tr>
+<tr>
+<td><strong>Holistic + Triggered</strong></td>
+<td>Runs on a specific event; tests characteristic interactions</td>
+<td>Integration test verifying security-scalability interaction (caching may cause data staleness that fails security test)</td>
+</tr>
+<tr>
+<td><strong>Atomic + Continual</strong></td>
+<td>Always running; tests one characteristic</td>
+<td>REST endpoint conformity monitor — continuously calls all endpoints to verify they support correct verbs and error handling</td>
+</tr>
+<tr>
+<td><strong>Holistic + Continual</strong></td>
+<td>Always running; tests multiple interacting characteristics</td>
+<td>Netflix Chaos Monkey/Simian Army: runs continuously in production, randomly terminates instances and introduces network failures; forces all services to be resilient by design</td>
+</tr>
+</tbody></table></div>
+<p><strong>GitHub Scientist</strong> (Ruby framework) is the canonical holistic+continual fitness function for safe refactoring: it runs old and new code paths simultaneously in production (at a configured percentage of requests), compares results out-of-band, logs divergences, and always returns the old (control) result to the caller. Developers can refactor critical infrastructure — GitHub used it to replace their shell-script-based merge implementation — while continuously verifying correctness under real production load. After 4 days with no mismatches for 24 hours, the old code was removed.</p>
+<blockquote>
+<p>&quot;Most architectures will have a large number of atomic fitness functions and a few key holistic ones.&quot; (Ch 3)</p>
+</blockquote>
+<h2>Key Principles (evo-arch)</h2>
+<p><strong>Intentional over emergent</strong>: fitness functions should be identified <em>before</em> first development iteration — design them upfront for the dimensions that matter. Emergent fitness functions (discovered only after a problem manifests) represent a governance failure. The effort to retrofit them into an existing codebase is significantly higher than designing them in from the start.</p>
+<p><strong>Identify fitness functions early</strong>: the earlier a fitness function is identified, the lower the cost of maintaining it. For each architectural dimension (performance, security, scalability, compliance), ask at the start: <em>what does success look like, and how will we know we still have it?</em></p>
+<p><strong>Fitness Function Review</strong>: a formal meeting with key business and technical stakeholders, held at least annually or triggered by significant events (major user growth, new business capability, regulatory change). The review covers: which existing fitness functions remain relevant; whether thresholds should change in scale or magnitude; whether better measurement approaches exist; and whether new dimensions have emerged that require new fitness functions. The output is an updated priority map (key/relevant/not relevant) (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 2).</p>
+<h2>Classification by Mechanism (FOSA)</h2>
+<p><em>Fundamentals of Software Architecture</em> classifies fitness functions by the type of mechanism rather than the type of characteristic (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> Ch 6):</p>
+<p><strong>Framing:</strong> fitness functions are &quot;NOT a new framework, a new perspective on existing tools.&quot; JDepend, ArchUnit, NetArchTest, and Chaos Monkey all pre-existed the term. The fitness function abstraction unifies them as a single governance mechanism rather than treating them as disparate testing categories.</p>
+<p><strong>Structural fitness functions</strong> — verify code-level architecture decisions:</p>
+<ul>
+<li><em>Cyclic dependency detection</em>: JDepend checks that no package cycles exist (atomic + triggered; unit test in the build pipeline)</li>
+<li><em>Layer enforcement</em>: ArchUnit (Java) or NetArchTest (.NET) verify presentation layer does not call database layer</li>
+<li><em>Connascence limits</em>: no component exceeds an afferent coupling threshold</li>
+<li><em>Cyclomatic Complexity (CC)</em>: Thomas McCabe Sr. (1976); CC = E − N + 2 per function (E = edges, N = nodes in the control-flow graph). Industry threshold: CC ≤ 10 is acceptable; authors prefer ≤ 5. CC &gt; 50 is considered impossible to maintain. Crap4J combines CC with test coverage to identify high-risk methods (high CC + low coverage). TDD accidentally produces lower CC because writing tests first forces small, focused methods.</li>
+<li><em>Distance from main sequence</em>: JDepend calculates package-level abstractness (A) and instability (I); D = |A + I − 1| with a configurable tolerance threshold (e.g., 0.5)</li>
+</ul>
+<p><strong>Operational fitness functions</strong> — verify runtime architecture decisions:</p>
+<ul>
+<li><em>Chaos engineering</em>: Netflix <strong>Chaos Monkey</strong> terminates random production instances; <strong>Simian Army</strong> extends this: <strong>Conformity Monkey</strong> checks services against governance rules, <strong>Security Monkey</strong> identifies security vulnerabilities and misconfigured security groups, <strong>Janitor Monkey</strong> decommissions orphaned services (services with no active callers), <strong>Chaos Kong</strong> simulates failure of an entire AWS availability zone. Origin: Netflix moved to AWS and lost direct hardware control; Chaos Monkey was created to ensure services were resilient by design rather than by assumption.</li>
+<li><em>Latency monitoring</em>: alert when p99 latency exceeds SLA threshold</li>
+<li><em>Contract testing</em>: Pact verifies consumer/provider API contracts are not silently broken</li>
+</ul>
+<p><strong>Process fitness functions</strong> — verify team practice decisions:</p>
+<ul>
+<li><em>Test coverage thresholds</em>: fail the build if coverage drops below a baseline (agility decomposes into testability + deployability + modularity — each is measurable)</li>
+<li><em>Deployment frequency</em>: alert if release cadence slows past an agreed floor</li>
+<li><em>Deployment success ratio</em>: percentage of successful deployments; deployment duration; post-deployment issues raised</li>
+</ul>
+<p><strong>Key principle:</strong> &quot;Architects must ensure that developers understand the <em>purpose</em> of the fitness function before imposing it on them.&quot; Fitness functions imposed without explanation breed resentment and workarounds that defeat the governance intent. Framing fitness functions as engineering checklists (Atul Gawande&#39;s <em>The Checklist Manifesto</em>) helps: they enforce discipline not because engineers lack knowledge, but because complex systems create too many simultaneous concerns to rely on memory alone.</p>
+<h2>API-Specific Categories (api-arch)</h2>
+<p><em>Mastering API Architecture</em> provides a concrete taxonomy of fitness function categories for API-driven systems (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What It Checks</th>
+<th>Example Automation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code quality</strong></td>
+<td>Static analysis, dependency hygiene</td>
+<td>SonarQube gates, OWASP dependency-check</td>
+</tr>
+<tr>
+<td><strong>Resiliency</strong></td>
+<td>Service tolerates dependency failures</td>
+<td>Chaos engineering; circuit breaker tests</td>
+</tr>
+<tr>
+<td><strong>Observability</strong></td>
+<td>Required telemetry is emitted</td>
+<td>All services emit RED metrics; trace sampling active</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Response times within SLO</td>
+<td>Load test p99 latency below threshold (Gatling, K6)</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Regulatory requirements met</td>
+<td>PCI / GDPR data residency; audit logging present</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Security controls in place</td>
+<td>TLS everywhere; no secrets in code; SAST clean</td>
+</tr>
+<tr>
+<td><strong>Operability</strong></td>
+<td>Service can be operated in production</td>
+<td>Health endpoints present; runbooks linked; on-call defined</td>
+</tr>
+</tbody></table></div>
+<p>The FOSA taxonomy (structural/operational/process) categorises by <em>mechanism</em>; the api-arch taxonomy categorises by <em>concern</em>. Both are compatible and complementary.</p>
+<h2>Enterprise Fitness Functions</h2>
+<p>In microservices and service-based architectures, enterprise architects can inject enterprise-wide fitness functions into a shared <a href="../concepts/deployment-pipelines.html">deployment pipeline template</a> that all services inherit (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 8):</p>
+<ul>
+<li>Security scans (no hardcoded secrets, dependency vulnerability checks)</li>
+<li>License legality monitors (temporal fitness functions watching open-source licenses)</li>
+<li>Compliance checks (GDPR, PCI, audit logging)</li>
+</ul>
+<p>Individual teams add service-specific fitness functions on top of this enterprise baseline. Enterprise architects own the shared constraints; teams own the implementation. This scales governance across hundreds of services without requiring manual verification.</p>
+<h2>Cycle Time as a Fitness Function</h2>
+<p>Cycle time — the duration from commit to production — is itself an architectural fitness function (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 7). The <strong>Lack of Speed to Release</strong> pitfall: if the pipeline is too slow, teams run fitness functions less frequently, degrading their protective value. Slow cycle time is a meta-failure: it undermines the entire incremental change pillar.</p>
+<p>Treating cycle time as a key process fitness function means:</p>
+<ul>
+<li>Setting an explicit threshold (e.g., pipeline must complete within 30 minutes)</li>
+<li>Alerting the enterprise architect if any tier&#39;s cycle time exceeds the threshold</li>
+<li>Treating a slow pipeline as an architectural defect requiring architectural remediation, not just infrastructure tuning</li>
+</ul>
+<p>This connects directly to the business case: the book&#39;s formula <strong>v ∝ c</strong> (evolution speed is proportional to cycle time) means slow cycle time is a business problem, not merely an engineering inconvenience.</p>
+<h2>Consumer-Driven Contracts as Integration Fitness Functions</h2>
+<p>In microservices, consumer-driven contracts are atomic integration fitness functions (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 8). Each consumer provides the provider with a test suite expressing what it needs; the provider runs all consumer suites as pipeline gates. Any provider change breaking a consumer&#39;s tests fails promotion.</p>
+<p>This is the &quot;engineering safety net&quot; pattern: integration protocol consistency is enforced automatically rather than through manual per-release coordination between teams. It replaces the anti-pattern of providers making changes and discovering breakage when consumers deploy.</p>
+<p>See <a href="../concepts/api-testing.html">Api Testing</a> for the Pact framework implementation of consumer-driven contracts.</p>
+<h2>Future Directions: Generative Testing and AI Fitness Functions</h2>
+<p>From Ch 8 — two emerging fitness function approaches:</p>
+<p><strong>Generative testing</strong>: rather than writing assertion-based tests for known edge cases, generate a large number of inputs, run them, and use statistical analysis on the results to find anomalous behaviour. Catches unexpected edge cases that traditional unit tests miss (which only check the boundaries developers anticipated). Common in functional programming communities; gaining wider adoption.</p>
+<p><strong>AI-based fitness functions</strong>: use anomaly detection models to identify unexpected architectural behaviour — unusual inter-service call patterns, traffic anomalies, novel failure modes. Credit card fraud detection (flagging near-simultaneous transactions in geographically distant locations) is the analogue. As ML frameworks become more accessible, architects can build investigatory tools that look for architectural oddities.</p>
+<h2>Compliance Section in ADRs</h2>
+<p>Richards &amp; Ford recommend adding a Compliance section to each <a href="../concepts/adrs.html">Architecture Decision Record</a> specifying whether the decision can be verified by an automated fitness function, and if so, how. This links decision documentation to active governance: the ADR is not just a record of a decision but a specification of how the decision will be enforced (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> Ch 19).</p>
+<h2>Decomposition Governance Fitness Functions (SATH)</h2>
+<p><em>Software Architecture: The Hard Parts</em> (Ch 5) provides a set of holistic fitness functions for governing component-based decomposition during a monolith migration (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 5). These are typically triggered in CI/CD on deployment:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Fitness function</th>
+<th>What it checks</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maintain component inventory</td>
+<td>Alerts if new components are added or existing ones removed (prevents structural drift during migration)</td>
+<td>Custom pseudocode — compare current namespace list to stored baseline</td>
+</tr>
+<tr>
+<td>No component shall exceed X% of total codebase</td>
+<td>Identifies components that are too large; threshold varies by application size</td>
+<td>Custom — accumulate statements per component, calculate percentage</td>
+</tr>
+<tr>
+<td>No component shall exceed N standard deviations from mean size</td>
+<td>Identifies outlier components using statistical analysis rather than a fixed threshold</td>
+<td>Custom — calculate mean and std dev of statement counts</td>
+</tr>
+<tr>
+<td>No source code in root namespaces</td>
+<td>Alerts when &quot;orphaned classes&quot; exist (code in non-leaf namespaces) — the Flatten Components invariant</td>
+<td>Custom — walk directory tree, check non-leaf nodes for source files</td>
+</tr>
+<tr>
+<td>Component A shall not depend on component B</td>
+<td>Governs specific dependency restrictions between components</td>
+<td>ArchUnit (Java): <code>noClasses().that().resideInAPackage(&quot;..A..&quot;).should().accessClassesThat().resideInAPackage(&quot;..B..&quot;)</code></td>
+</tr>
+<tr>
+<td>All namespaces in domain service X must start with domain prefix Y</td>
+<td>Governs component domain alignment within a service (prevents domain contamination)</td>
+<td>ArchUnit (Java): <code>classes().should().resideInAPackage(&quot;..ss.ticket..&quot;)</code></td>
+</tr>
+<tr>
+<td>No component shall exceed N total dependencies (CA + CE)</td>
+<td>Prevents coupling from growing during ongoing maintenance</td>
+<td>Custom — sum afferent and efferent coupling per component, alert on threshold</td>
+</tr>
+</tbody></table></div>
+<p>These fitness functions are all <em>holistic</em> (structural characteristics of the codebase) and <em>triggered</em> (run on deployment in CI/CD). They implement automated governance for the <a href="../concepts/architectural-decomposition.html">component-based decomposition patterns</a>.</p>
+<h2>The Fitness Function Testing Pyramid (SAM)</h2>
+<p>Weiss (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 2) adapts the functional testing pyramid to architectural tests, providing a practical framework for balancing cost and confidence across fitness functions.</p>
+<p><strong>Classification drivers:</strong> Two categories primarily determine pyramid placement — breadth of feedback (atomic vs holistic) and execution trigger (triggered vs continuous). Other dimensions (location, metric type, automation) are secondary.</p>
+<p><strong>Three layers:</strong></p>
+<ul>
+<li><strong>Bottom (triggered atomic)</strong>: fast, cheap, easy to maintain. Code coverage metrics, static code analysis (cyclomatic complexity, dependency checks), simple performance thresholds. Build the broadest base here. Do <em>not</em> create tests without a clear quality goal — untargeted metrics waste effort.</li>
+<li><strong>Middle (triggered holistic OR continuous atomic)</strong>: integration test suites (triggered across multiple components), or continuous production monitoring of single atomic values (response time per endpoint, transaction latency). Fewer tests; higher cost.</li>
+<li><strong>Top (continuous holistic OR triggered holistic in production)</strong>: chaos engineering, business-level KPIs (revenue/minute, checkout rate/minute monitored continuously), or triggered tests against a live production system (e.g., regression suite run during a rolling deployment to verify zero downtime). Hardest and costliest. Use sparingly.</li>
+</ul>
+<p><strong>ISO 25010 quality attribute anchoring</strong>: fitness functions should be tied to a named quality attribute from the ISO 25010 taxonomy (functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, portability) — this connects each test to a stakeholder-agreed quality goal, preventing untargeted automation.</p>
+<p><strong>7-step process</strong>: (1) align quality goals with stakeholders → (2) draft fitness functions with tentative categories → (3) prioritise by importance, feasibility, and pyramid coverage gaps → (4) finalize definitions → (5) implement automated tests → (6) visualize and share → (7) iterate (retire, tighten, or loosen as the system evolves).</p>
+<blockquote>
+<p><strong>Extension to evo-arch</strong>: Weiss adds two optional dimensions not present in Ford/Parsons/Kua: <em>target audience</em> (explicit audience specification for large organisations) and <em>applicability</em> (constraining a fitness function to a specific subsystem or technology). The core mandatory categories (atomic/holistic, triggered/continuous, execution location, metric type, automation, quality attribute) align well with the evo-arch taxonomy, making the two frameworks complementary.</p>
+</blockquote>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Originating source; full classification taxonomy (5 dimensions), priority tiers, temporal fitness functions, enterprise pipeline templates; fitness functions are the book&#39;s central organising concept</td>
+</tr>
+<tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Incorporates fitness functions as the governance mechanism within the broader architecture process; classifies by mechanism (structural/operational/process); provides ArchUnit and Chaos Monkey as primary examples</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>Applies fitness functions to API-specific concerns; provides seven categories (code quality, resiliency, observability, performance, compliance, security, operability); links each to concrete CI/CD tooling</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
+<td>Applies the fitness function concept to distributed architecture governance; concrete decomposition governance examples (component size, dependency limits, domain namespace enforcement); Equifax breach (2017) as enterprise-scale motivating case; JDepend, ArchUnit, NetArchTest for structural checks</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></td>
+<td>Weiss (ch. 2): adapts testing pyramid to fitness functions — three pyramid layers; ISO 25010 anchoring; 7-step development process. Ford (ch. 8): metrics → engineering transformation; automation operationalises governance; ArchUnit cycle checks; zero-day enterprise security pattern; fitness functions as executable checklist (Gawande). Woods (ch. 7): four-quadrant measurement taxonomy (artifact/operational × external/internal); quality-attribute-specific measurement approaches; &quot;measure what matters&quot; principle.</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the automation mechanism that applies fitness functions as pipeline gates</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — fitness functions are the governance mechanism within the evolutionary architecture framework</li>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — enterprise pipeline templates require team boundaries aligned to architectural boundaries</li>
+<li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — the characteristics that fitness functions measure</li>
+<li><a href="../concepts/adrs.html">Adrs</a> — decisions that specify fitness functions in their Compliance section</li>
+<li><a href="../concepts/risk-storming.html">Risk Storming</a> — complementary technique for identifying risks that fitness functions should cover</li>
+<li><a href="../concepts/api-testing.html">Api Testing</a> — contract tests (Pact) are atomic integration fitness functions</li>
+<li><a href="../reference/technology-glossary.html">Technology Glossary</a> — tool entries for ArchUnit, JDepend, SonarQube, Chaos Monkey, Gatling</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li><li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../concepts/risk-storming.html">Risk Storming</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

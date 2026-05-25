@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fine-grained domain services; maximum quanta; highest agility/cost; DDD: deep module heuristic, BC vs microservice relationship, subdomain as safe…">
+  <meta property="og:title" content="Microservices Architecture — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Fine-grained domain services; maximum quanta; highest agility/cost; DDD: deep module heuristic, BC vs microservice relationship, subdomain as safe…">
+  <title>Microservices Architecture — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details open>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html" aria-current="page">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../styles/index.html">Styles</a> <span class="sep">›</span> Microservices Architecture</nav></div>
+      <h1>Microservices Architecture</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../styles/index.html">style</a>
+        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/domain-partitioning.html">domain-partitioning</a><a class="tag-chip" href="../tags/bounded-contexts.html">bounded-contexts</a><a class="tag-chip" href="../tags/devops.html">devops</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>Microservices architecture decomposes a system into many fine-grained, independently deployable services, each owning a single <a href="../concepts/bounded-contexts.html">bounded context</a> of the domain and its own data store. Services communicate over lightweight protocols (HTTP/REST, gRPC, or messaging). The style prioritises extreme decoupling, independent deployability, and evolutionary change over operational simplicity and raw performance.</p>
+<h2>History</h2>
+<p>Microservices is unusual: it was named <em>early</em>, in a March 2014 blog post by Martin Fowler and James Lewis, who recognised common characteristics forming in a new style and gave it a name before it became dominant. Most architecture styles are named retrospectively. The Fowler/Lewis post helped define the style and spread it widely.</p>
+<h2>Core Philosophy</h2>
+<p><strong><a href="../concepts/bounded-contexts.html">Bounded context</a></strong> (from DDD): each service should model a single, well-defined domain concept, including all the data and behaviour required to implement that concept end-to-end. Services should not share domain models or data stores. When two services need the same data, they each keep their own copy (with the associated synchronisation complexity).</p>
+<p><strong>Extreme granularity as a goal</strong>: the purpose of fine-grained services is maximum decoupling — so each service can change, deploy, scale, and fail independently of all others. The tradeoff is operational complexity and network overhead.</p>
+<p><strong>DevOps prerequisite</strong>: microservices are only viable with mature automation — containerisation (Docker), orchestration (Kubernetes), CI/CD pipelines, service discovery, distributed tracing, centralised logging. Without this foundation, the operational burden overwhelms the benefits.</p>
+<h2>Topologies</h2>
+<p>Three common topologies (→ <a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a> ch. 4):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>Description</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>API REST-based</strong></td>
+<td>Fine-grained services exposed via an API layer; clients call single-purpose endpoints</td>
+<td>Cloud-style public APIs (Yahoo, Google, Amazon-era web services)</td>
+</tr>
+<tr>
+<td><strong>Application REST-based</strong></td>
+<td>Coarser-grained service components behind a separately deployed UI layer via REST</td>
+<td>Small to medium business applications</td>
+</tr>
+<tr>
+<td><strong>Centralised messaging</strong></td>
+<td>Same as application REST-based but uses a lightweight message broker as transport instead of REST</td>
+<td>Larger apps needing async messaging, advanced queuing, monitoring</td>
+</tr>
+</tbody></table></div>
+<p><strong>Centralised messaging ≠ SOA</strong>: the broker in this topology does <em>no orchestration, transformation, or complex routing</em> — it is purely a transport mechanism. SPOF concerns addressed via broker clustering and federation. Compare to SOA&#39;s ESB, which embeds business logic.</p>
+<h2>Physical Topology</h2>
+<pre><code>[UI] → [API Layer / Gateway] (proxy only — no orchestration)
+                │
+    ┌──────┬───┼──────┬──────┐
+    ▼      ▼   ▼      ▼      ▼
+ [SvcA] [SvcB] [SvcC] [SvcD] [SvcE]
+    │      │   │      │      │
+   [DB]  [DB] [DB]  [DB]  [DB]  (one data store per service)
+</code></pre>
+<p><strong>API layer</strong>: a thin proxy gateway that routes requests to services. The API layer in microservices is explicitly <em>not</em> an orchestrator — no business logic lives there (contrast with SOA&#39;s ESB). Operational concerns (auth, rate limiting, monitoring) may be applied here. Commonly used to host service discovery, allowing user interfaces and calling systems to find and create services elastically.</p>
+<p><strong>Sidecar pattern</strong>: operational concerns (logging, tracing, mTLS, circuit breaking) are moved out of service code into a co-deployed sidecar proxy. Multiple sidecars connect to form a <strong>service plane</strong>, which forms the <strong>service mesh</strong> — a consistent operational interface across all microservices. See <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>.</p>
+<p><strong>Frontends:</strong> two patterns. <em>Monolithic frontend</em>: a single UI (desktop, mobile, or web framework) calls through the API layer. <em>Microfrontends</em>: each service emits its own UI component, which the frontend coordinates. Microfrontends extend bounded context all the way to the user interface, enabling a single team to own the domain end-to-end. The microfrontend pattern can be implemented with component-based frameworks (React) or dedicated open-source frameworks.</p>
+<p><strong>Communication model — protocol-aware heterogeneous interoperability:</strong> <em>Protocol-aware</em> — no centralised hub means each service must know (or discover) which protocol to use to call others; architects standardise on specific protocols (REST, gRPC, messaging). <em>Heterogeneous</em> — services may be written in different technology stacks; polyglot environments are fully supported. <em>Interoperability</em> — services call each other over the network to collaborate and exchange information.</p>
+<p><strong>Enforced heterogeneity (notable approach):</strong> one early microservices architect at a personal-information-manager startup mandated that each team use a <em>different</em> technology stack. If one team used Java and another .NET, accidental class sharing across boundaries was physically impossible. This was the polar opposite of enterprise governance&#39;s &quot;standardise on one stack&quot; instinct — and intentionally so.</p>
+<h2>Granularity Guidelines</h2>
+<p>Service size is determined by domain need, not lines of code. Three granularity disintegrators (reasons to split):</p>
+<ol>
+<li><strong>Purpose</strong>: the service has more than one distinct domain responsibility.</li>
+<li><strong>Transaction</strong>: a single logical transaction spans multiple unrelated concerns.</li>
+<li><strong>Choreography</strong>: the service orchestrates other services (use choreography instead, or extract a mediator).</li>
+</ol>
+<p>And integrators (reasons to merge):</p>
+<ol>
+<li><strong>Database joins</strong>: frequently joined data should live in one service.</li>
+<li><strong>Performance</strong>: chatty inter-service calls that add latency.</li>
+<li><strong>Shared code exceeds 20% of codebase</strong>: shared domain logic suggests the two services are actually one.</li>
+</ol>
+<h2>Communication Patterns</h2>
+<p><strong>Domain/architecture isomorphism:</strong> because microservices favours decoupling, the shape of the style resembles the broker EDA — making choreography and microservices naturally symbiotic patterns. A microservices architecture using choreography is following the structural logic of both styles simultaneously.</p>
+<p><strong>Choreography</strong> (preferred for decoupling): services react to events published by other services. No central orchestrator. Maximum decoupling; complex error handling.</p>
+<p><strong>Orchestration</strong> (mediator): a dedicated mediator service coordinates a workflow across other services. Centralises complexity; creates coupling to the mediator. Appropriate for complex, inherently coupled business workflows.</p>
+<p><strong>Front controller anti-pattern:</strong> in a complex choreographed workflow, the first service called begins accumulating coordination responsibility — it acts as a mediator while also having its own domain responsibilities. This is the front controller anti-pattern — a signal that the coordination concern should be extracted into an explicit mediator service.</p>
+<p><strong>Note on orchestration vs performance:</strong> microservices often prefer choreography over orchestration for a performance reason — less coupling means fewer bottlenecks and faster communication paths.</p>
+<h2>Transactions</h2>
+<p>Microservices should not share databases or participate in distributed transactions. If a transaction is needed across services, the right solution is to <strong>fix the service granularity</strong> — the transaction boundary indicates the services should be one.</p>
+<p>When cross-service transactions are truly necessary (different characteristics require separate services), use the <a href="../patterns/saga.html">Saga</a> pattern — with the explicit understanding that this adds significant complexity and should be used sparingly.</p>
+<blockquote>
+<p>&quot;Don&#39;t do transactions in microservices — fix granularity instead!&quot; (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 17)
+&quot;A few transactions across services is sometimes necessary; if it&#39;s the dominant feature of the architecture, mistakes were made.&quot; (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 17)</p>
+</blockquote>
+<h2>Architecture Characteristics Ratings</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Rating</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deployability</td>
+<td>★★★★★</td>
+<td>Each service deploys independently; fastest path from code to production</td>
+</tr>
+<tr>
+<td>Elasticity</td>
+<td>★★★★★</td>
+<td>Fine-grained services can scale independently to the function level</td>
+</tr>
+<tr>
+<td>Evolutionary</td>
+<td>★★★★★</td>
+<td>Extreme decoupling enables architectural change without system-wide risk</td>
+</tr>
+<tr>
+<td>Fault tolerance</td>
+<td>★★★★☆</td>
+<td>Independent services contain failures (inter-service calls still carry risk)</td>
+</tr>
+<tr>
+<td>Modularity</td>
+<td>★★★★★</td>
+<td>Maximum: one bounded context per service</td>
+</tr>
+<tr>
+<td>Overall cost</td>
+<td>★★☆☆☆</td>
+<td>Very expensive — many services, complex infrastructure</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>★★☆☆☆</td>
+<td>Network calls for every interaction; security checks per endpoint</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>★★★★☆</td>
+<td>High with proper service mesh and retry/circuit-breaker patterns</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>★★★★★</td>
+<td>Per-service scaling; some of the most scalable systems use this style</td>
+</tr>
+<tr>
+<td>Simplicity</td>
+<td>★☆☆☆☆</td>
+<td>Most complex style to operate</td>
+</tr>
+<tr>
+<td>Testability</td>
+<td>★★★★★</td>
+<td>Small, independent services with clear boundaries are the most testable</td>
+</tr>
+</tbody></table></div>
+<h2>Trade-offs</h2>
+<p><strong>Strengths:</strong></p>
+<ul>
+<li>Maximum agility: each service can change, redeploy, and evolve independently.</li>
+<li>Operational isolation: failure in one service does not cascade.</li>
+<li>Enables large engineering organisations (many independent teams, each owning a service).</li>
+<li>The highest quanta count of any style — maximally aligned with the architecture quantum model.</li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul>
+<li>Performance: every operation involves network calls; latency compounds across service chains.</li>
+<li>Cost: large number of services requires significant infrastructure investment.</li>
+<li>Operational complexity: distributed tracing, service discovery, secret management, health checking.</li>
+<li>Data management: duplicate data across services + eventual consistency instead of ACID transactions.</li>
+<li>Stamp coupling risk: services may pass more data than necessary, wasting bandwidth.</li>
+</ul>
+<h2>The &quot;Micro&quot; Misconception</h2>
+<blockquote>
+<p>&quot;The term &#39;microservice&#39; is a label, not a description.&quot; — Martin Fowler (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 17)</p>
+</blockquote>
+<p>The name was coined to contrast with SOA&#39;s &quot;gigantic services&quot; — not to prescribe small size. Many developers take &quot;microservices&quot; as a commandment and create services too fine-grained to do useful work independently, forcing them to build communication links back between services to compensate.</p>
+<p>Size is not the goal. A service that doesn&#39;t encapsulate significant functionality only adds operational overhead without delivering the decoupling benefit. The right guideline: <strong>small API surface area, significant encapsulated functionality</strong>. The surface area determines coupling; the functionality determines whether the service is worth operating independently. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 21)</p>
+<h2>Distributed Monolith Antipattern</h2>
+<p>A distributed monolith is the worst of both worlds: a set of separately deployed services that are so tightly coupled that they cannot be changed or deployed independently. All the complexity of distribution is added, while none of the decoupling benefit is realised.</p>
+<p>Common causes of tight coupling that produce a distributed monolith:</p>
+<ul>
+<li><strong>Fragile APIs</strong>: internal contracts that break with every change, forcing clients to update in lockstep.</li>
+<li><strong>Shared libraries</strong>: cross-cutting business logic in libraries that must be updated in sync across services.</li>
+<li><strong>Static IP addressing</strong>: services referencing each other by IP rather than via a service registry.</li>
+<li><strong>Shared databases</strong>: multiple services reading from and writing to the same database tables.</li>
+</ul>
+<p>Detection: if deploying one service requires coordinating changes across multiple other services, the services are a distributed monolith. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 21)</p>
+<h2>Stamp Coupling</h2>
+<p>Stamp coupling occurs when a service sends more data in an API response than the consumer needs. In microservices, this consumes bandwidth at scale and creates implicit coupling (consumers depend on the full message schema, even fields they don&#39;t use). Solutions: field selectors, GraphQL, multiple fine-grained endpoints, or message schemas with only the required fields.</p>
+<h2>Quanta</h2>
+<p>Maximum quanta — potentially one per service. This is the primary characteristic differentiating microservices from service-based architecture.</p>
+<h2>Partitioning</h2>
+<p>Domain (bounded context per service). The most strictly domain-partitioned style.</p>
+<h2>Cascading Failures and Scalability Resilience</h2>
+<p>The distributed nature of microservices introduces failure modes absent in monoliths. Under load, slow downstream responses are more dangerous than hard failures: a slow service returns results, but with increasing latency — every thread waiting for it is blocked. With fixed thread pools, sustained downstream slowness exhausts the caller&#39;s pool and cascades up the chain. (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 9)</p>
+<p><strong>Why immediate retries worsen the problem:</strong> Retrying on failure maintains request pressure on an already-overloaded service. Use exponential backoff, or — once the downstream is reliably failing — a circuit breaker.</p>
+<p><strong>Fail fast strategies</strong> for controlling long-tail response times:</p>
+<ul>
+<li><em>TCP read timeout at P99</em>: configure the network timeout at the service&#39;s P99 response time; release the thread immediately on timeout rather than blocking indefinitely.</li>
+<li><em>Request throttling</em>: load balancer or API gateway returns HTTP 503 when capacity is exceeded, protecting the backend from overload.</li>
+<li><em>Graceful degradation</em>: return a cached or default response when the downstream is unavailable — masking transient failures from end users (e.g., &quot;shows you might like&quot; instead of personalised recommendations).</li>
+</ul>
+<p><strong>Response time percentiles:</strong> Averages are misleading for long-tail workloads. A service with P50=200ms and P99=3,000ms has 1% of requests taking 15× the median. Use P50/P95/P99 for capacity planning and timeout sizing. BBC data: 10% fewer users per additional second of load time.</p>
+<p><strong>Data duplication trade-off:</strong> Where inter-service calls would create excessive latency or coupling, microservices sometimes duplicate data locally. This reduces distributed communication overhead but requires application-level consistency management. As systems scale, the cost of data duplication is typically smaller than the cost of a major refactoring.</p>
+<h2>When Microservices Are the Wrong Choice</h2>
+<p>Newman identifies four conditions where microservices should not be adopted (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 2):</p>
+<ol>
+<li><strong>Unclear domain</strong>: wrong service boundaries are expensive to fix; the SnapCI team merged back to a monolith and re-decomposed a year later with much better results</li>
+<li><strong>Startups</strong>: microservices solve scale-up problems, not startup problems; Netflix and Airbnb moved to microservices <em>after</em> finding product/market fit</li>
+<li><strong>Customer-installed software</strong>: operational complexity cannot be pushed onto customers who may not have Kubernetes skills or platforms</li>
+<li><strong>No clear reason</strong>: &quot;microservices because Netflix does&quot; is not a reason</li>
+</ol>
+<blockquote>
+<p><strong>Open question:</strong> At what organisational scale does the modular monolith stop being sufficient? Newman suggests the answer is context-dependent and most teams jump to microservices too early.</p>
+</blockquote>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Detailed treatment of bounded context, granularity guidelines, choreography vs orchestration, saga usage, and ratings; positions as the highest agility/scalability style with the highest cost and complexity</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Treats the underlying distributed systems challenges — replication, consistency, idempotency, saga, outbox — that microservices must solve; does not treat microservices as an architecture style per se</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></td>
+<td>Earlier (2015) Richards treatment — names three deployment topologies (API REST, Application REST, Centralised Messaging); establishes the granularity warning and DRY-tradeoff guidance; recommends shared database for inter-service data (superseded by FOSA&#39;s distributed-monolith anti-pattern analysis)</td>
+</tr>
+<tr>
+<td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>DDD-centric treatment. Core claim: &quot;microservice&quot; = a service with a micro-<em>public interface</em>, not a micro-codebase. Effective microservices are <strong>deep modules</strong> (Ousterhout): simple public interface over complex internal logic — wide top, deep body. Granularity sweet spot: bounded context = widest valid boundary (largest valid monolith protecting UL consistency); microservice threshold = narrowest valid boundary (below this, integration interfaces grow back up → distributed big ball of mud). <strong>Asymmetric relationship</strong>: all microservices are bounded contexts; not all bounded contexts are microservices. <strong>Subdomain as safe granularity heuristic</strong>: subdomains are naturally deep (function = &quot;what&quot;; logic = coherent use cases), making them the recommended service boundary. Aggregates are the <em>narrowest</em> valid boundary — use only when coupling to other aggregates in the subdomain is minimal. OHS compresses public interfaces by replacing implementation models with published languages; ACL-as-standalone-service offloads integration complexity from consuming services (ch. 14)</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Migration-focused treatment. Defines microservice as &quot;an independently deployable service modelled around a business domain.&quot; Three load-bearing words: independently deployable (the operational property), service (the unit), business domain (the boundary criterion). <strong>Independent deployability is the #1 principle</strong> — no shared databases, outside-in interface design, and loose coupling all follow from it. Newman acknowledges monolith advantages (simpler deployment, developer workflow, code reuse) and argues microservices are appropriate only when those advantages are outweighed. Introduces a four-type coupling taxonomy (implementation, temporal, deployment, domain) and maps it to Parnas&#39; information hiding as the key design technique.</td>
+</tr>
+<tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Scalability framing. Core motivation: monolith can only scale the whole application — microservices enable per-service independent scale-out. Cascading failures under load as the key operational challenge: slow downstream responses fill thread pools silently, back-pressuring up the call chain. Fail fast via P99 TCP timeout + HTTP 503 throttling + graceful degradation with default responses. Long-tail percentiles (P50/P95/P99) as the right metric. Data duplication as an accepted scalability trade-off vs. cross-service round trips. API gateway as the facade pattern for microservices deployments. (ch. 9)</td>
+</tr>
+</tbody></table></div>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — operational reuse pattern used in microservices</li>
+<li><a href="../patterns/saga.html">Saga</a> — the distributed transaction pattern for cross-service operations</li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — reliable event publishing for microservices</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — resiliency pattern for inter-service calls</li>
+<li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — broker topology / choreography used for inter-service communication</li>
+<li><a href="../distributed/idempotency.html">Idempotency</a> — required for at-least-once messaging in choreographed microservices</li>
+<li><a href="../styles/service-based-architecture.html">Service Based Architecture</a> — the pragmatic alternative with fewer quanta and shared databases</li>
+<li><a href="../styles/modular-monolith.html">Modular Monolith</a> — often the right intermediate step before microservices (Newman&#39;s preference for startups)</li>
+<li><a href="../concepts/modularity.html">Modularity</a> — Newman&#39;s information hiding and four coupling types</li>
+<li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a> — side-by-side ratings</li>
+<li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy</a> — how far to decompose; five decision factors; recommended migration path</li>
+<li><a href="../styles/architecture-styles.html">Architecture Styles</a> — overview and decision guide for all architecture styles</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

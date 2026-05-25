@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="When to use synchronous vs asynchronous communication; temporal coupling as the core distinction; availability chaining risk; async concerns (idempotency,…">
+  <meta property="og:title" content="Synchronous vs Asynchronous Communication — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="When to use synchronous vs asynchronous communication; temporal coupling as the core distinction; availability chaining risk; async concerns (idempotency,…">
+  <title>Synchronous vs Asynchronous Communication — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html" aria-current="page">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Synchronous vs Asynchronous Communication</nav></div>
+      <h1>Synchronous vs Asynchronous Communication</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/coupling.html">coupling</a><a class="tag-chip" href="../tags/messaging.html">messaging</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/integration.html">integration</a><a class="tag-chip" href="../tags/resiliency.html">resiliency</a><a class="tag-chip" href="../tags/temporal-coupling.html">temporal-coupling</a></ul>
+    </div><div class="page-body"><h2>The Core Distinction</h2>
+<p>This is fundamentally a coupling decision, not an implementation one. The question &quot;should I call this synchronously or asynchronously?&quot; is a special case of the question &quot;how much temporal coupling am I willing to accept?&quot;</p>
+<p><strong>Synchronous</strong>: the caller blocks until the callee responds. Both parties must be simultaneously available. The caller&#39;s progress depends directly on the callee&#39;s availability and performance.</p>
+<p><strong>Asynchronous</strong>: the caller sends a message and continues. The callee processes when it is ready. The parties are temporally decoupled — neither requires the other to be available at the same moment.</p>
+<p>Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>) identifies <strong>temporal coupling</strong> as one of the four fundamental coupling types: service A can only function when service B is simultaneously available. Synchronous calls are the primary cause of temporal coupling in distributed systems.</p>
+<h2>Trade-off Table</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Synchronous</th>
+<th>Asynchronous</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Temporal coupling</strong></td>
+<td>High — caller blocked; callee must be up</td>
+<td>None — message persists until delivery</td>
+</tr>
+<tr>
+<td><strong>Availability chaining</strong></td>
+<td>Yes — callee slowness cascades to caller</td>
+<td>No — channel buffers demand</td>
+</tr>
+<tr>
+<td><strong>Simplicity</strong></td>
+<td>High — familiar request/reply; easy to trace</td>
+<td>Low — requires correlation IDs, ordering awareness</td>
+</tr>
+<tr>
+<td><strong>Latency (p50)</strong></td>
+<td>Lower — no queueing overhead</td>
+<td>Higher — message must be queued and delivered</td>
+</tr>
+<tr>
+<td><strong>Latency (tail)</strong></td>
+<td>High — slow callee = slow caller</td>
+<td>Bounded — queue absorbs spikes</td>
+</tr>
+<tr>
+<td><strong>Result delivery</strong></td>
+<td>Immediate — caller has result when it proceeds</td>
+<td>Deferred — caller receives result via callback or polling</td>
+</tr>
+<tr>
+<td><strong>Idempotency requirement</strong></td>
+<td>Situational (retries possible)</td>
+<td>Essential — at-least-once delivery requires idempotent consumers</td>
+</tr>
+<tr>
+<td><strong>Observability</strong></td>
+<td>Simpler — linear call stack</td>
+<td>Harder — requires distributed tracing; correlation IDs mandatory</td>
+</tr>
+<tr>
+<td><strong>Failure isolation</strong></td>
+<td>Poor — callee outage blocks caller</td>
+<td>Good — caller continues; messages queue</td>
+</tr>
+<tr>
+<td><strong>Transaction boundary</strong></td>
+<td>Can span a single ACID transaction across the call</td>
+<td>Requires eventual consistency or saga patterns</td>
+</tr>
+</tbody></table></div>
+<h2>When Synchronous Is Right</h2>
+<p><strong>The caller genuinely needs the result before it can proceed.</strong> A credit-card authorisation must complete before an order is confirmed. A search query must return results before a page can render. When the caller&#39;s next action depends logically on the callee&#39;s response, synchronous is the natural model.</p>
+<p><strong>User-facing operations expecting an immediate response.</strong> North-south traffic (browser/mobile → backend) is almost always synchronous: the user is waiting. The acceptable latency budget is short (&lt; 1–2 seconds), which also caps how many synchronous hops the request can make before hitting that budget.</p>
+<p><strong>The operation is read-only and idempotent.</strong> Synchronous reads have no retry amplification risk and no ordering concerns.</p>
+<p><strong>The simplicity benefit outweighs the coupling cost.</strong> When both services are on the same team, co-deployed, and tightly related, temporal coupling may be an acceptable trade-off for simpler code.</p>
+<p><strong>Practical requirement</strong>: every synchronous call must have a timeout. Without a timeout, a slow or unresponsive callee can hold the caller&#39;s thread indefinitely — a resource leak that causes cascading failures (→ <a href="../patterns/timeout.html">Timeout</a>). Nygard&#39;s rule: slow responses are worse than refused connections, because refused connections fail fast while slow responses drain the caller&#39;s capacity.</p>
+<h2>When Asynchronous Is Right</h2>
+<p><strong>Background and long-running processing.</strong> Order fulfilment, report generation, email delivery, video encoding — none of these need the caller to wait. Queue the work; the caller confirms receipt, not completion.</p>
+<p><strong>Event fan-out.</strong> One producer event needs to reach multiple independent consumers. Async pub/sub avoids tight coupling between producer and each consumer; new consumers can be added without touching the producer (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>).</p>
+<p><strong>Cross-bounded-context integration.</strong> When two services belong to different bounded contexts with different ownership and deployment lifecycles, synchronous coupling merges their operational fate. Async messaging is the default for cross-context data sharing: each team publishes events; consumers read independently (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1).</p>
+<p><strong>Absorbing demand spikes.</strong> A message queue naturally levels load: producers send at peak rate; consumers process at their own pace. Synchronous chains amplify throughput pressure upstream.</p>
+<p><strong>Resilience over simplicity.</strong> If the callee is known to be unreliable or slow, async with retry is more robust than sync with timeout and fallback. The <a href="../patterns/retry.html">Retry</a> pattern is most naturally expressed as a queue consumer that retries on failure.</p>
+<p><strong>East-west service communication.</strong> Between internal services (east-west), async messaging is often the preferred default: it eliminates temporal coupling, enabling services to be deployed, scaled, and failed independently.</p>
+<h2>Availability Chaining: The Key Risk of Synchronous Chains</h2>
+<p>In a synchronous call chain A → B → C, the availability of A is the product of the availability of all three services. If each service is 99.9% available:</p>
+<pre><code>Chain availability ≈ 0.999 × 0.999 × 0.999 ≈ 99.7%
+</code></pre>
+<p>Each additional synchronous hop multiplies the downtime. A five-hop synchronous call chain among 99.9%-available services yields only ~99.5% availability — without any other failure mode. This effect is why the SATH dynamic coupling model (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a>) identifies <em>communication</em> (sync vs async) as one of the three primary axes of distributed workflow complexity, alongside <em>consistency</em> and <em>coordination</em>.</p>
+<p>Async messaging breaks the chain: the producer&#39;s availability is decoupled from the consumer&#39;s. The broker absorbs the gap.</p>
+<h2>Async Concerns to Address Explicitly</h2>
+<p>Choosing async is not free. These concerns must be handled:</p>
+<p><strong>Idempotency</strong>: at-least-once delivery is the reliable delivery guarantee for most messaging systems. Consumers must handle duplicate messages without double-processing. Idempotency keys are the standard mechanism (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
+<p><strong>Ordering</strong>: messages within a partition/topic are ordered; messages across partitions are not. Systems that depend on ordering (e.g., state machine transitions) must either constrain to a single partition or implement sequence numbers and out-of-order buffering.</p>
+<p><strong>Correlation</strong>: when a caller sends a message and later receives a response, it must be able to match the response to the original request. Correlation identifiers are the standard mechanism (→ <a href="../concepts/messaging.html">Messaging</a>).</p>
+<p><strong>Backpressure</strong>: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement.</p>
+<p><strong>Distributed tracing</strong>: async message flows are invisible to traditional call-stack profilers. Trace IDs must be propagated through message headers; a distributed tracing system (Jaeger, Zipkin) is necessary to reconstruct flows (→ <a href="../operations/observability.html">Observability</a>).</p>
+<h2>The Mixed Model: Sync Outside, Async Inside</h2>
+<p>The most common pattern in mature distributed systems:</p>
+<ul>
+<li><strong>North-south (user → backend)</strong>: synchronous — the user waits for a response</li>
+<li><strong>East-west (service → service)</strong>: asynchronous — services decouple via events or queues</li>
+<li><strong>Backend for Frontend (BFF)</strong>: a synchronous surface aggregating from async internal services — the BFF calls downstream synchronously where needed and reassembles the async result</li>
+</ul>
+<p>This is not a contradiction: the synchronous user-facing call completes quickly because the backend processes asynchronously and returns a receipt (&quot;order accepted; you&#39;ll be notified&quot;). The user gets immediate feedback; the internal processing is decoupled.</p>
+<p>For Bellemare (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>), the default for event-driven microservices is fully async east-west communication via event streams, with synchronous APIs reserved for user-facing queries.</p>
+<h2>Decision Guide</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Default choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User waits for the result (UI, API consumer)</td>
+<td>Synchronous</td>
+</tr>
+<tr>
+<td>Caller must have the result to proceed (auth, pricing)</td>
+<td>Synchronous</td>
+</tr>
+<tr>
+<td>Background work; caller doesn&#39;t need the result immediately</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>Processing must survive callee downtime</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>Cross-team, cross-bounded-context integration</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>One event → multiple independent consumers</td>
+<td>Asynchronous (pub/sub)</td>
+</tr>
+<tr>
+<td>East-west between independently-deployed services</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>Long-running operations (&gt;2s)</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>High-throughput with variable load</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td>Simple, co-owned internal services</td>
+<td>Either (synchronous simpler)</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/coupling.html">Coupling</a> — temporal coupling is Newman&#39;s term for the availability dependency created by synchronous calls</li>
+<li><a href="../concepts/integration-styles.html">Integration Styles</a> — EIP&#39;s four styles: File Transfer and Messaging are async; RPI is synchronous; Shared Database is neither</li>
+<li><a href="../concepts/messaging.html">Messaging</a> — the implementation vocabulary for async: channels, delivery guarantees, correlation, backpressure</li>
+<li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — async communication as the structural default for event-driven systems</li>
+<li><a href="../patterns/saga.html">Saga</a> — the distributed transaction pattern for sequences of async operations; choreography vs orchestration</li>
+<li><a href="../patterns/timeout.html">Timeout</a> — the required companion to every synchronous call; without it, async failure modes appear in sync code</li>
+<li><a href="../patterns/retry.html">Retry</a> — transient failure recovery; more naturally expressed as async queue re-delivery than sync retry loops</li>
+<li><a href="../distributed/idempotency.html">Idempotency</a> — prerequisite for safe async at-least-once delivery</li>
+<li><a href="../operations/observability.html">Observability</a> — async flows require distributed tracing; correlation IDs are mandatory</li>
+<li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration Vs Choreography</a> — once you choose async, you must choose how to coordinate the resulting event flows</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

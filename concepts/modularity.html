@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cohesion types, LCOM, coupling metrics, connascence taxonomy (static vs dynamic); SATH: applying D/A/I metrics to decomposition feasibility; Modularity…">
+  <meta property="og:title" content="Modularity — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Cohesion types, LCOM, coupling metrics, connascence taxonomy (static vs dynamic); SATH: applying D/A/I metrics to decomposition feasibility; Modularity…">
+  <title>Modularity — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html" aria-current="page">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Modularity</nav></div>
+      <h1>Modularity</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/modularity.html">modularity</a><a class="tag-chip" href="../tags/coupling.html">coupling</a><a class="tag-chip" href="../tags/cohesion.html">cohesion</a><a class="tag-chip" href="../tags/connascence.html">connascence</a><a class="tag-chip" href="../tags/mmi.html">mmi</a><a class="tag-chip" href="../tags/technical-debt.html">technical-debt</a><a class="tag-chip" href="../tags/deep-modules.html">deep-modules</a><a class="tag-chip" href="../tags/information-hiding.html">information-hiding</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>Modularity is the degree to which a system&#39;s components are divided into separate, well-bounded units that can be understood, changed, and replaced in isolation. It encompasses both <em>cohesion</em> (how well the internals of a component belong together) and <em>coupling</em> (the degree to which components depend on one another).</p>
+<h2>Why It Matters</h2>
+<p>Modularity is the structural foundation of architecture. Low modularity makes systems brittle: a change in one place requires changes everywhere, deployment risk is high, and testability suffers. High modularity enables independent deployability, testability, and evolutionary change — all critical architecture characteristics.</p>
+<p>Software systems tend toward entropy — disorder increases unless architects actively work against it, just as physical systems require energy input to maintain order. Good modularity does not happen by accident; it requires deliberate attention and continuous enforcement (via <a href="../concepts/fitness-functions.html">Fitness Functions</a> such as dependency cycle detection).</p>
+<h2>Cohesion</h2>
+<p>Cohesion measures how well the responsibilities within a module belong together. Types from best (strongest cohesion) to worst:</p>
+<ol>
+<li><strong>Functional</strong> — every element contributes to a single, well-defined task. Best.</li>
+<li><strong>Sequential</strong> — output of one element is input to the next.</li>
+<li><strong>Communicational</strong> — elements operate on the same data.</li>
+<li><strong>Procedural</strong> — elements must execute in a particular order.</li>
+<li><strong>Temporal</strong> — elements are related only by when they execute (e.g., initialisation).</li>
+<li><strong>Logical</strong> — elements are categorised together but functionally unrelated (e.g., a &quot;utilities&quot; class).</li>
+<li><strong>Coincidental</strong> — elements share a module by accident. Worst.</li>
+</ol>
+<p><strong>LCOM (Lack of Cohesion in Methods)</strong>: a structural metric measuring the degree to which a class&#39;s methods do not share instance fields. High LCOM → poor cohesion → candidate for splitting. LCOM is particularly valuable when migrating or restructuring architectures: it exposes shared utility classes that are incidentally coupled — never a coherent unit — and should be split before the monolith is extracted into services. The metric can only detect <em>structural</em> lack of cohesion, not logical relationships; interpretation always requires human judgment.</p>
+<h2>Deep vs. Shallow Modules (Ousterhout)</h2>
+<p>Ousterhout (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 4) introduces a cost/benefit framing for module design:</p>
+<ul>
+<li><strong>Benefit</strong> = the functionality a module provides to the rest of the system</li>
+<li><strong>Cost</strong> = the interface complexity it imposes on the rest of the system</li>
+</ul>
+<p>A <strong>deep module</strong> has a simple interface relative to its implementation — high benefit, low cost. The Unix I/O interface (five system calls: <code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, <code>close</code>) hides hundreds of thousands of lines of kernel implementation. A garbage collector is the extreme case: no interface at all, yet substantial hidden behaviour.</p>
+<p>A <strong>shallow module</strong> has an interface nearly as complex as its implementation. It provides little leverage. An extreme example: a one-line wrapper method whose documentation would be longer than the code itself.</p>
+<p><strong>Classitis</strong> is the cultural anti-pattern of excessive small classes driven by the &quot;classes should be small&quot; dogma. Each additional class adds interface cost to the overall system. Java I/O is the canonical example: three wrapper objects (<code>FileInputStream</code> → <code>BufferedInputStream</code> → <code>ObjectInputStream</code>) required to simply read a file, where buffering — needed in nearly every case — should be the default. Compare Unix I/O, where sequential access is the default and random access requires explicit <code>lseek</code>.</p>
+<p><strong>Design principle:</strong> interfaces should be designed so that the common case is as simple as possible. Rarely-used features should require explicit opt-in; they should not appear in the interface unless the developer specifically seeks them out. Overexposing rarely-used features is a red flag (Overexposure red flag).</p>
+<blockquote>
+<p><strong>Alignment:</strong> Ousterhout&#39;s deep/shallow distinction is the code-level counterpart to the cohesion hierarchy above. A shallow module often corresponds to coincidental or logical cohesion — elements grouped without a strong shared purpose. A deep module corresponds to functional cohesion — all internals serve a single coherent capability hidden behind a simple interface.</p>
+</blockquote>
+<blockquote>
+<p><strong>Alignment:</strong> The cost/benefit framing aligns with Martin&#39;s abstractness/instability metrics: a stable, abstract module (I = 0, A = 1) is deep in Ousterhout&#39;s sense — it provides a stable interface hiding concrete implementation. A concrete, stable module with a complex interface is both in the Zone of Pain <em>and</em> shallow.</p>
+</blockquote>
+<h2>Information Hiding (Parnas / Ousterhout)</h2>
+<p>Information hiding (David Parnas, 1972; cited by Ousterhout ch. 5 as the key technique for deep modules): each module encapsulates <em>design decisions</em> in its implementation that are invisible through its interface. Hidden information can be: data structures and algorithms, physical storage layouts, network protocol implementations, scheduling policies, encoding formats.</p>
+<p><strong>Why it reduces complexity:</strong></p>
+<ol>
+<li>Simpler interface → lower cognitive load on callers</li>
+<li>No external dependencies on hidden information → implementation can evolve without changing the interface or requiring caller changes</li>
+</ol>
+<p><strong>Critical distinction:</strong> private fields ≠ information hiding. Getter and setter methods expose a private field just as effectively as public access — the variable&#39;s nature and usage become part of the interface. True information hiding means the information is genuinely irrelevant to callers.</p>
+<p><strong>Information leakage</strong> is the inverse: a design decision that appears in multiple modules, creating a hidden dependency. Leakage can be explicit (the same format appears in the interface of two classes) or backdoor (two classes both understand the same file format without it appearing in either interface). Backdoor leakage is more dangerous because it is invisible.</p>
+<p><strong>Temporal decomposition</strong> is the most common cause of leakage: structuring modules to mirror execution order rather than knowledge ownership. A read-then-parse design for HTTP requests requires both classes to understand the request format — the order of operations has been imposed on the module structure, forcing knowledge to live in two places. Fix: structure modules around <em>what knowledge they own</em>, not <em>when they execute</em>.</p>
+<blockquote>
+<p><strong>Alignment:</strong> Ousterhout&#39;s information hiding and Newman&#39;s anti-patterns (implementation coupling, concept leakage) are the same idea at different scales. Newman (→ <a href="../concepts/coupling.html">Coupling</a>) applies information hiding to service API design: no service should depend on another&#39;s internal implementation. Ousterhout applies it to class interface design: no caller should depend on the implementation choices inside a class. The principle is scale-invariant.</p>
+</blockquote>
+<h2>General-Purpose Modules (Ousterhout)</h2>
+<p>Over-specialisation is identified as the single greatest cause of complexity (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 6). A special-purpose API leaks the concerns of its callers down into the module — UI abstractions (cursors, selections) appear in a text class, making the text class shallower and tying it to its current use case.</p>
+<p><strong>Sweet spot: &quot;somewhat general-purpose&quot;</strong> — functionality for today&#39;s needs, but an interface not tied to today&#39;s specific use. General-purpose interfaces are simpler, deeper, produce less code overall, and result in better information hiding because upper-layer concerns stay in the upper layer.</p>
+<p><strong>Push specialisation upwards or downwards</strong> to keep lower layers general:</p>
+<ul>
+<li>Upward: UI/feature code at the top of the stack owns all special-purpose logic; modules below it remain general</li>
+<li>Downward: device driver model — a generic interface (<code>read block</code>, <code>write block</code>) hides device-specific logic in drivers; the OS core remains oblivious to specific devices</li>
+</ul>
+<p><strong>Calibration questions for generality:</strong></p>
+<ol>
+<li>What is the simplest interface that covers all my current needs? (fewer methods with same capability = more general)</li>
+<li>How many situations will this method be used? (single-use method = red flag)</li>
+<li>Is this API easy to use for current needs? (if you need lots of wrapper code, you&#39;ve gone too far)</li>
+</ol>
+<blockquote>
+<p><strong>Alignment:</strong> Ousterhout&#39;s specialisation critique is the code-level version of the service decomposition principle in <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>: a service that exists only to satisfy one caller, and whose interface mirrors the caller&#39;s specific workflow, is a shallow service. The same information-hiding principle applies.</p>
+</blockquote>
+<h2>Different Layer, Different Abstraction (Ousterhout)</h2>
+<p>A well-designed layered system changes abstraction with each layer. Adjacent layers with similar abstractions indicate decomposition problems (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 7).</p>
+<p><strong>Pass-through methods</strong> — methods that do nothing except call another method with the same or similar signature — make classes shallower (add interface cost with no benefit) and create cross-layer dependencies. Red Flag: Pass-Through Method. Fix: expose the lower-level class directly, redistribute responsibilities, or merge classes. Exception: dispatchers and multiple implementations of the same interface are legitimate (same layer, distinct functionality, same signature).</p>
+<p><strong>Decorators</strong> encourage API duplication across layers and are often too shallow. Before creating a decorator: can the functionality be added to the underlying class directly? Can it be merged with an existing decorator? Can it be standalone? The Java I/O <code>BufferedInputStream</code> wrapper class should simply have been built into <code>FileInputStream</code>.</p>
+<p><strong>Interface vs. implementation:</strong> if a class&#39;s interface closely mirrors its implementation representation, the class is probably shallow. Example: a text class whose internal representation is lines of text but whose <em>interface</em> is character-oriented (<code>insert(position, string)</code>, <code>delete(start, end)</code>) encapsulates line splitting/joining complexity — the interface is genuinely different from, and simpler than, the implementation.</p>
+<p><strong>Pass-through variables</strong> — variables passed down through many methods that only the deepest method uses — force all intermediaries to know about the variable&#39;s existence. Solution: a <strong>context object</strong> stores all application-global state in one object, passed to constructors and held as an instance variable. One context per system instance enables multiple instances and simplifies testing; variables should be immutable to avoid thread-safety issues. The context object is far from ideal but is better than the alternatives (global variables, long parameter chains).</p>
+<h2>Pull Complexity Downwards (Ousterhout)</h2>
+<p>When a module encounters unavoidable complexity, it should absorb it internally rather than exporting it to callers (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 8). A module has more callers than developers; a simple interface matters more than a simple implementation.</p>
+<p><strong>Anti-patterns that push complexity up:</strong></p>
+<ul>
+<li>Throwing exceptions for uncertain conditions rather than handling them</li>
+<li>Exporting configuration parameters to avoid making internal decisions; users often can&#39;t determine good values; the module can often compute a better value automatically</li>
+</ul>
+<p><strong>When to pull down:</strong> (a) the complexity is closely related to the module&#39;s core function; (b) pulling it down simplifies callers; (c) pulling it down simplifies the interface. If pulling something down just moves UI-specific concerns into a lower-level module, it creates information leakage without reducing overall complexity.</p>
+<blockquote>
+<p><strong>Alignment:</strong> This is the code-level equivalent of the &quot;smart endpoints, dumb pipes&quot; principle in event-driven architecture: push complexity into the service (smart endpoint) rather than into the infrastructure (dumb pipe). At the service level, it also aligns with the information hiding principle — services should absorb complexity so that consumers don&#39;t need to understand it.</p>
+</blockquote>
+<h2>Better Together or Better Apart? (Ousterhout)</h2>
+<p>The fundamental decomposition question at every level — functions, classes, services (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 9). The goal is to reduce overall system complexity, not to minimise individual component size.</p>
+<p><strong>Subdivision creates its own complexity:</strong> more interfaces to learn; more management code; separation makes related things harder to see together; potential duplication.</p>
+<p><strong>Indications that code belongs together:</strong> it shares information; it is used together bidirectionally; the pieces overlap conceptually (belong to a common category); you can&#39;t understand one without the other.</p>
+<p><strong>When to combine:</strong> shared information (HTTP read+parse); simplifies the interface (merging removes intermediate exposures the caller didn&#39;t need); eliminates duplication.</p>
+<p><strong>When to separate:</strong> always separate general-purpose mechanism from special-purpose code. The general-purpose mechanism should know nothing about specific uses.</p>
+<p><strong>Splitting methods:</strong> length alone is rarely a good reason to split; developers split too much. A long method of sequential independent blocks may be fine. Two legitimate splits: (a) extracting a general-purpose subtask that can stand alone; (b) splitting into two distinct public methods when the original combined unrelated responsibilities. Red Flag: Conjoined Methods — if you must read both methods together to understand either one, the split was wrong.</p>
+<p><strong>Explicit disagreement with Clean Code:</strong> Robert Martin argues functions should be &lt; 10 lines. Ousterhout: depth is more important than length; &quot;don&#39;t sacrifice depth for length.&quot; More functions = more interfaces = more cognitive load.</p>
+<h2>Coupling</h2>
+<p><strong>Afferent coupling (Ca)</strong>: number of external components that depend on a given component (fan-in). High Ca → the component is widely used; changes are risky.</p>
+<p><strong>Efferent coupling (Ce)</strong>: number of external components a given component depends on (fan-out). High Ce → the component is fragile; it is affected by changes in many other places.</p>
+<p><strong>Robert Martin&#39;s derived metrics</strong> (package-level):</p>
+<ul>
+<li><em>Abstractness (A)</em>: ratio of abstract types (interfaces, abstract classes) to total types. A = 0 → concrete; A = 1 → fully abstract.</li>
+<li><em>Instability (I)</em>: Ce / (Ca + Ce). I = 0 → stable (hard to change); I = 1 → unstable (easy to change).</li>
+<li><em>Distance from Main Sequence (D)</em>: |A + I − 1|. Ideal components live near the Main Sequence where abstractness and instability are balanced. High D → <em>Zone of Pain</em> (concrete and stable — hard to change) or <em>Zone of Uselessness</em> (abstract and unstable — nothing depends on it).</li>
+</ul>
+<h2>Connascence</h2>
+<p>Connascence (Meilir Page-Jones) generalises coupling: two components are connascent if a change to one requires a change to the other to maintain correctness. The stronger the connascence, the tighter the coupling.</p>
+<p><strong>Static connascence</strong> (compile-time; weaker; preferred):</p>
+<ul>
+<li><em>Name</em>: components share a name (method name, variable name). Weakest.</li>
+<li><em>Type</em>: components agree on a type.</li>
+<li><em>Meaning/Convention</em>: components agree on the meaning of a value (e.g., 0 = success).</li>
+<li><em>Position</em>: components agree on parameter order.</li>
+<li><em>Algorithm</em>: components share an algorithm (e.g., a shared hashing function).</li>
+</ul>
+<p><strong>Dynamic connascence</strong> (runtime; stronger; avoid where possible):</p>
+<ul>
+<li><em>Execution</em>: components must execute in a specific order.</li>
+<li><em>Timing</em>: race conditions; correctness depends on timing.</li>
+<li><em>Values</em>: values in multiple components must agree (e.g., two services writing the same field differently). Strongest practical form.</li>
+<li><em>Identity</em>: two components must reference the exact same object instance.</li>
+</ul>
+<p><strong>Page-Jones&#39;s three guidelines:</strong></p>
+<ol>
+<li>Minimise overall connascence by breaking the system into encapsulated elements.</li>
+<li>Minimise any remaining connascence that crosses encapsulation boundaries.</li>
+<li>Maximise the connascence within encapsulation boundaries.</li>
+</ol>
+<p><strong>Jim Weirich&#39;s two rules</strong> (who repopularised connascence):</p>
+<ul>
+<li><em>Rule of Degree</em>: convert strong forms of connascence into weaker forms (e.g., refactor a magic constant into a named constant — CoM → CoN).</li>
+<li><em>Rule of Locality</em>: as the distance between software elements increases, use weaker forms of connascence. Strong coupling that is fine within a class becomes a code smell between packages, and an architectural defect across service boundaries.</li>
+</ul>
+<h2>Connascence and Architecture Quanta</h2>
+<p>The <a href="../concepts/architecture-quantum.html">Architecture Quantum</a> concept builds directly on connascence: synchronous connascence defines quantum boundaries. Services with strong dynamic connascence (e.g., connascence of values across a distributed transaction) form a single quantum; services decoupled via asynchronous messaging can be separate quanta.</p>
+<h2>Information Hiding and Service Coupling (Newman)</h2>
+<p>Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 1) grounds microservice design in Parnas&#39; 1971 information hiding principle: stable module <em>interfaces</em> hide volatile <em>internals</em>, so internal changes do not propagate to consumers. When applied to services, this produces the rule that no service should depend on another&#39;s internal implementation — only on its public API.</p>
+<p>Newman introduces a four-type coupling taxonomy specific to distributed service boundaries:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Coupling type</th>
+<th>Description</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Implementation coupling</strong></td>
+<td>Service A depends on service B&#39;s internal structure (e.g., calls into B&#39;s DB directly)</td>
+<td>Most dangerous; violates information hiding entirely</td>
+</tr>
+<tr>
+<td><strong>Temporal coupling</strong></td>
+<td>A can only function when B is available at the same time; synchronous calls introduce this</td>
+<td>Reduces robustness and independent deployability</td>
+</tr>
+<tr>
+<td><strong>Deployment coupling</strong></td>
+<td>A and B must be deployed together; negates the core benefit of microservices</td>
+<td>Eliminated by independent deployability</td>
+</tr>
+<tr>
+<td><strong>Domain coupling</strong></td>
+<td>A needs information from B&#39;s domain to do its work; unavoidable but should be minimised</td>
+<td>Acceptable in small doses</td>
+</tr>
+</tbody></table></div>
+<p>This taxonomy complements the structural coupling metrics (afferent/efferent, connascence) with operational coupling concerns that are invisible to static analysis tools. A service pair can have low structural coupling but high temporal coupling if they make synchronous calls.</p>
+<blockquote>
+<p><strong>Contradiction:</strong> The FOSA connascence model and Martin metrics are static, compile-time measures. Newman&#39;s taxonomy adds runtime and deployment-time coupling dimensions that these metrics cannot capture.</p>
+</blockquote>
+<h2>Modularity Maturity Index (MMI)</h2>
+<p>Dr. Carola Lilienthal (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 4) developed the MMI from 300+ architecture reviews as an empirical, 0-10 measure of architectural technical debt grounded in cognitive science rather than purely formal metrics.</p>
+<p><strong>Three cognitive principles:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Basis</th>
+<th>MMI weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Modularity</strong></td>
+<td>Chunking — humans hold ~7 chunks in working memory; well-bounded modules enable comprehension without overload</td>
+<td>45%</td>
+</tr>
+<tr>
+<td><strong>Hierarchy</strong></td>
+<td>Hierarchical structures are humans&#39; most natural information-organisation schema</td>
+<td>30%</td>
+</tr>
+<tr>
+<td><strong>Pattern consistency</strong></td>
+<td>Schema theory — repeated structures reduce cognitive load; inconsistent patterns force readers to re-analyse each case</td>
+<td>25%</td>
+</tr>
+</tbody></table></div>
+<p><strong>Decision thresholds:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>MMI Score</th>
+<th>Interpretation</th>
+<th>Recommended action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt; 4</td>
+<td>Very high architectural debt</td>
+<td>Consider replacement — refactoring cost likely exceeds rebuild cost</td>
+</tr>
+<tr>
+<td>4 – 8</td>
+<td>Moderate to high debt</td>
+<td>Refactor — renewing is usually cheaper than replacing; targeted improvement cycles</td>
+</tr>
+<tr>
+<td>&gt; 8</td>
+<td>Low architectural debt</td>
+<td>Maintain; focus on preventing erosion</td>
+</tr>
+</tbody></table></div>
+<p><strong>Architecture erosion:</strong> Without deliberate improvement cycles, architecture quality degrades over time. Each added feature without structural refactoring increases debt; accumulated debt makes each subsequent change slower and more expensive — a compounding effect.</p>
+<p><strong>Two types of technical debt:</strong></p>
+<ul>
+<li><strong>Implementation debt</strong> (code smells, duplicated code, complex methods): measurable by automated tools (SonarQube, Checkstyle); relatively cheap to address</li>
+<li><strong>Design/architecture debt</strong> (wrong module boundaries, inappropriate layering, pattern violations): requires structured architecture review; cannot be &quot;counted&quot; by simple static analysis; far more expensive because it demands structural change, not just local refactoring</li>
+</ul>
+<p><strong>Tools used in MMI reviews:</strong> Lattix, Sotograph/SotoArc, Sonargraph, Structure101, TeamScale. Effective review combines automated tool output with manual inspection — tools detect coupling and structure violations, but reviewers must judge whether abstractions are appropriate and whether components represent coherent concepts.</p>
+<blockquote>
+<p><strong>Alignment:</strong> Lilienthal&#39;s modularity principle (chunking, 45%) maps directly to the cohesion hierarchy and LCOM metric discussed above. The hierarchy principle maps to layering and component hierarchy concepts in <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>. Farley (ch. 3 of same book) provides the complementary question: <em>how to build</em> for high MMI scores (design for testability → produces the five sustainable attributes that MMI measures).</p>
+</blockquote>
+<h2>Advanced Structural Metrics (von Zitzewitz)</h2>
+<p>Alexander von Zitzewitz (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 9) provides a deeper layer of structural metrics that extend the basic coupling measures (Ca/Ce) to system-level propagation analysis. The central claim: without a metrics-based feedback loop, 80% of nontrivial systems exceeding 100K LoC end as Big Balls of Mud.</p>
+<p><strong>ACD, CCD, and Propagation Cost:</strong></p>
+<ul>
+<li><strong>ACD (Average Component Dependency)</strong>: average number of components a randomly chosen component transitively depends on (including itself); measures the mean blast radius of any change</li>
+<li><strong>CCD (Cumulative Component Dependency)</strong>: system-level sum of all ACDs</li>
+<li><strong>Propagation Cost (PC)</strong>: <code>PC = CCD / n²</code> — normalises CCD to system size; answers &quot;what fraction of the codebase does any change propagate to on average?&quot;<ul>
+<li>Threshold: &gt; 20% for 500–5,000 components; &gt; 10% for 5,000+ components</li>
+</ul>
+</li>
+</ul>
+<p><strong>Relative Cyclicity:</strong></p>
+<ul>
+<li>Formula: <code>100 × √(Σ cyclicity) / n</code>, where cyclicity for each component = size of its cycle group (0 if not in a cycle)</li>
+<li>Measures the proportion of code involved in cycles in a size-normalised way</li>
+<li>Fitness function thresholds: <strong>≤ 4% at component level; 0% at package/namespace level</strong> (package cycles are especially toxic — they make the entire package graph a BBM)</li>
+</ul>
+<p><strong>Structural Debt Index (SDI):</strong></p>
+<ul>
+<li><code>SDI = 10 × linksToBreak + weightOfLinks</code></li>
+<li>Quantifies the minimum refactoring effort to eliminate all cycles; combines the count of dependency edges to remove with their weight (how many transitive paths they participate in)</li>
+<li>Target: SDI in the low hundreds; SDI in the thousands signals a deeply entangled codebase</li>
+</ul>
+<p><strong>Maintainability Level (ML):</strong></p>
+<ul>
+<li>Composite 0-100 score incorporating structural metrics (cycles, coupling), complexity (Modified CC), and duplication, with a penalty for large cycle groups and a sliding minimum floor for small systems</li>
+<li>Three formula variants (ML1/ML2/ML3) of increasing sophistication</li>
+<li>Fitness function threshold: <strong>ML ≥ 75%</strong></li>
+</ul>
+<p><strong>LCOM4 (Lack of Cohesion of Methods, version 4):</strong></p>
+<ul>
+<li>Counts the number of disconnected subgraphs in a class&#39;s method-field dependency graph</li>
+<li>LCOM4 = 1 → methods and fields form a connected graph (single coherent responsibility)</li>
+<li>LCOM4 &gt; 1 → class contains LCOM4 independent responsibility clusters; each cluster is a candidate for extraction into its own class</li>
+<li>More sensitive than earlier LCOM variants (LCOM, LCOM2, LCOM3)</li>
+</ul>
+<p><strong>Change history metrics</strong> (identify hotspots for structural investment):</p>
+<ul>
+<li><strong>Number of Changes</strong>: frequency of modification; high-frequency components are highest-risk change targets</li>
+<li><strong>Code Churn</strong>: lines added + deleted per period; indicates instability and potential design problems</li>
+<li><strong>Number of Authors</strong>: many contributors to one component signals coordination overhead and inconsistent patterns; a proxy for cognitive load mismatch</li>
+</ul>
+<p><strong>Component Rank:</strong>
+PageRank algorithm applied to the class dependency graph. Identifies the most-transitively-referenced classes — the &quot;hubs&quot; that new developers should understand first. Also identifies classes that are so central that any quality investment in them yields disproportionate returns.</p>
+<p><strong>Six golden rules (fitness function targets):</strong></p>
+<ol>
+<li>Maintain a formal architectural model documenting intended structure</li>
+<li><strong>Zero namespace/package cycles</strong> (absolute threshold)</li>
+<li>Source-file cycles ≤ 5 elements per cycle group</li>
+<li>No code duplication</li>
+<li>Source files ≤ 800 LoC (soft limit)</li>
+<li>Max indentation depth 4; Modified Cyclomatic Complexity ≤ 15</li>
+</ol>
+<p><strong>Tooling:</strong> Sonargraph-Explorer (free; Java/C#/Python/TypeScript), NDepend (.NET), Understand, SonarQube, Source Monitor.</p>
+<blockquote>
+<p><strong>Alignment:</strong> These metrics provide the quantitative foundation that Lilienthal&#39;s MMI (above) uses in its tooling-driven assessment. The fitness function thresholds (ML ≥ 75%, Relative Cyclicity ≤ 4%/0%, SDI in low hundreds) make the MMI&#39;s scoring criteria explicit and CI-enforceable.</p>
+</blockquote>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a></td>
+<td>Ousterhout: deep vs shallow modules (cost/benefit framing); classitis anti-pattern; information hiding + general-purpose interfaces as the key techniques for depth; temporal decomposition as the primary cause of information leakage; different layer, different abstraction rule; pass-through methods as depth-destroyer; context objects for pass-through variables</td>
+</tr>
+<tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Detailed treatment of cohesion types, Martin metrics, and connascence as practical design tools for architects</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Discusses coupling implicitly through topics like service granularity and transaction boundaries, but not the formal taxonomy</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
+<td>Applies the coupling metrics (abstractness, instability, D) to decomposition feasibility assessment — components in the Zone of Pain or Zone of Uselessness signal a codebase that is hard to safely decompose; introduces architecture stories as a way to track structural refactoring distinct from feature work</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Grounds coupling in Parnas&#39; 1971 information hiding principle; introduces four operational coupling types (implementation, temporal, deployment, domain) that extend structural coupling analysis to runtime and deployment concerns</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></td>
+<td>Lilienthal (ch. 4): Modularity Maturity Index — cognitive science grounding (chunking/hierarchy/schema); MMI 0-10 score; two debt types (implementation vs design); architecture erosion as a continuous risk; Farley (ch. 3): testability as the practical driver of all five design attributes; TDD as architectural feedback; von Zitzewitz (ch. 9): ACD/CCD/Propagation Cost, Relative Cyclicity, SDI, Maintainability Level, LCOM4, change history metrics — a complete CI-enforceable structural fitness function suite</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/software-complexity.html">Software Complexity</a> — Ousterhout&#39;s three complexity symptoms (change amplification, cognitive load, unknown unknowns) that deep modules and information hiding directly address</li>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — quantum boundaries are determined by synchronous connascence</li>
+<li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — testability, deployability, and agility all depend on modularity</li>
+<li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — partitioning strategy affects the cohesion type of top-level components</li>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — LCOM, afferent coupling, and dependency cycles can all be measured by fitness functions; the fitness function testing pyramid (SAM ch. 2) provides a framework for structuring architectural tests</li>
+<li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a> — practical application of modularity theory to monolith migration</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — testability and deployability (Farley) are the operational drivers that produce the structural attributes MMI measures</li>
+<li><a href="../concepts/goal-question-metric.html">Goal Question Metric</a> — GQM provides the framework for deriving structural metric thresholds from architectural goals rather than arbitrary convention</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

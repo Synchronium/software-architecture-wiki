@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Evolving synthesis of software architecture as a discipline">
+  <meta property="og:title" content="Overview — Software Architecture — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Evolving synthesis of software architecture as a discipline">
+  <title>Overview — Software Architecture — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="overview.html" aria-current="page">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="styles/index.html">Index</a></li>
+        <li><a href="styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="concepts/index.html">Index</a></li>
+        <li><a href="concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="concepts/api-design.html">API Design</a></li>
+        <li><a href="concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="concepts/api-testing.html">API Testing</a></li>
+        <li><a href="concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="concepts/coupling.html">Coupling</a></li>
+        <li><a href="concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="concepts/messaging.html">Messaging</a></li>
+        <li><a href="concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="concepts/modularity.html">Modularity</a></li>
+        <li><a href="concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="distributed/index.html">Index</a></li>
+        <li><a href="distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="distributed/caching.html">Caching</a></li>
+        <li><a href="distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="distributed/http.html">HTTP</a></li>
+        <li><a href="distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="distributed/replication.html">Replication</a></li>
+        <li><a href="distributed/scalability.html">Scalability</a></li>
+        <li><a href="distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="distributed/system-models.html">System Models</a></li>
+        <li><a href="distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="operations/index.html">Index</a></li>
+        <li><a href="operations/availability.html">Availability</a></li>
+        <li><a href="operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="operations/manageability.html">Manageability</a></li>
+        <li><a href="operations/monitoring.html">Monitoring</a></li>
+        <li><a href="operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="patterns/index.html">Index</a></li>
+        <li><a href="patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="patterns/retry.html">Retry</a></li>
+        <li><a href="patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="databases/index.html">Index</a></li>
+        <li><a href="databases/data-models.html">Data Models</a></li>
+        <li><a href="databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="streams/index.html">Index</a></li>
+        <li><a href="streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="comparisons/index.html">Index</a></li>
+        <li><a href="comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="reference/index.html">Index</a></li>
+        <li><a href="reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="sources/index.html">Index</a></li>
+        <li><a href="sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="authors/index.html">Index</a></li>
+        <li><a href="authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="authors/james-gough.html">James Gough</a></li>
+        <li><a href="authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content">
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Software Architecture</a> <span class="sep">›</span> Overview — Software Architecture</nav></div>
+      <h1>Overview — Software Architecture</h1>
+      <div class="page-meta">
+        <span class="page-type-badge">overview</span>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      
+    </div><div class="page-body"><blockquote>
+<p>This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: <strong>19 sources fully ingested.</strong></p>
+</blockquote>
+<hr>
+<h2>The Central Question</h2>
+<p>Software architecture is fundamentally about making decisions under uncertainty. Every architectural choice involves trade-offs between competing quality attributes — performance vs. maintainability, consistency vs. availability, simplicity vs. flexibility. There is no &quot;best&quot; architecture; there are better or worse fits for a given context.</p>
+<p>Richards &amp; Ford distil this into two laws: <em>everything in software architecture is a trade-off</em>, and <em>why is more important than how</em>. Vitillo frames the same insight from the distributed systems side: the question is never &quot;how do we prevent all failures?&quot; but &quot;how do we minimise blast radius?&quot;</p>
+<hr>
+<h2>Major Themes</h2>
+<h3>Architecture Is More Than Structure</h3>
+<p>FOSA adds a critical clarification: architecture is not synonymous with the architecture style (layered, microservices, etc.). It is the union of four things:</p>
+<ol>
+<li><strong>Structure</strong> — the style and topology.</li>
+<li><strong>Architecture characteristics</strong> (&quot;-ilities&quot;) — the non-functional requirements the system must honour.</li>
+<li><strong>Architecture decisions</strong> — explicit, justified choices that constrain the design.</li>
+<li><strong>Design principles</strong> — guidelines (not hard rules) for how teams should build within the constraints.</li>
+</ol>
+<p>Most architectural failures come from conflating structure with the full picture — choosing a style without explicit analysis of which characteristics matter or without documenting and governing decisions.</p>
+<h3>Failures Are Unavoidable — Design for Production, Not QA</h3>
+<p>The most important disposition in distributed systems design: failures are a fact, not an edge case. Hardware fails, networks partition, clocks drift, config changes cause outages. The question is never &quot;how do we prevent all failures?&quot; but &quot;how do we minimise blast radius and stop propagation?&quot;</p>
+<p>Techniques: redundancy (AZs, multi-region), fault isolation (<a href="patterns/bulkhead.html">Bulkhead</a>, shuffle sharding, cellular architecture), circuit breakers (<a href="patterns/circuit-breaker.html">Circuit Breaker</a>), load shedding, graceful degradation.</p>
+<p>Nygard (→ <a href="sources/release-it.html">Release It</a>) sharpens this with a production-first mandate: <strong>systems must be designed for the real world, not for QA</strong>. The characteristic failure of engineering teams is optimising to pass load tests with &quot;polite&quot; traffic (valid sessions, correct cookies, sensible URLs) while production sends bots, scrapers, 404 floods, and retry storms. Safety devices — circuit breakers, thread-pool timeouts, bulkheads — must be present from day one. Configuration changes are the leading root cause of catastrophic outages; they take effect when a specific code path runs, hours after the change, after the incident window is forgotten.</p>
+<p>A 2014 study of distributed data stores found the majority of catastrophic failures resulted from incorrect error handling, not hardware faults. Error paths are written fast, reviewed lightly, and almost never tested. Treating error handling as first-class code is one of the highest-leverage reliability investments. See <a href="operations/common-failure-causes.html">Common Failure Causes</a>.</p>
+<h3>Coordination Is Expensive</h3>
+<p>Every operation that requires nodes to agree (consensus, 2PC, leader confirmation) is a scalability bottleneck. The art of distributed systems design is minimising coordination:</p>
+<ul>
+<li>Push coordination off the critical path (async replication, eventual consistency).</li>
+<li>Use coordination-free data structures (<a href="distributed/crdts.html">Crdts</a>).</li>
+<li>Exploit the CALM theorem: monotonic programs need no coordination at all.</li>
+</ul>
+<p>FOSA frames this in terms of distributed architecture costs: the 8 Fallacies of Distributed Computing mean every service boundary has a price. Service decomposition must be justified by the characteristics it unlocks.</p>
+<h3>The Consistency vs. Availability Trade-off</h3>
+<p>Network partitions force a choice — <a href="distributed/cap-theorem.html">Cap Theorem</a>. In practice this is a spectrum of <a href="distributed/consistency-models.html">Consistency Models</a>:</p>
+<ul>
+<li><strong>Linearizability</strong>: strongest, most expensive; required for correctness-critical state.</li>
+<li><strong>Causal consistency</strong>: strongest model compatible with availability + partition tolerance.</li>
+<li><strong>Eventual consistency</strong>: highest availability; requires conflict resolution strategy.</li>
+</ul>
+<p>PACELC extends this: even without partitions, there is a latency/consistency trade-off. Most operational tuning lives here.</p>
+<p>Kleppmann (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) adds a sharper distinction: <strong>timeliness</strong> (users see up-to-date data) vs. <strong>integrity</strong> (no data loss, no contradictions). Integrity is far more important. A stale read is annoying; missing or corrupted data is catastrophic. Coordination-avoiding systems (end-to-end operation IDs, idempotency, deterministic derivation) can provide strong integrity with weak timeliness — without the cost of distributed transactions. This reframes the CAP question: most applications don&#39;t need linearizability, they need integrity, and integrity is achievable at much lower cost.</p>
+<p>CAP theorem itself Kleppmann calls &quot;best avoided&quot; — it covers only linearizability + network partitions, ignores normal-operation latency/consistency trade-offs, and conflates many distinct consistency models. PACELC is strictly more useful for operational reasoning.</p>
+<h3>Architecture Characteristics Drive Style Selection</h3>
+<p>The central contribution of FOSA: architecture style selection should be driven by which <a href="concepts/architecture-characteristics.html">Architecture Characteristics</a> the system needs, not by fashion or familiarity. The <a href="concepts/architecture-quantum.html">Architecture Quantum</a> determines scope — if different parts of the system need different characteristics, a distributed style with multiple quanta is required.</p>
+<p>The 8 architecture styles form a spectrum from maximum simplicity (layered) to maximum agility (microservices), with every intermediate position representing a different trade-off between operational complexity and architectural flexibility. See <a href="styles/architecture-styles.html">Architecture Styles</a> for an overview and <a href="comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a> for full ratings.</p>
+<h3>Storage Engines: Physics Drives Design</h3>
+<p>DDIA (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) establishes that storage engine design follows from physical constraints, not convention. Sequential disk I/O is orders of magnitude faster than random I/O; this single fact explains:</p>
+<ul>
+<li><strong>LSM-Trees</strong> (LevelDB, RocksDB, Cassandra): all writes are sequential (memtable flush + compaction). High write throughput; read amplification requires checking multiple SSTables; bloom filters short-circuit misses.</li>
+<li><strong>B-Trees</strong> (PostgreSQL, MySQL, Oracle): reads are fast (one tree traversal to any key); writes require in-place page updates (random I/O). WAL provides crash recovery. More predictable latency.</li>
+<li><strong>Column-oriented storage</strong> (Redshift, BigQuery, Parquet): analytics workloads read few columns across many rows — column storage eliminates the I/O of reading unused columns. Vectorised CPU processing on compressed columns enables analytic query performance.</li>
+</ul>
+<p>The log — append-only, ordered, immutable — is the unifying data structure: WAL (B-Tree crash recovery), SSTable (LSM-Tree flush), replication log (leader → follower), CDC event log, Kafka partition, and event sourcing. &quot;The truth is the log. The database is a cache of the log.&quot;</p>
+<h3>Scalability Is Empirical</h3>
+<p>Gorton (→ <a href="sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a>) establishes that scalability must be measured, not assumed. Key principles:</p>
+<ul>
+<li><strong>Amdahl&#39;s Law</strong> sets the theoretical upper bound: if 5% of a workload is serial, no amount of parallelism can exceed 20× speedup. Identify and minimise the serial fraction first.</li>
+<li><strong>Scale-out requires stateless services</strong>: any shared mutable state — session affinity, local cache, in-memory counters — prevents horizontal scaling. Externalise all state to distributed stores.</li>
+<li><strong>The 80% caching threshold</strong>: if a cache hit rate is below ~80%, the caching layer adds latency without enabling scale. Design for high hit rates (read-dominated workloads, appropriate TTLs, consistent key design).</li>
+<li><strong>Hyperscale</strong> adds a second dimension to Amdahl: the coordination overhead of managing thousands of nodes itself becomes a bottleneck. Hyperscale systems minimise cross-node coordination via consistent hashing, gossip protocols, and eventual consistency.</li>
+</ul>
+<p>See <a href="distributed/scalability.html">Scalability</a>, <a href="distributed/caching.html">Caching</a>, <a href="distributed/serverless.html">Serverless</a>.</p>
+<h3>The API Contract as Architectural Seam</h3>
+<p>In distributed systems, the API contract — not the code — is the primary interface between components (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>). A well-defined contract (OpenAPI for REST, Protocol Buffers for gRPC) makes the implementation replaceable: producers can be rewritten or replatformed without affecting consumers, provided the contract is honoured. This makes API design decisions architectural in scope.</p>
+<p>The exchange format decision is among the most consequential API choices:</p>
+<ul>
+<li><strong>REST</strong> for north–south traffic (external consumers): broad interoperability, cacheable, stateless</li>
+<li><strong>gRPC</strong> for east–west traffic (internal services): binary HTTP/2, strict schema, high throughput</li>
+<li><strong>GraphQL</strong> for client-driven aggregation: mobile, reporting, facade over legacy</li>
+</ul>
+<p>Two governance layers manage traffic at these boundaries: the <strong>API gateway</strong> handles north–south ingress (auth, rate limiting, routing, lifecycle management); the <strong>service mesh</strong> handles east–west service-to-service communication (mTLS, retries, circuit breaking, service authorisation). These are complementary — most production API platforms require both (<a href="concepts/api-gateway.html">Api Gateway</a>, <a href="patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>).</p>
+<h3>Integration Styles Are Architectural Choices</h3>
+<p>Hohpe &amp; Woolf (→ <a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a>) establish that the mechanism by which systems share data is itself an architectural decision with long-term consequences. The four integration styles, ordered by coupling:</p>
+<ol>
+<li><strong>File Transfer</strong>: systems produce/consume files on shared storage. Loose coupling; high latency; format negotiation burden.</li>
+<li><strong>Shared Database</strong>: systems share tables. Tight schema coupling; synchronous visibility; single SPOF.</li>
+<li><strong>Remote Procedure Invocation</strong>: synchronous call between systems. Temporal coupling; technology coupling; discovery and availability concerns.</li>
+<li><strong>Messaging</strong>: async communication via a broker. Loose coupling; decoupled availability; requires eventual consistency thinking.</li>
+</ol>
+<p>Each style is appropriate in specific contexts — the error is applying one universally. Most large systems use all four styles for different integration points. See <a href="concepts/integration-styles.html">Integration Styles</a> and the full messaging pattern catalogue at <a href="concepts/messaging.html">Messaging</a>.</p>
+<h3>Domain Logic Patterns Are Chosen, Not Inherited</h3>
+<p>Fowler (→ <a href="sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a>) establishes that how you organise domain logic is one of the most consequential architectural decisions, largely ignored by style-focused discussions:</p>
+<ul>
+<li><strong>Transaction Script</strong>: simple procedural logic per business transaction. Appropriate for simple, low-duplication domains. Scales poorly as complexity grows.</li>
+<li><strong>Table Module</strong>: one class per database table; logic co-located with data structure. O/R-impedance-aware but domain-model-limited.</li>
+<li><strong>Domain Model</strong>: rich object model mirroring the domain, with behaviour on entities. Appropriate for complex, high-volatility domains. Requires an O/R mapping layer (<a href="databases/object-relational-mapping.html">Object Relational Mapping</a>).</li>
+<li><strong>Service Layer</strong>: defines an application&#39;s boundary, coordinates tasks, delegates domain logic to entities. The integration point for presentation and infrastructure layers.</li>
+</ul>
+<p>The selection cascades: a domain model requires an identity map and unit-of-work to avoid double-fetching and partial writes; transaction scripts can use a simple data gateway. See <a href="patterns/business-logic-patterns.html">Business Logic Patterns</a>.</p>
+<h3>Security: From Perimeter to Zero Trust</h3>
+<p>Traditional perimeter (zonal) security assumes traffic inside the network can be trusted. Cloud environments invalidate this — workloads share infrastructure, network addresses are dynamic. Zero trust replaces implicit network trust with explicit, identity-based verification at every hop (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>):</p>
+<ul>
+<li>API gateway validates OAuth2/JWT tokens at the north–south edge</li>
+<li>Service mesh enforces mTLS with SPIFFE workload identities for east–west traffic</li>
+<li>Kubernetes NetworkPolicies provide a defence-in-depth layer below the mesh</li>
+</ul>
+<p>Threat modeling (STRIDE, DREAD, OWASP API Top 10) identifies what must be protected; the zero trust stack determines how each threat is mitigated (<a href="concepts/threat-modeling.html">Threat Modeling</a>, <a href="concepts/zero-trust.html">Zero Trust</a>, <a href="concepts/oauth2-and-authn.html">Oauth2 And Authn</a>).</p>
+<h3>Deployment ≠ Release</h3>
+<p>A critical operational distinction: <strong>deployment</strong> (code running in production) and <strong>release</strong> (activation for users) must be explicitly decoupled. Mechanisms: feature flags (code-level toggles), canary releases (traffic-split), and traffic mirroring (dark launch). The Knight Capital incident ($460M loss from a flag left enabled) illustrates the risk of flag accumulation — feature flags must be cleaned up after each migration (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>).</p>
+<h3>Governance Is Architecture in Motion</h3>
+<p>Making architectural decisions once is insufficient — decisions must be enforced as the system evolves. <em>Building Evolutionary Architectures</em> (→ <a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) is the originating source for this thinking and defines the formal framework:</p>
+<p><strong>Three pillars of evolutionary architecture</strong>: incremental change (supported by deployment pipelines), fitness functions (objective automated governance), and appropriate coupling (matching coupling tightness to business necessity — inappropriate coupling is the root cause of non-evolvability).</p>
+<p><strong><a href="concepts/fitness-functions.html">Fitness Functions</a></strong> are any mechanism that provides an objective integrity assessment of an architecture characteristic — not just tests, but metrics, chaos experiments, monitoring alerts, and license monitors. They are classified by: atomic vs holistic, triggered vs continual, static vs dynamic, automated vs manual, temporal. Not everything needs the same treatment: key fitness functions block pipeline promotion; relevant ones are tracked; others are excluded.</p>
+<p><strong><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></strong> are the automation mechanism: multi-stage pipelines carry a commit from source to production, with fitness functions as the gates. Cycle time — commit to production — is proportional to evolution speed (v ∝ c). Enterprise architects inject enterprise-wide fitness functions (security, compliance) into shared pipeline templates that all services inherit.</p>
+<ul>
+<li><strong><a href="concepts/adrs.html">Adrs</a></strong>: documented decisions with explicit justification and compliance specifications, preventing re-litigation and loss of context.</li>
+<li><strong><a href="concepts/risk-storming.html">Risk Storming</a></strong>: collaborative, structured risk identification before problems reach production.</li>
+</ul>
+<p><strong>Evolvability varies by architecture style</strong>: microservices (highest — fine-grained quanta, maximum decoupling), broker event-driven (high), service-based (medium–high, pragmatic), down to Big Ball of Mud (none). The key limiting factors are quantum size and the presence of cross-quantum transactions (the &quot;strong nuclear force&quot; that binds quanta together).</p>
+<h3>Architecture Quality Is Measurable</h3>
+<p>Ciceri et al. (→ <a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a>) establish that architectural quality must be measured systematically, not assessed by feel:</p>
+<p><strong>Metrics become engineering</strong> when applied continuously via automated pipelines with objective thresholds. The same transformation CI did for code integration, fitness function automation does for architectural integrity. ArchUnit and NetArchTest enforce structural rules at compile time; custom fitness functions verify distributed communication patterns at runtime.</p>
+<p><strong>Structural metrics</strong> (von Zitzewitz) provide objective measurements of modularity:</p>
+<ul>
+<li><strong>Propagation Cost</strong> (CCD/n²): what fraction of the system is affected by a typical change. Target: &lt;20% for 500–5,000 components; &lt;10% for 5,000+.</li>
+<li><strong>Relative Cyclicity</strong>: what fraction of components participate in dependency cycles. Target: ≤4% for components, 0% for packages.</li>
+<li><strong>Maintainability Level</strong> (ML): composite score; target ≥75%. Systems below this threshold drift toward Big Ball of Mud.</li>
+</ul>
+<p><strong>The Goal-Question-Metric framework</strong> (Keeling, citing Basili &amp; Weiss 1984) provides a disciplined approach to selecting <em>which</em> metrics to collect: start from a goal, derive questions that would answer it, then select metrics that answer those questions. This creates measurement traceability — every data point links to a goal — and prevents collecting metrics that nobody acts on. See <a href="concepts/goal-question-metric.html">Goal Question Metric</a>.</p>
+<p><strong>The DORA four key metrics</strong> (Harmel-Law, citing Forsgren et al.) measure delivery performance: deployment frequency, lead time for changes, change failure rate, and time to restore service. These are leading indicators of organisational health — high performers score well on all four simultaneously, refuting the false trade-off between speed and stability. See <a href="concepts/four-key-metrics.html">Four Key Metrics</a>.</p>
+<h3>Complexity Is the Enemy of Maintainability</h3>
+<p>Ousterhout (→ <a href="sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a>) provides the most precise treatment of what makes software hard to change: <strong>complexity</strong> is defined operationally — not as size or intricacy, but as anything that makes it harder to understand and modify the system. It manifests in three symptoms: change amplification (a simple change requires edits in many places), cognitive load (the engineer must hold too much in mind to make a safe change), and unknown unknowns (the engineer doesn&#39;t know what they need to know before making a change). Unknown unknowns are the most insidious because you cannot defend against what you can&#39;t see.</p>
+<p>The root causes are just two: <strong>dependencies</strong> and <strong>obscurity</strong>. Dependencies are unavoidable but manageable; obscurity is eliminable. The primary tool is information hiding — each module should encapsulate a design decision, exposing only what callers need to know. This is the mechanism behind <em>deep modules</em>: a deep module has a small, simple interface and a large, complex implementation. The interface hides the complexity. Shallow modules are the anti-pattern: their interface is nearly as complex as their implementation, so they add interaction complexity without providing simplification.</p>
+<p><strong>Complexity accumulates incrementally</strong>: no single decision makes a system unmaintainable. It accretes via tactical programming — making each change &quot;just work&quot; with the minimum visible effort, deferring the cost of each decision to every future reader. Strategic programming invests ~10–15% of engineering time in design: writing abstractions, simplifying interfaces, correcting earlier mistakes before they compound. The compounding nature of complexity makes early investment dramatically more cost-effective than late remediation. See <a href="concepts/software-complexity.html">Software Complexity</a>.</p>
+<h3>Team Structure Is Architecture</h3>
+<p>Conway&#39;s Law (→ <a href="concepts/conways-law.html">Conways Law</a>) is an architectural force: team structure encodes itself in system structure. Functional silos produce technically partitioned systems; domain-centric teams produce domain-partitioned systems. The <strong>Inverse Conway Maneuver</strong> deliberately designs team structure to produce the desired architecture — reorganise teams first, then the architecture follows.</p>
+<p>Skelton &amp; Pais (→ <a href="sources/team-topologies.html">Team Topologies</a>) operationalise this with a formal model:</p>
+<p><strong>Four team types</strong>: stream-aligned (owns a value stream end-to-end), platform (reduces cognitive load for stream-aligned teams by providing self-service capabilities), enabling (accelerates stream-aligned teams during capability uplift, then withdraws), complicated-subsystem (owns a specific technical depth no stream-aligned team can maintain). One team owns one component; no team owns the same component as another.</p>
+<p><strong>Three interaction modes</strong>: collaboration (high bandwidth, used during discovery), X-as-a-service (low friction, for stable capabilities), and facilitating (temporary, knowledge-transfer focused). Teams are designed for a primary mode; mode mismatches indicate a topology problem.</p>
+<p><strong>Cognitive load as the sizing constraint</strong>: a team&#39;s cognitive capacity is the real limit on what it can maintain. Domain complexity, team tooling, and infrastructure overhead all consume cognitive load. Platform teams exist to eliminate <em>extraneous</em> cognitive load (how to deploy, monitor, configure) so stream-aligned teams can spend their cognitive budget on <em>intrinsic</em> load (the domain problem). See <a href="concepts/cognitive-load.html">Cognitive Load</a>, <a href="concepts/team-topologies-model.html">Team Topologies Model</a>.</p>
+<h3>Delivery Performance Has Four Leading Indicators</h3>
+<p>Forsgren, Humble &amp; Kim (→ <a href="sources/accelerate.html">Accelerate</a>) spent four years (2014–2017) empirically studying what separates high from low-performing technology organisations across 23,000+ survey respondents. Their central finding: <strong>speed and stability are positively correlated, not in tension</strong>. High performers deploy more frequently, have shorter lead times, restore service faster, and have lower change failure rates — simultaneously. This refutes the bimodal IT hypothesis that stability requires sacrificing speed.</p>
+<p>The <strong>DORA four key metrics</strong> operationalise this: deployment frequency (batch size proxy from Lean), lead time for changes (end-to-end cycle time), mean time to restore (recovery capability), and change failure rate (process quality). Cluster analysis consistently identifies discrete performance bands — elite, high, medium, low — with a gap between elite and the rest that increases year-on-year. See <a href="concepts/four-key-metrics.html">Four Key Metrics</a>.</p>
+<p><strong>Organisational culture independently predicts delivery performance</strong> (→ <a href="concepts/westrum-culture.html">Westrum Culture</a>): Westrum&#39;s generative culture (information flows freely, collaboration is rewarded, failure triggers inquiry rather than blame) is a separate predictor of both delivery performance and organisational outcomes. Critically, behaviour precedes belief — implementing CD practices improves culture, not the reverse. Culture cannot be mandated into existence; it is a lagging indicator of practices.</p>
+<p><strong>Loosely coupled architecture is the single largest driver of CD capability</strong> — larger than test automation and deployment automation combined in the 2017 data. Teams that can test and deploy their service independently, without coordinating outside the team, are the highest performers. This provides the strongest empirical validation of the Inverse Conway Maneuver (→ <a href="concepts/conways-law.html">Conways Law</a>): designing team structure for independence directly enables independently deployable services.</p>
+<h3>Transactions: Isolation Levels Are Widely Misunderstood</h3>
+<p>DDIA (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) makes an important corrective observation: most databases marketed as &quot;Serializable&quot; actually implement Snapshot Isolation (MVCC), which permits <strong>write skew</strong> — two transactions both read an overlapping dataset, make non-conflicting writes, and violate an application invariant (e.g., two on-call doctors both go off-call). True serializability requires SSI (Serializable Snapshot Isolation, PostgreSQL since v9.1) or actual serial execution (VoltDB, H-Store). Engineers should verify isolation level semantics for their specific database, not trust marketing claims.</p>
+<h3>Batch and Stream Processing as Derived Data</h3>
+<p>DDIA&#39;s Part III establishes a unified framework: data systems are divided into <strong>systems of record</strong> (source of truth, normalised, one representation) and <strong>derived data systems</strong> (rebuiltable from source, optimised for specific access patterns). The derived data layer — search indexes, caches, data warehouses, materialized views — is not optional; it is where performance is achieved.</p>
+<p><strong>Batch processing</strong> (MapReduce, Spark, Flink): bounded input, offline, immutable — key property is that inputs are never modified, enabling retry and replay.</p>
+<p><strong>Stream processing</strong> (Kafka + stream processors): unbounded event stream, low latency. Log-based brokers (Kafka) differ fundamentally from AMQP/JMS brokers: messages are retained on disk and consumers track their own offset, enabling fan-out, replay, and exactly-once processing. <strong>Change Data Capture (CDC)</strong> bridges the batch and stream worlds: the database&#39;s own write-ahead log becomes an event stream, enabling derived stores to stay up-to-date without dual writes.</p>
+<p><strong>Event sourcing and CQRS</strong> extend this further: the event log is the primary store; the mutable database is a derived projection. Multiple read models can be derived from the same event log. See <a href="streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>.</p>
+<p><strong>The lambda architecture</strong> (batch + stream in parallel, merged) is an anti-pattern — duplicate logic, complex merge, harder to maintain. The unified batch+stream model (Apache Flink, Apache Beam) handles both historical replay and live events through the same code path.</p>
+<h3>The Data Communication Layer Is the Missing Piece</h3>
+<p>Bellemare (→ <a href="sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>) identifies the historically missing architectural layer: while the <strong>business communication structure</strong> (business processes, team relationships) and <strong>implementation communication structure</strong> (APIs, service calls) are well-understood, the <strong>data communication structure</strong> — the mechanism by which domain data flows across the organisation — has been largely absent or ad hoc in traditional architectures.</p>
+<p>Without an explicit data communication layer, services must both implement business logic AND serve as data-access endpoints for every consumer that needs their data. This creates point-to-point data coupling and proliferation of APIs that are really data-synchronisation mechanisms in disguise.</p>
+<p><strong>Event brokers formalise the data communication layer</strong>: each service produces its domain data to event streams; any consumer can access that data independently and at their own pace. Bounded contexts are decoupled not just at the API level but at the data level. The event stream — not the API — becomes the single source of truth for each domain.</p>
+<h3>Domain-Driven Design: Language Before Architecture</h3>
+<p>Evans (→ <a href="sources/domain-driven-design.html">Domain Driven Design</a>) and Khononov (→ <a href="sources/learning-domain-driven-design.html">Learning Domain Driven Design</a>) establish DDD&#39;s core principle: a model that doesn&#39;t live in the code is just a picture. The ubiquitous language must pervade conversations, documentation, and code — when they diverge, the code becomes the real model by default, and the document becomes noise.</p>
+<p><strong>Strategic DDD</strong> starts with business domain structure:</p>
+<ul>
+<li><strong>Subdomain taxonomy</strong> (core / generic / supporting) drives every implementation decision. Core subdomains = high complexity, high volatility, best engineers. Generic subdomains = use off-the-shelf. Supporting subdomains = simple CRUD, can outsource.</li>
+<li><strong>Bounded contexts</strong> are the consistency boundary of a ubiquitous language. They are <em>designed</em> (our choice); subdomains are <em>discovered</em> (business strategy). One team owns one bounded context.</li>
+<li><strong>Context maps</strong> make inter-context integration patterns explicit: Shared Kernel, Customer/Supplier, Conformist, ACL, OHS, Published Language, and Separate Ways each represent a different team relationship and coupling type (→ <a href="patterns/context-map.html">Context Map</a>).</li>
+</ul>
+<p><strong>Tactical DDD</strong> provides the building blocks for complex domain models: value objects (no identity, immutable), entities (identity persists through time), aggregates (consistency boundary, modified as a unit), domain events (facts that occurred), and domain services (stateless operations that don&#39;t belong on an entity). The right tactical pattern is chosen per subdomain — complex core subdomains warrant rich domain models; simple supporting subdomains warrant transaction scripts (→ <a href="patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
+<h3>Monolith Decomposition Is a Journey, Not a Cut-over</h3>
+<p>Newman (→ <a href="sources/monolith-to-microservices.html">Monolith To Microservices</a>) establishes that &quot;big bang&quot; rewrites are among the highest-risk strategies in software. The characteristic outcome is two systems in production simultaneously, both half-maintained. Migration must be incremental, with each step independently deployable and reversible.</p>
+<p><strong>Core migration patterns</strong>:</p>
+<ul>
+<li><strong>Strangler Fig</strong> (→ <a href="patterns/strangler-fig.html">Strangler Fig</a>): intercept calls at the edge, redirect to the new implementation incrementally. The old system shrinks; the new system grows. The proxy is the safety net.</li>
+<li><strong>Branch by Abstraction</strong> (→ <a href="patterns/branch-by-abstraction.html">Branch By Abstraction</a>): for deeply embedded capabilities, introduce an abstraction layer, implement the new variant behind it, migrate callers gradually, remove the old implementation.</li>
+<li><strong>Parallel Run</strong> (→ <a href="patterns/parallel-run.html">Parallel Run</a>): run both implementations simultaneously; return results from the old; compare against the new. Use to verify correctness before committing to the new path (GitHub Scientist).</li>
+</ul>
+<p><strong>Database decomposition</strong> is the hard part. Every shared-database coupling is a hidden contract. Newman&#39;s taxonomy of ~12 decomposition patterns includes database views (read-only facade over old schema), wrapping services (API encapsulates shared table access), tracer writes (dual-write with progressive migration), and synchronise-in-application (two stores kept consistent via application code, used transitionally). See <a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a>.</p>
+<h3>Consensus Is Required for Linearizability</h3>
+<p>DDIA and <a href="sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> agree: linearizability requires consensus. Fault-tolerant consensus (Raft, Paxos, Zab) requires a strict majority quorum, has overhead from synchronous replication, and is sensitive to network delays. ZooKeeper and etcd implement consensus as a service for leader election, partition assignment, and distributed locks. The full equivalence theorem: linearizable CAS ≡ total order broadcast ≡ atomic transaction commit ≡ distributed locks ≡ uniqueness constraints — all require consensus. See <a href="distributed/consensus-algorithms.html">Consensus Algorithms</a>.</p>
+<h3>Observability Is Not Optional</h3>
+<p>Observability = metrics (detect symptoms) + logs (explain causes) + traces (causally ordered cross-service view). Monitoring tells you that something is wrong; observability tells you why.</p>
+<p>SLIs/SLOs with error budgets replace naive alerting — alert on burn rate, not raw thresholds. Allspaw&#39;s finding: <strong>MTTR matters more than MTBF</strong>. At hyperscale, MTBF approaches zero asymptotically; the resilience lever is recovery speed, not prevention.</p>
+<h3>~50% of Architecture Is Soft Skills</h3>
+<p>FOSA is unusually explicit: negotiation, facilitation, leadership, and communication are co-equal with technical knowledge for architect effectiveness. Key practices: turn architecture decisions into favours (not mandates), demonstrate rather than argue, maintain the right level of team control (elastic leadership), use the 4 C&#39;s (communication, collaboration, clarity, conciseness).</p>
+<hr>
+<h2>Sources in This Wiki</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Slug</th>
+<th>Title</th>
+<th>Author</th>
+<th>Ingested</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Understanding Distributed Systems</td>
+<td>Roberto Vitillo</td>
+<td>2026-05-13</td>
+</tr>
+<tr>
+<td><a href="sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Fundamentals of Software Architecture</td>
+<td>Richards &amp; Ford</td>
+<td>2026-05-13</td>
+</tr>
+<tr>
+<td><a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>Mastering API Architecture</td>
+<td>Gough, Bryant, Auburn</td>
+<td>2026-05-13</td>
+</tr>
+<tr>
+<td><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Building Evolutionary Architectures</td>
+<td>Ford, Parsons, Kua</td>
+<td>2026-05-13</td>
+</tr>
+<tr>
+<td><a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Designing Data-Intensive Applications</td>
+<td>Martin Kleppmann</td>
+<td>2026-05-13</td>
+</tr>
+<tr>
+<td><a href="sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
+<td>Software Architecture: The Hard Parts</td>
+<td>Ford, Richards, Sadalage, Dehghani</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/software-architecture-patterns.html">Software Architecture Patterns</a></td>
+<td>Software Architecture Patterns</td>
+<td>Mark Richards</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/building-event-driven-microservices.html">Building Event Driven Microservices</a></td>
+<td>Building Event-Driven Microservices</td>
+<td>Adam Bellemare</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>Learning Domain-Driven Design</td>
+<td>Vlad Khononov</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/team-topologies.html">Team Topologies</a></td>
+<td>Team Topologies</td>
+<td>Skelton &amp; Pais</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/domain-driven-design.html">Domain Driven Design</a></td>
+<td>Domain-Driven Design</td>
+<td>Eric Evans</td>
+<td>2026-05-14</td>
+</tr>
+<tr>
+<td><a href="sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Monolith to Microservices</td>
+<td>Sam Newman</td>
+<td>2026-05-15</td>
+</tr>
+<tr>
+<td><a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></td>
+<td>Enterprise Integration Patterns</td>
+<td>Hohpe &amp; Woolf</td>
+<td>2026-05-15</td>
+</tr>
+<tr>
+<td><a href="sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a></td>
+<td>Patterns of Enterprise Application Architecture</td>
+<td>Martin Fowler et al.</td>
+<td>2026-05-18</td>
+</tr>
+<tr>
+<td><a href="sources/release-it.html">Release It</a></td>
+<td>Release It!</td>
+<td>Michael Nygard</td>
+<td>2026-05-19</td>
+</tr>
+<tr>
+<td><a href="sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Foundations of Scalable Systems</td>
+<td>Ian Gorton</td>
+<td>2026-05-21</td>
+</tr>
+<tr>
+<td><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a></td>
+<td>Software Architecture Metrics</td>
+<td>Ciceri et al.</td>
+<td>2026-05-22</td>
+</tr>
+<tr>
+<td><a href="sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a></td>
+<td>A Philosophy of Software Design</td>
+<td>John Ousterhout</td>
+<td>2026-05-18</td>
+</tr>
+<tr>
+<td><a href="sources/accelerate.html">Accelerate</a></td>
+<td>Accelerate: The Science of Lean Software and DevOps</td>
+<td>Forsgren, Humble &amp; Kim</td>
+<td>2026-05-18</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2>Open Questions</h2>
+<ul>
+<li>Newman&#39;s migration patterns (strangler fig, parallel run) assume HTTP/REST interfaces are easy to intercept. How do these apply to systems with tight binary protocol coupling or embedded SDK clients?</li>
+<li>Evo-arch&#39;s evolvability scorecard (microservices highest) appears to conflict with FOSA&#39;s nuanced view that microservices is not always appropriate. Where exactly is the tension, and what criteria reconcile it?</li>
+<li>DDIA&#39;s coordination-avoiding correctness model (integrity without distributed transactions via end-to-end IDs) is compelling but nascent. What production systems have successfully adopted it at scale, and what does failure look like?</li>
+<li>Von Zitzewitz&#39;s Propagation Cost thresholds (20% for &lt;5,000 components, 10% for &gt;5,000) are empirical rules. How do they interact with intentional hub services (shared auth, shared logging) that are designed to have high fan-in?</li>
+<li>The DORA four key metrics are organisational health indicators, not system health indicators. Goodhart&#39;s Law applies: once teams know they&#39;re measured on deployment frequency, they may deploy smaller batches with less value. What counterbalances?</li>
+<li>Evans&#39; Large-Scale Structure patterns (Responsibility Layers, System Metaphor) were articulated in 2003. Are they still applicable to cloud-native, event-driven systems, or have bounded contexts and event streams replaced their function?</li>
+<li>Team Topologies assumes one team per component and one component per team. How does this interact with platform engineering, where a single platform team may be the effective owner of infrastructure used by dozens of stream-aligned teams?</li>
+</ul>
+<hr>
+<h2>Key Authors</h2>
+<ul>
+<li><a href="authors/roberto-vitillo.html">Roberto Vitillo</a> — <em>Understanding Distributed Systems</em></li>
+<li><a href="authors/mark-richards.html">Mark Richards</a> — <em>Fundamentals of Software Architecture</em> (with Ford), <em>Software Architecture Patterns</em>, <em>Software Architecture: The Hard Parts</em></li>
+<li><a href="authors/neal-ford.html">Neal Ford</a> — <em>Fundamentals of Software Architecture</em> (with Richards), <em>Building Evolutionary Architectures</em>, <em>Software Architecture: The Hard Parts</em>, contributor <em>Software Architecture Metrics</em> ch. 8</li>
+<li><a href="authors/rebecca-parsons.html">Rebecca Parsons</a> — <em>Building Evolutionary Architectures</em> (with Ford, Kua)</li>
+<li><a href="authors/patrick-kua.html">Patrick Kua</a> — <em>Building Evolutionary Architectures</em> (with Ford, Parsons)</li>
+<li><a href="authors/james-gough.html">James Gough</a> — <em>Mastering API Architecture</em> (with Bryant, Auburn)</li>
+<li><a href="authors/daniel-bryant.html">Daniel Bryant</a> — <em>Mastering API Architecture</em> (with Gough, Auburn)</li>
+<li><a href="authors/matthew-auburn.html">Matthew Auburn</a> — <em>Mastering API Architecture</em> (with Gough, Bryant)</li>
+<li><a href="authors/martin-kleppmann.html">Martin Kleppmann</a> — <em>Designing Data-Intensive Applications</em></li>
+<li><a href="authors/pramod-sadalage.html">Pramod Sadalage</a> — <em>Software Architecture: The Hard Parts</em> (with Ford, Richards, Dehghani)</li>
+<li><a href="authors/zhamak-dehghani.html">Zhamak Dehghani</a> — <em>Software Architecture: The Hard Parts</em> (with Ford, Richards, Sadalage); originator of Data Mesh</li>
+<li><a href="authors/adam-bellemare.html">Adam Bellemare</a> — <em>Building Event-Driven Microservices</em></li>
+<li><a href="authors/vlad-khononov.html">Vlad Khononov</a> — <em>Learning Domain-Driven Design</em></li>
+<li><a href="authors/eric-evans.html">Eric Evans</a> — <em>Domain-Driven Design</em> (2003); originator of the DDD vocabulary</li>
+<li><a href="authors/matthew-skelton.html">Matthew Skelton</a> — <em>Team Topologies</em> (with Pais)</li>
+<li><a href="authors/manuel-pais.html">Manuel Pais</a> — <em>Team Topologies</em> (with Skelton)</li>
+<li><a href="authors/sam-newman.html">Sam Newman</a> — <em>Monolith to Microservices</em></li>
+<li><a href="authors/gregor-hohpe.html">Gregor Hohpe</a> — <em>Enterprise Integration Patterns</em> (with Woolf)</li>
+<li><a href="authors/bobby-woolf.html">Bobby Woolf</a> — <em>Enterprise Integration Patterns</em> (with Hohpe)</li>
+<li><a href="authors/martin-fowler.html">Martin Fowler</a> — <em>Patterns of Enterprise Application Architecture</em></li>
+<li><a href="authors/michael-nygard.html">Michael Nygard</a> — <em>Release It!</em>; coined Circuit Breaker, Bulkhead, Timeout in the software context</li>
+<li><a href="authors/ian-gorton.html">Ian Gorton</a> — <em>Foundations of Scalable Systems</em></li>
+<li><a href="authors/christian-ciceri.html">Christian Ciceri</a> — Editor, <em>Software Architecture Metrics</em>; contributor ch. 5 (private builds)</li>
+<li><a href="authors/andrew-harmel-law.html">Andrew Harmel Law</a> — Contributor <em>Software Architecture Metrics</em> ch. 1; DORA four key metrics</li>
+<li><a href="authors/rene-weiss.html">Rene Weiss</a> — Contributor <em>Software Architecture Metrics</em> ch. 2; fitness function testing pyramid</li>
+<li><a href="authors/dave-farley.html">Dave Farley</a> — Contributor <em>Software Architecture Metrics</em> ch. 3; testability and deployability as architectural drivers</li>
+<li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a> — Contributor <em>Software Architecture Metrics</em> ch. 4; Modularity Maturity Index</li>
+<li><a href="authors/joao-rosa.html">Joao Rosa</a> — Contributor <em>Software Architecture Metrics</em> ch. 6; KPI Value Tree; sociotechnical architecture</li>
+<li><a href="authors/eoin-woods.html">Eoin Woods</a> — Contributor <em>Software Architecture Metrics</em> ch. 7; MTTR &gt; MTBF; RPO/RTO measurement</li>
+<li><a href="authors/alexander-von-zitzewitz.html">Alexander Von Zitzewitz</a> — Contributor <em>Software Architecture Metrics</em> ch. 9; creator of Sonargraph; structural metrics</li>
+<li><a href="authors/michael-keeling.html">Michael Keeling</a> — Contributor <em>Software Architecture Metrics</em> ch. 10; Goal-Question-Metric framework</li>
+<li><a href="authors/john-ousterhout.html">John Ousterhout</a> — <em>A Philosophy of Software Design</em>; Stanford CS professor; deep modules, information hiding, complexity management</li>
+<li><a href="authors/nicole-forsgren.html">Nicole Forsgren</a> — <em>Accelerate</em> (with Humble, Kim); DORA research programme; psychometric rigour in DevOps research</li>
+<li><a href="authors/jez-humble.html">Jez Humble</a> — <em>Accelerate</em> (with Forsgren, Kim); co-author of <em>Continuous Delivery</em>; CI/CD and Lean practitioner</li>
+<li><a href="authors/gene-kim.html">Gene Kim</a> — <em>Accelerate</em> (with Forsgren, Humble); <em>The Phoenix Project</em>; high-performing technology organisations</li>
+</ul>
+</div>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Team Topologies* — Skelton &amp; Pais">
+  <meta property="og:title" content="Team Topologies: Organising Business and Technology Teams for Fast Flow — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Team Topologies* — Skelton &amp; Pais">
+  <title>Team Topologies: Organising Business and Technology Teams for Fast Flow — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html" aria-current="page">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Team Topologies: Organising Business and Technology Teams for Fast Flow</nav></div>
+      <h1>Team Topologies: Organising Business and Technology Teams for Fast Flow</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/teams.html">teams</a><a class="tag-chip" href="../tags/organisational-design.html">organisational-design</a><a class="tag-chip" href="../tags/conways-law.html">conways-law</a><a class="tag-chip" href="../tags/cognitive-load.html">cognitive-load</a><a class="tag-chip" href="../tags/flow.html">flow</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/matthew-skelton.html">Matthew Skelton</a>, <a href="../authors/manuel-pais.html">Manuel Pais</a>
+<strong>Published:</strong> 2019
+<strong>Slug:</strong> <code>team-topologies</code></p>
+<h2>Overview</h2>
+<p>Team Topologies argues that software architecture and team organisation are not separate concerns — they are two sides of the same coin, bound together by Conway&#39;s law. The book&#39;s core thesis is that most delivery problems attributed to technology or process are actually organisational: wrong team shapes, too much cognitive load on individual teams, or poorly defined interaction modes between teams. Rather than prescribing a fixed org chart, Team Topologies provides a dynamic model: four fundamental team types and three interaction modes that can evolve as technical and organisational maturity changes.</p>
+<p>The book is grounded in a humanistic premise — teams are the fundamental unit of delivery, not individuals — and makes cognitive load a first-class architectural concern. An organisation that ignores team cognitive load will produce delivery bottlenecks, poor quality, and low motivation regardless of its technical choices.</p>
+<p>It draws heavily on Conway&#39;s law and the reverse Conway maneuver, treating organisation design as a technical activity that must involve architects and engineers, not just HR and management.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>Team structure is the first draft of the software architecture (Nygard); architecture cannot be designed in isolation from team design (→ ch. 2)</li>
+<li>Four fundamental team types — stream-aligned, platform, enabling, complicated-subsystem — cover all necessary organisational patterns (→ ch. 5)</li>
+<li>Three interaction modes — collaboration, X-as-a-Service, facilitating — define how teams should relate at any given point (→ ch. 7)</li>
+<li>Cognitive load on teams must be explicitly bounded; teams spread across too many domains produce bottlenecks and low motivation (→ ch. 3)</li>
+<li>Not all communication is good; unexpected inter-team communication signals an architectural problem, not a collaboration opportunity (→ ch. 2)</li>
+<li>Platform teams must treat the internal developer platform as a product with explicit consumers, SLAs, and a compelling developer experience (→ ch. 5)</li>
+<li>Team interaction modes should evolve over time as discovery gives way to execution: collaboration → X-as-a-Service is a natural trajectory (→ ch. 7, ch. 8)</li>
+<li>Awkward or excessive inter-team communication is a diagnostic signal, not a feature; it indicates a badly designed team boundary or API (→ ch. 7)</li>
+<li>Stable, well-defined teams with well-defined interaction modes make the organisation a reliable sensing apparatus; unstable team structures are literally &quot;senseless&quot; (→ ch. 8)</li>
+<li>Separating &quot;new-service&quot; teams from &quot;BAU/maintenance&quot; teams breaks the feedback loop from operations to development; single stream-aligned teams should own both (→ ch. 8)</li>
+<li>The reverse Conway maneuver should be applied before software is built, not after (→ ch. 2)</li>
+<li>Reorganisations driven by management convenience or headcount reduction actively destroy software delivery capability (→ ch. 2)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 7 — Team Interaction Modes</h3>
+<p>Detailed treatment of the three interaction modes, each with explicit advantages, disadvantages, and appropriate constraints:</p>
+<p><strong>Collaboration</strong>: two teams work closely together with overlapping boundaries. Advantages: rapid learning, innovation at boundaries, useful when correct API boundary is unknown. Disadvantages: high cognitive load overhead (&quot;collaboration tax&quot;), blurs responsibility, slows delivery if prolonged. Constraint: each team should be in close collaboration with <em>at most one</em> other team at a time. When collaboration no longer brings learning benefits, transition to X-as-a-Service.</p>
+<p><strong>X-as-a-Service</strong>: one team provides; the other consumes with minimal interaction. Advantages: clear ownership, predictable delivery, scales to many simultaneous consumers, enables autonomy. Disadvantages: can slow innovation at the boundary; requires strong DevEx and product management from the providing team. Based on <strong>promise theory</strong> (Mark Burgess): semantic versioning is a promise not to break consumers — inter-team relationships are voluntary promises, not contractual obligations. Provides deeper alignment than contracts because teams <em>choose</em> to uphold them.</p>
+<p><strong>Facilitating</strong>: an enabling team helps another team adopt a new approach. The enabling team&#39;s primary mode. Constraint: a small number of teams can be facilitated simultaneously. Time-limited; goal is capability transfer, not permanent assistance.</p>
+<p><strong>Interaction mode matrix</strong> (which modes are Typical vs Occasional by team type):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Team type</th>
+<th>Collaboration</th>
+<th>X-as-a-Service</th>
+<th>Facilitating</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Stream-aligned</td>
+<td>Typical</td>
+<td>Typical</td>
+<td>Occasional</td>
+</tr>
+<tr>
+<td>Enabling</td>
+<td>Occasional</td>
+<td>—</td>
+<td>Typical</td>
+</tr>
+<tr>
+<td>Complicated-subsystem</td>
+<td>Occasional</td>
+<td>Typical</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>Occasional</td>
+<td>Typical</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<p><strong>Awkward interactions as diagnostic signal</strong>: if a team using X-as-a-Service mode must constantly escalate to the providing team, the API or service is poorly designed. If two teams in collaboration mode barely communicate, the wrong teams have been placed together or the boundary is too ambitious. Awkward interaction → fix the API or team boundary, not the people.</p>
+<p><strong>Architect role in Team Topologies</strong>: architects should primarily act as designers of team APIs and shapers of team-to-team interactions with Conway&#39;s law in mind. Requires both social and technical skills, and a broader organisational remit than is traditionally given.</p>
+<p><strong>Intermittent collaboration</strong> (Bernstein et al. research): groups that collaborated intermittently achieved nearly identical average quality to constantly-collaborating groups, while preserving solution variation that helped find best outcomes. Supports Team Topologies&#39; prescription for time-bounded, purposeful collaboration over permanent open collaboration.</p>
+<h3>Chapter 8 — Evolve Team Structures with Organizational Sensing</h3>
+<p>Picks up from Ch 7 to describe <em>when</em> and <em>why</em> to change team topology, and how well-structured teams create organisational intelligence.</p>
+<p><strong>Discovery-to-establish pattern</strong>: the natural trajectory for a pair of teams is close collaboration (high uncertainty, learning) → limited collaboration → X-as-a-Service (established patterns, predictable delivery). This transition is expected to happen simultaneously across the organisation at different stages for different team pairs.</p>
+<p><strong>Three triggers for topology evolution</strong>:</p>
+<ol>
+<li><em>Software grown too large</em>: team exceeds Dunbar limits; key-person dependencies emerge; onboarding and documentation suffer; the team can no longer hold the system in collective working memory</li>
+<li><em>Delivery cadence slowing</em>: team feels slower than it once was; WIP increases; hard dependencies on other teams block delivery; team loses confidence in its output</li>
+<li><em>Multiple business services relying on a large set of underlying services</em>: solution is to &quot;platformize&quot; the lower layer — wrap it as a platform team and let stream-aligned teams own their own telemetry and diagnostics above it</li>
+</ol>
+<p><strong>Organisational sensing</strong>: stable, well-defined teams with well-defined interaction modes create reliable communication pathways — the organisation can reliably &quot;sense&quot; its environment (customers, markets, technology changes). Unstable team structures with constantly shifting membership and boundaries are literally senseless — signals are lost in the noise of reorganisation.</p>
+<p><strong>Cybernetic feedback loop</strong>: the book draws on Stafford Beer&#39;s cybernetics — organisations must have feedback from operational reality back into development decisions. Teams are the sensors. IT operations as high-value sensory input: Ops teams provide high-fidelity signals about operability, reliability, security, and usability. The DevOps Handbook&#39;s Three Ways of DevOps are cited:</p>
+<ol>
+<li>Systems thinking — optimise for fast flow across the whole</li>
+<li>Feedback loops — development informed and guided by operations</li>
+<li>Culture of continual experimentation and learning</li>
+</ol>
+<p><strong>BAU/maintenance team anti-pattern</strong>: separating &quot;new-service&quot; teams from &quot;business as usual&quot; maintenance teams breaks the feedback loop from Ops to Dev entirely. The new-service team implements new approaches without seeing consequences; the BAU team has no incentive or authority to improve things. Better model: a single stream-aligned team owns both the new service and existing systems side-by-side, retrofits telemetry from newer systems to older ones, and learns from the full range of operational behaviour.</p>
+<p><strong>Senior engineers in operations</strong>: contrary to historical practice, IT operations requires the most experienced engineers — not the most junior — to provide accurate, useful triage and high-fidelity signal to development teams.</p>
+<p><strong>Team Topologies is necessary but not sufficient</strong> (conclusion): Team Topologies provides the model, but effective organisations also require:</p>
+<ul>
+<li>Healthy organisational culture: psychological safety, continuous learning, empowerment</li>
+<li>Good engineering practices: test-first, continuous delivery, operability focus, designing for testability</li>
+<li>Healthy funding/financial practices: avoid CapEx/OpEx splits that harm flow; avoid project-based deadlines and large-batch budgeting</li>
+<li>Clarity of business vision: non-conflicting direction at human-relevant timescales</li>
+</ul>
+<h3>Chapter 1 — The Problem with Org Charts</h3>
+<p>Every organisation has three simultaneous structures (Pflaeging): the formal org chart (compliance), the informal influence network, and the value creation structure (how work actually happens). Org charts only capture the first. Decisions based solely on the org chart optimise locally and miss systemic bottlenecks.</p>
+<p>Team Topologies introduces four team types and three interaction modes as its core model. Cognitive load is introduced as the key constraint: teams spread too thin lose mastery, suffer context switching, and become delivery bottlenecks. Systems thinking — optimise for the whole flow — is the recommended alternative to local optimisation.</p>
+<h3>Chapter 2 — Conway&#39;s Law and Why It Matters</h3>
+<p>Conway&#39;s law is empirically well-supported beyond software (vehicle manufacturing, aircraft engine design, open-source studies by MacCormack et al.). Ruth Malan&#39;s modern formulation: <em>&quot;If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins.&quot;</em></p>
+<p>Key extensions beyond the existing wiki treatment:</p>
+<ul>
+<li>Tool choices drive communication patterns (shared tools = collaboration signal; separate tools = independence signal)</li>
+<li>Unexpected inter-team communication is a diagnostic signal: something is wrong with the API, platform, or component boundary</li>
+<li>Organisation design is inherently technical work; architects need a say in team structure</li>
+<li>Reorganisations for management convenience destroy software delivery capability</li>
+</ul>
+<h3>Chapter 5 — The Four Fundamental Team Topologies</h3>
+<p>Detailed treatment of each team type with expected behaviours. Stream-aligned teams: primary type; no dedicated Ops handoff; SRE is a special kind of stream-aligned team. Enabling teams: temporary, servant-like, avoid ivory tower, plan for their own extinction. Complicated-subsystem teams: only when specialist knowledge <em>drives</em> the need (not when sharing is convenient). Platform teams: self-service product with TVP principle; DevEx focus; fractal internally (composed of four team types at scale).</p>
+<p>Architecture team: most effective as a part-time enabling team. Ratio: 6:1 to 9:1 stream-aligned to other. Conversion guide: infrastructure → platform; component → platform/enabling/complicated-subsystem; DBA → enabling or platform; tooling → enabling or platform; support → stream-aligned with dynamic swarming.</p>
+<h3>Chapter 6 — Choose Team-First Boundaries</h3>
+<p>Fracture planes: natural seams where systems can be split to produce autonomous, cognitively bounded team ownership. Eight types: (1) business domain bounded context (primary); (2) regulatory compliance; (3) change cadence; (4) team location; (5) risk; (6) performance isolation; (7) technology (use sparingly); (8) user personas. Litmus test: &quot;Could we, as a team, effectively consume or provide this subsystem as a service?&quot;</p>
+<p>Six forms of monolith: application, joined-at-the-database, monolithic build, monolithic release, monolithic model, monolithic thinking. Distributed monolith: microservices with end-to-end batch testing before release.</p>
+<h3>Chapter 3 — Team-First Thinking</h3>
+<p>The team is the fundamental unit of delivery. Effective teams are small (5–9), stable, and long-lived — work flows to teams, not people to projects. Team size limits derive from Dunbar&#39;s number (deep trust limit ~15; mutual trust ~50; capability recognition ~150); organisations should scale via Dunbar-compatible groupings.</p>
+<p>Every software component must be owned by exactly one team. Shared ownership is no ownership.</p>
+<p>Cognitive load (Sweller): intrinsic (domain fundamentals — minimise), extraneous (environment overhead — eliminate), germane (value-add thinking — maximise). Software boundaries should be sized to team cognitive capacity, not vice versa. Domain complexity heuristics: 2–3 simple domains; max 1 complicated; max 1 complex (with no others). The Team API is the primary inter-team interface: code + versioning + docs + practices + communication + work visibility.</p>
+<h3>Chapter 4 — Static Team Topologies</h3>
+<p>Anti-patterns: ad hoc team design and shuffling team members (project-based staffing). Design for flow: cross-functional teams owning build, test, deploy, and operate — eliminating handoffs. DevOps emerged ~2009 to address dev/ops separation (&quot;wall of confusion&quot;).</p>
+<p>DevOps Topologies: no one-size-fits-all; context-dependent on technical maturity, org size, software scale, and engineering discipline. Feature teams require high engineering maturity and trust. Product teams need non-blocking self-service dependencies. SRE is a specialised pattern suited to high scale with a dynamic error-budget relationship between SRE and dev teams. The DevOps team anti-pattern: a permanent execution DevOps team becomes a hard dependency; should instead be a temporary enabling team that makes itself obsolete.</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;Team assignments are the first draft of the architecture.&quot; — Michael Nygard (cited ch. 2)</p>
+</blockquote>
+<blockquote>
+<p>&quot;If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins.&quot; — Ruth Malan (cited ch. 2)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Requiring everyone to communicate with everyone else is a recipe for a mess.&quot; (ch. 2)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — primary concept page; extensively enriched by this source</li>
+<li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a> — the four team types and three interaction modes</li>
+<li><a href="../concepts/cognitive-load.html">Cognitive Load</a> — team cognitive load as a first-class architectural concern</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../authors/manuel-pais.html">Manuel Pais</a></li><li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li><li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

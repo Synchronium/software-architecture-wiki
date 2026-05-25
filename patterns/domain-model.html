@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DDD tactical pattern for core subdomain business logic: value objects (immutable, identified by values), entities, aggregates (consistency boundary,…">
+  <meta property="og:title" content="Domain Model Pattern — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="DDD tactical pattern for core subdomain business logic: value objects (immutable, identified by values), entities, aggregates (consistency boundary,…">
+  <title>Domain Model Pattern — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html" aria-current="page">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../patterns/index.html">Patterns</a> <span class="sep">›</span> Domain Model Pattern</nav></div>
+      <h1>Domain Model Pattern</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../patterns/index.html">pattern</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/domain-model.html">domain-model</a><a class="tag-chip" href="../tags/aggregate.html">aggregate</a><a class="tag-chip" href="../tags/value-object.html">value-object</a><a class="tag-chip" href="../tags/domain-events.html">domain-events</a><a class="tag-chip" href="../tags/domain-services.html">domain-services</a><a class="tag-chip" href="../tags/tactical-design.html">tactical-design</a><a class="tag-chip" href="../tags/business-logic.html">business-logic</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>The domain model pattern implements business logic as an object model that incorporates both behaviour and data. It is oriented toward complex business logic — entangled rules, state transitions, invariants that must be protected at all times. The code should speak the bounded context&#39;s <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a>.</p>
+<blockquote>
+<p>Use when the business logic involves complex algorithms and business processes orchestrated by complex rules and invariants — not CRUD interfaces. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 6)</p>
+</blockquote>
+<p>Objects in the domain model are <strong>plain old objects</strong> — no infrastructure or technological concerns (no database calls, no framework coupling). This restriction keeps the model clean and testable.</p>
+<h2>Building Blocks</h2>
+<h3>Value Object</h3>
+<p>An object identified by the <strong>composition of its values</strong>, not by an ID. Two value objects with identical field values are equal. Implemented as <strong>immutable</strong> — changing any field conceptually creates a new value.</p>
+<p><em>Why value objects</em>: prevents &quot;primitive obsession&quot; — using raw strings and ints to represent domain concepts. Value objects centralise validation, encapsulate business logic, and make the type system speak the domain language.</p>
+<pre><code>// Primitive obsession:
+Person(phone: string, email: string, country: string)
+
+// Value objects:
+Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
+</code></pre>
+<p>Value objects enforce their own invariants (PhoneNumber.Parse validates format), are safe to share (immutable = no side effects, thread-safe), and express domain concepts explicitly. Use them for any domain element that describes a property of another object — IDs, money, measurements, status values.</p>
+<p>Fowler (→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> ch. 18) stresses immutability as non-negotiable: a mutable Value Object that is aliased (referenced from multiple places) causes subtle bugs — changing one apparent copy changes all alias holders. Immutability makes aliasing harmless. For persistence, always use Embedded Value — a Value Object has no identity and should never be stored as its own table row. The canonical example is <code>Money</code>: currency + amount as a pair, with currency-aware arithmetic, allocation methods to distribute sums without losing remainder pennies, and a <code>convert()</code> method backed by a converter object rather than simple multiplication. Naming collision: the J2EE community used &quot;Value Object&quot; to mean DTO; these are entirely different patterns.</p>
+<h3>Entity</h3>
+<p>An object that requires an <strong>explicit identification field</strong> to distinguish instances. Two entities with the same values but different IDs are different entities. Mutable — expected to change over its lifecycle (unlike value objects). The ID must remain immutable throughout the lifecycle.</p>
+<p>Entities are not used as an independent building block — only as components within an aggregate.</p>
+<h3>Aggregate</h3>
+<p>An aggregate is an entity, but it is much more: it is the <strong>consistency enforcement boundary</strong> of the domain model.</p>
+<p><strong>Core rule</strong>: only the aggregate&#39;s own business logic may modify its state. External processes can only read state and invoke commands (the aggregate&#39;s public interface methods). This strict boundary ensures all business logic is implemented in one place and all invariants are always enforced.</p>
+<p><strong>Transaction boundary</strong>: one aggregate instance per database transaction. A change to an aggregate must be committed as a single atomic operation. The need to modify multiple aggregates in one transaction is a design signal: the aggregate boundaries are wrong.</p>
+<p><strong>Hierarchy of entities</strong>: an aggregate contains a hierarchy of entities and value objects, all sharing transactional consistency. Only data that requires strong consistency should be inside the aggregate boundary. Data that can be eventually consistent lives outside.</p>
+<p><strong>Aggregate root</strong>: when an aggregate contains a hierarchy, one entity is the <strong>aggregate root</strong> — the single public interface for all external interactions. External code can only call commands on the root; internal entities are accessed only through it.</p>
+<p><strong>Concurrency</strong>: aggregates hold a version field incremented on each update. Before committing, the database must confirm the version matches the one read before applying changes — optimistic concurrency control. Multi-process concurrent updates are rejected; the second process retries.</p>
+<p><strong>Referencing other aggregates</strong>: aggregates reference other aggregates only by ID — never by object reference. This makes the transactional boundary explicit and ensures each aggregate&#39;s transactions are independent.</p>
+<p><strong>Sizing</strong>: keep aggregates as small as possible. Only include entities that genuinely require strong consistency with each other. Larger aggregates → worse concurrency (more contention on the same transaction boundary).</p>
+<h3>Domain Events</h3>
+<p>Domain events are <strong>past-tense messages</strong> describing significant business happenings:</p>
+<ul>
+<li>Ticket Escalated</li>
+<li>Order Placed</li>
+<li>Payment Confirmed</li>
+</ul>
+<p>Events are part of the aggregate&#39;s public interface. The aggregate appends domain events to its internal collection when business logic causes a state change. After the aggregate&#39;s command is committed, domain events are published to interested subscribers (other aggregates, external systems).</p>
+<p>Events describe <em>what happened</em> and supply all necessary data about that happening. They are named in the past tense because they describe facts, not intentions.</p>
+<p>Domain events connect the aggregate to choreographed event-driven flows (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>). In the event-sourced domain model (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>), domain events also become the source of truth for aggregate state.</p>
+<h3>Domain Services</h3>
+<p>Stateless objects implementing business logic that <strong>doesn&#39;t belong to any single aggregate or value object</strong> — typically logic that coordinates multiple aggregates or requires reading data from multiple sources.</p>
+<p><em>Characteristics</em>:</p>
+<ul>
+<li>Stateless</li>
+<li>Named after business domain concepts, not technical concerns</li>
+<li>Not microservices — they are objects within a bounded context</li>
+</ul>
+<p>Domain services do not bypass the one-aggregate-per-transaction rule. They are for <em>reading</em> multiple aggregates and performing calculations; they cannot commit changes to multiple aggregates atomically.</p>
+<h2>Application Layer</h2>
+<p>The application layer (the layer orchestrating operations on aggregates) is thin: load aggregate → execute command → persist aggregate → return result. The aggregate handles all business logic; the application layer just coordinates infrastructure.</p>
+<pre><code>Load aggregate state
+→ Execute command (business logic inside aggregate)
+→ Persist (with version check)
+→ Publish domain events
+</code></pre>
+<h2>Domain Model vs. Transaction Script</h2>
+<p>The difference is not lines of code but structural discipline:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>Transaction Script</th>
+<th>Domain Model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Business logic location</td>
+<td>Scattered in procedures</td>
+<td>Encapsulated in aggregates</td>
+</tr>
+<tr>
+<td>Invariant enforcement</td>
+<td>Must be manually repeated in each script</td>
+<td>Always enforced by aggregate</td>
+</tr>
+<tr>
+<td>Duplicated logic</td>
+<td>Common as complexity grows</td>
+<td>Prevented by aggregate boundary</td>
+</tr>
+<tr>
+<td>Suits</td>
+<td>Supporting subdomains (simple)</td>
+<td>Core subdomains (complex)</td>
+</tr>
+</tbody></table></div>
+<h2>When to Use</h2>
+<p>Use when the subdomain contains complex business rules, invariants, and state transitions — the domain model is the natural fit for <strong>core subdomains</strong>. Supporting subdomains with simple CRUD logic should use transaction script or active record instead (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
+<h2>Evans&#39; Elaborations on the Building Blocks</h2>
+<p>Evans&#39; treatment in <a href="../sources/domain-driven-design.html">Domain Driven Design</a> (ch. 5–6) adds several important nuances not in Khononov&#39;s more systematic account:</p>
+<p><strong>Associations</strong>: every bidirectional association is a maintenance burden. Default to unidirectional; add qualifiers to reduce multiplicity; eliminate non-essential associations. Bidirectional associations between value objects make no sense — if neither object has identity, the traversal direction is meaningless.</p>
+<p><strong>Entity identity</strong>: the question is not &quot;does this object have an ID field&quot; but &quot;does it need to be found or tracked over time?&quot; Two customers with the same name are still two different customers. Identity operations (sameness tests, lookups) must be explicit and domain-meaningful. Entities contain the smallest possible set of attributes required for identity and lifecycle continuity — other attributes belong on value objects.</p>
+<p><strong>Value objects — context-dependence</strong>: whether something is an entity or value object depends on the context, not the thing itself. An address is a value object for a mail-order company (a description of where to ship) but may be an entity for a postal delivery service (a node in a network that needs to be tracked). The decision should be explicit and documented.</p>
+<p><strong>Value objects — copying vs sharing</strong>: because value objects are immutable, copying is always safe. Sharing is safe when the VO is truly immutable and the shared reference is never dereferenced after the source changes. When in doubt, copy.</p>
+<p><strong>Services — three-layer partitioning</strong>: services are not just &quot;stateless domain logic&quot; — they partition across all three non-database layers: <em>application services</em> coordinate tasks without containing business rules; <em>domain services</em> contain business logic that spans aggregate boundaries; <em>infrastructure services</em> provide technical capabilities. Mixing them (e.g., putting infrastructure concerns in a domain service) violates layer isolation.</p>
+<p><strong>Modules as model elements</strong>: module names enter the <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a>. A module named <code>beans/</code> or <code>dao/</code> is a technical filing decision, not a domain concept — it scatters cohesive domain logic and produces an anemic model. Module names like <code>Loan</code>, <code>Policy</code>, <code>Underwriting</code> are domain statements.</p>
+<p><strong>Aggregate invariant rules (complete set from Evans)</strong>:</p>
+<ol>
+<li>Root has global identity; internal entities have local identity only.</li>
+<li>External objects hold references only to the root.</li>
+<li>Only the root is directly queryable from the database.</li>
+<li>Objects inside may hold references to other aggregate roots.</li>
+<li>A delete removes everything inside the boundary.</li>
+<li>Committing a change must satisfy all invariants of the whole aggregate.</li>
+<li>All state modifications flow through the root.</li>
+</ol>
+<p>The purchase order example: PO line items cannot be individually locked and modified because the invariant (total ≤ approved limit) spans all items. Individually-locked items allow concurrent modifications that each appear valid but violate the aggregate invariant together.</p>
+<p><strong>Factories vs repositories</strong>: Evans draws a sharp distinction. A factory creates <em>new</em> objects — it handles complex construction and ensures the produced object is complete and valid from birth. A repository finds <em>existing</em> objects — it provides the illusion of an in-memory collection and handles reconstitution from persistent storage. Reconstitution from the database is a factory responsibility invoked <em>by</em> the repository: the repository fetches raw data; a factory (or factory method) assembles the object without assigning a new identity.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>Defining treatment: full building-block set (value objects, entities, aggregates, domain events, domain services); aggregate as consistency boundary; one-aggregate-per-transaction rule; application layer as thin orchestrator (ch. 6)</td>
+</tr>
+<tr>
+<td><a href="../sources/domain-driven-design.html">Domain Driven Design</a></td>
+<td>Originating treatment: richer on nuance — association direction, value object context-dependence, services partitioned across layers, modules as model elements, complete aggregate invariant rules, factory/repository complementarity (ch. 5–6)</td>
+</tr>
+<tr>
+<td><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a></td>
+<td>Fowler&#39;s treatment emphasises Value Object immutability as the solution to aliasing bugs; defines Money as the canonical Value Object; introduces Special Case (ch. 18) as the general form of Null Object — return a subclass that handles the exceptional case polymorphically rather than proliferating null checks.</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — each aggregate belongs to a single bounded context; the domain model speaks the bounded context&#39;s ubiquitous language</li>
+<li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — aggregate names, commands, events must all reflect the ubiquitous language</li>
+<li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — domain model is the complex-business-logic tier in the four-pattern spectrum</li>
+<li><a href="../patterns/repository.html">Repository</a> — Evans&#39; pattern for providing in-memory collection illusion over aggregate roots</li>
+<li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — event-sourced domain model uses these same building blocks but persists domain events as source of truth</li>
+<li><a href="../patterns/context-map.html">Context Map</a> — aggregates within different bounded contexts integrate via the integration patterns</li>
+<li><a href="../patterns/saga.html">Saga</a> — sagas coordinate cross-aggregate workflows that can&#39;t share a transaction boundary</li>
+<li><a href="../distributed/idempotency.html">Idempotency</a> — domain events published to message brokers require idempotent consumers</li>
+<li><a href="../databases/object-relational-mapping.html">Object Relational Mapping</a> — Data Mapper is the ORM pattern for persisting domain model objects; Unit of Work tracks aggregate changes per request</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../patterns/repository.html">Repository Pattern</a></li><li><a href="../patterns/specification.html">Specification Pattern</a></li><li><a href="../concepts/supple-design.html">Supple Design</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

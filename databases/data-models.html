@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Relational, document, graph models; schema-on-read vs write; SQL, Cypher, SPARQL, Datalog query languages">
+  <meta property="og:title" content="Data Models — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Relational, document, graph models; schema-on-read vs write; SQL, Cypher, SPARQL, Datalog query languages">
+  <title>Data Models — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html" aria-current="page">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../databases/index.html">Databases</a> <span class="sep">›</span> Data Models</nav></div>
+      <h1>Data Models</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../databases/index.html">database</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/data-models.html">data-models</a><a class="tag-chip" href="../tags/relational.html">relational</a><a class="tag-chip" href="../tags/document.html">document</a><a class="tag-chip" href="../tags/graph.html">graph</a><a class="tag-chip" href="../tags/query-languages.html">query-languages</a></ul>
+    </div><div class="page-body"><p>A data model determines how data is organised, how it can be queried, and what kind of relationships it can represent efficiently. The history of data models is a history of abstraction: each generation hides complexity behind a cleaner interface while trading off something else. The dominant models today are relational, document, and graph — each suited to different relationship structures.</p>
+<h2>Historical Progression</h2>
+<p><strong>Hierarchical model</strong> (1960s–70s): tree-structured records. One-to-many relationships were natural; many-to-many required duplication. Navigated by application code.</p>
+<p><strong>Network model / CODASYL</strong> (1970s): generalised hierarchical to allow records to have multiple parents. Relationships were implemented as explicit access paths (pointers). Programmers had to navigate the graph manually — changing the data model required changing application code.</p>
+<p><strong>Relational model</strong> (E.F. Codd, 1970): hid access path decisions behind a declarative query language. The optimizer chooses how to navigate the data; the programmer declares what they want. Won decisively by the mid-1980s and has dominated for 25–30 years.</p>
+<p><strong>NoSQL</strong> (2009–): not a specific technology. The name originated as a Twitter hashtag for a 2009 open-source database meetup; retroactively reinterpreted as &quot;Not Only SQL.&quot; Driven by: need for greater scalability, open-source preference, specialised query needs, desire for more dynamic schemas. <strong>Polyglot persistence</strong>: relational and non-relational stores coexist within one application, each used where it fits best.</p>
+<h2>Relational Model</h2>
+<p><strong>Origin</strong>: E.F. Codd, 1970. Beat the network model (CODASYL) by hiding access path decisions behind a declarative query language.</p>
+<p><strong>Structure</strong>: data organised into <strong>relations</strong> (tables) of <strong>tuples</strong> (rows) with a fixed schema. Relationships are expressed via foreign keys — references between rows in different tables. Joins reconstruct related data at query time.</p>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Excellent for many-to-many relationships (explicit join semantics).</li>
+<li>Normalization eliminates data duplication — a fact is stored once, referenced everywhere.</li>
+<li>Query optimiser chooses the execution plan — the programmer declares <em>what</em>, not <em>how</em>.</li>
+<li>Strong consistency guarantees via ACID transactions.</li>
+</ul>
+<p><strong>Weaknesses</strong>:</p>
+<ul>
+<li><strong>Impedance mismatch</strong>: OOP object graphs don&#39;t map cleanly to tables. ORMs reduce but don&#39;t eliminate the translation overhead.</li>
+<li>Schema-on-write: migrations required to change structure, which can be slow and risky on large tables.</li>
+<li>Joins are expensive at scale; join-heavy queries limit horizontal sharding.</li>
+</ul>
+<p><strong>Normalization rationale</strong>: store human-meaningful information (e.g., city names, industry names) in one place and reference it by ID. IDs never need to change even when the thing they refer to changes; duplicated text creates update anomalies. IDs have no meaning to humans and thus never need to change — only the display name does.</p>
+<p><strong>Used in</strong>: PostgreSQL, MySQL, Oracle, SQL Server, SQLite.</p>
+<h2>Document Model</h2>
+<p><strong>Structure</strong>: self-contained JSON or XML documents. A document typically stores a complete entity with all its related data nested — avoiding joins for the common case.</p>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Excellent for one-to-many tree structures (a blog post and its comments; a résumé and its work history).</li>
+<li>Schema flexibility (schema-on-read): different documents in the same collection can have different fields.</li>
+<li>Data locality: all data for a document is stored together — one read retrieves the whole entity.</li>
+<li>Good fit for heterogeneous or rapidly-evolving data.</li>
+</ul>
+<p><strong>Weaknesses</strong>:</p>
+<ul>
+<li>Many-to-many relationships are awkward: storing denormalized data leads to duplication and update anomalies; storing IDs and doing application-level joins is slow and error-prone.</li>
+<li>No join support in early document databases — MongoDB added lookup ($lookup) later.</li>
+<li>No cross-document transactions in many implementations.</li>
+<li>Nesting depth limitations (update whole document even for small field change).</li>
+</ul>
+<p><strong>Used in</strong>: MongoDB, CouchDB, Firestore, DynamoDB (with document-style items).</p>
+<blockquote>
+<p><strong>Open question:</strong> The relational vs. document debate has softened — PostgreSQL supports JSONB natively, and MongoDB added multi-document transactions. The boundary is increasingly a spectrum.</p>
+</blockquote>
+<h3>NoSQL Data Modeling: Access-Pattern-Driven Design</h3>
+<p>A critical misconception: NoSQL is often described as &quot;more flexible&quot; because it has no enforced schema. In practice, NoSQL stores are <strong>more tightly coupled to access patterns than relational databases</strong>, not less. Because NoSQL stores avoid joins, data must be pre-joined (denormalized) at write time for the expected read patterns. If the access pattern changes, the data model may need to be rebuilt from scratch.</p>
+<p><strong>DynamoDB as a concrete example</strong> (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 19):</p>
+<p>DynamoDB&#39;s primary abstraction is a table with items. Each item has a <strong>partition key</strong> (determines which partition/node holds the item) and an optional <strong>sort key</strong> (determines ordering within a partition, enabling range queries within the partition). The partition key defines the unit of scalability; the sort key defines the unit of queryability within a partition.</p>
+<p>Key modeling technique — <strong>single-table design</strong>: store multiple entity types in one table using the partition+sort key pair as a type discriminator. Example (orders + customers):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Partition Key</th>
+<th>Sort Key</th>
+<th>Attributes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>jonsnow</code></td>
+<td><code>2021-07-13</code></td>
+<td>OrderID: 1452, Status: Shipped</td>
+</tr>
+<tr>
+<td><code>jonsnow</code></td>
+<td><code>jonsnow</code></td>
+<td>FullName: Jon Snow, Address: ...</td>
+</tr>
+</tbody></table></div>
+<p>Because the customer and their orders share the same partition key, a single query retrieves both — no join required. This replaces a two-table join at query time with a deliberate write-time denormalization.</p>
+<p><strong>Secondary indexes in DynamoDB</strong>:</p>
+<ul>
+<li><strong>Local secondary index (LSI)</strong>: alternate sort key within the same partition. Consistent reads.</li>
+<li><strong>Global secondary index (GSI)</strong>: different partition key and sort key. Reads are eventually consistent (index updates are asynchronous).</li>
+</ul>
+<p><strong>Note</strong>: DynamoDB&#39;s internal architecture (Raft-based, 3 replicas per partition, write acked at 2/3) is entirely different from the 1997 Dynamo paper (leaderless quorum). The name is historical, not architectural.</p>
+<p>The key takeaway: <strong>NoSQL requires identifying access patterns upfront and modeling data around them</strong>. Retrofitting different access patterns to an existing NoSQL schema is expensive.</p>
+<h2>Graph Model</h2>
+<p><strong>Structure</strong>: vertices (nodes, entities) and edges (relationships, arcs) — both with arbitrary properties.</p>
+<p><strong>Two main variants</strong>:</p>
+<ul>
+<li><strong>Property graphs</strong> (Neo4j, Titan, Amazon Neptune): vertices and edges each have arbitrary key-value properties; edges have a direction, type, and endpoints.</li>
+<li><strong>Triple-stores / RDF</strong> (SPARQL, Datomic): everything is a (subject, predicate, object) triple; subject and object are vertices, predicate is an edge with a name.</li>
+</ul>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Optimised for highly connected data with arbitrary, complex relationships.</li>
+<li>Traversal queries (find all friends-of-friends, shortest path, subgraph patterns) are natural.</li>
+<li>No need to pre-define a schema of relationships — add new edge types without migration.</li>
+<li>Recursive queries (variable-depth traversal) are first-class, not bolted on.</li>
+</ul>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Optimised for highly connected data with arbitrary, complex relationships.</li>
+<li>Traversal queries (find all friends-of-friends, shortest path, subgraph patterns) are natural.</li>
+<li>No need to pre-define a schema of relationships — add new edge types without migration.</li>
+<li>Recursive queries (variable-depth traversal) are first-class, not bolted on.</li>
+<li><strong>Evolvability</strong>: graphs accommodate changes in data structure far more easily than rigid schemas — adding a new edge type requires no migration.</li>
+</ul>
+<p><strong>Weaknesses</strong>:</p>
+<ul>
+<li>Higher per-vertex/edge overhead than relational rows.</li>
+<li>Full aggregation queries (count, sum) are awkward.</li>
+<li>Fewer tooling and operational options than relational.</li>
+</ul>
+<p><strong>Query languages</strong>: Cypher (Neo4j, declarative pattern matching), SPARQL (RDF, triple-pattern queries), Gremlin (Apache TinkerPop, imperative traversal), Datalog (recursive rules, subset of Prolog).</p>
+<p><strong>Used in</strong>: Neo4j (social networks, fraud detection, knowledge graphs), Amazon Neptune, Datomic (triple-store with immutable history).</p>
+<h2>Network Model (Historical)</h2>
+<p>CODASYL (1970s) used a network model: records linked via explicit access paths (pointers). Programmers had to navigate the graph manually — changing the data model required changing application code. Relational won because it decoupled the query from the access path.</p>
+<h2>Schema-on-Write vs Schema-on-Read</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Schema-on-Write (relational)</th>
+<th>Schema-on-Read (document)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>When validated</td>
+<td>At write time — rejected if wrong</td>
+<td>At read time — application interprets</td>
+</tr>
+<tr>
+<td>Migration</td>
+<td>ALTER TABLE required (often slow)</td>
+<td>Add new field; old documents get null/default on read</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Stable, well-understood schema</td>
+<td>Heterogeneous or rapidly evolving data</td>
+</tr>
+<tr>
+<td>Analogy</td>
+<td>Statically typed language</td>
+<td>Dynamically typed language</td>
+</tr>
+</tbody></table></div>
+<p>Schema-on-read is not &quot;schemaless&quot; — there is an implicit schema assumed by the application. The schema is just not enforced by the database.</p>
+<h2>Query Languages</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Model</th>
+<th>Style</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SQL</td>
+<td>Relational</td>
+<td>Declarative</td>
+<td>Optimizer picks execution plan; enables index selection, join reordering</td>
+</tr>
+<tr>
+<td>MapReduce</td>
+<td>Any</td>
+<td>Functional imperative</td>
+<td>User writes map + reduce functions; flexible but verbose</td>
+</tr>
+<tr>
+<td>Cypher</td>
+<td>Property graph</td>
+<td>Declarative pattern matching</td>
+<td>Concise for graph traversal</td>
+</tr>
+<tr>
+<td>SPARQL</td>
+<td>RDF triple-store</td>
+<td>Declarative pattern matching</td>
+<td>Verbose, powerful, used in semantic web</td>
+</tr>
+<tr>
+<td>Datalog</td>
+<td>Triple-store</td>
+<td>Recursive rules</td>
+<td>Foundation of Datomic query language; handles recursive queries naturally</td>
+</tr>
+<tr>
+<td>MongoDB Aggregation</td>
+<td>Document</td>
+<td>Pipeline stages</td>
+<td>SQL-like but document-oriented</td>
+</tr>
+</tbody></table></div>
+<p><strong>Declarative vs imperative</strong>: declarative queries (SQL, Cypher) tell the DB <em>what</em> data you want; the optimizer decides <em>how</em> to retrieve it. This enables indexing, parallel execution, and plan changes without touching application code. Imperative queries (MapReduce) give more control but forgo these optimizations.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Most thorough treatment of all three models, historical context (CODASYL), query language comparison, schema-on-read/write distinction (ch. 2)</td>
+</tr>
+<tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Treats data model as a downstream consequence of technical vs domain partitioning — layered architecture leads to shared data model; microservices leads to per-service data model</td>
+</tr>
+<tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Frames the NoSQL modeling shift as <strong>solution domain modeling vs. problem domain modeling</strong>: relational normalisation models the <em>problem domain</em> (eliminate redundancy, support any query); NoSQL models the <em>solution domain</em> (optimise for actual access patterns, denormalise for reads). &quot;Table per use case&quot; is the practical heuristic. Trade-off: reads are fast; writes are slower; updates to duplicated data require application-level management. Also covers four NoSQL model types (key-value, document, wide column, graph) and notes that graph databases are the exception — inherently difficult to partition horizontally. (ch. 10)</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../databases/storage-engines.html">Storage Engines</a> — data model determines how the engine must store and index data</li>
+<li><a href="../databases/transactions.html">Transactions</a> — ACID guarantees apply at the data model boundary</li>
+<li><a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a> — how data models evolve over time and how changes are encoded</li>
+<li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — data model choice interacts with partitioning strategy</li>
+<li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — how to evolve schemas safely over time</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

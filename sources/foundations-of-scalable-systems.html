@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Foundations of Scalable Systems* — Ian Gorton">
+  <meta property="og:title" content="Foundations of Scalable Systems — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Foundations of Scalable Systems* — Ian Gorton">
+  <title>Foundations of Scalable Systems — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html" aria-current="page">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Foundations of Scalable Systems</nav></div>
+      <h1>Foundations of Scalable Systems</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 21<sup>st</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/scalability.html">scalability</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/performance.html">performance</a><a class="tag-chip" href="../tags/databases.html">databases</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/ian-gorton.html">Ian Gorton</a>
+<strong>Published:</strong> 2022
+<strong>Slug:</strong> <code>foundations-of-scalable-systems</code></p>
+<h2>Overview</h2>
+<p>Ian Gorton&#39;s practical guide to building large-scale distributed systems targets engineers who understand the basics of software development but need to reason rigorously about capacity, throughput, and the trade-offs that emerge when systems grow. Where Kleppmann&#39;s <em>Designing Data-Intensive Applications</em> focuses on data systems, Gorton&#39;s scope is broader — services, caching, messaging, microservices, and databases are all treated as first-class scalability concerns.</p>
+<p>The book&#39;s thesis is that scalability must be designed in from the start: systems not built on scalable foundations cannot cheaply be made scalable later, just as a suburban home cannot be upgraded to a skyscraper. Gorton&#39;s two fundamental scaling strategies — replication and optimisation — recur throughout, and he grounds every architectural recommendation in concrete measurement and experimentation.</p>
+<p>The book is a useful complement to <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> (more theoretical) and <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> (more data-focused), offering a practitioner-friendly tour of scalability techniques with concrete numbers.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>Scalability must be treated as a first-class architectural concern from the start; retrofitting it is expensive (→ ch. 1)</li>
+<li>Two universal scaling strategies: <strong>replication</strong> (add capacity) and <strong>optimisation</strong> (use existing capacity more efficiently) (→ ch. 1)</li>
+<li><strong>Hyperscale</strong> systems exhibit exponential growth in computational capability while costs grow only linearly (→ ch. 1)</li>
+<li>Scalability and other quality attributes (performance, availability, security, manageability) are inextricably linked and require deliberate trade-offs (→ ch. 1)</li>
+<li>Effective horizontal scaling requires <strong>stateless services</strong> — any session state must be stored externally (→ ch. 2)</li>
+<li>Distributed caching is the highest-leverage scalability technique for read-heavy workloads — if 80%+ of reads hit the cache, the database sees a fraction of traffic (→ ch. 2)</li>
+<li>Amdahl&#39;s Law: with 50% serial code, adding beyond 8 CPUs yields no further benefit; parallel code is essential for scalability (→ ch. 2)</li>
+<li>Async queueing decouples write latency from response latency wherever results are not immediately needed (→ ch. 2)</li>
+<li>Full messaging data safety requires all three: publisher confirms + persistent queues + manual consumer ACKs — any one omitted leaves a durability gap (→ ch. 7)</li>
+<li>Competing consumers is the primary horizontal scale-out mechanism for queue-based systems (→ ch. 7)</li>
+<li>Serverless default autoscaling configurations are rarely optimal; empirical parameter studies consistently find cheaper or faster alternatives (→ ch. 8)</li>
+<li>Cold start latency varies dramatically by runtime: Go &lt;1s vs JVM 1–3s — a practical concern for low-traffic serverless deployments (→ ch. 8)</li>
+<li>Cascading failures in microservices are triggered by slow responses, not hard errors — back pressure fills thread pools silently before anything crashes (→ ch. 9)</li>
+<li>Immediate retries on failure amplify load on an overloaded downstream and make recovery worse; use exponential backoff or circuit breakers (→ ch. 9)</li>
+<li>NoSQL data modeling inverts the relational paradigm: model around access patterns (solution domain), not around the problem domain — denormalization replaces joins (→ ch. 10)</li>
+<li>Read replicas (primary writes + async secondaries) are the first scaling step for read-heavy workloads; stale reads are the accepted trade-off (→ ch. 10)</li>
+<li>Inconsistency window in eventually consistent systems has no known upper bound — it depends on load, replica count, and network latency (→ ch. 11)</li>
+<li>Last writer wins silently discards concurrent writes; safe only when objects are immutable + uniquely keyed (→ ch. 11)</li>
+<li>Strong consistency = serializability + linearizability; requires consensus algorithms (Raft/Multi-Paxos) for fault tolerance (→ ch. 12)</li>
+<li>2PC coordinator failure blocks all participants and holds their locks; in heavily loaded systems this triggers cascading failures (→ ch. 12)</li>
+<li>Cloud Spanner&#39;s TrueTime (GPS + atomic clocks, ~7ms skew) enables global linearizability with commit wait to guarantee real-time ordering (→ ch. 12)</li>
+<li>Redis Cluster uses 16,384 hash slots with gossip protocol and MOVED redirections; the 1000-node maximum and custom election (accepting data loss) are intentional design trade-offs for performance over durability (→ ch. 13)</li>
+<li>MongoDB became a fully ACID-capable database in v4.0 via multi-document transactions using 2PC + snapshot isolation — a significant evolution from its eventual-consistency origins (→ ch. 13)</li>
+<li>DynamoDB&#39;s hotkey problem is a hard physical limit: max 3,000 RCU/1,000 WCU per partition; global tables use LWW for conflict resolution and ACID transactions are scoped to a single region (→ ch. 13)</li>
+<li>Kafka&#39;s &quot;dumb broker/smart clients&quot; design concentrates ordering and offset management in the client, enabling replay and independent consumer progress at the cost of increased consumer complexity (→ ch. 14)</li>
+<li>Producer durability in Kafka requires three settings working together: <code>acks=all</code>, <code>enable.idempotence=true</code>, and <code>min.insync.replicas ≥ 2</code> — any one omitted leaves a durability gap (→ ch. 14)</li>
+<li>Semantic partitioning (routing by message key) is the primary mechanism for achieving per-key ordering in Kafka; partition count can be increased but never decreased without disrupting key-to-partition assignments (→ ch. 14)</li>
+<li>Lambda architecture (batch + speed + serving layers) is now largely superseded by the simpler Kappa architecture — a single immutable log processed as a continuous stream (→ ch. 15)</li>
+<li>Flink&#39;s stream barrier mechanism ensures globally consistent checkpoints across a distributed DAG without stopping the stream; recovery restores state and replays only from the last barrier offset (→ ch. 15)</li>
+<li>Observability, automation/DevOps, container-based deployment, and data lake infrastructure are preconditions for production-grade scalable systems — not optional additions (→ ch. 16)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 6 — Distributed Caching</h3>
+<p><strong>Application caching (cache-aside):</strong> Service checks cache on request; on cache hit, returns cached value; on miss, calls database/downstream service, writes result to cache with TTL, returns result. Key construction: typically a namespaced identifier (e.g., <code>&quot;liftwaittimes:&quot; + resort</code>). After TTL, eviction occurs; next request is a miss and repopulates the cache.</p>
+<p><strong>Caching pattern taxonomy:</strong> Cache-aside vs read-through, write-through, write-behind. Cache-aside is dominant in massively scalable systems due to: (1) resilience to cache failure (miss → graceful fallback to DB), (2) simple horizontal scalability (Redis/memcached are hash tables) (→ <a href="../distributed/caching.html">Caching</a>).</p>
+<p><strong>Web caching layers:</strong> browser cache (private) → org/ISP proxy cache (shared) → CDN edge cache (geographically distributed). HTTP directives: <code>Cache-Control</code> (no-store, no-cache, private, public, max-age), <code>Expires</code>, <code>Last-Modified</code>, <code>ETag</code>/<code>If-None-Match</code> revalidation (304 Not Modified). CDNs: Akamai has 2,000+ locations, 30% of global internet traffic.</p>
+<p><strong>Key insight:</strong> Effective caching maximises hit rate; items with high read:write ratio are ideal cache candidates. When update frequency is high, cache invalidation cost can negate caching benefit — measure hit/miss rates in production.</p>
+<h3>Chapter 5 — Application Services</h3>
+<p><strong>API design fundamentals:</strong> HTTP CRUD pattern (POST/GET/PUT/DELETE) on resources identified by URIs. OpenAPI/Swagger for API specification. Chatty API antipattern: fine-grained getters/setters as HTTP APIs create multiple round trips per logical operation. HTTP compression (gzip via <code>Accept-Encoding</code>/<code>Content-Encoding</code>) reduces bandwidth and latency by 50%+.</p>
+<p><strong>State management:</strong> HTTP is nominally stateless; services that maintain per-session conversational state are <strong>stateful</strong>. Stateful services create: memory pressure (per-session state scales with concurrent users), session timeout management complexity, sticky session requirement (load imbalance, failure complexity). <strong>Stateless services store all session state externally</strong> (Redis/memcached) — each request is self-contained; any replica can handle any request.</p>
+<p><strong>Application server anatomy (Tomcat):</strong> Listener threads → socket backlog (OS default 100) → HTTP connector → thread pool (default min 25, max 200, idle kill at 60s) → database connection pool (smaller than thread pool; threads block when connections exhausted). High utilization → queue growth → context switching degradation → resource exhaustion → crash. Systems degrade before 100% utilization; set utilization targets (CPU, memory, queue depth). Monitor via JMX.</p>
+<p><strong>Horizontal scaling:</strong> Stateless replicas + load balancer = capacity proportional to replica count. Single point of failure eliminated. Scale limited by downstream services/databases — the &quot;one-lane road&quot; at the end of eight lanes of highway.</p>
+<p><strong>Load balancing (applied):</strong> L4 ~20% higher throughput than L7 at moderate load (empirical AWS ELB comparison). Distribution policies: round robin, least connections, HTTP header/verb routing, weighted services. <strong>Sticky sessions → load imbalance</strong> over time because session durations vary; stateful services are problematic at scale.</p>
+<p><strong>Elasticity:</strong> AWS Auto Scaling groups; schedule-based or metric-based (CPU%, queue depth); warmup period before new instances receive traffic (→ <a href="../distributed/load-balancing.html">Load Balancing</a>).</p>
+<h3>Chapter 4 — An Overview of Concurrent Systems</h3>
+<p>Concurrency primer in Java, with architectural takeaways for distributed systems design.</p>
+<p><strong>Why concurrency:</strong> CPU waits on I/O; multi-core processors benefit from parallel threads. Single-threaded code wastes cores. This directly connects to Amdahl&#39;s Law — code must be parallelizable to benefit from additional hardware (→ <a href="../distributed/scalability.html">Scalability</a>).</p>
+<p><strong>Concurrency models overview:</strong> Java (shared mutable state + locks), Go (CSP/goroutines/channels), Erlang (actor model — no shared state, async message passing), Node.js (single-threaded event loop — great for I/O, poor for CPU-intensive tasks).</p>
+<p><strong>Race conditions:</strong> Non-atomic operations at the machine level (load/modify/store is three instructions) can interleave incorrectly. Critical sections must be protected with synchronised blocks. Keep critical sections minimal — they are the &quot;serial fraction&quot; in Amdahl&#39;s Law.</p>
+<p><strong>Deadlocks:</strong> Circular waiting when threads acquire locks in different orders. Dining philosophers problem as canonical example. Fix: impose a global resource acquisition ordering.</p>
+<p><strong>Thread pools:</strong> Pre-allocated thread collections bound resource usage. Each thread consumes ~1 MB stack. Undisciplined thread creation causes memory exhaustion. <code>ExecutorService</code> manages pools with queuing and clean shutdown. Tuning pool size is a scalability lever.</p>
+<p><strong>Producer-consumer pattern:</strong> Threads producing work write to a shared bounded buffer (BlockingQueue); consumer threads drain it. This is the in-process equivalent of async message queues (→ <a href="../concepts/messaging.html">Messaging</a>). Blocked threads consume no CPU — more efficient than polling.</p>
+<p><strong>Barrier synchronization:</strong> CountDownLatch/CyclicBarrier patterns for waiting until all threads reach a phase boundary before proceeding.</p>
+<p><strong>Thread-safe collections:</strong> Coarse-grained locking (synchronised wrapper) serialises all access. Fine-grained locking (ConcurrentHashMap with per-shard locks) allows concurrent writes to different shards — higher throughput, lower Amdahl serial fraction.</p>
+<h3>Chapter 3 — Distributed Systems Essentials</h3>
+<p><strong>Communications hardware:</strong> LAN (data center scale, 10–100 Gbps, sub-ms); WAN (fiber optic, ~70 Tbps per cable, latency set by speed of light): NY→SF 21ms, NY→London 28ms, NY→Sydney 80ms. WiFi (802.11ac ~5.4 Gbps), 4G (~10 Mbps, 20–40ms), 5G (~10x bandwidth, 1–2ms, ~500m range).</p>
+<p><strong>IP protocol suite:</strong> Four layers — data link, internet (IP), transport (TCP/UDP), application (HTTP). IP: best-effort, packet switching, unreliable. DNS: hierarchically distributed address book.</p>
+<p><strong>TCP vs UDP:</strong> TCP: connection-oriented, stream-oriented, reliable (3-way handshake, sequence numbers, cumulative ACKs, retransmission, flow control); heavyweight. UDP: connectionless, unreliable, fast; appropriate for streaming/gaming where occasional loss is tolerable.</p>
+<p><strong>RPC/RMI:</strong> Abstracts TCP into method calls (stub/skeleton, marshalling/unmarshalling). Progression: DCE → CORBA → Java RMI → XML web services → gRPC. Location transparency via registry. Most modern systems use HTTP+JSON instead (REST).</p>
+<p><strong>Partial failures:</strong> Six failure scenarios; only DNS failure and fast error are immediately detectable — the rest (server crashed before/during processing, slow server, lost response) all produce the same client experience: timeout. Client cannot distinguish them → retry risk without idempotency (→ <a href="../distributed/idempotency.html">Idempotency</a>, <a href="../distributed/system-models.html">System Models</a>).</p>
+<p><strong>Delivery semantics:</strong> At-most-once (UDP, fire-and-forget) → At-least-once (TCP, retransmit on timeout) → Exactly-once (application-level idempotency key + transactional atomicity).</p>
+<p><strong>Two Generals&#39; Problem → FLP Impossibility:</strong> No protocol can guarantee consensus on an async network in the presence of crash faults within bounded time. In practice solvable because real networks have practical (not infinite) bounds on delays.</p>
+<p><strong>Byzantine faults:</strong> Malicious or arbitrary behaviour. Excluded from typical enterprise systems (nodes behind secure networks). Blockchain is the canonical non-excluded use case.</p>
+<p><strong>Time:</strong> Clocks drift 10–20 sec/day. NTP synchronises to ~millisecond on LAN. Time-of-day clock (resettable by NTP, can jump) vs monotonic clock (always forward, no shared epoch across nodes). Cross-node timestamp comparisons are unreliable → use logical clocks for ordering (→ <a href="../distributed/logical-clocks.html">Logical Clocks</a>).</p>
+<h3>Chapter 2 — Distributed Systems Architectures: An Introduction</h3>
+<p>Architecture evolution path for scaling: monolith → scale up → scale out (horizontal replication with load balancer) → add caching layer → distribute the database → multiple tiers → async queuing.</p>
+<p><strong>Scale out requires stateless services.</strong> A load balancer cannot route consecutive requests from the same client to different instances unless those instances share no per-session state. Session state (e.g., shopping cart) must live in an external store (Redis, memcached).</p>
+<p><strong>Distributed caching</strong> (Redis/memcached): check cache first; on miss, query DB and populate cache. Effective for data that changes rarely and is read frequently — inventory catalogs, weather forecasts, contact data. A well-tuned cache handling 80%+ of reads dramatically extends database capacity.</p>
+<p><strong>Distributed databases:</strong> two categories — distributed SQL (scale out SQL via sharding/replication, or NewSQL &quot;born distributed&quot;) and NoSQL stores (Cassandra, MongoDB, Neo4j). Data location transparent to application.</p>
+<p><strong>BFF (Backend for Frontend):</strong> separate load-balanced services for web and mobile clients, each scaling independently. Referenced by Sam Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>).</p>
+<p><strong>Async queueing for responsiveness:</strong> producer writes to queue (fast), consumer reads and writes to DB. Decouples the user&#39;s perceived response time from the cost of DB persistence. Works only when results are not immediately needed.</p>
+<p><strong>Amdahl&#39;s Law:</strong> serial code fractions set a hard ceiling on parallelism benefit. 50% serial → max benefit from 8 cores. 5% serial → max benefit from ~2,048 cores.</p>
+<blockquote>
+<p><strong>Contradiction:</strong> Gorton&#39;s observation that load balancers &quot;need to be extremely low latency to minimise the overheads they introduce&quot; slightly understates the role of connection management. <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> discusses Layer 4 vs Layer 7 load balancing with more nuance about connection pooling benefits.</p>
+</blockquote>
+<h3>Chapter 12 — Strong Consistency</h3>
+<p><strong>Strong consistency = serializability + linearizability</strong> (called &quot;external consistency&quot; in the Spanner paper): serializability means concurrent transactions appear to execute in some serial order; linearizability means that order reflects real-time wall clock ordering. Combining both eliminates both transaction isolation anomalies and stale reads.</p>
+<p><strong>Distributed consensus algorithms:</strong> The foundation of strong consistency in distributed databases. Atomic broadcast / total order broadcast algorithms deliver updates to all replicas in the same order. 2PC is not fault-tolerant (coordinator failure blocks). Raft and Multi-Paxos are fault-tolerant.</p>
+<p><strong>Raft deep-dive:</strong> Leader-based; odd cluster size (3 or 5); election terms (monotonically increasing logical clocks); AppendEntries() for both heartbeats and log replication; heartbeats every 300–500ms; randomized election timers minimise simultaneous elections; candidacy requires: increment term, vote for self, send RequestVote to all; elected when received majority of votes and candidate&#39;s log is at least as up-to-date as voters&#39;. Implemented in: Neo4j, YugabyteDB, etcd, Hazelcast.</p>
+<p><strong>2PC failure modes — cascade risk:</strong> Coordinator failure after the prepare phase leaves participants in doubt — they hold their locks and cannot proceed. In heavily loaded systems, held locks block other concurrent transactions, which time out, which may trigger circuit breakers and cause cascading failures. Mitigation: replicate the coordinator itself using a consensus group (Paxos/Raft) so a new coordinator can be elected and complete the transaction without manual intervention.</p>
+<p><strong>VoltDB:</strong> NewSQL in-memory database; shared-nothing; tables sharded and replicated. Single Partition Initiator (SPI): each partition is associated with a single CPU core; all requests are processed serially by that core. Serial execution eliminates locking overhead entirely. Single-partition transactions: no 2PC required — SPIs receive the same transaction in the same order; they commit independently. Multi-partition transactions: cluster-wide Multi-Partition Initiator (MPI) drives 2PC; higher overhead and lower throughput. Durability: command log (configurable flush interval, seconds scale) + partition snapshots; recovery replays command log from latest snapshot. Linearizable since v6.4 (reads strictly ordered with writes).</p>
+<p><strong>Google Cloud Spanner:</strong> Globally distributed SQL DBaaS. Tables partitioned into splits (contiguous key ranges); splits replicated across availability zones. Multi-Paxos with long-lived leaders for replica consistency. 2PC for multi-split transactions — but the 2PC coordinator itself replicates via Paxos, so coordinator failure doesn&#39;t block participants. Single-split transactions: Paxos leader acquires locks, communicates mutations to replicas, commits when majority vote. <strong>TrueTime:</strong> GPS receivers + atomic clocks in every Google data center; provides wall-clock time with a known, bounded error (~7ms). Commit wait: after choosing a commit timestamp, the coordinator waits for the TrueTime error window before releasing locks — guarantees any later transaction gets a strictly higher timestamp, enabling real-time linearizability. Strongly consistent reads: replicas check with their Paxos leader that they have the latest value before responding. Open-source inspired implementations (CockroachDB, YugabyteDB) approximate this without TrueTime hardware using NTP-style clocks at the cost of lower consistency guarantees (→ <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>).</p>
+<h3>Chapter 11 — Eventual Consistency</h3>
+<p><strong>Inconsistency window:</strong> The time between an update being written to the coordinator and that update reaching all replicas. Affected by: number of replicas, operational load on nodes (higher load → longer propagation delays), and geographic distance (LAN sub-ms; intercontinental 20–80ms). The window duration has no known upper bound — it depends entirely on the operational environment.</p>
+<p><strong>Read your own writes (RYOWs):</strong> Guarantee that a client that writes a value will subsequently read that value (not an older version) from any replica. Addresses the case where a write completes on one replica and a subsequent read hits a replica that hasn&#39;t received the update yet. Implementation: in leader-follower systems, route subsequent reads to the leader; MongoDB: default (reads from master); Neo4j: write returns a bookmark (logical clock token); subsequent reads pass the bookmark and the cluster routes to a replica that has applied the bookmarked transaction.</p>
+<p><strong>Tunable consistency (N, W, R):</strong></p>
+<ul>
+<li>N = total replicas; W = replicas that must acknowledge a write; R = replicas that must be read before returning a result</li>
+<li>W = N, R = 1: write-optimised consistency; all replicas updated before confirming; slow writes; stale reads impossible once write completes (but possible during update propagation → &quot;immediate consistency&quot; not &quot;strong consistency&quot;)</li>
+<li>W = 1, R = N: write-optimised availability; writes succeed immediately; reads see latest value by reading all replicas; slow reads</li>
+<li>Quorum (W = R = (N/2)+1): balanced; R + W &gt; N guarantees overlap between write and read sets → latest value always visible</li>
+<li>Sloppy quorum: if home nodes unavailable, accept writes to any W reachable nodes; hinted handoff to home nodes on recovery; increases write availability at cost of stale reads until handoff completes</li>
+<li>&quot;Immediate consistency&quot; (W=N) ≠ strong consistency: stale reads still possible if reads occur concurrently with ongoing replica updates</li>
+</ul>
+<p><strong>Replica repair:</strong> Two strategies to combat replica drift from network failures, node stalls, and bugs:</p>
+<ul>
+<li><em>Read repair (active)</em>: coordinator reads from multiple replicas on each request; compares values; sends latest to stale replicas. Digest reads (hash comparison first) reduce network overhead (used by ScyllaDB, Cassandra). Blocking mode waits for repair before returning; non-blocking updates stale replicas async.</li>
+<li><em>Anti-entropy repair (passive)</em>: background process using Merkle trees — binary hash trees where leaf nodes are hashes of individual data objects; each parent is a hash of its children; root represents entire collection. Two nodes exchange root hashes; if equal, collections are consistent; if not, traverse to find divergent subtrees. CPU/memory intensive → scheduled during low-load periods (Cassandra, Riak).</li>
+</ul>
+<p><strong>Conflict resolution:</strong></p>
+<ul>
+<li><em>Last writer wins (LWW)</em>: use timestamps to decide final value; fast but silently discards concurrent writes due to clock drift making ordering unreliable. Safe ONLY when writes use unique keys + objects are immutable after write.</li>
+<li><em>Version vectors</em>: per-replica version numbers form a vector; coordinator increments its own clock and sends vector to other replicas; replicas compare vectors to detect whether updates are causally ordered or concurrent. Concurrent writes are stored as siblings (Riak); client resolves on read. Enables conflict detection without relying on wall-clock timestamps (→ <a href="../distributed/replication.html">Replication</a>).</li>
+<li><em>CRDTs</em>: conflict-free replicated data types; automatic conflict resolution via mathematical merge semantics; counters, sets, lists. Removes application-level merge burden (→ <a href="../distributed/crdts.html">Crdts</a>).</li>
+</ul>
+<p><strong>In the wild:</strong></p>
+<ul>
+<li>Netflix Cassandra: 6+ petabytes, tens of thousands of instances, 100M+ subscribers; tunable consistency for write-heavy use cases (9:1 write:read ratio); benchmark: 1M writes/sec at 6ms avg / P95 17ms with 285 nodes</li>
+<li>bet365: Riak KV for odds calculation, betting, account management; globally distributed clusters with tunable consistency; &gt;1 GB/sec data generation</li>
+</ul>
+<h3>Chapter 10 — Scalable Database Fundamentals</h3>
+<p><strong>Scaling relational databases:</strong> Scale up (more powerful single machine) then scale out via read replicas (primary handles all writes; secondaries are async-replicated read-only replicas for read-heavy workloads). Stale reads are a consequence of async replication — the lag window is typically milliseconds in normal operation but must be considered in the application design.</p>
+<p><strong>Distributed joins:</strong> The core difficulty of partitioning relational tables is that SQL joins become cross-partition operations. Strategies: replicate small reference tables to all nodes; use partition key indexes for co-located joins; apply selective filters to reduce data movement. Large-data join operations on both sides of a partition require data shuffling — expensive and hard to scale. Google Cloud Spanner advises specifying join algorithms explicitly for critical queries.</p>
+<p><strong>Oracle RAC (shared-everything):</strong> Up to 100 Oracle database nodes sharing a single SAN storage pool via Cache Fusion (inter-node cache coherence). Application-transparent but requires expensive proprietary hardware and licensing. Represents the shared-everything approach — all nodes share the same storage, eliminating partitioning complexity but introducing an SAN bottleneck.</p>
+<p><strong>NoSQL movement drivers:</strong> Commodity hardware, unstructured data, internet-scale applications requiring relaxed consistency for performance, need for schema flexibility. Not a single model — four distinct NoSQL data models: key-value (Redis), document (MongoDB, Couchbase), wide column (Cassandra, Bigtable), graph (Neo4j, Neptune). NoSQL databases are largely schemaless (schema-on-read vs. schema-on-write).</p>
+<p><strong>Solution domain modeling:</strong> The key NoSQL design insight: model data around <em>access patterns</em>, not around the problem domain. Instead of normalising to eliminate redundancy, denormalize to place all data needed for a query together. &quot;Table per use case&quot; — each major access pattern gets its own data structure. Trade-off: reads are fast; writes are slower; update propagation for duplicated data requires application management. Join-like operations are performed at write time, not query time (→ <a href="../databases/data-models.html">Data Models</a>).</p>
+<p><strong>Sharding strategies:</strong> Hash key (modulus or consistent hashing), value-based (partition by field value, e.g., country), range-based (partition by value range, e.g., zip code). Sharding enables horizontal scaling. Sharding + replication (typically 3 replicas per partition) provides both scalability and availability.</p>
+<p><strong>Leader-follower vs leaderless replication:</strong> Leader-follower: one replica holds the authoritative value; all writes go to it; followers are read-only. Leaderless: any replica can handle writes; the coordinator propagates to others — better for write-heavy workloads. Replica consistency (strong vs eventual) is the core trade-off of all distributed database designs (→ <a href="../distributed/replication.html">Replication</a>).</p>
+<p><strong>CAP theorem:</strong> Under network partition, a distributed database can be either CP (return error when consistency cannot be guaranteed) or AP (accept the write to visible replicas, accept temporary inconsistency). Most databases expose tunable parameters that allow the application to select the CP or AP operating mode.</p>
+<h3>Chapter 9 — Microservices</h3>
+<p><strong>Monolith scale-out challenge:</strong> Scaling a monolith requires replicating the entire application on every new node. You cannot independently scale a single capability — adding capacity for AdvisorChat means provisioning a full application stack capable of running all services. Microservices solve this by enabling per-service independent scale-out, each behind its own load balancer.</p>
+<p><strong>Decomposition via DDD:</strong> Bounded contexts provide a starting point for service boundaries. Domain model purity may need to be adjusted to avoid excessive inter-service communication overhead — coupling of Faculty and Funding data, for example, may justify merging services or duplicating data locally. Data duplication across microservices reduces distributed calls but requires consistency management by the application.</p>
+<p><strong>API gateway pattern:</strong> Single entry point for all client requests. Insulates clients from backend refactoring (service merging, platform migration, endpoint changes). Functions: proxy/routing, authentication and authorisation, throttling (request-rate caps), response caching, monitoring integration. AWS API Gateway: 10K rps default limit with 5K burst; Kong is stateless → horizontally scalable behind a load balancer.</p>
+<p><strong>Newman&#39;s seven microservices principles</strong> (cited): modeled around a business domain; highly observable; hide implementation details; decentralize all the things (orchestration vs. choreography); isolate failure; deploy independently; culture of automation.</p>
+<p><strong>Cascading failures mechanism:</strong> A chain A → B → C: slow responses from C back-pressure B&#39;s threads; all B threads eventually blocked; B&#39;s response time to A grows; all A threads blocked. Thread pools in application servers are fixed-size. Fixed thread pool + sustained downstream slowdown = thread starvation = cascading failure. Immediate retries on failure worsen the problem by maintaining load on the overloaded service.</p>
+<p><strong>Fail fast strategies:</strong></p>
+<ol>
+<li><em>TCP read timeout</em>: configure timeout at the P99 response time (e.g., 3s for a service where P99=3s). After timeout, release the thread. In Java: <code>java.net.SocketTimeoutException</code>.</li>
+<li><em>HTTP 503 throttling</em>: load balancer or API gateway rejects requests when capacity is exceeded, immediately returning 503. In-service: track in-flight request count or sliding-window P99; reject when threshold is breached.</li>
+<li><em>Graceful degradation</em>: return a cached or default response when the downstream fails (e.g., &quot;shows you might like&quot; instead of the personalised watchlist). Masks transient failures from end users.</li>
+</ol>
+<p><strong>Circuit breaker:</strong> CLOSED → (failure threshold exceeded) → OPEN (fail fast, no calls to downstream) → (cooldown expires) → HALF_OPEN (probe call) → CLOSED or OPEN. Relieves load on overloaded downstream during recovery. Essential pattern for any microservices system with service dependencies (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>).</p>
+<p><strong>Bulkhead pattern:</strong> Reserve separate thread pools per API endpoint within a microservice. Example: reserve 150 of 200 threads for <code>newOrder</code> endpoint, leaving 50 for <code>orderStatus</code>. When a new-order burst occurs, status requests still receive resources. Resilience4j <code>BulkheadConfig.maxConcurrentCalls</code> and <code>maxWaitDuration</code> for Java; Spring Boot provides annotation-based configuration via <code>@Bulkhead</code> (→ <a href="../patterns/bulkhead.html">Bulkhead</a>).</p>
+<p><strong>Long-tail response time and percentiles:</strong> Real workloads exhibit long-tail response time distributions. Averages are misleading — a small number of slow requests skews them. Use P50/P95/P99 for sizing and SLA decisions. Example: P50=200ms, P95=1,200ms, P99=3,000ms for a service handling 200M requests/day → 2M requests take &gt;3s. BBC: 10% fewer users per additional second of load time.</p>
+<h3>Chapter 8 — Serverless Processing Systems</h3>
+<p><strong>Serverless model:</strong> The cloud provider owns hardware provisioning, OS, runtime, and autoscaling. The developer deploys code only. Billing is per-invocation — no cost when idle. The opposite of IaaS where you pay for reserved capacity 24/7. Cloud overspend is endemic: surveys show 69% of organisations overspend their cloud budget by &gt;25%.</p>
+<p><strong>Google App Engine (GAE) standard environment:</strong> A serverless container platform managing instance lifecycle automatically. Key autoscaling parameters:</p>
+<ul>
+<li><code>target_cpu_utilization</code> — scale-out threshold (default 0.6); lower → more instances for the same load</li>
+<li><code>max_concurrent_requests</code> — max simultaneous requests per instance; influences how many instances are needed</li>
+<li><code>target_throughput_utilization</code> — scale-out threshold when <code>max_concurrent_requests</code> is set</li>
+<li><code>max-pending-latency</code> — maximum time a request can wait before a new instance is started</li>
+<li><code>min_instances</code> / <code>max_instances</code> — pool size bounds; <code>min_instances</code> eliminates cold starts at the cost of a standing baseline</li>
+</ul>
+<p><strong>Cold start:</strong> When no instance is warm, the first request must wait for the runtime to initialise. Language matters: compiled runtimes (Go) cold-start in &lt;1 second; JVM (Java, Kotlin) cold-start in 1–3 seconds. Google App Engine and AWS Lambda both exhibit cold starts.</p>
+<p><strong>AWS Lambda:</strong> Function-as-a-service model with freeze/thaw semantics: Lambda freezes the execution environment between invocations and thaws it on the next call. Key operational parameters:</p>
+<ul>
+<li><strong>Provisioned concurrency</strong>: keeps N instances warm, eliminating cold starts for predictable traffic</li>
+<li><strong>Reserved concurrency</strong>: caps max concurrent executions for a function; prevents one function consuming the full account limit</li>
+<li><strong>Burst limits</strong>: 3,000 initial burst in US West; 1,000 in EU Frankfurt; 500 in other regions. After burst: +500 new instances/minute scale-out rate. Exceeding the concurrency limit returns HTTP 429 throttle error.</li>
+<li><strong>Memory-vCPU proportionality</strong>: 1,769 MB RAM = 1 vCPU. Below this, code runs on fractional CPUs — CPU-intensive tasks benefit from higher memory allocation even if they don&#39;t need the memory.</li>
+</ul>
+<p><strong>Parameter study methodology:</strong> Serverless performance/cost is highly sensitive to autoscaling configuration, and defaults are rarely optimal. Gorton&#39;s approach: define a configuration space (e.g., 12 combinations of <code>target_cpu_utilization</code> × <code>max_concurrent_requests</code>), run load tests at a representative level, and plot throughput and cost for each combination. Key finding from GAE case study: the default configuration ({CPU60, max10}) was neither the cheapest nor the fastest option. {CPU80, max10} achieved +3% throughput at the same cost. {CPU70, max80} achieved 96% of peak throughput at 55% of the cost. Without experimentation, these differences are invisible.</p>
+<p><strong>Vendor lock-in:</strong> Serverless functions typically use cloud-provider-specific SDKs, making migrations expensive. Alternatives: <strong>Apache OpenWhisk</strong> (open-source serverless platform, deployable on any infrastructure), <strong>Serverless Framework</strong> (open-source abstraction layer with multi-provider deployment, though functions often retain provider-specific code) (→ <a href="../distributed/serverless.html">Serverless</a>).</p>
+<h3>Chapter 7 — Asynchronous Messaging</h3>
+<p><strong>Queue model:</strong> A producer writes to a queue managed by a message broker; a consumer reads from it. The broker decouples the two: neither needs to know the other&#39;s address, and either can be temporarily unavailable without losing messages.</p>
+<p><strong>Push vs pull:</strong> Pull consumers actively poll for messages; push brokers notify consumers when messages arrive. Push is preferred at scale: the consumer controls its own processing rate by adjusting thread pool size, not by altering poll frequency. RabbitMQ uses push with flow control.</p>
+<p><strong>Message persistence:</strong> In-memory queues are fast but volatile — broker restart loses all messages. Persistent queues write to disk before acknowledging. The trade-off is throughput (disk I/O) vs durability.</p>
+<p><strong>Pub-sub and topics:</strong> A topic is a named stream; producers publish to a topic; all subscribed consumers receive a copy. Used for broadcast, fanout, and event-driven decoupling. Leader-follower replication provides topic HA.</p>
+<p><strong>RabbitMQ implementation details:</strong></p>
+<ul>
+<li><em>Exchanges</em>: the routing layer. Direct exchange routes by exact routing key; topic exchange routes by pattern; fanout exchange broadcasts to all queues.</li>
+<li><em>Connections vs channels</em>: TCP connections are expensive (resource per connection); channels are lightweight logical sessions within a single TCP connection. Thread-safe Java app servers should use a <strong>channel pool</strong> — one channel per thread, pool allocated at startup — rather than a channel per message.</li>
+<li><em>Broker internals</em>: RabbitMQ uses one thread per queue. High queue counts linearly scale memory and CPU. When memory exceeds 40% of available RAM, the broker halts all producers.</li>
+</ul>
+<p><strong>Data safety trade-off:</strong> Three independently configurable guarantees; all three must be enabled for complete data safety at the cost of throughput:</p>
+<ol>
+<li><em>Publisher confirms</em>: broker ACKs the producer only after the message is persisted.</li>
+<li><em>Persistent queues + persistent delivery mode</em>: message survives broker restart.</li>
+<li><em>Manual consumer ACKs</em>: consumer ACKs only after processing is complete; broker retains and redelivers on consumer crash.</li>
+</ol>
+<p><strong>Availability trade-off:</strong> <em>Quorum queues</em> replicate to a majority of nodes using RAFT; survive minority-node failures; preferred for HA+durability. <em>Mirrored queues</em> (legacy) synchronise to all nodes; offer stronger consistency but higher write amplification.</p>
+<p><strong>Competing consumers:</strong> Multiple consumers reading from the same queue; the broker delivers each message to exactly one consumer. Natural load balancing and horizontal scale-out — add consumers to increase throughput without changing producers.</p>
+<p><strong>Exactly-once processing:</strong> Brokers can deduplicate at the producer side using a <em>producer idempotency key</em> (broker discards duplicate sends within a window). Consumers must deduplicate using an <em>idempotency key cache</em> — consumer checks whether the message ID was already processed, skips if found. Together these simulate exactly-once semantics.</p>
+<p><strong>Poison messages and dead-letter queues:</strong> A message that repeatedly causes the consumer to crash is a poison message. AWS SQS tracks <code>ReceiveCount</code>; when it exceeds <code>maxReceiveCount</code>, the message is moved to a <strong>Dead Letter Queue (DLQ)</strong> for human inspection and reprocessing. RabbitMQ supports the same via dead-letter exchanges (→ <a href="../concepts/messaging.html">Messaging</a>).</p>
+<h3>Chapter 16 — Final Tips for Success</h3>
+<p>A closing chapter noting four foundational elements of scalable systems not covered in the main chapters — Gorton&#39;s acknowledgement of scope limits rather than new technical content.</p>
+<p><strong>Automation / DevOps:</strong> Continuous delivery practices, automated toolchains for test/deploy/monitor; teams own design, development, and operation of their own microservices; on-call rotation; reduces coordination overhead and enables fast release cycles. Reference: Bass et al. <em>DevOps: A Software Architect&#39;s Perspective</em>.</p>
+<p><strong>Observability:</strong> &quot;You can&#39;t manage what you can&#39;t measure.&quot; Instrumented systems emit metrics and logs from OS, platforms (messaging, databases), and application code. OpenTelemetry for vendor-agnostic instrumentation; Prometheus, Grafana, Graphite for monitoring and exploration. Both real-time alerting and historical diagnosis are essential (→ <a href="../operations/observability.html">Observability</a>, <a href="../operations/monitoring.html">Monitoring</a>).</p>
+<p><strong>Deployment platforms:</strong> Containers (Docker) package code and dependencies into a deployable unit; run as isolated processes sharing the host OS — more efficient than VMs. Kubernetes/Apache Mesos for orchestration: autoscaling, container placement, multi-node management. Infrastructure as Code (IaC) as an essential DevOps ingredient (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>).</p>
+<p><strong>Data lakes:</strong> Historical data management at petabyte scale. Data lakes store heterogeneous formats (blobs, JSON, relational extracts) in low-cost object storage (Hadoop, S3, Azure Data Lake). Flexible query engines support analysis and transformation. Storage classes (tiered retrieval times) optimise cost for rarely-accessed historical data. Distinguished from data warehouses (schema-on-write, structured) and data marts (narrower scope).</p>
+<h3>Chapter 15 — Stream Processing Systems</h3>
+<p><strong>Batch vs stream processing:</strong></p>
+<ul>
+<li>Batch: accumulate data → ETL job → database insert → query; latency minutes to hours; suitable when data freshness is not critical; unlimited dataset size</li>
+<li>Stream (data-in-motion/real-time analytics): process events as they arrive; sub-second to seconds latency; stateless (transform individual events) or stateful (maintain context across events); inherently bounded dataset per window</li>
+</ul>
+<p><strong>Lambda architecture (2011):</strong> Hybrid of batch and stream. Three layers: (1) batch layer (Hadoop) processes large volumes periodically and writes to the serving layer; (2) speed layer (Storm) processes events as they arrive to compensate for batch lag; (3) serving layer holds results from both layers and handles queries. <strong>Now less prominent</strong> — superseded by Kappa architecture.</p>
+<p><strong>Kappa architecture:</strong> Events stored in an immutable log (Kafka); consumed and processed as a continuous stream without a separate batch layer. Simpler operationally — one processing paradigm instead of two.</p>
+<p><strong>Apache Storm:</strong> Earlier stream processing platform; explicit topology definition: spouts (data sources) + bolts (processing nodes) + groupings (routing). <code>fieldsGrouping</code> routes by key field to the same bolt instance (per-key state); <code>globalGrouping</code> fans all outputs into a single bolt. Replaced by Flink/Spark for most production workloads.</p>
+<p><strong>Apache Flink deep-dive:</strong></p>
+<ul>
+<li><strong>DataStream API</strong>: <code>DataStream&lt;T&gt;</code> as the primary abstraction; functional operators: map, filter, keyBy, sum, window. Lazy execution: nothing runs until <code>env.execute()</code>.</li>
+<li><strong>Windowing</strong>: sliding windows (10-minute window size / 5-minute slide = overlapping; useful for weighted averages) vs tumbling windows (non-overlapping; each event belongs to exactly one window).</li>
+<li><strong>Scalability</strong>: logical DAG compiled from program; mapped to physical cluster resources. <code>setParallelism(N)</code> per operator or <code>env.setParallelism(N)</code> as default. Task managers are JVMs; each holds N task slots (<code>taskmanager.numberOfTaskSlots</code>); one slot runs one operator thread. Operator chaining collocates multiple operators in a single task slot to minimise inter-operator communication.</li>
+<li><strong>Job manager</strong>: cluster resource management, job scheduling, failure monitoring, recovery. Leader-follower HA configuration for the job manager itself.</li>
+<li><strong>Data safety (stream barriers)</strong>: Flink job manager periodically injects barrier events into the source stream; barriers flow in-order with data. When a stateful operator receives a barrier on <strong>all its input streams</strong>, it writes its state to persistent storage (RocksDB backend by default) and echoes the barrier downstream. Once the barrier reaches all sinks, the checkpoint is complete. Checkpoint identifies position N in the source (e.g., Kafka offset N). <strong>Recovery</strong>: restart entire application → restore state from last complete checkpoint → resume source from offset N+1. Trade-off: large state → expensive checkpointing → throughput impact. <code>min-time-between-checkpoints</code> config prevents overlapping checkpoint cycles.</li>
+</ul>
+<p>(→ <a href="../streams/stream-processing.html">Stream Processing</a>, <a href="../streams/batch-processing.html">Batch Processing</a>)</p>
+<h3>Chapter 14 — Scalable Event-Driven Processing</h3>
+<p><strong>Event log vs FIFO queues:</strong> Kafka&#39;s event log is append-only, non-destructive, and replayable — fundamentally different from traditional FIFO message queues that delete messages on consumption. Replaying an event log allows new consumers to rebuild state from any point in history. ZooKeeper manages cluster metadata (topic configuration, partition leaders, consumer group coordination) independently of the message data path.</p>
+<p><strong>&quot;Dumb broker/smart clients&quot;:</strong> Kafka offloads offset tracking, consumer group coordination, and partition assignment to consumers. The broker stores data sequentially on disk and serves it without understanding message semantics. This design maximises broker throughput while giving consumers full control over their progress.</p>
+<p><strong>Topics:</strong> Persistent by default (7-day TTL configurable). <strong>Compacted topics</strong> retain only the latest value per key — equivalent to a materialised key-value snapshot. Tombstone records (null value with a key) trigger deletion of a key from compacted topics, enabling GDPR-compliant removal without log surgery. Kafka Connect (source/sink connectors) and Kafka Streams (stateful stream processing library) complete the ecosystem.</p>
+<p><strong>Producers — async batching:</strong></p>
+<ul>
+<li><code>batch.size</code>: maximum bytes per batch; larger batches improve throughput at the cost of latency</li>
+<li><code>linger.ms</code>: wait duration before sending a partial batch; creates intentional delay to allow more messages to accumulate</li>
+<li><code>acks=0</code>: fire-and-forget (no acknowledgment); highest throughput, data loss on broker failure</li>
+<li><code>acks=1</code>: leader acknowledges; data loss if leader fails before follower sync</li>
+<li><code>acks=all</code>: all in-sync replicas (ISR) must acknowledge; highest durability</li>
+<li><code>enable.idempotence=true</code>: producer assigns sequence numbers; broker deduplicates retries; makes <code>acks=all</code> exactly-once from the producer perspective</li>
+</ul>
+<p><strong>Consumers — delivery semantics via commit timing:</strong></p>
+<ul>
+<li><code>poll()</code> long-polls for messages (configurable timeout); returns a batch</li>
+<li><strong>At-most-once</strong>: call <code>commitSync()</code> before processing — if processing fails, message is lost</li>
+<li><strong>At-least-once</strong>: call <code>commitSync()</code> after processing — if consumer crashes, message is redelivered (consumer must be idempotent)</li>
+<li><code>consumer.seek(partition, offset)</code>: manually reset to any offset; enables replay or skip of specific messages</li>
+</ul>
+<p><strong>Semantic partitioning:</strong> Null key → round-robin across partitions; non-null key → hash(key) % partitions → same key always routes to same partition. Guarantees per-key ordering within a partition. No total ordering across partitions. Partition count can be increased (changing key-to-partition mapping for new data) but <strong>never decreased</strong> without creating a new topic and migrating consumers.</p>
+<p><strong>Consumer groups:</strong> Group of consumers that collectively consume all partitions of a topic — each partition assigned to exactly one consumer per group. Max useful consumers per group = partition count (extra consumers are idle). <strong>Group coordinator</strong> (a Kafka broker) tracks group membership; <strong>group leader</strong> (the first consumer to join) runs partition assignment. <strong>CooperativeStickyAssignor</strong> rebalances by revoking only the minimum partitions needed to achieve balance — avoids stop-the-world global rebalances.</p>
+<p><strong>Durability — ISR and min.insync.replicas:</strong></p>
+<ul>
+<li><strong>ISR (In-Sync Replicas)</strong>: set of replicas that are caught up to the leader within a configurable lag threshold. Replicas falling behind are removed from the ISR.</li>
+<li><code>acks=all</code> requires all ISR members to acknowledge before the leader responds to the producer.</li>
+<li><code>min.insync.replicas=2</code>: producer write fails if ISR size drops below 2 — prevents silent data loss when only the leader is alive.</li>
+<li>Trade-off: higher <code>min.insync.replicas</code> → stronger durability, lower availability during partial broker failures.</li>
+</ul>
+<p><strong>Production scale:</strong> Slack uses Kafka for 1B+ messages/day with 16 brokers and 32 partitions per topic (→ <a href="../streams/stream-processing.html">Stream Processing</a>).</p>
+<h3>Chapter 13 — Distributed Database Implementations</h3>
+<p><strong>Redis:</strong></p>
+<ul>
+<li><strong>Architecture</strong>: in-memory key-value store; <strong>single-threaded event loop</strong> — all operations are atomic and lock-free by design; throughput limited by single CPU core but avoids any synchronization overhead.</li>
+<li><strong>Persistence</strong>: AOF (Append-Only File) — writes every operation to an append-only log on disk; snapshotting (RDB) for compaction; configurable <code>appendfsync</code> policy (always / everysec / no) governs durability vs throughput.</li>
+<li><strong>Redis Cluster</strong>: shards data across multiple nodes using 16,384 hash slots; each node owns a subset of slots. <strong>Gossip protocol</strong> for cluster state propagation — each node pings random peers. <strong>MOVED</strong> redirect — when a client queries the wrong node, the node returns a MOVED response with the correct node address; clients cache the slot-to-node map to avoid repeated redirections. <strong>Hash tags</strong> (<code>{tag}</code> in key names) force multiple keys to the same slot — essential for multi-key operations. Async replication (WAIT command for synchronous replication to N replicas on demand). Maximum cluster size: 1,000 nodes. Custom election allows data loss for speed — Redis prioritises availability over durability in partition scenarios.</li>
+<li><strong>Transactions</strong>: Redis MULTI/EXEC executes a batch of commands atomically but is NOT ACID-compliant — no isolation during queueing, no rollback on individual command failure.</li>
+</ul>
+<p><strong>MongoDB:</strong></p>
+<ul>
+<li><strong>Storage engine (WiredTiger)</strong>: document-level locking with OCC; journaling (write-ahead log) for crash recovery; compression.</li>
+<li><strong>Data model</strong>: BSON (binary JSON); schema-on-read (no enforced schema by default); flexible nested document structure eliminates many relational joins.</li>
+<li><strong>ACID transactions</strong>: available since v4.0 for multi-document transactions using 2PC + snapshot isolation. Significant performance overhead vs single-document operations — designed as an escape hatch, not the primary access pattern.</li>
+<li><strong>Sharding</strong>: hash-based (uniform distribution, no range queries) and range-based (range queries, risk of hotspots) sharding strategies. Unit of movement is a 64MB <strong>chunk</strong> (contiguous range of shard key values). <strong>Mongos</strong> (query router) processes client requests and routes to correct shards. <strong>Config servers</strong> (3-node replica set) store cluster metadata. <strong>Balancer</strong> process migrates chunks to achieve even distribution. Three <code>mongos</code> deployment patterns: co-located with app server, standalone dedicated, or embedded.</li>
+<li><strong>Replication</strong>: Raft-based replica sets (primary + secondaries). Tunable <strong>write concerns</strong> (<code>w:1</code>, <code>w:majority</code>, <code>w:N</code>) and <strong>read preferences</strong> (<code>primary</code>, <code>primaryPreferred</code>, <code>secondary</code>, <code>nearest</code>). <strong>Causal consistency sessions</strong> for read-your-own-writes. <strong>Linearizable reads</strong> possible with <code>readConcern: linearizable</code> (issues a read + quorum check) at significant latency cost.</li>
+</ul>
+<p><strong>DynamoDB:</strong></p>
+<ul>
+<li><strong>Managed service</strong>: AWS handles all provisioning, replication, failover, and maintenance. Two capacity modes: <strong>on-demand</strong> (pay per request, automatic scaling) and <strong>provisioned</strong> (pre-allocated RCU/WCU with auto-scaling).</li>
+<li><strong>Hotkey problem</strong>: each partition has a hard limit of <strong>3,000 RCU</strong> and <strong>1,000 WCU</strong>. High-traffic keys (e.g., popular product pages, celebrity user profiles) can saturate a partition. Mitigation: add random suffix to partition key, read-through caching via <strong>DAX</strong> (DynamoDB Accelerator — in-memory cache, microsecond reads).</li>
+<li><strong>Global tables</strong>: multi-region active-active replication. Conflicts resolved via <strong>LWW</strong> (last-writer-wins by timestamp). Achieves 99.999% SLA.</li>
+<li><strong>Transactions</strong>: ACID transactions scoped to a <strong>single region</strong> only — global table transactions do not span regions. Uses 2PC internally.</li>
+<li><strong>Limits</strong>: 400KB item size limit; indexes (local secondary indexes must be created at table creation; global secondary indexes can be created later).</li>
+<li><strong>Query</strong>: PartiQL (SQL-compatible query language) for familiar query syntax. Primary access via partition key + optional sort key.</li>
+</ul>
+<p>(→ <a href="../databases/data-models.html">Data Models</a>, <a href="../distributed/replication.html">Replication</a>)</p>
+<h3>Chapter 1 — Introduction to Scalable Systems</h3>
+<p>Scalability defined as the ability to handle growing load in some dimension: throughput (requests/sec), data volume, analytics capacity, or stable response time under load.</p>
+<p>Two fundamental scaling strategies: <strong>replication</strong> (add resources to increase capacity — equivalent to adding lanes to a bridge) and <strong>optimisation</strong> (use existing resources more efficiently — equivalent to Sydney Harbour Bridge variable-direction lanes).</p>
+<p>Scalability and cost: systems not architected to scale can face enormous retrofit costs. HealthCare.gov required $2B+ to fix; Oregon&#39;s health exchange failed at $303M. The foundations of scale must be built in.</p>
+<p><strong>Hyperscale:</strong> exponential capability growth with linear cost growth. Netflix&#39;s diurnal load pattern (peak at 9pm, trough at 5am) is a canonical example of elastic scale-down.</p>
+<p><strong>Quality attribute trade-offs with scalability:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Trade-off</th>
+<th>Tension</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Performance</td>
+<td>In-memory state improves individual request latency but reduces system capacity (more memory per request = fewer concurrent requests)</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>Replication aids both — but replicated state requires consistency management (→ <a href="../distributed/consistency-models.html">Consistency Models</a>)</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>TLS, authentication, encryption all impose CPU overhead; reduces effective throughput; CIA triad availability dimension → DDoS concern</td>
+</tr>
+<tr>
+<td>Manageability</td>
+<td>More components = more to monitor; offset only through automation and DevOps practices</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><strong>Open question:</strong> How early should scalability be a design concern? Gorton notes that introducing distributed technologies before a clear requirement &quot;can be deleterious to a project.&quot; This echoes evolutionary architecture principles (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) but sets up a tension: if you defer too long, the retrofit cost may be prohibitive.</p>
+</blockquote>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;If a system is not designed intrinsically to scale, then the downstream costs and resources of increasing its capacity to meet requirements may be massive.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;In modern applications, most of the code executed is not written by your organisation. It is part of the containers, databases, messaging systems, and other components that you compose into your application through API calls and build directives. This makes the selection and use of these components at least as important as the design and development of your own business logic.&quot; (ch. 2)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../distributed/scalability.html">Scalability</a></li>
+<li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+<li><a href="../distributed/caching.html">Caching</a></li>
+<li><a href="../distributed/replication.html">Replication</a></li>
+<li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+<li><a href="../operations/availability.html">Availability</a></li>
+<li><a href="../operations/monitoring.html">Monitoring</a></li>
+<li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../authors/ian-gorton.html">Ian Gorton</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../distributed/system-models.html">System Models</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

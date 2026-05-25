@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Strict/loose contract spectrum; consumer-driven contracts; stamp coupling; event schema evolution (forward/backward/full compatibility); schema registry;…">
+  <meta property="og:title" content="Contracts in Distributed Architecture — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Strict/loose contract spectrum; consumer-driven contracts; stamp coupling; event schema evolution (forward/backward/full compatibility); schema registry;…">
+  <title>Contracts in Distributed Architecture — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html" aria-current="page">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Contracts in Distributed Architecture</nav></div>
+      <h1>Contracts in Distributed Architecture</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/contracts.html">contracts</a><a class="tag-chip" href="../tags/coupling.html">coupling</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/api.html">api</a><a class="tag-chip" href="../tags/integration.html">integration</a><a class="tag-chip" href="../tags/events.html">events</a><a class="tag-chip" href="../tags/schema-evolution.html">schema-evolution</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>A contract is the format used by parts of an architecture to convey information or dependencies (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13). This definition is intentionally broad: it covers API protocols (REST, gRPC, GraphQL), shared library interfaces, message schemas, integration event formats, framework transitive dependencies, and any other mechanism that &quot;wires together&quot; parts of a system.</p>
+<p>Contracts cut across all three dynamic coupling dimensions (communication × consistency × coordination — see <a href="../patterns/saga.html">Saga</a>) and also affect static quantum coupling. They are one of the most pervasive sources of coupling in distributed architectures.</p>
+<h2>Strict vs Loose Contracts</h2>
+<p>Contracts exist on a spectrum from strict to loose (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13):</p>
+<p><strong>Strict contracts</strong> require exact adherence to names, types, ordering, and all other details. Examples: RMI (remote method invocation), gRPC (which defaults to Protobuf schemas), JSON with JSON Schema enforcement. Strict contracts mimic method-call semantics across a network.</p>
+<p><strong>Loose contracts</strong> provide minimal or no schema enforcement. Examples: plain JSON name-value pairs, YAML, REST resources (adding fields doesn&#39;t break consumers), GraphQL (consumers specify exactly what they need).</p>
+<h3>Strict Contracts: Trade-offs</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Guaranteed contract fidelity</td>
+<td>Tight coupling</td>
+</tr>
+<tr>
+<td>Easier to verify at build time</td>
+<td>Versioning management overhead</td>
+</tr>
+<tr>
+<td>Better documentation</td>
+<td>Breaking changes cascade across all consumers</td>
+</tr>
+<tr>
+<td>Explicit versioning</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>Loose Contracts: Trade-offs</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Highly decoupled</td>
+<td>No built-in schema enforcement</td>
+</tr>
+<tr>
+<td>Easier to evolve</td>
+<td>Contract management (misspellings, missing fields)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Requires fitness functions or consumer-driven contracts</td>
+</tr>
+</tbody></table></div>
+<h2>Consumer-Driven Contracts</h2>
+<p>Consumer-driven contracts solve the dual problem of loose coupling and contract fidelity (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13):</p>
+<p>In a standard contract model, the provider decides what to emit (<strong>push model</strong>). Consumer-driven contracts invert this to a <strong>pull model</strong>: each consumer specifies the contract it needs from the provider. The provider includes all consumer contracts as pipeline tests and maintains them as green at all times.</p>
+<pre><code>Consumer A → [specifies contract A] → Provider
+Consumer B → [specifies contract B] → Provider  ← runs all contracts as CI gates
+Consumer C → [specifies contract C] → Provider
+</code></pre>
+<p><strong>Advantages</strong>: allows loose implementation coupling while guaranteeing contract fidelity; each consumer specifies exactly what it needs (no over-specification); each team can evolve independently as long as their consumer contract passes; supports polyglot service teams.</p>
+<p><strong>Disadvantages</strong>: requires engineering maturity — if teams skip contract tests or allow failures, integration points silently break; requires two mechanisms (loose contract format + consumer-driven contract test runner) rather than one.</p>
+<p><strong>Implementation</strong>: the Pact framework is the canonical implementation — see <a href="../concepts/api-testing.html">Api Testing</a> for the testing mechanics.</p>
+<blockquote>
+<p>Consumer-driven contracts are architecture fitness functions (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13; <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> ch. 8): they are atomic + triggered governance mechanisms for integration protocol compliance.</p>
+</blockquote>
+<h2>Stamp Coupling</h2>
+<p>Stamp coupling describes passing a large data structure between services where each service uses only a small part of it (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13).</p>
+<p><strong>Stamp coupling as anti-pattern</strong>: if Service A needs only the <code>name</code> field from Service B&#39;s <code>Profile</code> object, but the contract passes the entire <code>Profile</code> schema (including all fields the consumer will never use), this is over-specification. Every change to <code>Profile</code> — even fields the consumer doesn&#39;t use — breaks the contract and requires coordination. The rule: keep contracts at a &quot;need-to-know&quot; level.</p>
+<p><strong>Bandwidth consideration</strong>: at high request volumes, over-specified contracts multiply bandwidth costs dramatically. If each payload is 500KB instead of 200 bytes, 2,000 requests/second consumes 1,000,000 KB/s vs 400 KB/s.</p>
+<p><strong>Stamp coupling for workflow management (legitimate use)</strong>: when using choreography for distributed workflows, stamp coupling can be used deliberately to carry workflow state in each message (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13; also discussed in <a href="../patterns/saga.html">Saga</a>). Each service receives the full workflow state, updates its portion, and passes the updated state forward. This resolves the choreography state-tracking problem at the cost of increased message size.</p>
+<p><strong>Stamp coupling trade-offs:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enables complex workflows in choreographed designs</td>
+<td>Creates (sometimes artificially) high coupling</td>
+</tr>
+<tr>
+<td>Carries workflow state without external state store</td>
+<td>Can create bandwidth issues at high scale</td>
+</tr>
+<tr>
+<td>Simplifies choreography state management</td>
+<td>Every field change in the stamp affects all participants</td>
+</tr>
+</tbody></table></div>
+<h2>Choosing Contract Strictness</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommended approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Services requiring high fidelity, changing together, same tech stack</td>
+<td>Strict (gRPC/Protobuf)</td>
+</tr>
+<tr>
+<td>Services that should evolve independently, different teams</td>
+<td>Loose (JSON) + consumer-driven contract</td>
+</tr>
+<tr>
+<td>External/public APIs where consumers cannot be coordinated</td>
+<td>Versioned REST (additive changes, deprecation policy)</td>
+</tr>
+<tr>
+<td>Mobile apps via app store (slow deployment)</td>
+<td>Loose — store approval delays prevent tight contract coordination</td>
+</tr>
+<tr>
+<td>Workflow state in choreography</td>
+<td>Stamp coupling with loose contracts</td>
+</tr>
+</tbody></table></div>
+<h2>Event Data Contracts (Bellemare)</h2>
+<p>Bellemare extends the contracts concept into the event streaming domain, where contracts govern asynchronous event schemas rather than synchronous API calls (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 3).</p>
+<p><strong>Data contract structure</strong>: an event data contract has two components — the <strong>data definition</strong> (fields, types, structures) and the <strong>triggering logic</strong> (the specific business event that caused the event&#39;s emission). Changing the triggering logic is more dangerous than changing the data definition because it alters the semantic meaning of the event, not just its format.</p>
+<p><strong>Schema evolution compatibility types</strong> (see also <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>):</p>
+<ul>
+<li><strong>Forward compatibility</strong>: data produced with a newer schema can be read by a consumer using an older schema. Common pattern in EDM — producer updates first, consumers catch up in their own time.</li>
+<li><strong>Backward compatibility</strong>: data produced with an older schema can be read by a consumer using a newer schema. Enables consumers to update before producers, and allows reprocessing of old events with new logic.</li>
+<li><strong>Full compatibility</strong>: the union of forward and backward. Use by default. You can always loosen compatibility requirements later; tightening them is hard.</li>
+</ul>
+<p><strong>Schema registry</strong>: a centralised store for schema definitions and their evolution rules. Producers and consumers look up schema versions at runtime. Kafka and Pulsar support Avro, Protobuf, and JSON Schema through a registry (Confluent Schema Registry is the canonical Kafka implementation).</p>
+<p><strong>Schema registry workflow</strong> (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 14): (1) producer serialises event → registers schema → gets back a schema ID → appends the compact ID to the serialised event payload (not the full schema, saving significant bandwidth) → caches the ID locally. (2) consumer receives event → reads schema ID → checks local cache → if not cached, fetches schema from registry → deserializes event → caches schema. The Confluent implementation stores schemas in a dedicated broker topic, providing durable storage without a separate database.</p>
+<p><strong>Schema change notifications</strong>: when a producer evolves a schema, downstream consumers need to know. ACLs identify which consumers read which streams; cross-referencing ACLs with schema change events automatically identifies affected teams. A notification system routes alerts via the microservice-to-team ownership registry — no manual tracking required.</p>
+<p><strong>ACLs as contract enforcement</strong>: access control lists enforced at the broker level are the operational mechanism for the single writer principle (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 14). Each microservice is granted WRITE permission only to its own output streams; no other service can write them. Typical permission set:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Stream type</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Input event streams</td>
+<td>READ</td>
+</tr>
+<tr>
+<td>Output event streams</td>
+<td>CREATE, WRITE</td>
+</tr>
+<tr>
+<td>Internal/changelog streams</td>
+<td>CREATE, WRITE, READ</td>
+</tr>
+</tbody></table></div>
+<p>Enable ACLs from day one — retrofitting requires auditing every existing connection. Grant/revoke events should be stored as events themselves (immutable audit log of who accessed what). ACLs also enable <strong>orphan detection</strong>: streams with no registered READ consumers can be flagged for deletion.</p>
+<p><strong>Recommended formats</strong>: Avro and Protobuf provide full-compatibility schema evolution frameworks and code generator support (generating typed classes in the target language). Plain JSON does not provide full-compatibility evolution and forces consumers to interpret the data themselves — an implicit contract that becomes tribal knowledge. Do not use JSON for inter-service event contracts.</p>
+<p><strong>Event design principles</strong> (anti-patterns):</p>
+<ul>
+<li><em>Type discriminator fields</em>: a <code>productType: Book/Movie</code> field in a single event schema is the event equivalent of stamp coupling. As business requirements diverge, the schema accumulates nullable fields that apply only to specific types, and schema evolution becomes impossible cleanly. Solution: separate event definitions per business action.</li>
+<li><em>Events as semaphores</em>: an event that only signals &quot;work is done&quot; without carrying the result creates a second source of truth and forces consumers to fetch data from elsewhere.</li>
+</ul>
+<p><strong>Breaking changes</strong>: for entity schemas, the producer is responsible for re-creating all entities under the new schema (not leaving it to consumers). Keep the old stream for forensics; produce new entities to a new stream. For event schemas, create a new stream; old consumers migrate in their own time.</p>
+<h2>Breaking Contract Changes in Practice (Newman)</h2>
+<p>Newman&#39;s treatment focuses on the operational management of contract changes during a microservice migration (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 5).</p>
+<p><strong>Two types of breaking change</strong>: <em>structural</em> (a field is renamed, removed, or its type changes — caught by schema comparison tools) and <em>semantic</em> (the same field name now means something different — only caught by testing). Both are dangerous; semantic breaks are harder to detect.</p>
+<p><strong>Detection mechanisms</strong>:</p>
+<ul>
+<li><strong>Explicit schemas</strong> make structural changes harder to make accidentally — the developer must modify the schema by hand, creating a pause for thought. Tool: <code>protolock</code> prohibits incompatible changes to Protocol Buffers definitions at CI time.</li>
+<li><strong>Schema-less JSON</strong> is the default for many teams, but it provides no structural contract protection. Developers who start with JSON &quot;curse the constraints of formal schemas initially — after they&#39;ve had to deal with breaking changes across services, they&#39;ll change their minds.&quot;</li>
+<li><strong>Consumer-driven contracts</strong> (Pact) detect semantic breakages in addition to structural ones, because consumer contract tests define expected behaviour not just shape.</li>
+</ul>
+<p><strong>Expansion changes (additive)</strong>: prefer adding new endpoints, fields, or methods without removing the old. Support old and new simultaneously. &quot;If you decide to break a contract, it&#39;s on you to handle the implications of that.&quot;</p>
+<p><strong>Managing necessary breaking changes</strong>: two approaches —</p>
+<ol>
+<li><em>Run two service versions simultaneously</em>: old version and new version both deployed. Consumers choose which to call. Extra infrastructure cost; data compatibility must be maintained across both; bug fixes may need to be applied to both. Only viable for short coexistence periods.</li>
+<li><em>One service exposing two contracts</em> (preferred): same service process exposes old and new contracts on different ports or paths. Adds complexity to the implementation but avoids dual-infrastructure. Teams have accumulated 3+ old contracts this way — painful but better than forced lock-step.</li>
+</ol>
+<p>Within a single team, lock-step release (deploy consumer and provider together) is acceptable occasionally but should not become a habit.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
+<td>Primary source for contracts taxonomy: strict/loose spectrum, stamp coupling, consumer-driven contracts as fitness functions (ch. 13)</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>API contract tooling (OpenAPI Specification, gRPC/Protobuf); versioning strategies; API-first design as upfront contract specification</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Consumer-driven contracts as atomic integration fitness functions (ch. 8); Pact framework as the implementation</td>
+</tr>
+<tr>
+<td><a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a></td>
+<td>Event data contracts: data definition + triggering logic; schema evolution compatibility types; schema registry workflow (ID-based, bandwidth-efficient); schema change notifications; ACLs as single-writer enforcement (ch. 3, 14)</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Migration-focused treatment: structural vs semantic breaking changes; explicit schema detection (protolock); expansion changes as the default; two management strategies (dual versions vs dual contracts in one service); consumer-driven contracts (Pact) as the testing solution for cross-service contracts (ch. 5)</td>
+</tr>
+<tr>
+<td><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></td>
+<td><em>Format Indicator</em> pattern: messages carry an indicator of their data format to allow multiple format versions to coexist on the same channel. Three implementations: (1) Version Number — compact agreed string; (2) Foreign Key — URL/key to shared schema repo; (3) Format Document — embedded schema in message body (self-contained but adds payload overhead). Stored in header for version/key, body for embedded schema. The Canonical Data Model is also a contract mechanism — a shared format all applications translate to/from (ch. 1, 5).</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/api-design.html">Api Design</a> — REST, gRPC, GraphQL are contract implementation formats</li>
+<li><a href="../concepts/api-testing.html">Api Testing</a> — consumer-driven contracts (Pact) as testing mechanism</li>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — consumer-driven contracts as atomic integration fitness functions</li>
+<li><a href="../patterns/saga.html">Saga</a> — stamp coupling for workflow management; semantic vs implementation coupling</li>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — contracts define static quantum coupling; loose contracts reduce static coupling</li>
+<li><a href="../concepts/reuse-patterns.html">Reuse Patterns</a> — shared library contracts; versioning discipline applies to both shared libraries and APIs</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

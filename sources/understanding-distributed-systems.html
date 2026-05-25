@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Understanding Distributed Systems* — Roberto Vitillo">
+  <meta property="og:title" content="Understanding Distributed Systems — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Understanding Distributed Systems* — Roberto Vitillo">
+  <title>Understanding Distributed Systems — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html" aria-current="page">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Understanding Distributed Systems</nav></div>
+      <h1>Understanding Distributed Systems</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 13<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/networking.html">networking</a><a class="tag-chip" href="../tags/consensus.html">consensus</a><a class="tag-chip" href="../tags/scalability.html">scalability</a><a class="tag-chip" href="../tags/resiliency.html">resiliency</a><a class="tag-chip" href="../tags/observability.html">observability</a></ul>
+    </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/roberto-vitillo.html">Roberto Vitillo</a>
+<strong>Published:</strong> 2nd edition (complete rewrite of 1st)
+<strong>Slug:</strong> <code>understanding-distributed-systems</code></p>
+<h2>Overview</h2>
+<p>A breadth-first guide to distributed systems aimed at backend developers who want a structured mental model rather than depth in any one area. Vitillo bridges theory (formal models, Raft, CRDTs, CAP theorem) and practice (cloud services, CDNs, load balancers, messaging) in a single coherent journey. The book walks through building a scalable CRUD app (&quot;Cruder&quot;) from scratch as a concrete thread for the scalability section.</p>
+<p>Two core insights thread through the whole book:</p>
+<ol>
+<li><strong>Failures are unavoidable</strong> — design around failure, not around its absence.</li>
+<li><strong>Coordination is expensive</strong> — minimise it ruthlessly; off the critical path when possible.</li>
+</ol>
+<p>Vitillo recommends <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> as the essential companion read for depth.</p>
+<h2>Structure</h2>
+<p>Five parts:</p>
+<ul>
+<li><strong>I: Communication</strong> — TCP, TLS, DNS, HTTP/REST</li>
+<li><strong>II: Coordination</strong> — System models, failure detection, clocks, leader election, replication, consistency, transactions</li>
+<li><strong>III: Scalability</strong> — Caching, CDN, partitioning, load balancing, data stores, microservices, messaging</li>
+<li><strong>IV: Resiliency</strong> — Failure causes, redundancy, fault isolation, circuit breakers, rate limiting</li>
+<li><strong>V: Maintainability</strong> — Testing, CD pipelines, monitoring, observability, manageability</li>
+</ul>
+<h2>Key Claims</h2>
+<ul>
+<li>Network abstractions leak; you must understand TCP, TLS, and DNS to debug production issues. (→ ch. 2–4)</li>
+<li>Perfect failure detection is impossible — timeouts are always a guess. (→ ch. 7)</li>
+<li>Physical clocks cannot reliably order events across nodes; logical clocks (Lamport, vector) are required. (→ ch. 8)</li>
+<li>CAP theorem: during a network partition you choose consistency or availability. In practice this is a spectrum, and the PACELC extension captures the latency/consistency tradeoff even in normal operation. (→ ch. 10)</li>
+<li>Coordination (consensus) is the scalability bottleneck; CRDTs and monotonic programs can avoid it entirely. (→ ch. 11)</li>
+<li>The three scalability patterns are functional decomposition, partitioning, and replication — everything else is a combination of these. (→ ch. 14–23 summary)</li>
+<li>Failures are inevitable; the goal is to reduce blast radius and stop propagation. (→ Part IV)</li>
+<li>Configuration changes are one of the leading causes of catastrophic production failures. (→ ch. 24)</li>
+<li>Observability is a superset of monitoring — metrics detect symptoms; logs and traces explain causes. (→ ch. 32)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Part I — Communication</h3>
+<h4>Ch 2: Reliable links (TCP)</h4>
+<p>TCP builds reliability on top of unreliable IP via sequence numbers, acknowledgments, retransmissions, and checksums. Three-way handshake has a full-RTT cold start cost; keep connections alive. Flow control (receive buffer) and congestion control (congestion window) mean bandwidth = WinSize/RTT — lower RTT → better throughput. UDP drops all this for use cases where freshness beats completeness (gaming, custom protocols, HTTP/3).</p>
+<h4>Ch 3: Secure links (TLS)</h4>
+<p>TLS adds encryption (asymmetric key exchange → symmetric session), authentication (certificate chains rooted in trusted CAs), and integrity (HMAC). Every connection costs extra round trips; TLS 1.3 reduces to 1 RTT. Certificate expiry is a common SPOF — automate renewal.</p>
+<h4>Ch 4: Discovery (DNS)</h4>
+<p>DNS is a distributed, hierarchical, eventually consistent key-value store. TTL controls cache freshness vs. propagation time. DNS can be a SPOF; name servers that serve stale entries when unreachable (&quot;static stability&quot;) are more resilient than ones that return errors.</p>
+<h4>Ch 5: APIs</h4>
+<p>REST over HTTP: stateless, cacheable, resource-based URLs. Idempotency via idempotency keys is essential for retry safety — POST is not inherently idempotent; make it so by storing request IDs. API versioning (e.g., <code>/v1/</code>) is required for breaking changes. OpenAPI for IDL → code generation.</p>
+<h3>Part II — Coordination</h3>
+<h4>Ch 6: System models</h4>
+<p>Formal framework: process models (Byzantine/arbitrary-fault, crash-recovery, crash-stop), link models (fair-loss, reliable, authenticated-reliable), timing models (synchronous, asynchronous, partially synchronous). Book assumes crash-recovery + fair-loss links + partial synchrony throughout.</p>
+<h4>Ch 7: Failure detection</h4>
+<p>Impossible to build a perfect failure detector — timeouts are probabilistic. Pings (sender → receiver) and heartbeats (receiver → sender) allow proactive tracking. Timeout duration: base on desired false-positive rate vs. P99.9 of downstream latency.</p>
+<h4>Ch 8: Time and order</h4>
+<p>Physical clocks drift; NTP corrects but imprecisely; monotonic clocks only work per-node. <strong>Lamport clocks</strong>: counter-based, guarantee happened-before → lower timestamp, but not the inverse. <strong>Vector clocks</strong>: per-process counter array, fully capture causality (if V1 &lt; V2 → V1 happened-before V2); storage grows with process count.</p>
+<h4>Ch 9: Leader election</h4>
+<p>Raft: three states (follower, candidate, leader). Randomized election timeouts avoid split votes. Leader identified by heartbeats. In practice: acquire a lease in an external linearizable KV store (etcd, ZooKeeper) using TTL + compare-and-swap. Leader introduces scalability bottleneck and SPOF; minimise work it performs and tolerate occasional dual-leaders with idempotent operations.</p>
+<h4>Ch 10: Replication</h4>
+<p><strong>State machine replication (Raft)</strong>: leader appends to log → replicates to quorum → commits → applies. Only committed entries survive leader failure. <strong>Consistency models</strong>: strong (linearizability — reads through leader confirmed by quorum), sequential (same order, no real-time guarantee), eventual (divergence allowed temporarily). <strong>CAP theorem</strong>: partition forces choice between availability and strong consistency — in practice a spectrum. <strong>PACELC</strong>: adds latency/consistency tradeoff during normal operation. <strong>Chain replication</strong>: writes traverse chain head→tail, reads at tail; splits data-plane throughput from leader; stronger simplicity guarantees, but slower write latency (all nodes in chain), weaker availability (single failure stalls until control plane reconfigures).</p>
+<h4>Ch 11: Coordination avoidance</h4>
+<p>Broadcast protocols: best-effort, reliable (eager or gossip), total-order (requires consensus). <strong>CRDTs</strong>: convergent replicated data types — if merge is idempotent/commutative/associative, replicas converge without consensus. LWW register (greatest-timestamp wins) and MV register (keep all concurrent values). <strong>Dynamo-style stores</strong>: any replica accepts reads/writes; W+R&gt;N intersects quorums. Anti-entropy via read-repair and replica synchronization (Merkle tree hashes). <strong>CALM theorem</strong>: a program is coordination-free iff it is monotonic (new inputs only refine output, never retract). <strong>Causal consistency</strong> (COPS): stronger than eventual, weaker than linearizability; provably the strongest consistency model compatible with availability + partition tolerance.</p>
+<h4>Ch 12: Transactions</h4>
+<p><strong>ACID</strong>: Atomicity (all-or-nothing), Consistency (invariants), Isolation (no races), Durability (WAL + replication). Isolation levels: dirty write &lt; dirty read &lt; fuzzy read &lt; phantom read; serializability prevents all. <strong>2PL</strong> (pessimistic): read/write locks, deadlock possible. <strong>OCC</strong> (optimistic): local workspace, validate at commit; better for low-conflict workloads. <strong>MVCC</strong>: maintains multiple versions; read-only transactions never block or abort. <strong>2PC</strong> (Two-phase commit): prepare → commit; blocking if coordinator fails; participants can&#39;t make progress without coordinator. <strong>Spanner</strong>: 2PC + 2PL + Paxos state machine replication + TrueTime (uncertainty intervals) for globally distributed ACID transactions.</p>
+<h4>Ch 13: Asynchronous transactions</h4>
+<p><strong>Outbox pattern</strong>: write message to an outbox table in same local ACID transaction as the state change; relay process forwards to message broker; idempotency key deduplicates. Conceptually equivalent to state machine replication. <strong>Saga</strong>: distributed transaction = sequence of local transactions T₁…Tₙ, each with compensating transaction Cᵢ. Coordinator (orchestrator) manages execution. No isolation (unlike 2PC) — tolerate with semantic locks if needed.</p>
+<h3>Part III — Scalability</h3>
+<h4>Ch 14: HTTP caching</h4>
+<p>Static resources: Cache-Control + ETag headers; treat as immutable (max-age=1yr), give new URL per version → atomic multi-resource updates. CQRS pattern: differentiate read path (cacheable) from write path. Reverse proxy (NGINX, HAProxy) as shared server-side cache.</p>
+<h4>Ch 15: CDNs</h4>
+<p>Overlay network + edge clusters near users. Benefits: geographic proximity (lower RTT), persistent connection pools, optimised routing. Multi-tier caching (edge → intermediary → origin). Global DNS load balancing directs clients to nearest cluster. Also shields origin from DDoS.</p>
+<h4>Ch 16: Partitioning</h4>
+<p><strong>Range partitioning</strong>: sorted by key; good for scans; risk of hotspots (e.g., time-series partitioned by date). Static vs. dynamic partitioning (split/merge on demand). <strong>Hash partitioning</strong>: uniform distribution; loses sort order. Modulo routing is problematic on resize. <strong>Consistent hashing</strong>: hash ring minimises key movement when adding/removing nodes (only K/N keys move).</p>
+<h4>Ch 17: File storage (Azure Blob Storage)</h4>
+<p>Three layers: stream layer (chain replication, append-only), partition layer (range-partitioned index of files), front-end (stateless reverse proxy + auth). Stream manager and partition manager are control planes. AS was designed for strong consistency from day 1 (S3 added it in 2021).</p>
+<h4>Ch 18: Load balancing</h4>
+<p><strong>DNS load balancing</strong>: simple but poor failure handling; useful for global (multi-region) routing. <strong>L4 (TCP)</strong>: fast, connection-based, consistent hashing per connection tuple; supports direct server return. <strong>L7 (HTTP)</strong>: smarter (TLS termination, sticky sessions, rate limiting, request routing); lower throughput than L4. <strong>Sidecar/service mesh</strong>: client-side L7 load balancing removes centralised bottleneck; requires a control plane to manage sidecars (Envoy, NGINX, HAProxy).</p>
+<h4>Ch 19: Data storage</h4>
+<p><strong>DB replication</strong>: leader-follower; async replication → fast but can lose data; sync → durable but slow. Semi-sync (one synchronous follower) is practical compromise. Managed services (RDS, Azure SQL) automate failover. Replication scales reads only. <strong>NoSQL</strong>: Dynamo (Cassandra, Riak), Bigtable (HBase) designed for horizontal scale from scratch; eventually consistent; no joins; model data around access patterns upfront. DynamoDB: partition key + sort key; 3 replicas per partition with Raft. <strong>NewSQL</strong>: Spanner, CockroachDB — NoSQL scalability with ACID guarantees.</p>
+<h4>Ch 20: Caching</h4>
+<p>Hit ratio is the key metric. <strong>Local cache</strong>: fast, no network; each client caches independently (data duplication); thundering herd on restart. <strong>External cache</strong>: shared (Redis, Memcached); partitioned and replicated; higher latency; if it fails, origin may be overwhelmed — keep local fallback. Cache is an optimisation; origin must survive without it.</p>
+<h4>Ch 21: Microservices</h4>
+<p>Decompose when team size and deployment velocity demands it — not before. Each service: own team, own data store, own release schedule. Downsides: remote calls (expensive, non-deterministic), coupling risks (distributed monolith), resource provisioning overhead, testing complexity, eventual consistency required. API gateway: routing, composition, translation, auth, rate limiting. Start monolith; peel off services one at a time.</p>
+<h4>Ch 22: Control planes and data planes</h4>
+<p>Data plane: critical path, must be highly available and fast, prefers availability over consistency. Control plane: metadata/configuration management, not on critical path, prefers consistency. Static stability: data plane must operate with stale config if control plane is unavailable. Propagation architectures: periodic file dump to S3 (simple, robust), push-based deltas from control plane (lower latency). Constant work pattern: control plane dumps full state periodically regardless of what changed → predictable, self-healing, testable.</p>
+<h4>Ch 23: Messaging</h4>
+<p>Message channel decouples producer from consumer (temporal and load decoupling). <strong>One-way</strong>: fire-and-forget with persistence. <strong>Request-response</strong>: response channel per producer. <strong>Pub-sub</strong>: broadcast to all consumers. Brokers (Kafka, SQS): ordering requires coordination; Kafka partitions by key → per-partition ordering, single consumer per partition. Exactly-once delivery is impossible; simulate with idempotent messages + delete-after-process. Dead letter channel for poison messages. Backlog is bimodal and hard to drain. Fault isolation: route bad-actor messages to slow lane.</p>
+<h3>Part IV — Resiliency</h3>
+<h4>Ch 24: Failure causes</h4>
+<p>Hardware faults, incorrect error handling (majority of catastrophic failures per 2014 study), configuration changes (delayed detection), SPOFs (DNS, TLS certs, humans), gray failures (slow network calls), resource leaks (memory, threads, sockets), load pressure, cascading failures (metastable). Risk = probability × impact.</p>
+<h4>Ch 25: Redundancy</h4>
+<p>Prerequisites: added complexity must not exceed availability gained; health detection; degraded-mode operation; return to full redundancy. Failures must be uncorrelated. Availability Zones (AZs): low-latency, different power/network, support synchronous replication. Regions: high latency, use async replication; needed for legal compliance more than failure tolerance.</p>
+<h4>Ch 26: Fault isolation</h4>
+<p><strong>Bulkhead pattern</strong>: partition instances by user/tenant; blast radius ∝ 1/partitions. <strong>Shuffle sharding</strong>: virtual partitions as random subsets of instances; C(N,k) possible partitions — dramatically reduces probability two users share the same virtual partition. <strong>Cellular architecture</strong>: partition entire stack including dependencies; each cell has max capacity; scale out by adding cells, not growing cells.</p>
+<h4>Ch 27: Downstream resiliency</h4>
+<p><strong>Timeout</strong>: always set; base on P99.9 of downstream latency. Many languages/libraries have no default timeout (Python requests, Go HTTP, JS XMLHttpRequest). <strong>Retry</strong>: only for transient failures; exponential backoff with jitter (<code>delay = random(0, min(cap, initial * 2^attempt))</code>); retry amplification in deep chains → retry at one layer only. <strong>Circuit breaker</strong>: state machine (closed → open → half-open); open = fail fast; graceful degradation when non-critical dependency is down; configurable threshold and half-open probe interval.</p>
+<h4>Ch 28: Upstream resiliency</h4>
+<p><strong>Load shedding</strong>: measure concurrent requests; reject with 503 when over threshold; can prioritise requests (low-priority first). <strong>Load leveling</strong>: message channel smooths spikes; not suitable for latency-sensitive paths. <strong>Rate limiting</strong>: per API key/IP/user; return 429 with Retry-After; distributed implementation uses sliding window buckets + async flush to shared store + local fallback if store unavailable. <strong>Constant work</strong>: perform same amount of work per unit time regardless of load — avoids multi-modal behaviour, self-heals from corruption, simplifies reasoning.</p>
+<h3>Part V — Maintainability</h3>
+<h4>Ch 29: Testing</h4>
+<p>Test pyramid: many unit &lt; integration &lt; few E2E. Test size: small (single process, no I/O), intermediate (single node, local I/O), large (multi-node). Test doubles: fake &gt; stub &gt; mock (in order of resemblance to real). Contract tests + mocks for integration. <strong>TLA+</strong>: formal specification language for model-checking distributed algorithms; used at Amazon (S3) and Microsoft (Cosmos DB).</p>
+<h4>Ch 30: Continuous delivery</h4>
+<p>CD pipeline: PR review → build → pre-production (smoke tests + end-to-end) → production (incremental rollout, bake time, health gates). Configuration and infrastructure (IaC/Terraform) go through same pipeline as code. Backward-compatible changes: prepare (consumer supports both) → activate (producer switches) → cleanup (old format removed). Upgrade-downgrade tests in pre-production.</p>
+<h4>Ch 31: Monitoring</h4>
+<p><strong>Metrics</strong>: time series; pre-aggregate client- and server-side. <strong>SLIs</strong>: ratio of good/total events (availability, response-time percentile). <strong>SLOs</strong>: acceptable range for SLI + error budget over rolling window. <strong>Alerts</strong>: base on burn rate (rate of error budget consumption) not raw threshold. <strong>Dashboards</strong>: audience-specific (SLO, public API, service). Chaos testing: inject controlled failures to prevent over-reliance.</p>
+<h4>Ch 32: Observability</h4>
+<p>Observability ⊃ monitoring. <strong>Logs</strong>: structured events per work unit; one event per request with all relevant data; sampling and log levels to control cost. <strong>Traces</strong>: trace ID propagated across services; spans represent work units; assembled by collector (Zipkin, AWS X-Ray). Metrics = aggregated views of events; traces = causally ordered views of events.</p>
+<h4>Ch 33: Manageability</h4>
+<p>Dynamic configuration: read from store (AWS AppConfig, Azure App Configuration) periodically at runtime. Feature flags: release with feature disabled → enable for fraction of instances → full rollout. Enables A/B testing.</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;A distributed system is one in which the failure of a computer you didn&#39;t even know existed can render your own computer unusable.&quot; — Leslie Lamport (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;The fastest, safest, most secure, and reliable network call is the one you don&#39;t have to make.&quot; (ch. 5)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Treat servers like cattle, not pets.&quot; — Bill Baker (Part III intro)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Failures are unavoidable in distributed systems, and coordination is expensive.&quot; (Part II summary)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Anything that can go wrong will go wrong.&quot; — Murphy&#39;s law (Part IV intro)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+<li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+<li><a href="../distributed/cap-theorem.html">Cap Theorem</a></li>
+<li><a href="../distributed/replication.html">Replication</a></li>
+<li><a href="../distributed/idempotency.html">Idempotency</a></li>
+<li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+<li><a href="../distributed/crdts.html">Crdts</a></li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+<li><a href="../patterns/saga.html">Saga</a></li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+<li><a href="../patterns/bulkhead.html">Bulkhead</a></li>
+<li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a></li>
+<li><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> <em>(recommended by Vitillo as companion read)</em></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/http.html">HTTP</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../distributed/leader-election.html">Leader Election</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../distributed/system-models.html">System Models</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li><li><a href="../databases/transactions.html">Transactions</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

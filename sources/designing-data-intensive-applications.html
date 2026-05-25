@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Designing Data-Intensive Applications* — Martin Kleppmann">
+  <meta property="og:title" content="Designing Data-Intensive Applications — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Designing Data-Intensive Applications* — Martin Kleppmann">
+  <title>Designing Data-Intensive Applications — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html" aria-current="page">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Designing Data-Intensive Applications</nav></div>
+      <h1>Designing Data-Intensive Applications</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/storage.html">storage</a><a class="tag-chip" href="../tags/streaming.html">streaming</a></ul>
+    </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/martin-kleppmann.html">Martin Kleppmann</a>
+<strong>Published:</strong> 2017 (O&#39;Reilly)
+<strong>Slug:</strong> <code>designing-data-intensive-applications</code></p>
+<h2>Overview</h2>
+<p>DDIA is the definitive systems-level treatment of modern data infrastructure. Where most architecture books discuss <em>what</em> to use (which database, which broker, which pattern), Kleppmann explains <em>why</em> each design choice exists — from the physics of disk access that explain LSM-Trees vs B-Trees, to the mathematics of consensus that explain why 2PC is blocking. The book&#39;s thesis is that data-intensive applications are built from composable primitives: storage engines, replication protocols, transaction mechanisms, and stream processors. Understanding these primitives — not just their interfaces but their internals — is what enables engineers to make well-reasoned architectural decisions under real constraints.</p>
+<p>The book is structured in three parts. Part I (Chapters 1–4) covers the foundations: reliability/scalability/maintainability, data models, storage engines, and encoding. Part II (Chapters 5–9) covers distributed data: replication, partitioning, transactions, and the distributed systems problems (clocks, Byzantine faults, consensus). Part III (Chapters 10–12) covers derived data: batch processing, stream processing, and the future of data systems (unbundling databases, correctness, ethics).</p>
+<p>Kleppmann is unusual in the genre for intellectual honesty about trade-offs. He critiques CAP theorem as misleading, calls out databases that lie about their isolation guarantees, and ends the book with a sustained ethical argument about data collection and surveillance. The result is the book most recommended across the entire software architecture reading list — Vitillo cites it as a companion for <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>; FOSA treats it as background knowledge.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>The log (append-only, ordered, immutable) is the unifying data structure across storage engines, replication, messaging, and batch/stream processing. &quot;The truth is the log. The database is a cache of the log.&quot;</li>
+<li>LSM-Trees optimise for write throughput (sequential I/O); B-Trees optimise for read latency (single tree traversal). Neither is universally better — workload determines choice.</li>
+<li>Most databases marketed as &quot;Serializable&quot; actually implement Snapshot Isolation (MVCC), which permits write skew anomalies. True serializability requires SSI or actual serial execution.</li>
+<li>CAP theorem should be &quot;best avoided&quot;: it covers only linearizability + network partitions, ignores the latency/consistency tradeoff in normal operation, and conflates many distinct consistency models under a single &quot;C&quot;. (→ ch. 9)</li>
+<li>Causal consistency is the strongest consistency model compatible with availability + partition tolerance — stronger than eventual, weaker than linearizability. (→ ch. 9)</li>
+<li>2PC is a blocking atomic commit protocol: coordinator failure leaves participants holding locks indefinitely. Fault-tolerant consensus (Raft, Paxos) does not have this property. (→ ch. 9)</li>
+<li>Linearizable CAS ≡ total order broadcast ≡ fault-tolerant consensus ≡ distributed locks ≡ uniqueness constraints: all are equivalent and all require consensus. (→ ch. 9)</li>
+<li>Batch jobs (MapReduce, Spark) are distinguished from online services by immutable inputs and deterministic, side-effect-free execution — which makes retry, replay, and human error recovery tractable. (→ ch. 10)</li>
+<li>The unified batch+stream model (Apache Flink, Apache Beam) supersedes the lambda architecture (duplicate logic in batch + stream layers). (→ ch. 12)</li>
+<li>Timeliness (up-to-date reads) and integrity (no data loss, no contradictions) are distinct properties. Integrity is much more important. Coordination-avoiding systems can provide strong integrity with weak timeliness. (→ ch. 12)</li>
+<li>The end-to-end argument (Saltzer, Reed &amp; Clark 1984): database-level guarantees (transactions, exactly-once delivery) are insufficient for application correctness. End-to-end operation IDs are required.</li>
+<li>Data collection at scale is surveillance; engineers bear ethical responsibility for how their systems affect people.</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 1 — Reliable, Scalable, and Maintainable Applications</h3>
+<p>Defines the three core concerns:</p>
+<ul>
+<li><strong>Reliability</strong>: continuing to work correctly even when things go wrong. Fault ≠ failure: a fault is one component deviating from spec; a failure is when the system stops providing service. Hardware faults (random, independent — handled by redundancy). Software faults (systematic, correlated across nodes — much harder; no quick fix: careful assumptions, testing, process isolation, crash-and-restart). Human errors (dominant cause of outages — sandboxes, rollback tooling, monitoring, gradual rollout). Chaos testing (deliberately trigger faults to exercise fault-tolerance machinery — Netflix Chaos Monkey).</li>
+<li><strong>Scalability</strong>: ability to cope with increased load. Load parameters describe the current load (requests/sec, DB read/write ratio, active users, cache hit rate). <strong>Twitter fan-out example</strong>: reading timelines (300k req/sec) vs posting tweets (4.6k req/sec average, 12k peak). Approach 1: global tweet collection + JOIN at read time. Approach 2 (adopted): precompute per-user timeline mailbox at write time (avg tweet → 75 followers = 345k writes/sec; celebrity with 30M followers → 30M writes per tweet). Twitter uses a hybrid: fan-out for most users, celebrity tweets fetched separately at read time. Performance: throughput (batch) vs <strong>response time</strong> (what the client sees: service time + network + queueing delays). <strong>Latency</strong> ≠ response time: latency = time a request is waiting to be handled. Use <strong>percentiles</strong> (p50, p95, p99, p999) not mean — the mean doesn&#39;t tell you how many users were affected. <strong>Tail latency amplification</strong>: if an end-user request requires multiple backend calls in parallel, it only takes one slow call to slow the entire request — the probability of hitting a slow call grows with the number of parallel calls. Averaging percentiles across time windows is mathematically meaningless; add the histograms (forward decay, t-digest, HdrHistogram). Scaling up (vertical) vs scaling out (horizontal, shared-nothing, elastic).</li>
+<li><strong>Maintainability</strong>: operability (easy to run — &quot;good operations can often work around limitations of bad software, but good software cannot run reliably with bad operations&quot;), simplicity (easy to understand — avoid <strong>accidental complexity</strong>: complexity not inherent in the problem but arising from implementation, Moseley &amp; Marks; abstraction reduces it), evolvability (easy to change — the data-system equivalent of Agile&#39;s ethos).</li>
+</ul>
+<h3>Chapter 2 — Data Models and Query Languages</h3>
+<p>Data models are the most important part of developing software — they constrain not just storage but how we think about the problem. Applications layer data models: real-world objects → general-purpose model (relational/document/graph) → bytes on disk → hardware. Each layer hides the complexity of the one below.</p>
+<p><strong>Historical progression</strong>: hierarchical model → network model (CODASYL, 1970s: explicit access paths, application code must navigate) → relational model (Codd 1970: hid access path behind a declarative interface). Relational dominated by mid-1980s and has lasted 25–30 years. <strong>NoSQL</strong> was coined as a Twitter hashtag for a 2009 meetup; retroactively reinterpreted as &quot;Not Only SQL.&quot; Drivers: scalability needs, open-source preference, specialised queries, schema flexibility. <strong>Polyglot persistence</strong>: relational + non-relational stores coexist in one system.</p>
+<p><strong>Object-relational impedance mismatch</strong>: OOP object graphs don&#39;t map cleanly to tables; ORMs reduce but don&#39;t eliminate the translation. Document models reduce impedance for tree-structured data (one-to-many fits naturally). <strong>Normalization vs denormalization</strong>: IDs don&#39;t change even when the human-readable name does; normalisation stores facts once; denormalization duplicates and risks update anomalies. Many-to-one and many-to-many relationships are relational&#39;s sweet spot; document databases struggle with them (either denormalize → duplication, or use application-level joins → slow).</p>
+<p><strong>Graph models</strong> suit highly connected data with complex many-to-many relationships. Examples: social graphs (people → friends), web graph (pages → links), road networks (junctions → roads). <strong>Property graphs</strong> (Neo4j): each vertex/edge has a unique ID, labels, and key-value properties; no schema restriction on which vertices can be connected. Can be represented as two relational tables (vertices, edges). <strong>Cypher</strong>: declarative pattern-matching query language for Neo4j — <code>(person) -[:BORN_IN]-&gt; ()</code> pattern syntax; arrow notation. <strong>Triple-stores/RDF</strong> (Datomic, AllegroGraph): everything is (subject, predicate, object); SPARQL queries triple patterns. <strong>Datalog</strong>: older recursive rule language, foundation of Datomic&#39;s query language, handles recursive queries naturally. Graphs are especially good for evolvability — add new edge types without migration. See <a href="../databases/data-models.html">Data Models</a>.</p>
+<h3>Chapter 3 — Storage and Retrieval</h3>
+<p>Starts from a two-function bash key-value store to build up to production storage engines from first principles. An index speeds up reads but slows down writes — every index must be updated on every write. Databases require you to choose indexes manually.</p>
+<p><strong>Hash indexes</strong> (Bitcask/Riak): in-memory hash map from key → byte offset in append-only log. Compaction discards superseded keys. Simple, fast for high-update-rate workloads, but limited: all keys must fit in RAM, no range queries. Crash recovery: snapshot hash maps periodically to disk. <strong>Tombstones</strong> mark deleted keys for compaction to skip.</p>
+<p><strong>SSTables/LSM-Trees</strong>: impose sorted order on segments, enabling sparse in-memory index and range queries. Writes go to in-memory <strong>memtable</strong> (red-black tree), flushed to disk as SSTable when full. <strong>Bloom filters</strong> (probabilistic) avoid reading SSTables for keys that don&#39;t exist. Compaction: <strong>size-tiered</strong> (Cassandra default, HBase — newer smaller SSTables merged into larger) vs <strong>leveled</strong> (LevelDB, RocksDB, Cassandra option — each level 10× larger, better read performance and space amplification).</p>
+<p><strong>B-Trees</strong>: fixed-size pages (typically 4KB), branching factor of ~several hundred → 4 levels handles 256TB. Write-ahead log (WAL) for crash recovery. <strong>Copy-on-write</strong> variant (LMDB): produce new version of page tree, leaving old intact for readers (also useful for snapshots). Latency is predictable; no compaction pauses.</p>
+<p><strong>In-memory databases</strong>: disk awkwardness is structural — not just speed but encoding overhead. As RAM becomes cheaper, many datasets fit in memory. <strong>Memcached</strong>: cache only, data lost on restart. <strong>Durable in-memory</strong>: battery-powered RAM, write log to disk, periodic snapshots, or replication. <strong>VoltDB, MemSQL, Oracle TimesTen</strong>: in-memory relational DBs. <strong>RAMCloud</strong>: log-structured in-memory KV store with durability. <strong>Redis/Couchbase</strong>: weak durability (async disk write). <strong>Performance advantage</strong>: not avoiding disk reads (OS page cache already does this for hot data) — rather, avoiding the overhead of encoding in-memory data structures for disk. Redis enables data models impossible with disk-based indexes (priority queues, sets). <strong>Anti-caching</strong>: evict LRU records to disk, reload on access — works at record granularity unlike OS virtual memory pages, but still requires indexes in RAM.</p>
+<p><strong>OLAP/column-oriented storage</strong>: OLAP scans many rows, few columns per query → column storage reads only needed columns, achieves very high compression (run-length encoding, bitmap encoding), enables vectorised CPU SIMD processing. Multiple sort orders (projections) can be maintained. Materialized views / data cubes precompute aggregates for fast query execution. See <a href="../databases/storage-engines.html">Storage Engines</a>.</p>
+<h3>Chapter 4 — Encoding and Evolution</h3>
+<p>Data outlives code: server-side code can be replaced in minutes; database records from five years ago encoded with long-gone code still need to be readable. Rolling deployments mean old and new code run simultaneously — both forward compatibility (old code reads new data) and backward compatibility (new code reads old data) are required simultaneously.</p>
+<p><strong>Language-specific serialisation</strong> (Java Serializable, Ruby Marshal, Python pickle): tied to a single language, security vulnerabilities (arbitrary class instantiation on decode), versioning afterthoughts, poor performance. Never use for cross-system or long-lived data.</p>
+<p><strong>JSON/XML/CSV</strong>: human-readable, language-agnostic. Problems: number type ambiguity (JSON no integer/float distinction, no precision — numbers &gt; 2⁵³ lose precision in JavaScript; Twitter IDs sent twice: as number + as string), no binary string support (base64 adds 33%), optional schemas (many JSON tools don&#39;t bother). CSV: no types, ambiguous escaping. Despite these issues, good enough for many internal APIs.</p>
+<p><strong>Apache Thrift</strong> (Facebook): field tags in binary. BinaryProtocol, CompactProtocol (variable-length integers), DenseProtocol. IDL with code generation. <strong>Protocol Buffers</strong> (Google): field tags, similar to Thrift CompactProtocol, more widely adopted, gRPC wire format. Evolution rule: never change a field tag; new fields must be optional; never reuse tag numbers of removed fields; avoid required fields (can never be safely removed). <strong>Apache Avro</strong>: no field tags in the encoded data — just values in writer&#39;s schema order. Schema resolution matches writer&#39;s schema against reader&#39;s schema at decode time. Most compact; schema registry stores versions (fingerprint as version ID). Field additions get defaults from reader schema; removals ignored. Avro is the natural choice for Kafka + Confluent Schema Registry.</p>
+<p><strong>REST vs SOAP</strong>: REST is a design philosophy (not a protocol) building on HTTP — simple formats, URLs as resource identifiers, HTTP features for caching/auth/content negotiation. Associated with microservices. SOAP is an XML-based protocol (XML-based request format, WSDL for description, WS-* standards for features) designed to be independent of HTTP — complex tooling required, poor interoperability across vendors, falling out of favour. <strong>RPC fundamental flaw</strong>: RPC tries to make a network call look like a local function call (location transparency) — but network calls are unpredictable (timeout?, partial failure?), require idempotency for safe retry, return values must be encodable/decodable, can&#39;t pass large objects by reference, must handle different language types. Modern RPC frameworks (gRPC, Thrift, Finagle) acknowledge these differences rather than hiding them. <strong>Message-passing dataflow</strong>: events in brokers (Kafka) may be consumed long after production — encoding must survive schema evolution over years, making Avro + schema registry the natural fit.</p>
+<p>See <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>.</p>
+<h3>Chapter 5 — Replication</h3>
+<p>Replication keeps copies of data on multiple nodes. Single-leader: all writes go to leader, replicated to followers synchronously or asynchronously. Async followers can lag → read-your-writes inconsistency, monotonic reads violations, consistent prefix read violations — all forms of replication lag. Multi-leader (active-active): multiple nodes accept writes; conflict resolution is unavoidable (LWW, version vectors, CRDTs). Leaderless (Dynamo-style, Cassandra, Riak): quorum writes (W) + quorum reads (R) with W+R&gt;N; sloppy quorums for availability; read repair and anti-entropy for convergence. Adds significant DDIA detail to <a href="../distributed/replication.html">Replication</a>.</p>
+<h3>Chapter 6 — Partitioning</h3>
+<p>Partitioning (sharding) splits data across nodes. Key range partitioning: sorted, enables range queries, risk of hot spots. Hash partitioning: distributes uniformly, no range queries, consistent hashing with virtual nodes. Secondary indexes: local (scatter-gather reads) vs global/term-based (writes update multiple partitions, reads hit one). Rebalancing: fixed partition count (Elasticsearch), dynamic splitting (HBase, MongoDB), proportional to nodes (Cassandra). Request routing: gossip (Cassandra), ZooKeeper for partition assignment (HBase, Kafka), client-side cache. See <a href="../distributed/partitioning.html">Partitioning</a>.</p>
+<h3>Chapter 7 — Transactions</h3>
+<p>ACID: Atomicity (WAL-based all-or-nothing), Consistency (application invariant — not a DB property), Isolation (concurrent transactions don&#39;t interfere), Durability (WAL + replication). Isolation levels — dirty reads (read uncommitted data), read skew (non-repeatable reads), write skew (both transactions read overlapping set, both decide to write, invariant violated — classic: on-call doctors), phantoms (new rows inserted match predicate of earlier read). Snapshot Isolation (MVCC): reads from consistent snapshot, writers never block readers. SSI (Serializable Snapshot Isolation): detect conflicts at commit via tracking which reads were subsequently modified — achieves serializability without locking. Actual serial execution (VoltDB, H-Store): single thread, stored procedures, partitioned. 2PL (Two-Phase Locking): shared/exclusive, predicate locks for phantoms. See <a href="../databases/transactions.html">Transactions</a>.</p>
+<h3>Chapter 8 — The Trouble with Distributed Systems</h3>
+<p>Distributed systems are fundamentally unreliable in ways that single-node systems are not. Network delays are unbounded (partially synchronous model). Clocks drift; NTP is imprecise; wall clocks can jump backward; monotonic clocks are node-local. Process pauses (GC, VM migration, disk thrashing) can stop a process for arbitrarily long. Byzantine faults (nodes that lie): relevant for aerospace and blockchains, generally impractical for datacenter systems. System models: synchronous (unrealistic), partially synchronous (realistic), asynchronous (too restrictive). Node failure models: crash-stop, crash-recovery (most realistic), Byzantine. Safety properties (nothing bad happens — can point to violation) vs liveness properties (something good eventually happens — require conditions).</p>
+<h3>Chapter 9 — Consistency and Consensus</h3>
+<p>Linearizability: system appears to have one copy of data with atomic operations. A recency guarantee (not transaction isolation). Uses: lock/leader election, uniqueness constraints, cross-channel timing. CAP: Kleppmann dismisses as &quot;best avoided&quot; — historically influential but too narrow and misleading. Causal consistency: strongest model not impacted by partitions; does not trigger CAP. Lamport timestamps: (counter, nodeID), max counter propagated, provides total order consistent with causality — but cannot determine if ordering is final. Total order broadcast: reliable + totally ordered delivery ≡ consensus ≡ linearizable CAS. FLP result: no deterministic algorithm always reaches consensus in asynchronous model. Fault-tolerant consensus (Raft, Paxos, Zab): epoch numbers, two rounds of voting, overlapping quorums. ZooKeeper/etcd as consensus primitives. Full equivalence theorem: see <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>.</p>
+<h3>Chapter 10 — Batch Processing</h3>
+<p>Unix philosophy: one thing well, compose via stdin/stdout, immutable inputs, transparent intermediate state. MapReduce: mapper emits (key, value) pairs, shuffle sorts and copies to reducers, reducer aggregates. Joins: sort-merge (reduce-side, handles large datasets), broadcast hash (small side in memory → load into every mapper), partitioned hash (both inputs same-partitioned → each mapper loads one partition). Hot key handling: skewed join via sampling, sharded join, two-stage grouping. Hadoop vs MPP: Hadoop is schema-on-read, arbitrary code, file-level fault tolerance; MPP is schema-on-write, SQL, query-level abort. Dataflow engines (Spark, Flink, Tez): whole workflow as one job, operators not map/reduce, pipelined execution, lineage-based fault tolerance (Spark) or checkpointing (Flink). Graph processing: Pregel/BSP model (Giraph, GraphX, Gelly). See <a href="../streams/batch-processing.html">Batch Processing</a>.</p>
+<h3>Chapter 11 — Stream Processing</h3>
+<p>Events: immutable, small, self-contained, timestamped, grouped into topics. AMQP/JMS (RabbitMQ): message deleted after ack, redelivery can reorder. Log-based brokers (Kafka, Kinesis): append-only partitioned log, consumer tracks offset, messages retained, sequential per partition, fan-out trivial. Change Data Capture (CDC): observe DB changes as stream, replicate to search index/caches/warehouses, log-compacted topic enables DB bootstrap, tools: Debezium, Maxwell. Stream processing uses: CEP (queries stored, events flow past), analytics (windowed aggregations), materialized view maintenance, search on streams (Elasticsearch percolator). Windowing: tumbling, hopping, sliding, session. Event time vs processing time: use event timestamps; handle stragglers. Stream joins: stream-stream (window join), stream-table (enrichment via CDC), table-table (materialized view). Fault tolerance: microbatching (Spark Streaming), checkpointing (Flink), exactly-once via atomic commit or idempotency. See <a href="../streams/stream-processing.html">Stream Processing</a> and <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>.</p>
+<h3>Chapter 12 — The Future of Data Systems</h3>
+<p>No single tool satisfies all needs: compose specialised systems via derived data. Unbundling databases: federated reads (polystore), unified writes via event log (CDC → log). Lambda architecture (batch + stream in parallel): criticized for duplicate logic — unified batch+stream (Flink, Beam) is better. Write path (eager, precomputed) vs read path (lazy, on demand); derived dataset is where they meet. Timeliness (up-to-date reads) ≠ integrity (no data loss, no contradictions). Integrity is more important; violations of timeliness are &quot;eventual consistency,&quot; violations of integrity are &quot;perpetual inconsistency.&quot; End-to-end argument: TCP duplicate suppression + DB transactions are insufficient — operation IDs must flow end-to-end. Enforcing uniqueness via log-based partitioning: partition by hash of constrained value, stream processor enforces sequentially. Coordination-avoiding data systems: strong integrity without linearizability or atomic commit, using deterministic derivation + end-to-end IDs + idempotency. Trust but verify: culture of verification; HDFS/S3 continually read-check files; event sourcing enables auditability via deterministic replay. Ethics: predictive analytics → algorithmic prison, feedback loops, bias amplification; data collection = surveillance; data as toxic asset; engineers have responsibility.</p>
+<blockquote>
+<p><strong>Contradiction:</strong> Kleppmann dismisses CAP theorem as &quot;best avoided&quot; — a stronger position than <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>, which also critiques it but treats it as a useful first approximation. Kleppmann&#39;s PACELC framing (latency/consistency tradeoff in normal operation) is the more complete picture.</p>
+</blockquote>
+<blockquote>
+<p><strong>Open question:</strong> Kleppmann&#39;s coordination-avoiding correctness model (integrity without distributed transactions via end-to-end IDs) is compelling but still nascent. What production systems have successfully adopted it at scale?</p>
+</blockquote>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;The truth is the log. The database is a cache of the log.&quot; (ch. 11)</p>
+</blockquote>
+<blockquote>
+<p>&quot;An index on a field speeds up reads but slows down writes. This is an important trade-off in storage systems: you generally have to choose between fast reads and fast writes.&quot; (ch. 3)</p>
+</blockquote>
+<blockquote>
+<p>&quot;The CAP theorem is best avoided... it is not useful as a tool for reasoning about systems.&quot; (ch. 9)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Serializable isolation and atomic commit don&#39;t solve the problem of end-to-end correctness, because they don&#39;t know about the end-user client.&quot; (ch. 12)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Violations of timeliness are &#39;eventual consistency,&#39; whereas violations of integrity are &#39;perpetual inconsistency.&#39;&quot; (ch. 12)</p>
+</blockquote>
+<blockquote>
+<p>&quot;As a thought experiment, try replacing the word &#39;data&#39; with &#39;surveillance,&#39; and observe if common phrases still sound so good.&quot; (ch. 12)</p>
+</blockquote>
+<blockquote>
+<p>&quot;We should try to make them proud.&quot; (closing line — about how our grandchildren will judge how we handled data collection)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+<li><a href="../databases/data-models.html">Data Models</a></li>
+<li><a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a></li>
+<li><a href="../databases/transactions.html">Transactions</a></li>
+<li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+<li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+<li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a></li>
+<li><a href="../distributed/partitioning.html">Partitioning</a></li>
+<li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+<li><a href="../distributed/replication.html">Replication</a></li>
+<li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+<li><a href="../distributed/cap-theorem.html">Cap Theorem</a></li>
+<li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+<li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li><li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

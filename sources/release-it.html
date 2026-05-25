@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Release It! Design and Deploy Production-Ready Software* — Michael Nygard">
+  <meta property="og:title" content="Release It! Design and Deploy Production-Ready Software — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Release It! Design and Deploy Production-Ready Software* — Michael Nygard">
+  <title>Release It! Design and Deploy Production-Ready Software — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html" aria-current="page">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Release It! Design and Deploy Production-Ready Software</nav></div>
+      <h1>Release It! Design and Deploy Production-Ready Software</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/reliability.html">reliability</a><a class="tag-chip" href="../tags/stability.html">stability</a><a class="tag-chip" href="../tags/operations.html">operations</a><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/michael-nygard.html">Michael Nygard</a>
+<strong>Published:</strong> 2018 (2nd edition; 1st edition 2007)
+<strong>Slug:</strong> <code>release-it</code></p>
+<h2>Overview</h2>
+<p>Michael Nygard&#39;s <em>Release It!</em> is the practitioner&#39;s guide to building software that survives production. Where most architecture books describe what systems should do, this book addresses what they should <em>not</em> do: crash, hang, lose data, cascade failures, or require human intervention at 3 a.m.</p>
+<p>The book&#39;s central argument is that &quot;design for production&quot; must be a first-class design activity alongside feature development. Passing QA tells you almost nothing about a system&#39;s long-term viability; the real test is years of production operation under hostile conditions. Architectural decisions are simultaneously financial decisions — the operational cost of poor choices accumulates over the entire system lifespan.</p>
+<p>The book is structured around three broad themes: (1) <strong>Stability</strong> — preventing small failures from cascading; (2) <strong>Capacity</strong> — handling load, connections, and resources gracefully; (3) <strong>Production readiness</strong> — deployment, versioning, adaptation, chaos engineering. Nygard draws heavily on real production incidents — all anonymised but concrete — to motivate each pattern.</p>
+<p>The audience is experienced developers and architects building systems that must run unattended in production, often at scale, often with interconnected dependencies. The book predates the current microservices era but anticipated nearly all of its operational concerns.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>&quot;Feature complete&quot; is not &quot;production ready&quot; — QA tests what software should do; production tests what it should not do (ch. 1)</li>
+<li>Bugs cannot be eliminated; they must be survived — design for resilience, not prevention (ch. 2)</li>
+<li>Design and architecture decisions are financial decisions — operational cost accumulates over years; avoiding a one-time $50k investment to save deployment downtime often costs $1M+ (ch. 1)</li>
+<li>Small failures in interconnected systems propagate and amplify — the goal is to prevent failures in one system from cascading to all others (ch. 2)</li>
+<li>The pragmatic architect thinks continuously about deployment, metrics, and change dynamics — not end-state perfection (ch. 1)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 17 — Chaos Engineering</h3>
+<p>Chaos engineering is &quot;the discipline of experimenting on a distributed system in order to build confidence in the system&#39;s capability to withstand turbulent conditions in production.&quot; Empirical, not formal: run experiments to learn what the system <em>does</em>, not models of what it <em>should</em> do.</p>
+<p><strong>Why production is necessary</strong>: staging environments cannot replicate production at scale; certain failure modes only emerge in the full system (cascading failures, dogpile effects, retry storms). More importantly, <strong>safety is not a composable property</strong> — two services that are individually safe may not be safe in composition. A sequential call to two services, each with P99.9 latency of 30 ms under a 50 ms combined timeout, will breach the budget for a meaningful fraction of requests. This is invisible from component testing.</p>
+<p><strong>Theoretical roots</strong>:</p>
+<ul>
+<li><em>Drift into failure</em> (Dekker): economic pressure pushes systems toward their safety boundary over time; highly efficient systems break catastrophically when disrupted. Chaos is the countervailing force.</li>
+<li><em>Fundamental regulator paradox</em> (Weinberg): the better a regulator suppresses variation, the less feedback it receives about its own quality. If stability mechanisms are never exercised, expertise in handling failures atrophies.</li>
+<li><em>Volkswagen microbus paradox</em>: you learn to fix what breaks often; rare failures remain mysterious and are worse when they eventually occur.</li>
+<li><em>Antifragile</em> (Taleb): use controlled stressors to build strength, like a weightlifter.</li>
+</ul>
+<p><strong>Netflix Simian Army</strong>: Chaos Monkey (random instance termination), Latency Monkey (latency injection), Janitor Monkey (resource cleanup), Conformity Monkey (standards validation), Chaos Kong (full region termination). Opt-out model: every service is subject by default; exemptions require sign-off and carry review stigma.</p>
+<p><strong>Prerequisites</strong>: (1) no irreplaceable requests; (2) blast radius control; (3) distributed tracing to distinguish fault-tolerant success from failure; (4) monitoring that can detect small failure-rate changes (&quot;a wall full of green dashboards means monitoring isn&#39;t good enough&quot; — Charity Majors); (5) recovery plan for when chaos stops.</p>
+<p><strong>Experiment design</strong>: hypothesis → steady state definition → rejection criteria → inject → observe vs control group. Account for baseline noise before concluding a failure was caused by the injection.</p>
+<p><strong>Injection types</strong>: instance termination (basic — finds autoscaling gaps), latency injection (finds timeout omissions and race conditions from out-of-order responses), service-call failure via FIT — Failure Injection Testing (Netflix: tag request at API gateway with &quot;fail when G calls H&quot;; at the call site the framework reports failure without making the network call; requires a common outbound calling framework).</p>
+<p><strong>Targeting progression</strong>: start with random injection (densely populated bug space); as easy bugs are fixed, switch to targeted injection based on call-tree knowledge. Learn from cases where faults <em>don&#39;t</em> cause failures — they reveal redundancy paths worth documenting.</p>
+<p><strong>Cunning malevolent intelligence</strong> (Peter Alvaro, UCSC): collect traces → build dependency graph → use graph algorithms to find crucial links → learn from redundancy discovered. Narrows the search space as the system matures.</p>
+<p><strong>Automation and moderation</strong>: automate once a vulnerability class is understood; apply constraints (never kill the last instance; don&#39;t fail all fallbacks simultaneously). A chaos automation platform (ChAP at Netflix) manages injection scheduling, victim selection, safety limits, and reports test events to monitoring for correlation.</p>
+<p><strong>Disaster simulations for humans</strong>: randomly designate 20–50% of staff as &quot;zombies&quot; (unavailable). Observe what operations cannot proceed. Review like a postmortem; fix through documentation, role distribution, automation. Escalate by combining with system fault injection once the organisation can handle normal zombie rates.</p>
+<h3>Chapter 16 — Adaptation</h3>
+<p>The broadest chapter in the book, covering the organizational, architectural, and information-level changes needed to make systems adaptable over time.</p>
+<p><strong>Decision loop speed as competitive advantage</strong>: every organisation runs a sense → decide → act → observe cycle. Getting around the cycle faster than competitors means forcing them to react to you (&quot;inside their decision loop&quot;). Agile removed delay from the &quot;act&quot; phase; DevOps removes more and adds &quot;observe&quot; tooling. The next frontier is the &quot;decide&quot; phase.</p>
+<p><strong>Thrashing</strong>: when your action rate exceeds the feedback rate from the environment, organisations oscillate — constantly shifting direction before the previous change has been evaluated. Aviation calls this &quot;pilot-induced oscillation&quot; (porpoising). Fix: don&#39;t slow down delivery; speed up feedback collection instead.</p>
+<p><strong>Platform team vs &quot;DevOps team&quot; antipattern</strong>:</p>
+<ul>
+<li>Platform team: infrastructure-as-a-product for app developers (compute, storage, logging, metrics, messaging, DNS, access control); provides APIs/CLI — not manual provisioning; measured on platform availability, not application availability. Rule: if developers only use the platform because it&#39;s mandatory, the platform isn&#39;t good enough.</li>
+<li>&quot;DevOps team&quot; antipattern: putting an intermediary between dev and ops creates two interfaces where one existed; DevOps is a cultural transformation, not an organizational unit.</li>
+</ul>
+<p><strong>Painless releases and service extinction</strong>: frequent releases force you to get good at releases (closed feedback loop). The most important part of evolution is <strong>extinction</strong> — shut down the underperforming service, delete the code, reassign the team. Preserves capacity and reduces dependencies.</p>
+<p><strong>Team-scale autonomy</strong>: a &quot;two-pizza team&quot; is not just about team size — it&#39;s about reducing external dependencies so a small cross-functional team can push code to production without coordinating with others. Coordinated deployments are a coupling smell: if provider and consumer must be updated simultaneously, rework the interface for backward compatibility.</p>
+<p><strong>Beware efficiency</strong>: high utilization (everyone 100% busy) is not the same as efficient throughput — keeping all workers fully loaded creates queueing delays that slow the overall system. Efficiency also specialises the process to today&#39;s tasks, reducing flexibility for tomorrow (the car manufacturer rig example: faster production of current models, impossible to switch to vans).</p>
+<p><strong>Form follows failure</strong> (Henry Petroski): design evolution is motivated more by what the prior version does poorly than by what it does well. The same applies to software architecture — systems evolve through failures, not through the initial design.</p>
+<p><strong>Bad Layering (horizontal coupling)</strong>: standard layered architectures enforce vertical isolation (UI / domain / persistence) but encourage horizontal coupling — large &quot;god&quot; domain classes that everything touches. A better decomposition rotates 90 degrees: <strong>component-based</strong> or &quot;self-contained systems&quot; where each component owns its full stack (UI through storage) and communicates only through narrow formal interfaces.</p>
+<p><strong>Architecture styles for adaptability</strong>: microservices (small disposable units; team-scale autonomy; vulnerable to platform coupling for monitoring/tracing), microkernel+plugins (in-process message passing; good for incremental requirements change), event-based (temporal decoupling; allows new subscribers without publisher change; vulnerable to semantic change in message formats over time).</p>
+<p><strong>Modular operators</strong> (Baldwin &amp; Clark, <em>Design Rules</em>): six operators that create options at module boundaries: <em>Splitting</em> (break module into submodules; interface unchanged), <em>Substituting</em> (replace with another module sharing the interface), <em>Augmenting</em> (add a module), <em>Excluding</em> (remove a module), <em>Inversion</em> (extract distributed functionality to a first-class concern — e.g., each service doing its own A/B tests → extract to a centralised experimentation service), <em>Porting</em> (reuse a module from a different system). Economic value of the system increases with the number of option boundaries.</p>
+<p><strong>Information architecture for adaptability</strong>:</p>
+<ul>
+<li><em>Messages, Events, Commands</em> (Martin Fowler taxonomy, cited by Nygard): Event notification (fire-and-forget), Event-carried state transfer (entity replication), Event sourcing (change journal), CQRS (read/write separation). Use open formats (JSON) for events; avoid serialised objects, code-generation frameworks, or annotation-based mappers — treat messages as data, not objects.</li>
+<li><em>Services control their identifiers</em>: don&#39;t couple to an external authority&#39;s ownership model; issue your own IDs; use a policy proxy to map caller identity to resource identity. This makes the service usable in more contexts without prior knowledge of the caller&#39;s auth model.</li>
+<li><em>URL dualism</em>: a URL serves as both an opaque token (pass-through) and a dereferenceable address. Using full URLs as identifiers allows the front end to work with services that didn&#39;t exist when it was written — including static files or partner APIs — without hardcoding which service to call.</li>
+<li><em>Embrace plurality / federated zones of authority</em>: every important noun will have multiple definitions across the organisation (a &quot;customer&quot; means different things to sales, support, and accounting). Don&#39;t create an enterprise-wide single system of record — it will always miss some facet. Allow federated data ownership with common interchange formats.</li>
+<li><em>Avoid concept leakage</em>: don&#39;t expose internal data-model concepts to downstream systems. The &quot;price point&quot; example — an internal leverage concept for bulk repricing — leaked into every downstream system&#39;s data feed, causing years of coupling. Flatten when publishing; downstream consumers should receive resolved values, not the upstream&#39;s internal model.</li>
+</ul>
+<h3>Chapter 15 — Case Study: Trampled by Your Own Customers</h3>
+<p>A big-bang launch case study motivating noise testing, production-oriented configuration, and safety devices. A 300-person retail e-commerce relaunch: three months of load testing, target of 25,000 concurrent sessions (revised down to 12,000 during testing). At 9:05 AM launch: 10,000 sessions. By 9:10 AM: 50,000. By 9:30 AM: 250,000. Site crashed.</p>
+<p><strong>Building to pass tests, not to run in production</strong>: config files were written for the QA topology; hostnames, ports, DB passwords scattered across thousands of files; some components assumed QA-specific topology that wouldn&#39;t exist in production (no firewalls; different clustering). &quot;The development teams were building everything to pass testing, not to run in production.&quot; Fix: configuration override structure separate from the codebase — each environment-varying property exists in exactly one place; production credentials kept out of QA and source control.</p>
+<p><strong>Sessions ≠ users</strong>: sessions always outlive users (sessions are kept alive by a timeout after the last click). Counting active sessions overestimates actual concurrent users. Session count is the most important metric for app server health but must not be confused with user count.</p>
+<p><strong>Why the site crashed — four sources of noise</strong>:</p>
+<ol>
+<li><em>Old URL redirects</em>: CDN switch drove ~40% of traffic from search engine caches using old-style URLs → each request created a session just to serve a 404.</li>
+<li><em>Session IDs in URL query parameters</em> (not cookies): a security team mandate — but search engine spiders, which don&#39;t handle cookies, were then creating new sessions per request (up to 10 sessions/second from one spider alone).</li>
+<li><em>Shopbots and scrapers</em>: didn&#39;t handle cookies → sessions per request; used cloaking (multi-subnet, rotating user agents) to evade detection.</li>
+<li><em>Random weird traffic</em>: unexplainable request patterns that still created sessions.</li>
+</ol>
+<p><strong>The testing gap</strong>: load test scripts were &quot;polite&quot; — they used cookies, followed linked URLs in order, obeyed the implicit rules. No noise (bots, cookieless requests, 404 floods, repeat-URL hammering). &quot;Add noise, create chaos.&quot; Also: no safety devices in the application — when requests failed, threads piled up rather than being cut off; the team saw this pattern from day one of load testing but dismissed it as a test-methodology artifact.</p>
+<p><strong>Rapid aftermath mitigations</strong> (CDN gateway page): (1) cookie detection — redirect cookieless clients to an explanation page; (2) session throttle — configurable percentage of new sessions allowed through, rest get a &quot;come back later&quot; page; (3) IP block list for identified scrapers. Plus: static home page for unidentified users (the fully dynamic home page required 1,000+ DB transactions per render; personalization was never used for anonymous visitors); turned off session failover after discovering sessions held serialised full shopping carts and 500-item search results.</p>
+<p><strong>&quot;Nothing is as permanent as a temporary fix&quot;</strong>: rolling restarts and the static home page persisted for years; the longest lasted a decade through 100% team turnover. Every mitigation had a direct cost: throttling lost revenue; no session failover meant abandoned carts at checkout; static home prevented personalization.</p>
+<p><strong>The headline finding</strong>: two years after launch, the site handled four times the original load on fewer servers of the same model. Nygard&#39;s point: if the application had been built production-ready from the start, the engineers could have joined marketing&#39;s launch party.</p>
+<h3>Chapter 14 — Handling Versions</h3>
+<p>A good citizen API does extra work on the provider side to avoid pushing migration costs onto consumers. The chapter&#39;s framework: communication is a layered stack of agreements (connection handshaking, request framing, content encoding, message syntax, message semantics, auth); a breaking change is any unilateral break from a prior agreement.</p>
+<p><strong>Postel&#39;s Robustness Principle applied to APIs</strong>: &quot;Be conservative in what you do, be liberal in what you accept from others.&quot; This creates an asymmetry between inbound and outbound: you can always accept more, but never less; you can always return more, but never less.</p>
+<p><strong>Non-breaking changes</strong> (always safe):</p>
+<ul>
+<li>Require a <em>subset</em> of the previously required parameters</li>
+<li>Accept a <em>superset</em> of the previously accepted parameters</li>
+<li>Return a <em>superset</em> of the previously returned values</li>
+<li>Enforce a <em>subset</em> of the previously required constraints</li>
+</ul>
+<p><strong>Breaking changes</strong> (must trigger a major version):</p>
+<ul>
+<li>Rejecting a protocol, encoding, or request syntax that previously worked</li>
+<li>Adding required fields to the request</li>
+<li>Forbidding optional input that was previously allowed</li>
+<li>Removing previously guaranteed response fields</li>
+<li>Requiring an increased level of authorization</li>
+</ul>
+<p><strong>Implementation is the de facto spec</strong>: once live, the service&#39;s actual behaviour — including bugs and undocumented edge cases — is the real contract. Adding validation that rejects previously-accepted (if malformed) input is a breaking change, regardless of what the documentation said. Postel&#39;s Principle leaves no choice: keep accepting it.</p>
+<p><strong>Inbound + outbound contract testing</strong>: <em>inbound</em> tests exercise your own API against your understanding of the spec; <em>outbound</em> tests exercise your dependencies using <em>their</em> spec but <em>your</em> interpretation. Both gaps can be large even with a written spec. Contract tests owned by the consuming team (not the implementing team) are more effective — the consumer will discover misunderstood edge cases the implementing team would miss.</p>
+<p><strong>Breaking changes — versioning approaches</strong> (Nygard&#39;s preference: URL versioning):</p>
+<ol>
+<li><em>URL prefix</em> (<code>/v2/...</code>) — visible, loggable, routable by any intermediary; &quot;not RESTful&quot; but practical.</li>
+<li><em>Accept/Content-Type header</em> — RESTful but requires consumers to know special media types; hard to route at the load balancer.</li>
+<li><em>Custom version header</em> — flexible but more secret knowledge for consumers.</li>
+<li><em>Field in body</em> — easy for POST/PUT but doesn&#39;t cover all cases.</li>
+</ol>
+<p>URL versioning wins because: the URL alone is sufficient (no secret knowledge); intermediaries (caches, load balancers) route on URL patterns without special configuration; useful for log analysis by version.</p>
+<p><strong>Rules when bumping versions</strong>: bump all routes at the same time, even if only one changed — don&#39;t force consumers to track which version number applies to which route. Run tests mixing calls to old and new API versions on the same entities (entities created with the new version often cause errors when accessed via the old API).</p>
+<p><strong>Version translation in controllers</strong>: methods for the old API convert old objects to the current domain model on inbound requests and convert current objects back to old on responses. Keeps business logic deduplicated; only the controller layer does translation.</p>
+<h3>Chapter 13 — Design for Deployment</h3>
+<p>&quot;We don&#39;t just write for the end state and leave it up to operations to figure out how to get the stuff running in production. We treat deployment as a feature.&quot; Deployment must be a first-class engineering concern, not an afterthought that operations handles.</p>
+<p><strong>Continuous deployment virtuous cycle</strong>: large, infrequent deployments → high risk per deployment → review gates, freeze windows, ceremonies → deployments get larger and riskier. Break the cycle by deploying more often. &quot;If it hurts, do it more often.&quot; Smaller deployments mean smaller blast radius, faster rollback, lower cognitive overhead, and — crucially — an immediate financial benefit: eliminating the &quot;deployment army&quot; described in ch. 12.</p>
+<p><strong>Four microscopic deployment phases</strong> (per instance):</p>
+<ol>
+<li><strong>Prepare</strong> — copy new files or deploy new container image to the instance without disrupting the currently running version; no traffic changes yet.</li>
+<li><strong>Drain</strong> — stop the instance accepting new requests; wait for all in-flight requests to complete (configurable grace period; hard cutoff if requests exceed it).</li>
+<li><strong>Apply</strong> — perform the actual cutover (symlink swap, container restart, DB schema step); should be near-instantaneous.</li>
+<li><strong>Start</strong> — boot new version with &quot;accepting work&quot; flag false; wait for health check to go green; only then notify load balancer to resume traffic.</li>
+</ol>
+<p>Starting with the accepting-work flag false prevents a race where health checks pass before the application is truly ready.</p>
+<p><strong>Relational database — expand/contract pattern</strong>:</p>
+<ul>
+<li><em>Expansion phase</em> (safe to run before any code deployment): add new tables, views, nullable columns, column aliases, stored procedures, and triggers; copy existing data to new columns.</li>
+<li><em>Database shims</em>: triggers that keep old and new tables in sync during the mixed-version window when old and new code are both running.</li>
+<li><em>Contraction/cleanup phase</em> (only after full rollout and confidence in stability): drop old tables, views, and columns; apply NOT NULL and FK constraints that couldn&#39;t be added during expansion.</li>
+</ul>
+<p><strong>Schemaless database migration — three approaches</strong>:</p>
+<ol>
+<li><em>Version pipeline</em>: read documents at any historical version, translate up through a chain. Theoretically complete but expensive to maintain as versions accumulate.</li>
+<li><em>Full batch migration</em>: migrate all documents before deployment. Works for small datasets; takes too long later.</li>
+<li><em>Trickle, then batch</em> (preferred): migrate documents on read during normal operation; run a batch sweep on documents not touched by normal traffic after the deployment settles; remove migration code in the next deployment.</li>
+</ol>
+<p><strong>Web assets</strong>: cache busting is essential — embed a commit SHA or content hash in the URL <em>path</em> (not query string), since some CDNs and proxies strip query strings when caching. Ensure assets are deployed to all hosts before code changes reference them, or use session affinity so a user is not served mismatched asset and HTML versions.</p>
+<p><strong>Canary group</strong>: the first batch of instances in a rolling deployment is the canary group. Pause after the canary group to evaluate SLIs (error rates, latency, memory usage) before proceeding with the wider rollout. Health-check-based graceful drain (phase 2 above) allows the pool to be removed cleanly rather than abruptly killing in-flight requests.</p>
+<h3>Chapter 12 — Case Study: Waiting for Godot</h3>
+<p>A case study that motivates automated deployment pipelines through contrast. </p>
+<p>A scheduled maintenance deployment for a retail e-commerce site: 40+ people on a conference bridge, 24 hours of effort, a 126-row playbook reviewed in two-hour meetings, business stakeholders woken at 1 a.m. to do UAT. Cost: ~$100,000 per deployment event (40 people × 24 hours × ~$100/hour) done 4–6 times per year ($400–600K/year). The deployment failed UAT because data in the QA environment didn&#39;t match production — JavaScript from a third-party widget rewrote page content that conflicted with the new structure, a problem invisible in QA. Rollback at 5 a.m.; second attempt planned two days later.</p>
+<p>Nygard contrasts this with witnessing Etsy&#39;s &quot;deployinator&quot; — a one-button deployment, demonstrated live to an investor as a routine event. The contrast reveals the true cost of the &quot;deployment army&quot; antipattern: not just money, but wasted human potential, disrupted lives, and the opportunity cost of treating humans as bots.</p>
+<p><strong>Motivates</strong>: Chapter 13 (Design for Deployment), Chapter 14 (Handling Versions) — making deployments faster and more routine creates a virtuous cycle and an immediate financial benefit.</p>
+<p><strong>Connection</strong>: reinforces the ROI argument from ch. 1 — the $100K per deployment army × 5/year = $500K/year is the &quot;invisible cost&quot; Nygard argues architects must account for when designing for production.</p>
+<h3>Chapter 11 — Security</h3>
+<p>Coverage of the OWASP Top 10 (2017) and production security principles.</p>
+<p><strong>OWASP Top 10 (2017)</strong>:</p>
+<ol>
+<li><strong>Injection</strong> — SQL, XXE, Eval, XPATH; use parameterized queries and prepared statements, never string concatenation; disable XXE in XML parsers explicitly.</li>
+<li><strong>Broken Authentication and Session Management</strong> — session IDs in cookies (not URLs), fresh session ID on authentication, PRNG session IDs with high entropy, hash passwords with salt, limit authentication attempts without over-aggressively locking accounts.</li>
+<li><strong>XSS</strong> — escape output, never render user input directly into HTML; same injection-of-structured-data principle as SQL injection; automated scanners find XSS in milliseconds.</li>
+<li><strong>Broken Access Control</strong> — don&#39;t use sequential DB IDs in URLs; authorize on every request, not just by URL possession; return the same 404 whether a resource doesn&#39;t exist or the caller isn&#39;t authorized (don&#39;t leak existence information).</li>
+<li><strong>Security Misconfiguration</strong> — default credentials (20,000 MongoDB instances taken hostage in 2017); servers listening too broadly (bind to specific NICs); sample applications in production; ensure every administrator uses a personal account.</li>
+<li><strong>Sensitive Data Exposure</strong> — don&#39;t store what you don&#39;t need; TLS everywhere including internally (&quot;pie crust&quot; defence fails — attackers behind the perimeter can sniff internal traffic); HSTS; encrypt at rest; decrypt based on user authorization, not server privilege.</li>
+<li><strong>Insufficient Attack Protection</strong> — log bad requests by source; API gateways for throttling rate-limiting and blocking; layer-7 firewalls for signature-based attack detection.</li>
+<li><strong>CSRF</strong> — CSRF tokens for state-changing requests; SameSite cookie attribute; don&#39;t use your site as a launchpad for XSS attacks on others.</li>
+<li><strong>Using Components with Known Vulnerabilities</strong> — the Equifax breach (Struts 2 CVE); maintain a full dependency tree report; use automated CVE checking in the build pipeline; treat container images as perishable goods (automated builds from upstream base images).</li>
+<li><strong>Underprotected APIs</strong> — authorize both on the way out (generating links) and on the way in (receiving requests); TLS with downgrade protection; fuzz-test parsers.</li>
+</ol>
+<p><strong>Principle of Least Privilege</strong>: no production process should run as root; per-application OS users; containers isolate applications from each other but container patch management is immature (automate builds from upstream base images).</p>
+<p><strong>Secret/Password Management</strong>: separate from other config files; read-only file permissions owned by the application user; password vaulting (KMS, Vault) — reduces the problem to securing one key; zero tolerance for credentials in version control or process memory; disable core dumps on production systems.</p>
+<p><strong>&quot;Pie Crust&quot; Defence (antipattern)</strong>: authenticating only at the perimeter while services inside trust each other freely. Nygard explicitly names this antipattern — equivalent to zero-trust&#39;s rejection of castle-and-moat perimeter security (→ <a href="../concepts/zero-trust.html">Zero Trust</a>). Internal APIs must also authenticate callers and encrypt traffic.</p>
+<p><strong>Security as an Ongoing Process</strong>: security decisions (encrypted communication, encryption at rest, authentication, authorization) are cross-cutting architectural concerns, not a one-time review. Must be baked in from the beginning; frameworks cannot protect you automatically from all Top 10 items.</p>
+<h3>Chapter 10 — Control Plane</h3>
+<p>The control plane encompasses all software whose job is managing other production software (not handling production user data directly). Every component is optional; adopt based on team size and rate of change, since operational cost scales with complexity.</p>
+<p><strong>Mechanical Advantage and System Failure</strong>: Automation has no judgment. When it goes wrong, it goes wrong very quickly — faster than humans can perceive and intervene. The AWS S3 outage (Feb 28, 2017) illustrates this: a mistyped command in a playbook removed far more servers than intended because the tool allowed too much capacity to be removed too quickly. Amazon&#39;s postmortem does not use the phrase &quot;human error&quot; — deliberately. It was a <strong>system failure</strong>: the tool, the playbook, and the processes created conditions where a minor mistake had enormous consequences. The same pattern: Reddit&#39;s autoscaler shut down the fleet based on partial ZooKeeper data. Lesson: build safeguards into automation tools themselves (rate limiting, minimum capacity floors, confirmation above thresholds).</p>
+<p><strong>Two Fundamental Questions for System-Wide Transparency</strong>:</p>
+<ol>
+<li>Are users receiving a good experience?</li>
+<li>Is the system creating the economic value we want?
+&quot;Is everything running?&quot; is not on the list. Partially broken is normal at scale.</li>
+</ol>
+<p><strong>Economic Value framing of monitoring</strong>: Monitoring is not just a technical concern — it is a financial one.</p>
+<ul>
+<li><strong>Top line (revenue)</strong>: watch each step of a business process for drop-offs; watch queue depth as first indicator of performance degradation; service exceptions in revenue-generating flows = top-line reduction.</li>
+<li><strong>Bottom line (costs)</strong>: infrastructure costs (autoscaling unchecked = unexpected bills); operational labour (incident response = unplanned work = opportunity cost); runtime footprint (language/runtime choice affects instance count).</li>
+<li>Transparency tools should answer: are we making what we should? Where are bottlenecks limiting revenue? Where are we overscaled?</li>
+</ul>
+<p><strong>What to Expose in Metrics</strong>: Traffic indicators; business transactions (counts, value, aging, conversion, completion); users (demographics, usage patterns, errors, login rates); resource pool health (enabled state, total/checked-out/high-water/created/destroyed, threads blocked waiting); database connection health (SQLExceptions, query count, average response time); data consumption (rows/entities, memory/disk footprint); integration point health (circuit breaker state, timeouts, requests, average response time, good/network-error/protocol-error/app-error counts, actual IP of remote endpoint, concurrent requests, high-water mark); cache health (items, memory, hit rate, GC flushes, configured limit, creation time).</p>
+<p><strong>Configuration Services</strong> (ZooKeeper, etcd): Useful for dynamic, high-rate-of-change environments. Not elastic — adding/removing nodes is disruptive and degrades performance during rebalancing. Critical design rules: (1) instances must start without the config service; (2) instances must continue working when config is unreachable; (3) a partitioned config node must not have the ability to shut down the world; (4) replicate across geographic regions.</p>
+<p><strong>Command and Control</strong>: Controls to expose to operators: reset circuit breakers; adjust connection pool sizes and timeouts; disable specific outbound integrations; reload configuration; start/stop accepting load; feature toggles. Warning: don&#39;t build &quot;flush cache&quot; or &quot;delete all data&quot; controls into production code — these are hazardous and represent a breakdown in roles. Scriptable CLI &gt; GUI for long-term production operations: GUIs can&#39;t be scripted, force per-instance manual processes, and slow operators during incidents.</p>
+<p><strong>Development Is Production</strong>: Dev, CI, and QA environments are the production environment for software creation. Downtime there prevents developers from doing their jobs. Treat them with production-level SLAs.</p>
+<h3>Chapter 9 — Interconnect</h3>
+<p>The interconnect layer: load balancing, service discovery, demand control, network routing, and virtual IPs that knit instances into a system.</p>
+<p><strong>DNS</strong>: Use for stable, slowly-changing infrastructure. Avoid DNS round-robin — clients cache the first address, don&#39;t account for health, and can&#39;t rebalance under load. Logical service names &gt; physical hostnames. Global Server Load Balancing (GSLB): health-aware DNS servers at each geographic location, returning the address of a healthy local pool; used for disaster recovery and closest-point-of-presence routing.</p>
+<p><strong>Load Balancing</strong>: Software load balancers (HAProxy, nginx) are reverse proxies at layer 7 — low cost, high flexibility but limited throughput. Hardware load balancers operate layers 4–7, far higher throughput at high cost. Virtual IPs (VIPs) map service names to pools. Key pool config: load-balancing algorithm, health check, stickiness policy, behaviour when no members available. Content-based routing: send different URL paths to different pools (search vs checkout vs admin).</p>
+<p><strong>Demand Control</strong>: &quot;Every failing system starts with a queue backing up somewhere.&quot; Resources form queues: listen queue (TCP backlog), thread queue (one thread per active request), I/O buffers. Under high load, requests stay longer in queues → less headroom for new arrivals → going nonlinear. <strong>Shed load at the edge, as early as possible</strong> — reject work at the load balancer with 503 when health check fails; a fast rejection is always better than a slow timeout. Keep listen queues short (heuristic: (max_wait_time / mean_processing_time + 1) × thread_count × 1.5).</p>
+<p><strong>Service Discovery</strong>: Consul (AP — remains available, may serve stale data) vs ZooKeeper/etcd (CP — rejects queries during partition). Clients should cache results. Don&#39;t roll your own — correctness in distributed state is much harder than it appears. In highly dynamic environments (containers, cloud), static DNS cannot keep up.</p>
+<p><strong>Migratory Virtual IPs</strong>: Active/passive failover clusters use a virtual IP that migrates from primary to secondary NIC when the active node fails (via ARP update). Callers must never use the physical hostname; only the VIP&#39;s DNS name. Any application calling through a failover VIP must handle IOExceptions and retry (see <a href="../patterns/circuit-breaker.html">Circuit Breaker</a> for retry safety limits).</p>
+<h3>Chapter 8 — Processes on Machines</h3>
+<p>Design concerns for the individual instance (service = collection of processes; instance = single machine&#39;s process; executable = build artifact; process = OS runtime; installation = files on disk; deployment = act of creating an installation).</p>
+<p><strong>Code and Supply Chain Security</strong>: Chain of custody from dev to production. Never build production artifacts on developer machines (polluted with personal tools). Only CI server writes to the package repository. Private dependency repository with verified digital signatures — downloading from the Internet is convenient but insecure (MITM or compromised upstream). Build-system plugins are also attack vectors (compromised Jenkins plugin example).</p>
+<p><strong>Immutable and Disposable Infrastructure</strong>: Mutable configuration management (Chef, Puppet) has &quot;layers of stucco&quot; — the state of a machine is the history of all changes applied to it, which can include side effects and partial failures not described by any recipe. Better: always start from a known base image and never patch in place; create a new image for each change. Containers embody this. Disposability &gt; persistence: the ability to throw away and recreate the environment is more valuable than the environment itself.</p>
+<p><strong>Configuration</strong>:</p>
+<ul>
+<li>Keep per-environment config outside the deployment directory so code image doesn&#39;t change per environment.</li>
+<li>Never commit production credentials to source control. Use a separate, locked-down configuration repository.</li>
+<li>In dynamic environments (EC2, containers): inject config at startup (env vars, EC2 user data) or use a configuration service (ZooKeeper/etcd — but this creates a hard dependency with high operational overhead; only worth it at scale).</li>
+<li>Name config properties by function, not type: <code>authenticationProvider</code> not <code>hostname</code>.</li>
+</ul>
+<p><strong>Transparency</strong> (Nygard&#39;s term, broader than observability): &quot;qualities that allow operators, developers, and business sponsors to gain understanding of historical trends, present conditions, instantaneous state, and future projections.&quot; Must be designed in from the beginning — adding it late is like adding quality late. A transparent system matures faster because problems are visible.</p>
+<p>Key design rule: <strong>monitoring as exoskeleton, not woven in</strong>. Alert thresholds, rollup logic, and health status decisions should stay outside the instance in the control plane — they change at a different rate than application code.</p>
+<p><strong>Logging</strong>:</p>
+<ul>
+<li>Log ERROR only for things that require operator action: circuit breaker tripping to OPEN, database connection failure. User input validation exceptions are WARNING at most.</li>
+<li>No debug logs in production — add a CI step to strip debug-level configs from builds.</li>
+<li><strong>Voodoo operations</strong>: ambiguous or misleadingly worded log messages create false temporal correlations that become operational folklore. Example: a debug message &quot;Data channel lifetime limit reached. Reset required&quot; (meaning: the application is about to rotate its own encryption key) coincidentally appeared before a database crash. For six months afterward, operators performed weekly database failovers in response to that message. Root causes: (1) message said &quot;reset required&quot; without specifying the actor; (2) debug logs were left on in production.</li>
+<li>Include request/trace IDs in every log message — essential for post-incident investigation.</li>
+<li>Log interesting state transitions even if also emitting metrics (leaves options open for forensics).</li>
+</ul>
+<p><strong>Health Checks</strong>:</p>
+<ul>
+<li>Should expose: host IP, runtime/interpreter version, app version or commit ID, whether the instance is currently accepting work, status of connection pools / caches / circuit breakers.</li>
+<li>Used by load balancers for &quot;go live&quot; transition (not just crash detection): when health check transitions from failing to passing, the instance is ready for traffic.</li>
+</ul>
+<h3>Chapter 7 — Foundations</h3>
+<p>Infrastructure layer: networking in data centers and cloud, physical hosts, VMs, and containers. The chapter establishes the physical foundation that the rest of &quot;design for production&quot; builds on.</p>
+<p><strong>NICs and Names</strong>: Hostname ≠ DNS name. Production servers are multihomed (multiple NICs): production traffic, backup, admin, possibly more. Applications that listen on &quot;all interfaces&quot; by default may accept admin connections from the production network or vice versa. Servers must be configured to bind to specific interfaces, not all.</p>
+<p><strong>Physical Hosts</strong>: Commodity expendable hardware dominates. Design for horizontal scale. Specialised exceptions: high-RAM for graph processing, GPU for embarrassingly parallel workloads.</p>
+<p><strong>Virtual Machines</strong>: Performance is unpredictable due to oversubscription (a 16-core host may be allocated to 32 vCPUs across VMs). VM clocks are not monotonic — a VM can be suspended and resumed with clock drift, or migrated to a host with different clock. Never trust OS clock for external time; use NTP.</p>
+<p><strong>Containers in Data Center</strong>: Short-lived identities; no meaningful local storage; networking is the hard problem (VLANs, VXLANs, overlay networks, software switches). Orchestration (Kubernetes, Mesos) needed for scheduling and networking. Container image must not contain credentials or hostnames — inject via environment or configuration service at startup. Target startup time: 1 second.</p>
+<p><strong>12-Factor App</strong> (Heroku): A checklist for cloud-native deployable applications: (1) single codebase in version control; (2) explicit dependencies; (3) config in environment; (4) backing services as attached resources; (5) separate build/release/run stages; (6) stateless processes; (7) port binding; (8) scale via process model; (9) disposability (fast startup, graceful shutdown); (10) dev/prod parity; (11) logs as event streams; (12) admin tasks as one-off processes.</p>
+<p><strong>VMs in Cloud</strong>: Individual cloud VMs have worse availability than physical machines (more moving parts, shared host, can be killed by control plane). Ephemeral identities — IP changes on every boot. VMs must &quot;volunteer&quot; for work rather than being assigned it: competing consumers on queues for async work; autoscaling + load balancers for HTTP.</p>
+<h3>Chapter 6 — Case Study: Phenomenal Cosmic Powers, Itty-Bitty Living Space</h3>
+<p>A retail online store&#39;s Black Friday incident. The chapter is a practical demonstration of several antipatterns from ch. 4 occurring simultaneously in production.</p>
+<p><strong>The incident</strong>: on Black Friday at peak load, all 3,000 request-handling threads on 100 front-end servers blocked waiting for the order management (back-end) system. CPU usage across all tiers was low — the classic thread starvation signature, not a CPU-bound overload. Thread dumps revealed threads blocked on a resource pool checkout with no timeout (<code>checkoutBlockTime</code> not configured).</p>
+<p><strong>The cascade</strong> (Unbalanced Capacities antipattern, ch. 4):</p>
+<ol>
+<li>3,000 front-end threads → overwhelmed order management (450 threads)</li>
+<li>450 order management threads → overwhelmed scheduling server (~25-concurrent capacity)</li>
+<li>Scheduling server: 3 of 4 servers were offline for holiday maintenance. The remaining server was at 100% CPU.</li>
+<li>Root cause: marketing had published a newspaper insert for &quot;free home delivery&quot; on Black Friday — a Self-Denial Attack the engineering team did not know about.</li>
+</ol>
+<p><strong>Alert fatigue</strong>: the scheduling server&#39;s on-call team had been desensitized by chronic false-positive CPU alerts. The real signal — the server pinned at 100% CPU — was ignored because the on-call team had been trained by false positives to ignore high CPU pages.</p>
+<p><strong>Response time as a lagging indicator</strong>: response time can only be measured on completed requests. Under thread starvation, requests time out before completing — so reported average response time shows only the fast requests. SiteScope synthetic transactions going red was the real signal.</p>
+<p><strong>The accidental Bulkhead that saved the day</strong>: the front-end had a <em>separate</em> connection pool for scheduling requests (probably a Conway&#39;s Law artifact — a separate team owned scheduling). This became the throttle. By setting that pool&#39;s max to zero via live script and recycling the service, scheduling requests were disabled without affecting other front-end traffic. The site recovered within 90 seconds.</p>
+<p><strong>Recovery-Oriented Computing (ROC)</strong>: the ability to restart a single connection pool component (stopService/startService via an admin API) rather than rebooting entire application servers was critical. Full server restart would have taken &gt;6 hours under that load. Dynamic reconfiguration took 5 minutes. ROC principles: (1) failures are inevitable; (2) complete a priori prediction of all failure modes is impossible; (3) human action is a major source of failures. Anticipate them, improve recovery, not just prevention.</p>
+<p><strong>Observability as a survival factor</strong>: custom Perl scripts screen-scraping the application server&#39;s admin HTML GUI for metrics (latency, thread counts, session counts, heap) across all servers simultaneously. The team survived because they had real-time visibility into thread state. The chapter makes the case that operational tooling built during development (not post-incident) is a prerequisite for surviving novel production failures.</p>
+<h3>Chapter 5 — Stability Patterns</h3>
+<p>The twelve patterns that stop or slow crack propagation. These are &quot;crackstoppers&quot; — they can be applied independently or in combination.</p>
+<p><strong>Timeouts</strong>: Every wait must have a limit. Applies to: integration point calls, resource pool checkout (<code>getConnection()</code>), mutex/lock acquisition. Timeouts isolate faults by bounding how long one integration point can consume a thread. A timeout alone doesn&#39;t do anything — the caller must handle it. Combine with Circuit Breaker: on timeout, record a fault; when fault density trips the breaker, stop calling. Timeout values should be derived from the dependency&#39;s latency distribution (P99.9 sets the false-timeout rate).</p>
+<p><strong>Circuit Breaker</strong>: Nygard&#39;s implementation guidance goes beyond the basic state machine (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>). Track fault <em>density</em> (faults per time window) using a <strong>leaky bucket</strong> rather than an absolute counter — this prevents a burst of old faults from tripping the breaker indefinitely. <strong>State changes must be logged and visible to Ops</strong> — a breaker tripping silently is a hidden operational event. Scope is <strong>per process</strong>: circuit breaker state is not shared across instances (each instance tracks its own fault density). Fallback strategies (what to do in OPEN state) require business input — return stale data? Return an error? Show a degraded UI? Engineering alone cannot answer this.</p>
+<p><strong>Bulkheads</strong>: Physical isolation of resources (→ <a href="../patterns/bulkhead.html">Bulkhead</a>). Nygard&#39;s additions: partition service capacity to reserve a thread pool for critical callers (monitoring, admin, health checks) so that a flood of low-priority requests cannot starve operations that must succeed. Cloud availability zones are a built-in bulkhead at the infrastructure level. CPU binding (pinning processes to CPU cores) is a lower-level isolation technique. The key question is: how much isolation is worth the resource overhead?</p>
+<p><strong>Steady State</strong>: Avoid human presence on production systems. Every mechanism that accumulates state (data, logs, in-memory caches, metrics) must have a paired mechanism that recycles it. Specific practices: purge old data with application logic (not manual DBA intervention); rotate logs and ship them off the production server (don&#39;t let them fill the disk); bound all in-memory caches with LRU or time-based expiration. &quot;Fiddling with production&quot; — developers SSHing in to clear caches or delete rows — is an availability risk. Automate all steady-state maintenance.</p>
+<p><strong>Fail Fast</strong>: Check resource availability <em>before</em> beginning work on a request — not partway through. If a required Circuit Breaker is OPEN, a required DB connection pool is exhausted, or a required external service is known unavailable, return an error immediately without consuming resources. Nygard calls this &quot;mise en place&quot; — everything in its place before cooking starts. Distinction: Fail Fast applies to <strong>incoming requests</strong> (fail before doing work); Timeouts apply to <strong>outgoing requests</strong> (bound how long you wait). Fail Fast also means distinguishing system failures (resource unavailable — return a 503, not a 500) from application failures (bad input — return a 400).</p>
+<p><strong>Let It Crash</strong>: The cleanest possible application state is immediately after startup. Rather than attempting to catch and recover from every possible error, crash the process and let a supervisor restart it from clean state. Borrowed from Erlang&#39;s &quot;let it crash&quot; philosophy. <strong>Critical constraints</strong>: (1) granularity must be small — a whole JavaEE application server takes minutes to restart; an actor, microservice, or Go container takes milliseconds; (2) replacement must be fast — if not, use fault-tolerant recovery instead; (3) supervision trees must be in place before startup; (4) reintegration must be managed via Circuit Breaker or health checks to avoid re-adding a crashed process before it&#39;s ready. Don&#39;t use Let It Crash if restart takes minutes (JavaEE) — use fault tolerance instead.</p>
+<p><strong>Handshaking</strong>: Let a server signal readiness and reject new connections when overloaded, rather than accepting requests it cannot serve. HTTP: return 503 to the load balancer when health check is failing, so the load balancer stops routing. This is an underused pattern — most systems accept connections until they are completely overwhelmed. Circuit Breaker is a stopgap for when handshaking is not available on the downstream service.</p>
+<p><strong>Test Harnesses</strong>: A separate server (not a mock) that simulates all the out-of-spec failure modes that real integration tests cannot provoke: slow responses, garbled bytes, connection refused mid-stream, RST packets. Configure behaviour by port or request header. This is the foundation for chaos engineering applied to integration points. Mocks verify &quot;does my code handle what I expect?&quot; — test harnesses verify &quot;does my code handle what I can&#39;t expect?&quot;</p>
+<p><strong>Decoupling Middleware</strong>: The architectural choice of synchronous call-and-response (REST, RPC, gRPC) vs. asynchronous message-oriented middleware (Kafka, RabbitMQ, SQS) has structural consequences. Synchronous calls propagate back pressure and cascading failures — a slow downstream slows the caller. Asynchronous middleware decouples in <strong>space</strong> (caller doesn&#39;t need to know the address of the consumer) and <strong>time</strong> (caller continues immediately; consumer processes when ready). This is an architectural decision with high switching cost — it cannot easily be retrofitted. Choose based on whether the caller legitimately needs a synchronous response to proceed.</p>
+<p><strong>Shed Load</strong>: When overloaded, refuse new requests rather than accepting them and failing slowly. Return 503 immediately. Signal to the load balancer via health check. The cost of shedding a request is far lower than the cost of degraded service for all concurrent requests. Applied at the <strong>service edge</strong> — do not let overload propagate inward.</p>
+<p><strong>Create Back Pressure</strong>: Within a system (across components that share a deployment boundary), use bounded queues to create natural flow control. When a queue is full, the producer blocks — this is the signal to slow down. Unbounded queues mask the backlog: they accept work indefinitely, but response time grows without bound (Little&#39;s Law: L = λW). Back pressure is distinct from Shed Load: back pressure applies <strong>within</strong> a system boundary; Shed Load applies <strong>at</strong> the boundary.</p>
+<p><strong>Governor</strong>: Rate-limit automation actions, not just external callers. Automation (autoscalers, config management, deployment systems) can act on incorrect observations and amplify failures faster than humans can respond (→ Reddit ZooKeeper incident, ch. 4). A Governor is stateful and time-aware: it limits the <em>rate</em> of change, not just the magnitude. Critically, it is <strong>asymmetric</strong> — slow to make large changes, fast to detect alerts. The response curve is U-shaped: act quickly on small, safe changes; slow down and require human confirmation for large changes. The goal is to create an opportunity for human intervention before catastrophe.</p>
+<h3>Chapter 4 — Stability Antipatterns</h3>
+<p>The systematic failure modes that appear in production systems. Each antipattern creates, accelerates, or multiplies cracks in the system.</p>
+<p><strong>Integration Points</strong>: every integration point (database, API, message broker, third-party service) will eventually fail in some way. Failure modes include refused connections, slow responses, hangs, garbled responses, and protocol violations. The failure doesn&#39;t arrive cleanly through your defined error handling — it typically manifests as a timeout, a dropped connection, or a malformed response. Defend with Circuit Breaker, Timeouts, Decoupling Middleware, and test harnesses that simulate all failure modes.</p>
+<p><strong>Chain Reactions</strong>: a load-related defect (memory leak, race condition) exists in every node of a horizontally scaled layer. As nodes fail one by one, the survivors absorb the dead node&#39;s share of load. Each failure increases the surviving nodes&#39; probability of failure. The accelerating collapse produces a characteristic pattern: gaps between failures shrink exponentially. The only permanent fix is the underlying defect; Bulkheads can partition a single chain reaction into multiple separate ones that proceed at different rates.</p>
+<p><strong>Cascading Failures</strong>: failure in one layer triggers failure in a calling layer by propagating through the &quot;gap&quot; between layers. Connection pools are the classic gap — a pool exhausted by blocked threads makes all callers block. Integration points without timeouts are a &quot;surefire way to create cascading failures.&quot; Circuit Breaker stops calls to the troubled point; Timeouts ensure callers can return. Retries that don&#39;t distinguish transient from permanent errors can amplify cascades.</p>
+<p><strong>Blocked Threads</strong>: the dominant real-world failure mode. Not a crash — the interpreter is running but every thread is blocked on an impossible outcome. Happens near connection pools, caches, synchronised objects, and integration points. Impossible to exhaustively test for. Defend with: Timeouts on every blocking call; proven concurrency primitives (don&#39;t roll your own connection pool or queue); Liskov substitution violations from hidden <code>synchronised</code> keywords; immutable domain objects to avoid synchronization; external monitors with synthetic transactions (not just process/port monitoring).</p>
+<p><strong>Self-Denial Attacks</strong>: the system conspires against itself — usually via marketing campaigns (email blasts, promotional deep links that bypass CDN). &quot;Limited distribution&quot; deals spread in seconds to millions. One minute before a well-publicized Xbox preorder, a major retailer&#39;s site went dark. Mitigation: mass emails in waves, static landing-page &quot;buffer&quot; for the first click, no deep links bypassing CDN/Akamai, no embedded session IDs in URLs, pre-autoscale before known events.</p>
+<p><strong>Scaling Effects</strong>: point-to-point communication within a cluster scales O(n^2) — fine for two servers, painful for 100. Shared resources become bottlenecks and then SPOFs as the number of callers grows. QA environments (1-2 servers each side) don&#39;t reveal O(n^2) effects. Must be designed out (replace P2P with UDP multicast, pub/sub, message queues) — cannot be tested out.</p>
+<p><strong>Unbalanced Capacities</strong>: front-end capacity can far exceed back-end capacity (3,000 threads calling into 75 threads). A front-end traffic surge (marketing event, celebrity tweet) can overwhelm a back-end that was sized for normal traffic. Defend with: Circuit Breaker on the caller side; Handshaking and Backpressure on the provider side; Bulkheads to reserve capacity for high-priority traffic; stress-test both sides at 10× expected peak.</p>
+<p><strong>Dogpile</strong>: a synchronised burst of demand when multiple servers restart simultaneously, cron jobs fire on the hour, or caches all expire at once. Requires far more peak capacity than gradual startup would. Defend with: random clock slew (distribute cron jobs, cache TTL jitter); increasing backoff after restarts. Related: Force Multiplier — automation (autoscalers, service discovery) that acts on incorrect beliefs can amplify failures at scale (Reddit ZooKeeper incident: autoscaler read partial ZooKeeper data, decided too many servers were running, shut them all down). Safeguards for automation: rate-limit changes, add hysteresis, alert when &gt;80% of instances appear down (it&#39;s probably the observer), confirm large deltas.</p>
+<p><strong>Slow Responses</strong>: generating a slow response is worse than refusing a connection or returning an error — it ties up resources at both ends. In middle-layer services, slow responses cause upstream callers to also slow down (gradual cascading failure upward through layers). For websites, slow responses cause users to hit reload, adding more load. Memory leaks manifest via slow responses (GC overhead). Defend with self-monitoring: when a moving average of response time exceeds SLA, refuse new connections (Fail Fast) rather than continuing to deliver slow service.</p>
+<p><strong>Unbounded Result Sets</strong>: query returns far more data than expected — memory exhaustion, long-running loops. Typically invisible in development/QA (small datasets); revealed after months of production accumulation. &quot;Black Monday&quot; example: a JMS message table expected to hold &lt;1,000 rows accumulated 10 million rows; each app server queried all rows, locked them, exhausted memory, crashed, rolled back the lock, allowing the next server to repeat. Always: paginate; use LIMIT/TOP clauses; never trust data producers to limit output; test with production-sized data.</p>
+<p><strong>Key Terminology</strong> (ch. 3): <strong>Fault</strong> — incorrect internal state (latent bug triggered, unchecked boundary condition). <strong>Error</strong> — visibly incorrect behaviour (trading system buys $10B of Pokémon futures). <strong>Failure</strong> — system does not respond (regardless of whether the process is running). Fault → Error → Failure is how cracks propagate. Tight coupling accelerates crack propagation (events are not independent — failure in one layer increases probability of failure in coupled layers).</p>
+<h3>Chapter 3 — Stabilize Your System</h3>
+<p>Philosophical bridge between the case study and the antipatterns catalogue.</p>
+<p><strong>Stability definitions</strong>: a <em>transaction</em> is an abstract unit of work (not a DB transaction); a <em>system</em> is the complete interdependent set of hardware and software required to process those transactions. A <em>robust system</em> keeps processing transactions through <em>impulses</em> (rapid shocks — flash mobs, celebrity tweets) and <em>stresses</em> (sustained forces — slow credit card processor). Stress causes <em>strain</em> in the system that propagates to unrelated components. A system with <em>longevity</em> keeps running between deployments without degrading.</p>
+<p><strong>Longevity bugs</strong> (memory leaks, data growth) are invisible in development (app servers rarely run more than minutes) and in QA (short cycles, not production load). The only reliable way to find them before production: longevity tests — a dedicated machine running continuous low-level load for weeks. Leave slack hours in the script to expose connection-pool and firewall timeouts that only manifest after idle periods.</p>
+<p><strong>Failure modes are designed, not discovered</strong>: systems will crack. Designed failure modes (crumple zones) protect the indispensable parts by absorbing failure elsewhere. Without designed failure modes, cracks propagate unpredictably. The first step: ask of every external call, I/O, resource use, and expected outcome — &quot;what are all the ways this can go wrong?&quot;</p>
+<p><strong>Fault-tolerant vs &quot;let it crash&quot;</strong>: two valid philosophies that agree on the key constraint — keep faults from becoming failures. Either catch and recover, or crash fast and restart from known-good state. The patterns in Chapter 5 implement &quot;crackstoppers&quot; from both camps.</p>
+<h3>Chapter 2 — Case Study: The Exception That Grounded an Airline</h3>
+<p>An airline&#39;s check-in kiosks and IVR systems fail during peak morning travel, stranding thousands of passengers and generating national news coverage.</p>
+<p><strong>Root cause</strong>: A JDBC connection pool was exhausted after a database failover. After the failover, every JDBC connection in the pool was connected to a stale IP address (the old database host). These connections would still create <code>Statement</code> objects (the driver checks only its own internal state), but executing the statement — or closing it — would throw a <code>SQLException</code> when network I/O failed. The code&#39;s <code>finally</code> block caught the exception from <code>stmt.close()</code> and short-circuited before <code>conn.close()</code>, so the connection was never returned to the pool. After 40 such calls, all 40 pool slots were exhausted; subsequent calls to <code>getConnection()</code> blocked forever.</p>
+<p><strong>Cascade</strong>: CF (Central Facilities) application servers became fully blocked → CF could not serve any EJB requests → kiosk application servers&#39; 40 threads all blocked waiting for CF response → IVR servers similarly blocked → airline unable to check in passengers.</p>
+<p><strong>Key lessons</strong>:</p>
+<ol>
+<li><strong>Connections should be validated before use</strong> — connection pools should test connections at checkout (or on a background heartbeat) to detect stale connections after failover.</li>
+<li><strong>Resource pools must have timeouts</strong> — callers blocking on <code>getConnection()</code> with no timeout will block forever under pool exhaustion.</li>
+<li><strong>Exception handling in cleanup code is easily missed</strong> — <code>finally</code> blocks that can throw must handle those exceptions explicitly; if <code>stmt.close()</code> throws, <code>conn.close()</code> must still run.</li>
+<li><strong>Monitoring a status URL is not sufficient</strong> — the CF monitoring was pinging an HTTP endpoint that was served by a different thread pool than the EJB pool. The system appeared healthy while it was actually fully hung. Deep health checks that exercise real code paths are required.</li>
+<li><strong>One bug can cascade across a whole system</strong> — the bug was tiny (one missing try/catch in a finally block) but its impact was enterprise-wide because the systems were tightly coupled without any failure isolation.</li>
+</ol>
+<h3>Chapter 1 — Living in Production</h3>
+<p>Foundational chapter establishing the book&#39;s philosophy and scope.</p>
+<p><strong>&quot;Design for production&quot; vs &quot;design for QA&quot;</strong>: Most software is designed to pass tests. Tests describe what systems <em>should</em> do. Production tests what systems should <em>not</em> do — crash, hang, lose data, violate privacy, generate runaway costs. The gap between these two perspectives is the gap that causes most production incidents.</p>
+<p><strong>Design decisions are financial decisions</strong>: Architectural choices determine operational costs over the system lifespan, which is far longer than the development period. The ROI calculation is explicit: investing $50,000 in a zero-downtime deployment pipeline to avoid 5-minute release windows over 5 years of monthly releases (300 minutes × $3,000/minute = $900,000 in downtime cost) returns 18×. Most engineers optimise development cost because that&#39;s where their incentives point; the organisation&#39;s interests demand optimising operational cost.</p>
+<p><strong>The pragmatic architect</strong>: Nygard distinguishes two archetypes. The ivory-tower architect aims for end-state perfection — beautiful models, absolute standards, irreversible technology mandates. The pragmatic architect thinks about dynamics: &quot;how do we deploy without a reboot?&quot;, &quot;what metrics do we need?&quot;, &quot;which part of the system needs the most improvement right now?&quot; The pragmatic architect&#39;s system is good enough for today&#39;s stresses and clearly identifies which components need replacing as those stresses change.</p>
+<p><strong>Early decisions carry disproportionate weight</strong>: Team structure is the first draft of architecture (Conway&#39;s Law). The earliest decisions — on system boundaries, subsystem decomposition — are the hardest to reverse later; they crystallise into team structure, funding, and programme management. Yet these decisions are made when the team is most ignorant of the eventual structure. The implication: build incrementally, get into production early, let production feedback inform architecture.</p>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../operations/availability.html">Availability</a> — production-readiness is fundamentally about keeping systems available</li>
+<li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — the airline case study illustrates resource exhaustion and cascade failure</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — the primary stability pattern; ch. 5 adds leaky bucket, ops visibility, single-process scope</li>
+<li><a href="../patterns/bulkhead.html">Bulkhead</a> — isolating failures; ch. 5 adds capacity reservation for critical callers, cloud AZs, CPU binding</li>
+<li><a href="../patterns/timeout.html">Timeout</a> — ch. 5: every wait must have a limit; sized by P99.9; combined with circuit breaker</li>
+<li><a href="../patterns/retry.html">Retry</a> — ch. 5 / ch. 9: retry amplification in chains; retry with backoff; exponential backoff with jitter</li>
+<li><a href="../operations/observability.html">Observability</a> — deep health checks, thread dumps, monitoring (vs Nygard&#39;s monitoring-status-page antipattern)</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — zero-downtime deployment addressed in ch. 1 ROI argument</li>
+<li><a href="../concepts/messaging.html">Messaging</a> — Decoupling Middleware pattern: async vs sync choice is architectural, high switching cost</li>
+<li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — Governor pattern: rate-limit automation actions, not just callers</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — ch. 17; principlesofchaos.org definition; Netflix Simian Army; FIT; blast radius control; ChAP automation platform</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

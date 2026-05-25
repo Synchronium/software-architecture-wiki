@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Software Architecture: The Hard Parts* — Ford, Richards, Sadalage, Dehghani">
+  <meta property="og:title" content="Software Architecture: The Hard Parts — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Software Architecture: The Hard Parts* — Ford, Richards, Sadalage, Dehghani">
+  <title>Software Architecture: The Hard Parts — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html" aria-current="page">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Software Architecture: The Hard Parts</nav></div>
+      <h1>Software Architecture: The Hard Parts</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/decomposition.html">decomposition</a><a class="tag-chip" href="../tags/trade-offs.html">trade-offs</a><a class="tag-chip" href="../tags/data.html">data</a><a class="tag-chip" href="../tags/sagas.html">sagas</a><a class="tag-chip" href="../tags/coupling.html">coupling</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/neal-ford.html">Neal Ford</a>, <a href="../authors/mark-richards.html">Mark Richards</a>, <a href="../authors/pramod-sadalage.html">Pramod Sadalage</a>, <a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a>
+<strong>Published:</strong> 2022
+<strong>Slug:</strong> <code>software-architecture-the-hard-parts</code></p>
+<h2>Overview</h2>
+<p>Arose from problems Ford and Richards set aside as &quot;too difficult&quot; while writing <em>Fundamentals of Software Architecture</em>. SATH focuses on the decisions in distributed architectures that have no correct answers — only trade-off sets. Data and architecture are treated as co-equal concerns throughout, reflecting the reality that in microservices the database is inside the service boundary.</p>
+<p>The book uses ADRs as its documentation format for every architecture decision and fitness functions for governance. A fictional case study (the Sysops Squad) runs throughout — it provides context for examples but is not the substance of the book.</p>
+<p><strong>Structure</strong>: Part I (Ch 1–7) covers static coupling — pulling things apart: decomposition, modularity, data separation, service granularity. Part II (Ch 8–15) covers dynamic coupling — putting things back together: reuse patterns, data ownership, distributed data access, workflow coordination, saga types, contracts, analytical data, trade-off methodology. (Fully ingested.)</p>
+<h2>Key Claims</h2>
+<ul>
+<li>There are no best practices in architecture — only trade-offs; the architect&#39;s goal is the &quot;least worst combination&quot; (→ ch. 1)</li>
+<li>The fundamental question of distributed architecture is: how do you determine the right size and communication style for services? (→ ch. 2)</li>
+<li>Data has moved from a technical concern to an architectural concern in microservices — most &quot;hard parts&quot; derive from the tension between data and architecture (→ ch. 1)</li>
+<li>An architecture quantum requires: independent deployability + high functional cohesion + high static coupling (wiring dependencies) + synchronous dynamic coupling (→ ch. 2)</li>
+<li>A shared database makes a system a single quantum regardless of how distributed its services are (→ ch. 2)</li>
+<li>Dynamic coupling has three interlocking dimensions: communication (sync/async) × consistency (atomic/eventual) × coordination (orchestrated/choreographed) — producing 8 named saga types (→ ch. 2)</li>
+<li>SATH uses &quot;saga&quot; as a broad term for any distributed workflow pattern across all 8 types, not just eventually-consistent compensating transactions (→ ch. 2)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Preface</h3>
+<p>FOSA left a pile of &quot;too difficult&quot; problems unresolved. SATH works through those, with data specialists Sadalage and Dehghani added to fully incorporate the data dimension. Result: a guide to trade-off analysis in distributed architectures, focused on the process of decision making rather than specific technologies.</p>
+<h3>Chapter 1 — What Happens When There Are No &quot;Best Practices&quot;?</h3>
+<p>Sets the epistemological foundation: architecture problems are snowflakes — no one has encountered exactly your combination of constraints before. The appropriate response is disciplined trade-off analysis, not a search for silver bullets.</p>
+<p>Key concepts introduced:</p>
+<ul>
+<li><strong>Operational vs analytical data</strong>: operational = OLTP, transactional, runs the business day-to-day; analytical = BI, data science, strategic — not critical for daily operation but for long-term direction.</li>
+<li><strong>ADRs</strong> as the documentation format used throughout the book (context / decision / consequences).</li>
+<li><strong>Fitness functions</strong> as the governance mechanism — extends <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> treatment with specific examples: JDepend for detecting component cycles (Java), ArchUnit for governing layer dependencies (Java), NetArchTest for .NET. The Equifax breach (Struts vulnerability, March–July 2017) is presented as a real-world case where a fitness function inserted into every project&#39;s deployment pipeline would have caught the vulnerable version automatically.</li>
+<li><strong>Architecture vs design</strong>: focus is on <em>why</em> one choice is better than another, not <em>how</em> to implement it.</li>
+<li>Key definitions: service, coupling, component, synchronous/asynchronous communication, orchestration, choreography, atomicity, contract.</li>
+</ul>
+<blockquote>
+<p>Note: the Sysops Squad case study introduction is fictional scaffolding — ignored per ingestion instructions.</p>
+</blockquote>
+<p>See <a href="../concepts/fitness-functions.html">Fitness Functions</a>, <a href="../concepts/adrs.html">Adrs</a>.</p>
+<h3>Chapter 2 — Discerning Coupling in Software Architecture</h3>
+<p>The most conceptually dense early chapter. Establishes the full framework for trade-off analysis by unpacking the dimensions of coupling in distributed architectures.</p>
+<p><strong>Architecture quantum — expanded definition:</strong></p>
+<ul>
+<li>Independently deployable + high functional cohesion + <strong>high static coupling</strong> + <strong>synchronous dynamic coupling</strong></li>
+<li><em>Static coupling</em> = how things are wired together — OS, frameworks, libraries, databases, message brokers. Measurable at compile time. A shared database = always a single quantum, regardless of how separate the services appear to be.</li>
+<li><em>Dynamic coupling</em> = how quanta call one another at runtime — sync vs async</li>
+</ul>
+<p>Quantum count by architecture style:</p>
+<ul>
+<li>All monoliths → 1 quantum (single deployment)</li>
+<li>Service-based architecture → 1 quantum (separate services but shared DB)</li>
+<li>Mediator-style EDA → 1 quantum (mediator is a holistic coupling point like the shared DB)</li>
+<li>Broker-style EDA with shared DB → 1 quantum</li>
+<li>Broker-style EDA with multiple separate data stores → multiple quanta</li>
+<li>Microservices with per-service DB → multiple quanta (one per service)</li>
+<li>Tightly coupled UI → collapses multiple service quanta back to 1</li>
+<li><strong>Micro-frontends</strong> → each service + its UI component forms its own quantum</li>
+</ul>
+<p><strong>Dynamic quantum coupling — 3 dimensions:</strong></p>
+<ul>
+<li>Communication: synchronous vs asynchronous</li>
+<li>Consistency: atomic vs eventual</li>
+<li>Coordination: orchestrated vs choreographed</li>
+</ul>
+<p><strong>8 saga types</strong> (2³ combinations):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Communication</th>
+<th>Consistency</th>
+<th>Coordination</th>
+<th>Coupling</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Epic Saga</td>
+<td>synchronous</td>
+<td>atomic</td>
+<td>orchestrated</td>
+<td>very high</td>
+</tr>
+<tr>
+<td>Phone Tag Saga</td>
+<td>synchronous</td>
+<td>atomic</td>
+<td>choreographed</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Fairy Tale Saga</td>
+<td>synchronous</td>
+<td>eventual</td>
+<td>orchestrated</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Time Travel Saga</td>
+<td>synchronous</td>
+<td>eventual</td>
+<td>choreographed</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Fantasy Fiction Saga</td>
+<td>asynchronous</td>
+<td>atomic</td>
+<td>orchestrated</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Horror Story</td>
+<td>asynchronous</td>
+<td>atomic</td>
+<td>choreographed</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Parallel Saga</td>
+<td>asynchronous</td>
+<td>eventual</td>
+<td>orchestrated</td>
+<td>low</td>
+</tr>
+<tr>
+<td>Anthology Saga</td>
+<td>asynchronous</td>
+<td>eventual</td>
+<td>choreographed</td>
+<td>very low</td>
+</tr>
+</tbody></table></div>
+<p>These names are covered in detail in Chapter 12. The matrix provides a vocabulary for the rest of the book.</p>
+<p>See <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>, <a href="../patterns/saga.html">Saga</a>.</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;Don&#39;t try to find the best design in software architecture; instead, strive for the least worst combination of trade-offs.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Moving the database within the service boundary moves data concerns into architecture concerns.&quot; (ch. 2)</p>
+</blockquote>
+<blockquote>
+<p>&quot;If you follow that advice, everything will be so decoupled that nothing can communicate with anything else — it&#39;s hard to build software that way!&quot; (ch. 2 — on the limits of the &#39;maximise decoupling&#39; heuristic)</p>
+</blockquote>
+<h3>Chapter 3 — Architectural Modularity</h3>
+<p>Why modularity matters, framed as a business case: five key architectural characteristics (availability/fault tolerance, scalability, deployability, testability, maintainability) map to business drivers (speed-to-market, competitive advantage). The chapter argues that architects must justify decomposition via these drivers, not just technical intuition.</p>
+<p><strong>Scalability vs Elasticity</strong> (important distinction not clearly drawn in FOSA):</p>
+<ul>
+<li><em>Scalability</em> = ability to remain responsive as user load gradually increases over time (long-horizon, function of modularity)</li>
+<li><em>Elasticity</em> = ability to remain responsive during sudden spikes (immediate response, function of service granularity and MTTS — mean time to startup)</li>
+</ul>
+<p><strong>Architecture stories</strong>: a concept introduced to distinguish structural refactoring from user stories and technical debt stories. An architecture story captures code refactoring that impacts the structural aspect of the application to satisfy a business driver (e.g., &quot;As an architect, I need to decouple the payment service to support better extensibility for adding additional payment types&quot;).</p>
+<p>See <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>.</p>
+<h3>Chapter 4 — Architectural Decomposition</h3>
+<p>Covers <em>how</em> to break apart a monolith, following the <em>why</em> of Ch 3. Introduces the decision tree for selecting a decomposition approach.</p>
+<p><strong>Big Ball of Mud Anti-Pattern</strong> (Brian Foote, 1999): codebases with no internal structure that resist decomposition.</p>
+<p><strong>Elephant Migration Anti-Pattern</strong>: extracting services opportunistically one bite at a time, resulting in an unstructured big ball of distributed mud.</p>
+<p><strong>Two decomposition approaches:</strong></p>
+<ul>
+<li><em>Component-based decomposition</em>: structured, incremental refactoring of well-defined components into domain services; suited when the codebase has observable structure</li>
+<li><em>Tactical Forking</em> (Fausto De La Torre): clone the entire monolith, give each team a copy, have teams delete what they don&#39;t need rather than extract; suited for codebases that are big balls of mud — easier to delete than to untangle coupling</li>
+</ul>
+<p>Decomposition feasibility is assessed using Robert Martin&#39;s coupling metrics applied at the package/component level: abstractness (A), instability (I), and distance from the main sequence (D = |A + I − 1|). Components in the Zone of Pain (over-concrete, rigid) or Zone of Uselessness (over-abstract, irrelevant) signal structural problems that make decomposition harder.</p>
+<p><strong>Stepping-stone principle</strong>: when decomposing a monolith, consider moving to service-based architecture first (shared DB, coarse-grained domain services) before committing to microservices granularity. Avoids premature distributed transaction complexity.</p>
+<p>See <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>, <a href="../concepts/modularity.html">Modularity</a>.</p>
+<h3>Chapter 5 — Component-Based Decomposition Patterns</h3>
+<p>The six patterns applied sequentially during monolith decomposition:</p>
+<ol>
+<li><strong>Identify and Size Components</strong>: catalogue all components by namespace; measure statements per component; components should fall within 1–2 standard deviations of the mean; outliers (too large or too small) are candidates for resizing.</li>
+<li><strong>Gather Common Domain Components</strong>: identify domain logic (not infrastructure) that is duplicated across components; consolidate; check resulting afferent coupling before proceeding.</li>
+<li><strong>Flatten Components</strong>: source code must reside only in leaf-node namespaces (components); classes in root/non-leaf namespaces are &quot;orphaned classes&quot; that must be moved up or down; root namespaces are subdomains, not components.</li>
+<li><strong>Determine Component Dependencies</strong>: visualise afferent and efferent coupling between components; &quot;golf ball&quot; (few dependencies) → feasible; &quot;basketball&quot; → difficult; &quot;airliner&quot; → not feasible without rewrite.</li>
+<li><strong>Create Component Domains</strong>: group components into logical domains (manifested through namespace prefixes); collaborate with product owner to validate domain groupings.</li>
+<li><strong>Create Domain Services</strong>: extract domain groups into separately deployed services → service-based architecture as the migration target.</li>
+</ol>
+<p>Each pattern includes automated fitness functions for CI/CD governance (see <a href="../concepts/fitness-functions.html">Fitness Functions</a>).</p>
+<p><strong>Architecture stories</strong> are used to document and assign structural refactoring tasks to developers throughout this process.</p>
+<p>See <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>, <a href="../concepts/fitness-functions.html">Fitness Functions</a>.</p>
+<h3>Chapter 6 — Pulling Apart Operational Data</h3>
+<p>Data decomposition is harder than service decomposition because data is the most important asset and is highly coupled through foreign keys, triggers, and views.</p>
+<p><strong>Data disintegrators</strong> (when to break apart):</p>
+<ol>
+<li>Change control — breaking schema changes cascade across all services sharing the DB</li>
+<li>Connection management — distributed services multiply connection pool usage dramatically</li>
+<li>Scalability — shared DB bottleneck; connections saturate when services scale</li>
+<li>Fault tolerance — shared DB is a SPOF for all services</li>
+<li>Architectural quanta — shared DB forces all services into a single quantum</li>
+<li>Database type optimisation — different data warrants different database types</li>
+</ol>
+<p><strong>Data integrators</strong> (when to keep together):</p>
+<ol>
+<li>Data relationships — foreign keys, triggers, views are hard to remove</li>
+<li>Database transactions — ACID is lost when data crosses service boundaries</li>
+</ol>
+<p><strong>Five-step data decomposition process:</strong></p>
+<ol>
+<li>Analyse database and create data domains (logical groupings of related tables)</li>
+<li>Assign tables to schemas (one schema per data domain)</li>
+<li>Separate database connections per domain (no cross-schema access from services)</li>
+<li>Move schemas to separate physical database servers (backup-restore or replication)</li>
+<li>Switch over and decommission original</li>
+</ol>
+<p><strong>Data sovereignty per service</strong>: the end-state where each service owns its own data — called &quot;the nirvana state&quot; for distributed architectures.</p>
+<p><strong>Database type selection</strong>: the chapter covers seven database types with star ratings across seven characteristics: Relational, Key-Value, Document, Column Family (wide column), Graph, NewSQL, Cloud Native, Time-Series. The selection principle: match the database type to the access pattern and data structure of the bounded context — polyglot persistence is the natural outcome of proper data domain decomposition.</p>
+<p><strong>Connection quota management</strong>: two approaches — even distribution (starting point) and variable distribution (optimised over time via fitness functions that measure concurrent connection usage).</p>
+<p>See <a href="../concepts/data-decomposition.html">Data Decomposition</a>, <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>.</p>
+<h3>Chapter 7 — Service Granularity</h3>
+<p>The critical distinction: <em>modularity</em> (breaking systems into parts) vs <em>granularity</em> (the size of those parts). Most distributed architecture problems are granularity problems, not modularity problems.</p>
+<p><strong>Granularity disintegrators</strong> (when to break a service apart):</p>
+<ol>
+<li>Service scope and function — weak cohesion (doing too many unrelated things)</li>
+<li>Code volatility — parts of the service change at very different frequencies; isolate the volatile part</li>
+<li>Scalability and throughput — parts have extremely different throughput demands</li>
+<li>Fault tolerance — one unstable function brings down unrelated stable functions</li>
+<li>Security — parts have different security requirements; separate access control at the service boundary</li>
+<li>Extensibility — the service context will continually expand with new variants (e.g., new payment methods)</li>
+</ol>
+<p><strong>Granularity integrators</strong> (when to keep services together):</p>
+<ol>
+<li>Database transactions — if ACID is required across the combined operation, keep it one service</li>
+<li>Workflow and choreography — too much inter-service communication creates latency, fault tolerance chains, and reliability issues; if 70%+ of operations require multi-service workflows, consolidate</li>
+<li>Shared code — high percentage of shared domain code, or frequently changing shared code, argues for consolidation</li>
+<li>Data relationships — tight bounded-context coupling between tables argues for keeping services together</li>
+</ol>
+<p><strong>Finding balance</strong>: the architect&#39;s job is to translate trade-offs into business questions and present them to product owners and sponsors for resolution (&quot;Is it more important to have better data consistency or better security access control?&quot;).</p>
+<p>See <a href="../concepts/service-granularity.html">Service Granularity</a>, <a href="../concepts/data-decomposition.html">Data Decomposition</a>.</p>
+<h3>Chapter 8 — Reuse Patterns</h3>
+<p>Code reuse in distributed architectures requires explicit mechanism choices. Four techniques:</p>
+<ol>
+<li><strong>Code replication</strong>: copy-paste; acceptable only for small, stable utility code with no business logic</li>
+<li><strong>Shared library</strong>: versioned dependency; fine-grained preferred; <strong>never use LATEST</strong>; requires custom deprecation strategy</li>
+<li><strong>Shared service</strong>: runtime dependency; appropriate for polyglot environments or high-volatility code; introduces performance/fault tolerance risk</li>
+<li><strong>Sidecar / service mesh</strong>: for operational concerns only (logging, monitoring, auth); hexagonal architecture origin; <strong>orthogonal coupling</strong> — operational concerns are orthogonal to business domain; never put domain logic in a sidecar</li>
+</ol>
+<p><strong>Core reuse principle</strong>: reuse = abstraction + slow rate of change. Volatile code should not be shared — sharing it creates a tight release coupling across all consumers.</p>
+<p>See <a href="../concepts/reuse-patterns.html">Reuse Patterns</a>, <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>.</p>
+<h3>Chapter 9 — Data Ownership and Distributed Transactions</h3>
+<p>Data ownership in distributed architectures: three patterns based on who writes the data.</p>
+<p><strong>Single ownership</strong>: one service has write authority; all others access via API. Cleanest pattern.</p>
+<p><strong>Common ownership</strong>: multiple services need to write; create a dedicated data domain service; writes flow through an async queue.</p>
+<p><strong>Joint ownership</strong>: multiple services own different parts of the same table. Four resolution techniques:</p>
+<ol>
+<li><strong>Table split</strong>: divide columns into separate tables per owner</li>
+<li><strong>Data domain</strong>: shared schema for this specific data (limited shared DB)</li>
+<li><strong>Delegate technique</strong>: primary ownership assigned by domain priority or operational characteristics priority</li>
+<li><strong>Service consolidation</strong>: merge the services if joint ownership signals over-decomposition</li>
+</ol>
+<p><strong>Eventual consistency patterns</strong> (for cross-service data operations):</p>
+<ol>
+<li><strong>Background synchronization</strong>: batch process; breaks bounded context; acceptable for analytics/reporting</li>
+<li><strong>Orchestrated request-based</strong>: synchronous propagation during request; complex compensations; tight coupling</li>
+<li><strong>Event-based</strong> (preferred): pub/sub; async; decoupled; eventual; scales naturally</li>
+</ol>
+<p>See <a href="../concepts/data-decomposition.html">Data Decomposition</a>.</p>
+<h3>Chapter 10 — Distributed Data Access</h3>
+<p>Four patterns for accessing data owned by another service:</p>
+<ol>
+<li><strong>Interservice communication</strong>: call the owning service&#39;s API; simplest; adds latency and fault tolerance dependency</li>
+<li><strong>Column schema replication</strong>: CDC-based replication of needed columns to the consuming service; eventual; no runtime coupling</li>
+<li><strong>Replicated caching</strong>: distributed in-memory cache (Hazelcast, Apache Ignite, Oracle Coherence); fast reads; startup dependency; ~500MB limit; not for high update rates</li>
+<li><strong>Data domain</strong>: both services access the same schema; fastest; loses data sovereignty; use sparingly</li>
+</ol>
+<p>See <a href="../concepts/data-decomposition.html">Data Decomposition</a> (Distributed Data Access Patterns section).</p>
+<h3>Chapter 11 — Managing Distributed Workflows</h3>
+<p><strong>Semantic vs implementation coupling</strong> (important distinction):</p>
+<ul>
+<li><em>Semantic coupling</em>: coupling mandated by the business domain; the architect cannot remove it</li>
+<li><em>Implementation coupling</em>: how coordination is implemented (sync/async, atomic/eventual, orchestrated/choreographed); these are the architect&#39;s choices</li>
+</ul>
+<p>Architects can only minimise implementation coupling; semantic coupling is given by the problem.</p>
+<p><strong>Orchestration</strong> (centralised): clear error handling, queryable state, simpler reasoning; creates coupling to orchestrator, potential bottleneck.</p>
+<p><strong>Choreography</strong> (decentralized): responsive, scalable, decoupled; distributed workflow state, hard to track, complex error handling.</p>
+<p><strong>Workflow state management options for choreography:</strong></p>
+<ol>
+<li><strong>Front controller</strong>: first service in choreography becomes state owner; awkward coupling</li>
+<li><strong>Stateless choreography</strong>: no persistent state; reconstruct via query; expensive at query time</li>
+<li><strong>Stamp coupling</strong>: embed entire workflow state in each message; simple; increases message size</li>
+</ol>
+<p>See <a href="../patterns/saga.html">Saga</a>.</p>
+<h3>Chapter 12 — Transactional Sagas</h3>
+<p>Full trade-off ratings for all 8 saga types across 4 dimensions (coupling, complexity, responsiveness, scale):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Coupling</th>
+<th>Complexity</th>
+<th>Responsiveness</th>
+<th>Scale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Epic Saga</td>
+<td>very high</td>
+<td>low</td>
+<td>low</td>
+<td>very low</td>
+</tr>
+<tr>
+<td>Phone Tag</td>
+<td>high</td>
+<td>high</td>
+<td>low</td>
+<td>low</td>
+</tr>
+<tr>
+<td>Fairy Tale</td>
+<td>high</td>
+<td>very low</td>
+<td>medium</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Time Travel</td>
+<td>medium</td>
+<td>low</td>
+<td>medium</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Fantasy Fiction</td>
+<td>high</td>
+<td>high</td>
+<td>high</td>
+<td>very low</td>
+</tr>
+<tr>
+<td>Horror Story</td>
+<td>medium</td>
+<td>very high</td>
+<td>high</td>
+<td>low</td>
+</tr>
+<tr>
+<td>Parallel Saga</td>
+<td>low</td>
+<td>low</td>
+<td>high</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Anthology Saga</td>
+<td>very low</td>
+<td>high</td>
+<td>high</td>
+<td>very high</td>
+</tr>
+</tbody></table></div>
+<p>Recommended: Fairy Tale (simplest) and Parallel Saga (scalable). Avoid: Fantasy Fiction and Horror Story (async + atomic = distributed locking nightmare).</p>
+<p><strong>Epic Saga pitfalls</strong>: no isolation (intermediate states visible); side effects during compensation (emails sent, cannot be unsent); compensation failures (compensating transactions can themselves fail).</p>
+<p><strong>Saga state machines</strong>: model each saga as an FSM with explicit state transitions; preferred over compensating transaction chains for responsiveness and debuggability.</p>
+<p><strong>Saga annotation technique</strong>: Java/C# annotations/attributes declaring which saga types a service participates in — governance and traceability mechanism.</p>
+<p>See <a href="../patterns/saga.html">Saga</a>.</p>
+<h3>Chapter 13 — Contracts</h3>
+<p>Contracts are defined broadly: any format used by parts of an architecture to convey information or dependencies — covering protocols, schemas, library interfaces, event formats.</p>
+<p><strong>Strict vs loose spectrum</strong>: strict = exact name/type/order (gRPC/Protobuf, RMI); loose = name-value pairs (JSON), REST resources, GraphQL. Strict = guaranteed fidelity + tight coupling; loose = decoupled + requires fitness functions.</p>
+<p><strong>Consumer-driven contracts</strong>: the consumer specifies what it needs from the provider; provider runs consumer tests as CI gates. Solves the loose coupling + contract fidelity tension. Requires engineering maturity. Pact is the canonical framework.</p>
+<p><strong>Stamp coupling</strong>: passing a large data structure when only a small portion is needed. Anti-pattern when over-specified (brittleness, bandwidth). Legitimate use: workflow state management in choreography (embed full workflow state in each message so the next service can continue the workflow).</p>
+<p>See <a href="../concepts/contracts.html">Contracts</a>.</p>
+<h3>Chapter 14 — Managing Analytical Data</h3>
+<p>Three-generation evolution of analytical data patterns:</p>
+<ol>
+<li><strong>Data Warehouse</strong>: ETL, Star Schema, centralised; good for historical analysis; fails in distributed architectures due to integration brittleness, domain knowledge fragmentation, and complexity</li>
+<li><strong>Data Lake</strong>: load-and-transform (reactive); stores raw data; better for ML; still technically partitioned; PII risks; data staleness; domain relationships hard to discover</li>
+<li><strong>Data Mesh</strong> (Zhamak Dehghani): applies microservices&#39; domain partitioning to analytical data; four principles: domain ownership, data as product, self-serve platform, computational federated governance</li>
+</ol>
+<p><strong>Data Product Quantum (DPQ)</strong>: the core architectural unit; adjacent to and operationally separate from its cooperating service; three types: source-aligned, aggregate, fit-for-purpose; uses Parallel Saga or Anthology Saga for communication (always async + eventual, never transactional); governance sidecar embedded by the platform team.</p>
+<p><strong>Cooperative quantum</strong>: the DPQ and its service form a cooperative pair — operationally independent but tightly contract-coupled to each other, loosely coupled to the analytics quantum.</p>
+<p>See <a href="../concepts/data-mesh.html">Data Mesh</a>.</p>
+<h3>Chapter 15 — Build Your Own Trade-Off Analysis</h3>
+<p>Methodological chapter synthesising the book&#39;s approach into a repeatable process.</p>
+<p><strong>Three-step trade-off analysis process:</strong></p>
+<ol>
+<li><em>Find entangled dimensions</em>: what forces are coupled in this problem? (For the book: communication × consistency × coordination)</li>
+<li><em>Analyse coupling points</em>: model possible combinations; build a coupling/characteristic matrix</li>
+<li><em>Assess trade-offs</em>: iterate with &quot;what-if&quot; scenario modeling; fix the most fundamental dimension first, then iterate</li>
+</ol>
+<p><strong>Key techniques:</strong></p>
+<ul>
+<li><strong>Qualitative vs quantitative</strong>: architecture trade-offs are almost always qualitative; build comparative assessments from multiple examples rather than seeking numerical metrics</li>
+<li><strong>MECE lists</strong> (Mutually Exclusive, Collectively Exhaustive): compare like-for-like; don&#39;t compare a message queue to an ESB; ensure you&#39;ve covered the full option space</li>
+<li><strong>Out-of-context trap</strong>: generic trade-off analysis may point to solution X, but specific domain context may reverse the decision entirely; always add context-specific scenarios</li>
+<li><strong>Model relevant domain scenarios</strong>: build specific &quot;what-if&quot; topologies for likely workflows before committing to an approach; iterative design reveals emergent trade-offs</li>
+<li><strong>Prefer bottom line over overwhelming evidence</strong>: reduce analysis to 2-3 key stakeholder-level questions; eliminate technical jargon; focus nontechnical stakeholders on outcomes</li>
+</ul>
+<p><strong>Key observation from the saga trade-off table</strong>: direct inverse correlation between coupling level and scale/elasticity; higher coupling = worse responsiveness/availability (more services involved = more failure points). This pattern generalises beyond sagas.</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;Don&#39;t try to find the best design in software architecture; instead, strive for the least worst combination of trade-offs.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Moving the database within the service boundary moves data concerns into architecture concerns.&quot; (ch. 2)</p>
+</blockquote>
+<blockquote>
+<p>&quot;If you follow that advice, everything will be so decoupled that nothing can communicate with anything else — it&#39;s hard to build software that way!&quot; (ch. 2 — on the limits of the &#39;maximise decoupling&#39; heuristic)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Most issues and challenges within distributed systems are typically not related to modularity, but rather granularity.&quot; (ch. 7)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — significantly expanded by this book</li>
+<li><a href="../patterns/saga.html">Saga</a> — 8 saga types taxonomy introduced here, detailed in ch. 12; full ratings table; orchestration/choreography trade-offs; saga FSM; Epic Saga pitfalls</li>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — additional real-world examples (Equifax, JDepend, ArchUnit, decomposition governance)</li>
+<li><a href="../concepts/adrs.html">Adrs</a> — used as the documentation format throughout the book</li>
+<li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a> — Ch 3–5: modularity drivers, decomposition approaches, six patterns</li>
+<li><a href="../concepts/service-granularity.html">Service Granularity</a> — Ch 7: disintegrators and integrators</li>
+<li><a href="../concepts/data-decomposition.html">Data Decomposition</a> — Ch 6, 9, 10: data disintegrators/integrators, five-step process, database types, ownership patterns, eventual consistency patterns, distributed data access patterns</li>
+<li><a href="../concepts/reuse-patterns.html">Reuse Patterns</a> — Ch 8: four reuse techniques; core reuse principle</li>
+<li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — Ch 8: sidecar as reuse mechanism; operational-concerns-only constraint; orthogonal coupling</li>
+<li><a href="../concepts/contracts.html">Contracts</a> — Ch 13: strict/loose spectrum, stamp coupling, consumer-driven contracts</li>
+<li><a href="../concepts/data-mesh.html">Data Mesh</a> — Ch 14: Data Warehouse, Data Lake, Data Mesh, DPQ, cooperative quantum</li>
+<li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> — the predecessor; SATH resolves problems FOSA could not</li>
+<li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> — fitness functions originated here; SATH extends the governance framework</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../authors/mark-richards.html">Mark Richards</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../authors/neal-ford.html">Neal Ford</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

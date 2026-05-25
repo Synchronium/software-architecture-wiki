@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Patterns of Enterprise Application Architecture* — Martin Fowler et al.">
+  <meta property="og:title" content="Patterns of Enterprise Application Architecture — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Patterns of Enterprise Application Architecture* — Martin Fowler et al.">
+  <title>Patterns of Enterprise Application Architecture — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html" aria-current="page">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Patterns of Enterprise Application Architecture</nav></div>
+      <h1>Patterns of Enterprise Application Architecture</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/enterprise.html">enterprise</a><a class="tag-chip" href="../tags/oop.html">oop</a><a class="tag-chip" href="../tags/persistence.html">persistence</a></ul>
+    </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/martin-fowler.html">Martin Fowler</a>, David Rice, Matthew Foemmel, Edward Hieatt, Robert Mee, Randy Stafford
+<strong>Published:</strong> 2002
+<strong>Slug:</strong> <code>patterns-of-enterprise-application-architecture</code></p>
+<h2>Overview</h2>
+<p>Martin Fowler&#39;s PEAA is the definitive catalogue of enterprise application patterns at the layer and data-access level. Published in 2002, it distills patterns for organising business logic, mapping objects to relational databases, building web presentation layers, handling concurrency, and managing sessions. It is the source of patterns that have become vocabulary for the entire industry: Transaction Script, Domain Model, Active Record, Data Mapper, Repository, Service Layer, and many others.</p>
+<p>The book divides into two parts. Part 1 (Chapters 1–8) is a narrative discussion of the major architectural challenges in enterprise applications — how to layer a system, how to organise domain logic, how to bridge the object/relational paradigm gap, how to handle web presentation, concurrency, session state, and distribution. Part 2 (Chapters 9–18) is the reference catalogue describing each pattern in detail.</p>
+<p>The intended audience is object-oriented developers and architects building multi-tier enterprise applications. While the code examples are in Java and C#, the patterns are language-agnostic.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>Three principal layers — Presentation, Domain, Data Source — are the correct level of abstraction for enterprise applications (ch. 1)</li>
+<li>Domain logic should never depend on presentation; the domain layer is where the real value is (ch. 1)</li>
+<li>The right domain logic pattern (Transaction Script, Table Module, or Domain Model) depends on the complexity of the business domain (ch. 2)</li>
+<li>The Service Layer should be as thin as possible — a facade over the domain model, not a place for business logic (ch. 2)</li>
+<li>Object/relational mapping is the central technical challenge of enterprise applications; multiple patterns exist to solve it at different cost/complexity points (chs. 3, 11–13)</li>
+<li>Distribution across processes is a &quot;complexity booster&quot; to be avoided unless strictly necessary (ch. 1)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Chapter 1 — Layering</h3>
+<p>The foundational chapter. Layering decomposes a system into planes where each layer uses services from the layer below and is unaware of layers above.</p>
+<p><strong>Benefits</strong>: substitutability (swap a layer without touching others), minimised cross-layer dependencies, standardisation opportunities, reuse.</p>
+<p><strong>Downsides</strong>: cascading changes when adding fields that span all layers; performance overhead of layer traversal; deciding layer responsibilities is the hardest part.</p>
+<p><strong>The three principal layers</strong> for enterprise applications:</p>
+<ul>
+<li><em>Presentation</em>: display and user interaction</li>
+<li><em>Domain</em>: business logic — &quot;the real point of the system&quot;</li>
+<li><em>Data Source</em>: database, messaging systems, external packages</li>
+</ul>
+<p><strong>Key dependency rule</strong>: domain and data source must never depend on presentation. This is inviolable; it enables swapping or adding presentation channels.</p>
+<p><strong>Layer vs Tier</strong>: layer is logical; tier implies physical deployment. You can have three logical layers on one machine (not a three-tier system).</p>
+<p><strong>Hexagonal Architecture</strong> (Alistair Cockburn) is mentioned as an alternative: treats all external systems symmetrically as &quot;outside interfaces.&quot; Fowler prefers the asymmetric view because he considers presentation (a service you provide to others) different from data source (a service provided to you).</p>
+<p><strong>Distribution</strong>: run all layers in one process unless you absolutely must distribute. Distribution adds Remote Facades and Data Transfer Objects, degrades performance, and adds significant complexity. Explicitly listed as a &quot;complexity booster&quot; alongside: explicit multithreading, object/relational paradigm chasm, multiplatform development, extreme performance requirements.</p>
+<h3>Chapter 2 — Organising Domain Logic</h3>
+<p>Three patterns for structuring domain logic:</p>
+<p><strong>Transaction Script</strong>: one procedure per user action. Simple procedural model; works with Row Data Gateway or Table Data Gateway; easy transaction boundaries. Degrades with complexity — logic duplicates across scripts; no OO structuring techniques available.</p>
+<p><strong>Domain Model</strong>: OO model organised around domain nouns; logic distributed into objects; uses strategies, inheritance, and other OO patterns. Handles complexity well once team is accustomed to it. Data source mapping is complex — typically requires Data Mapper. Significant initial learning curve.</p>
+<p><strong>Table Module</strong>: one class instance per database table (not per row). Works with Record Set (think ADO.NET DataSet). Middle ground — more structure than Transaction Script, less OO power than Domain Model. Strong fit for .NET/COM environments built around Record Sets.</p>
+<p><strong>Selection heuristic</strong>: complexity of domain logic drives the choice. Transaction Script for simple domains; Domain Model for complex; Table Module for .NET/COM Record Set environments.</p>
+<p><strong>Service Layer</strong>: an API facade over the domain layer (Domain Model or Table Module). Good location for transaction control and security. Fowler&#39;s strong preference: keep it as thin as possible — a forwarding facade. Warns against the &quot;controller-entity&quot; style (use-case-specific transaction scripts as controllers) because it encourages duplication.</p>
+<blockquote>
+<p><strong>Open question:</strong> Fowler is explicitly reluctant to be &quot;overly dogmatic&quot; — a product colour-highlighting example shows how a tiny presentation/domain boundary leak can be &quot;the first step on a slippery slope&quot; or &quot;a perfectly reasonable thing.&quot; The tension between pragmatism and purity here is unresolved in the book.</p>
+</blockquote>
+<h3>Chapter 3 — Mapping to Relational Databases</h3>
+<p>The central technical challenge of enterprise OO applications. Four architectural patterns for the data source layer, selected based on domain complexity:</p>
+<ul>
+<li><strong>Table Data Gateway / Row Data Gateway</strong>: SQL hidden from domain; returns Record Set; fits Transaction Script and Table Module</li>
+<li><strong>Active Record</strong>: domain object + persistence in one class; fits simple domain model; stepping stone from Row Data Gateway</li>
+<li><strong>Data Mapper</strong>: complete isolation between domain objects and database; fits rich Domain Model; most complex</li>
+</ul>
+<p><strong>Behavioural patterns</strong>: Unit of Work (tracks changes, sequences writes, owns the transaction/connection), Identity Map (ensures one in-memory object per database row — correctness first, caching second), Lazy Load (deferred loading of linked objects).</p>
+<p><strong>Structural patterns</strong>: Identity Field (key in object), Foreign Key Mapping (object reference → FK), Association Table Mapping (many-to-many), Embedded Value (Value Objects as columns), Serialised LOB (object clusters as BLOB/CLOB).</p>
+<p><strong>Inheritance mapping</strong>: Single Table (Fowler&#39;s default — easiest refactoring), Class Table (cleanest schema; more joins), Concrete Table (no joins; brittle to superclass changes).</p>
+<p><strong>Repository</strong>: built on Metadata Mapping + Query Object; hides database from domain entirely; developers query in object terms.</p>
+<p>Build iteratively: don&#39;t build a six-month database-free model then persist it. Integrate persistence each iteration (max 6 weeks) to get performance feedback continuously.</p>
+<h3>Chapter 4 — Web Presentation</h3>
+<p>MVC is the governing pattern: Input Controller handles HTTP, Model handles domain logic, View formats the response. The primary purpose is clean separation of model from presentation.</p>
+<p><strong>Input controllers</strong>: Page Controller (one per page/action; simple), Front Controller (one for entire site; centralises URL dispatch and cross-cutting logic).</p>
+<p><strong>Views</strong>: Template View (HTML + embedded scriptlets; keep logic out of templates), Transform View (XSLT-style transformation; good for XML domain data), Two Step View (domain data → logical screen → HTML; enables global layout changes and multi-brand rendering).</p>
+<p><strong>Application Controller</strong>: optional layer for complex screen flow (wizard-style navigation); unnecessary when users freely control navigation.</p>
+<h3>Chapter 5 — Concurrency</h3>
+<p>Concurrency control for enterprise applications has two main arenas: (1) <strong>offline concurrency</strong> — data shared across multiple system transactions during a business transaction; (2) <strong>application server concurrency</strong> — thread safety in multi-threaded servers.</p>
+<p>Core problems: <strong>lost updates</strong> (second writer overwrites first&#39;s change) and <strong>inconsistent reads</strong> (reading data that was never consistent at any point in time). Trade-off: <strong>correctness</strong> (safety) vs <strong>liveness</strong> (throughput).</p>
+<p>Two approaches:</p>
+<ul>
+<li><strong>Isolation</strong>: partition data so only one agent can access a piece at a time</li>
+<li><strong>Immutability</strong>: read-only data needs no locking</li>
+</ul>
+<p><strong>Optimistic vs Pessimistic locking</strong>: optimistic = conflict detection at commit (version numbers/timestamps); pessimistic = conflict prevention via upfront locks. Optimistic preferred for better liveness; pessimistic needed when late conflict discovery is unacceptably painful.</p>
+<p><strong>Deadlocks</strong> (pessimistic only): prevention via upfront lock acquisition, lock ordering, or automatic victimisation; detection via cycle detection or timeout. Prefer simple conservative schemes.</p>
+<p><strong>System vs Business transactions</strong>: system transactions are DB-scoped; business transactions span multiple requests. Can&#39;t use long system transactions (scalability). <strong>Offline concurrency</strong> must be managed by the application:</p>
+<ul>
+<li><strong>Optimistic Offline Lock</strong>: OCC across business transactions; best liveness; first choice</li>
+<li><strong>Pessimistic Offline Lock</strong>: application-managed session locks; early conflict detection; higher complexity</li>
+<li><strong>Coarse-Grained Lock</strong>: lock at cluster level (aggregate root), not per object</li>
+<li><strong>Implicit Lock</strong>: framework manages locks automatically; prevents developer errors</li>
+</ul>
+<p>Application server: prefer <strong>process-per-request</strong> (better isolation, fewer bugs) over <strong>thread-per-request</strong> (more efficient but requires careful synchronisation). In thread-per-request: create fresh objects per request; avoid static/singleton shared state; use thread-scoped Registry.</p>
+<h3>Chapter 6 — Session State</h3>
+<p><strong>Session state</strong> = data held within a business transaction not yet committed to permanent storage (record data). Has ACID-like properties: isolation is the hardest (can&#39;t let other sessions see partial edits); consistency is temporarily suspended during editing (valid only at commit).</p>
+<p><strong>Stateless vs stateful servers</strong>: stateless allows pooling (fewer objects serve more users); stateful requires one object per session. Statelessness is preferable but unavoidable when business interactions are inherently multi-step.</p>
+<p>Three storage options:</p>
+<ul>
+<li><strong>Client Session State</strong> (URL, cookies, hidden fields): no server resources; good for small data and session IDs; bandwidth and security concerns</li>
+<li><strong>Server Session State</strong> (in-memory memento or serialised blob): best performance for complex data; session migration challenges; Fowler&#39;s preference with remote storage for crash recovery</li>
+<li><strong>Database Session State</strong> (DB tables): clustering/failover friendly; isolation complexity; development overhead</li>
+</ul>
+<p>Session migration (move session between servers) vs server affinity (pin session to one server): affinity simpler but can cause load skew (e.g., many users behind the same proxy IP).</p>
+<h3>Chapter 7 — Distribution Strategies</h3>
+<p>The most emphatic chapter in the book. <strong>First Law of Distributed Object Design: Don&#39;t distribute your objects.</strong></p>
+<p>The core argument: in-process method calls are orders of magnitude faster than inter-process calls. A fine-grained local interface (many small methods like <code>getCity()</code>, <code>setState()</code>) is the right OO design. A remote interface must be coarse-grained (one call for get-address-details, not three). You can&#39;t have both for the same object — if an object might be remote, it must always have the coarse-grained interface, paying a programming-model cost everywhere.</p>
+<p><strong>Solution: cluster, don&#39;t distribute.</strong> Run multiple copies of the same process on multiple nodes. Each process uses fast local calls internally. Distribution at process level (client/server, app server/DB, vendor packages) is unavoidable — minimise it aggressively.</p>
+<p>When you must cross a distribution boundary:</p>
+<ul>
+<li><strong>Remote Facade</strong>: a coarse-grained wrapper on the fine-grained domain/application objects. Its only job is to minimise remote calls; it contains no logic.</li>
+<li><strong>Data Transfer Object (DTO)</strong>: bundles data for transport. Cannot reference objects that don&#39;t cross the wire; typically references only other DTOs and primitive types.</li>
+</ul>
+<p><strong>Web Services</strong>: use as Remote Facades for cross-system integration, not for decomposing a single application internally. Do not let XML/REST hype override the First Law. Fowler&#39;s personal preference: asynchronous message-based interfaces over synchronous RPC.</p>
+<blockquote>
+<p><strong>Foreshadowing</strong>: Fowler notes in 2002 that &quot;I haven&#39;t seen any patterns for that here&quot; regarding async messaging, and expresses hope for a future book — that book is <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a>, Hohpe &amp; Woolf, published one year later.</p>
+</blockquote>
+<h3>Chapter 8 — Putting It All Together</h3>
+<p>Synthesis chapter. The central decision — domain logic pattern — determines everything downstream.</p>
+<p><strong>Decision tree</strong>:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Domain logic</th>
+<th>Data source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Transaction Script</td>
+<td>Row or Table Data Gateway</td>
+<td>Keep in single transaction if possible; Optimistic Offline Lock for edit-then-save</td>
+</tr>
+<tr>
+<td>Table Module</td>
+<td>Table Data Gateway + Record Set</td>
+<td>Tight fit; best in .NET</td>
+</tr>
+<tr>
+<td>Simple Domain Model</td>
+<td>Active Record</td>
+<td>OK when classes ≈ tables</td>
+</tr>
+<tr>
+<td>Complex Domain Model</td>
+<td>Data Mapper + Unit of Work</td>
+<td>Use a tool; all O/R patterns needed</td>
+</tr>
+</tbody></table></div>
+<p>Presentation is largely independent of domain choice. HTML preferred over rich client. MVC always. Page Controller for document-oriented; Front Controller for complex navigation. Template View the pragmatic default; Two Step View for multi-look-and-feel.</p>
+<p>Keep all layers in one process unless forced to distribute. If forced: Remote Facade + DTO.</p>
+<p>Stored procedures: acceptable as performance optimisation on specific hot paths; avoid for business logic structure (vendor lock-in, poor modularity).</p>
+<p><strong>Layering scheme comparison</strong>: Fowler maps his three-layer model to Brown (5 layers), Core J2EE (5 layers), Microsoft DNA (3 layers), Marinescu (5 layers), Nilsson (7 layers). All are variations on the same three themes; mediating layers (Application Controller, Data Mapper, Service Layer) appear as optional extras rather than mandatory structure.</p>
+<h2>Part 2 — Pattern Catalogue</h2>
+<h3>Chapter 18 — Base Patterns</h3>
+<p>The foundational infrastructure patterns referenced throughout the catalogue.</p>
+<p><strong>Gateway</strong> (p. 466): wraps an external system or resource (tax service, payment processor, messaging system) behind a simple interface that hides all third-party API details. The rest of the system talks to the Gateway, not to the external API. The Gateway is the natural placement for a Service Stub (p. 504) in testing. Can be designed as two objects: a back-end Gateway that wraps the external service, and a front-end Gateway that provides the internal API — the two-object form is useful when the wrapping is complex. Keep minimal: don&#39;t add non-essential functionality.</p>
+<p><strong>Mapper</strong> (p. 473): an insulating layer between two independent subsystems that must remain unaware of each other. Neither subsystem knows the Mapper exists. Use Mapper (not Gateway) when both subsystems must remain unaware — Gateway is appropriate when only one side needs to be shielded. More complex and rarer than Gateway; prefer Gateway unless the mutual-independence requirement is strict.</p>
+<p><strong>Layer Supertype</strong> (p. 475): a common superclass for all objects in a layer. Centralises behaviour that every object in that layer needs — e.g., <code>DomainObject</code> holds the ID field and common save/load protocol; <code>AbstractMapper</code> holds the generic load/find logic and Identity Map reference. Reduces duplication in large systems; worth creating as soon as the same methods appear in several mapper classes.</p>
+<p><strong>Registry</strong> (p. 480): a global-looking object that provides well-known access points to objects or services. Interface is static (class methods or a singleton accessor) so callers don&#39;t need a Registry reference. Implementation is <em>scoped</em>: process-scoped (class variable — only for immutable or read-only data); thread-scoped (ThreadLocal, one instance per thread — for mutable per-request data); session-scoped (map keyed by session ID — for session-level state). Fowler recommends avoiding Registry if possible — it makes dependencies implicit and testing harder. If you must use one, use ThreadLocal-scoped for request handling servers; never store updatable objects in a process-scoped Registry.</p>
+<p><strong>Value Object</strong> (p. 486): a small object whose equality is defined by field values, not identity. Two <code>Money(100, USD)</code> instances are equal regardless of reference. Must be <strong>immutable</strong> — if a Value Object is mutable and shared (aliased), changing one copy changes all alias holders, producing subtle bugs. Immutability ensures aliasing is harmless. Persist via Embedded Value — not as a table with its own row. Naming collision: the J2EE community used &quot;Value Object&quot; to mean what PEAA calls a DTO; these are entirely different patterns. See also: <a href="../databases/object-relational-mapping.html">Object Relational Mapping</a>.</p>
+<p><strong>Money</strong> (p. 488): a Value Object for monetary amounts. Never store monetary values in floating-point (binary rounding errors are subtle and accumulate). Use integral (cents/minor units) or fixed-decimal types. The core problems Money solves: (1) <strong>currency mismatch</strong> — Money throws an exception on arithmetic across currencies, or uses a &quot;money bag&quot; (mixed-currency object); (2) <strong>rounding errors during allocation</strong> — Foemmel&#39;s Conundrum: allocating 5 cents 70/30 produces 3.5 and 1.5 — no uniform rounding avoids losing or gaining a penny. Fowler&#39;s preferred solution: an <code>allocate([7,3])</code> method that distributes the remainder one cent at a time, guaranteeing no pennies are lost. Use Money for all monetary calculation; the performance overhead is negligible and the correctness benefit is significant.</p>
+<p><strong>Special Case</strong> (p. 496): a subclass that handles exceptional or null situations with normal-looking polymorphic behaviour. Instead of returning null and requiring callers to null-check, return a Special Case instance that overrides methods with appropriate defaults (e.g., <code>NullEmployee.GrossToDate</code> returns 0; <code>NullEmployee.Contract</code> returns <code>Contract.NULL</code> — the special case chains). Null Object is a specific Special Case. Use when multiple call sites check for the same condition and take the same action. Often implemented as a flyweight since there&#39;s no reason to distinguish instances.</p>
+<p><strong>Plugin</strong> (p. 499, by David Rice and Matt Foemmel): resolves Separated Interface implementations at runtime via a central configuration file rather than scattered factory conditionals. The Plugin factory reads a properties file mapping interface names to implementation class names and uses reflection to instantiate the correct class. Supports multiple deployment configurations (test, staging, production) without code changes or rebuilds. Use when behaviours require different implementations based on runtime environment (test vs production key generators, tax service stubs vs real services, in-memory vs DB transaction managers).</p>
+<p><strong>Service Stub</strong> (p. 504, by David Rice): replaces a problematic external service during testing with a local, fast, in-memory implementation. The stack is: Gateway (Separated Interface) → loaded via Plugin → Service Stub implementation (or real service in production). Keep stubs as simple as possible — complexity defeats the purpose. Minimum viable stub: a flat-rate implementation (2–3 lines). Dynamic stub: a list of exemptions that test cases populate before running. If the stub needs test-specific setup methods, add them to the Gateway interface (real service implementation throws assertion failure on those methods). Fowler notes that &quot;Mock Object&quot; (XP term) is essentially Service Stub — the name difference is historical.</p>
+<p><strong>Record Set</strong> (p. 508): an in-memory representation of tabular data that looks exactly like the result of an SQL query. Platform-provided (ADO.NET <code>DataSet</code>, JDBC <code>RowSet</code>). Key property: disconnectable — pass around the network without an open DB connection; serialise as DTO. Increasingly supports Unit of Work behaviour (track changes, commit back to DB with Optimistic Offline Lock conflict detection). Implicit interface (string-keyed column access) vs explicit/strongly-typed interface (ADO.NET typed DataSets — prefer these in production). Best with Table Module: fetch a Record Set from DB → pass to Table Module for computation → pass to data-aware UI → pass back to Table Module for validation → commit.</p>
+<h3>Chapter 17 — Session State Patterns</h3>
+<p>Catalogue entries for the three session state storage options. See <a href="../databases/transactions.html">Transactions</a> for context.</p>
+<p><strong>Client Session State</strong> (p. 456): store state in the client (URL parameters, cookies, hidden fields). Enables stateless servers; maximum clustering and failover resiliency; client failure loses state (usually acceptable). Scales poorly with data size — bandwidth and rendering cost. Security risk: any client-held data must be encrypted and fully revalidated on return (cannot trust what comes back). The session ID is always stored client-side; use platform-generated random IDs to prevent session stealing.</p>
+<p><strong>Server Session State</strong> (p. 458): serialise session state and hold it in server-side memory (HTTP session object) or persist it to a database as a serialised BLOB. Simplest to implement — often zero programming in basic form. If clustering/failover is needed, serialising to a database table is often much less effort than converting session objects to tabular form. Fowler&#39;s preference: server memory with remote database backup for crash recovery.</p>
+<p><strong>Database Session State</strong> (p. 462): store active session data as regular database rows. Each request reads necessary state, does work, writes back. Stateless server objects (pooling and clustering straightforward). Performance cost: DB read+write per request (caching can reduce reads). Best when: no session data (trivial case), or easy conversion to tabular form; clustering/failover requirements that Database Session State handles more naturally than Server Session State.</p>
+<h3>Chapter 16 — Offline Concurrency Patterns</h3>
+<p>Catalogue entries for the four offline concurrency patterns (business transactions spanning multiple system transactions). See <a href="../databases/transactions.html">Transactions</a> for the overview.</p>
+<p><strong>Optimistic Offline Lock</strong> (p. 416, by David Rice): version field on each domain object and table row. At commit time, include the version in the WHERE clause of every UPDATE/DELETE: <code>UPDATE ... WHERE id = ? AND version = ?</code> — if zero rows are affected, a conflict is detected. Increment the version on success. The validation + update must occur in one system transaction. Implement as a shared <code>Version</code> class/table when using Coarse-Grained Lock. <strong>Default strategy</strong>: use for all business transactions; add Pessimistic only where truly needed.</p>
+<p><strong>Pessimistic Offline Lock</strong> (p. 426, by David Rice): application-managed lock manager (not DB-level locks). Lock types: exclusive read (no other session may read or write), exclusive write (other sessions may read but not write), read/write (shared read, exclusive write). Acquire before using an object; release when the session ends (handle timeouts and crash cleanup). Implementation: <code>LockManager</code> with acquire/release/releaseAll methods; lock table in DB; lock ownership by session ID. Use only where conflict cost is unacceptable regardless of probability.</p>
+<p><strong>Coarse-Grained Lock</strong> (p. 483): lock the aggregate root to lock all its parts. Two approaches: (1) shared version — a <code>Version</code> object/table record that all aggregate members reference; any member&#39;s update increments the shared version; (2) group lock — lock the root to block access to all members. Satisfies business requirements about aggregate integrity (e.g., editing a lease should lock all its assets); also reduces lock management complexity. Don&#39;t create unnatural object relationships just to enable coarse-grained locking.</p>
+<p><strong>Implicit Lock</strong> (p. 499): framework acquires/releases locks automatically — application developers never call lock management code explicitly. Implementation: decorate mapper classes with locking behaviour (<code>LockingMapper</code> wraps <code>Mapper</code>, acquires lock before <code>find()</code>). <strong>Use everywhere</strong>: the risk of a single forgotten lock is too high to rely on developer discipline.</p>
+<h3>Chapter 15 — Distribution Patterns</h3>
+<p><strong>Remote Facade</strong> (p. 388): coarse-grained wrapper that minimises remote calls to a fine-grained domain/application object graph. Contains no business logic — its only job is to reduce the number of round trips. Natural place for security checks and logging. Most common scenario: presentation and Domain Model running in different processes (Swing UI + server domain model; servlets + remote EJBs). Not needed for in-process communication. Implies synchronous/RPC-style distribution — Fowler again recommends async messaging as an often superior alternative.</p>
+<p><strong>Data Transfer Object</strong> (p. 401): bundles data for transfer across a process boundary. Must reference only other DTOs and primitive types (nothing that doesn&#39;t cross the wire). Assembler objects move data between domain objects and DTOs. Secondary use: DTO as shared data carrier passed between layers (the .NET <code>DataSet</code> / ADO Record Set is an example). Async use: return a Lazy Load of a DTO from an async call — caller blocks only when it actually reads from the DTO.</p>
+<blockquote>
+<p><strong>Naming collision</strong>: The J2EE community uses &quot;Value Object&quot; to mean what PEAA calls a DTO. Fowler&#39;s own &quot;Value Object&quot; pattern (p. 486) is entirely different — it&#39;s an immutable small object (Money, DateRange) with no identity. Be careful with terminology when working with J2EE references.</p>
+</blockquote>
+<h3>Chapter 14 — Web Presentation Patterns</h3>
+<p>Detailed catalogue entries for MVC, Page Controller, Front Controller, Template View, Transform View, Two Step View, Application Controller. See <a href="../patterns/mvc-web-presentation.html">Mvc Web Presentation</a> for the full treatment.</p>
+<p><strong>MVC</strong> (p. 330): separation of presentation and model is one of the most important design principles in software. The view/controller separation is less important — recommended in web environments but rarely needed in rich clients. The primary value is that domain logic has no dependency on how it is presented.</p>
+<p><strong>Page Controller</strong> (p. 333): simplest and most familiar; one module per action. Can be a server page (combines Page Controller and Template View) or a separate script. Avoid logic-heavy scriptlets in server pages — use helper objects. Mix Page Controller for simple URLs with Front Controller for complex ones.</p>
+<p><strong>Front Controller</strong> (p. 344): one dispatcher; command objects for actions. Key advantages: single web-server registration; cross-cutting behaviour via decorators (authentication, encoding, i18n); new commands don&#39;t require web-server reconfiguration; thread safety from per-request command instantiation.</p>
+<p><strong>Template View</strong> (p. 350): HTML + embedded scriptlets. Easiest for designer/programmer collaboration. Risk: logic leaks in; hard to test without a server. Discipline required to keep logic in helpers.</p>
+<p><strong>Transform View</strong> (p. 361): XSLT-style transformation. Easier to test offline; easier to keep display-focused. XSLT portability across platforms. Downsides: steep XSLT learning curve; weak tooling.</p>
+<p><strong>Two Step View</strong> (p. 365): domain data → logical screen → final HTML. One second-stage for the whole application. Best value: global appearance changes in one place; multi-brand rendering with separate second stages.</p>
+<p><strong>Application Controller</strong> (p. 379): manages screen flow as a state machine. Holds domain commands + views to display. Must not depend on UI machinery (otherwise untestable). Use only for wizard-style controlled navigation; skip when users navigate freely.</p>
+<h3>Chapter 13 — Object-Relational Metadata Mapping Patterns</h3>
+<p><strong>Metadata Mapping</strong> (p. 306): stores field-to-column correspondence as metadata (config file, annotations, or code) rather than hard-coded in mappers. Two implementation approaches: <em>code generation</em> (cleaner for debugging and refactoring tools, but generated files must never be hand-edited) and <em>reflective programming</em> (more dynamic, but can interfere with automated refactoring tools that don&#39;t read strings in config files). Commercial ORM tools all use Metadata Mapping — the setup cost is justified when selling a reusable tool. If building your own, weigh against a well-factored Layer Supertype that handles common behaviour in handcoded mappers.</p>
+<p><strong>Query Object</strong> (p. 316): an object that represents a database query in terms of domain objects — the Specification pattern applied to queries. Clients construct a criteria object (<code>criteria.equals(Person.LAST_NAME, &quot;Fowler&quot;)</code>) and pass it to the Query Object, which generates SQL. Only worthwhile with Domain Model + Data Mapper + Metadata Mapping. Most teams should buy a tool rather than build one. A limited Query Object built to cover only actual use cases can be practical on a project that doesn&#39;t justify a full implementation.</p>
+<p><strong>Repository</strong> (p. 317, by Edward Hieatt and Rob Mee): mediates between domain and data mapping layers using a collection-like interface. Clients construct Specification criteria and call <code>repository.matching(criteria)</code> — no SQL appears in client code. Repository promotes the Specification pattern, removes all the specific finder methods from Data Mapper, and allows different querying strategies via a strategy object (swap in-memory repository for unit tests — test suites with no DB access run significantly faster). Also useful when domain objects come from multiple sources (XML feeds, in-memory objects, etc.). Most valuable in systems with many domain object types and many different query types.</p>
+<h3>Chapter 12 — Object-Relational Structural Patterns</h3>
+<p><strong>Identity Field</strong> (p. 216): store the DB primary key in the object. Key guidance: prefer meaningless (surrogate) keys over meaningful keys (SSNs, codes) — meaningful keys fail uniqueness and immutability in practice. Prefer simple (single-column) keys over compound keys for uniformity — compound keys require special handling in concrete mappers. Use <code>long</code> as the default key type. Key generation options: (a) database auto-increment (convenient but hard to read back the generated value before commit — breaks connected inserts); (b) database sequence/counter (Oracle-style — readable, separate transaction, best when available); (c) GUID (universally unique but large and slow); (d) key table (portable — dedicated table with name/nextID rows, accessed in a separate transaction to minimise lock duration, grab multiple IDs per call to reduce contention). Best to encapsulate key generation in its own class for easy substitution.</p>
+<p><strong>Foreign Key Mapping</strong> (p. 236): maps a single-valued object reference to a foreign key. Use Association Table Mapping for many-to-many. If the related object is a Value Object, use Embedded Value instead.</p>
+<p><strong>Association Table Mapping</strong> (p. 248): link table for many-to-many. Also useful for any association where you want to add attributes to the relationship itself.</p>
+<p><strong>Dependent Mapping</strong> (p. 262): one class performs DB mapping for a child class. The dependent has no mapper; its owner&#39;s mapper handles loading and saving. Use when a child is never accessed outside the context of its parent (e.g., album tracks), has no other references to it, and the simplification outweighs the loss of independent addressability. No Identity Map entry needed for the dependent.</p>
+<p><strong>Embedded Value</strong> (p. 268): all Value Objects (Money, DateRange, Address) should always be stored as Embedded Value — they have no identity, so no separate table or Identity Map entry is needed. Also applicable to reference objects with one-to-one associations when: (a) you only access the dependent through the parent; (b) you want to query the dependent&#39;s values from SQL (the key advantage over Serialised LOB). Only works for simple dependents (1:1 or a few fixed-count dependents).</p>
+<p><strong>Serialised LOB</strong> (p. 272): store a cluster of objects as a BLOB/CLOB/XML. Best for object subgraphs that are never queried from SQL (otherwise Embedded Value). Works poorly when objects outside the LOB reference objects buried inside it. XML format makes it readable and partially queryable with XPath extensions.</p>
+<p><strong>Inheritance mapping strategies</strong> (pp. 278–293):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Strengths</th>
+<th>Weaknesses</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Single Table</td>
+<td>No joins, easy hierarchy refactoring</td>
+<td>Many nulls, field namespace collisions, potential lock bottleneck</td>
+</tr>
+<tr>
+<td>Class Table</td>
+<td>No nulls, clean schema</td>
+<td>Joins on every load, supertype table bottleneck, hard for ad hoc queries</td>
+</tr>
+<tr>
+<td>Concrete Table</td>
+<td>No joins, load spread across tables</td>
+<td>No FK to abstract supertype, superclass changes cascade, superclass queries scan all tables</td>
+</tr>
+</tbody></table></div>
+<p>Strategies can be mixed within a single hierarchy. A natural split: Single Table for the top of the hierarchy (where fields are mostly shared), Concrete Table for leaf subclasses with a lot of type-specific data.</p>
+<h3>Chapter 10 — Data Source Architectural Patterns</h3>
+<p>Detailed catalogue entries for the four architectural data source patterns, with Java/C# examples.</p>
+<p><strong>Table Data Gateway</strong> (p. 144): stateless wrapper around all SQL for one table. Return type options: (a) raw <code>ResultSet</code>/<code>DataReader</code> (cursor-based — less memory overhead for large results); (b) ADO.NET <code>DataSet</code> (in-memory mirror image — richer but heavier); (c) DTO (explicit interface, reusable elsewhere); (d) domain objects (creates bidirectional TDG↔domain dependency — Fowler is reluctant). TDG + Record Set is the natural pairing for Table Module. Also works as a database-facing interface for Data Mapper when metadata handles the table-level access while hand-coded mappers handle domain object construction.</p>
+<p><strong>Row Data Gateway</strong> (p. 152): one object per database row; no domain logic. Separate <code>PersonFinder</code> class holds static/instance query methods; <code>PersonGateway</code> holds the row data and update/insert methods. Better than static find methods on the gateway for testability. Gradual accumulation of business logic in a Row Data Gateway naturally evolves it into an Active Record — let it.</p>
+<p><strong>Active Record</strong> (p. 160): same structure as Row Data Gateway but adds domain logic. Static find methods on the Person class; <code>load()</code> and <code>find()</code> use an Identity Map (Registry) to prevent duplicate loading. Primary advantage: simplicity. Primary disadvantage: coupling — object design and database design must evolve together. Good stepping stone from Row Data Gateway; migrate to Data Mapper when domain complexity diverges from schema.</p>
+<p><strong>Data Mapper</strong> (p. 165): complete isolation. Domain objects have no SQL code. <code>PersonMapper.find()</code> → check Identity Map → query DB → <code>load()</code> → insert into Identity Map. Identity Map checked in both <code>abstractFind</code> (for performance — skip DB if already loaded) and <code>load</code> (for correctness — multi-row queries may hit already-loaded objects). Empty object pattern: create object → insert into Identity Map → populate fields (avoids cyclic reference stack overflow). <code>StatementSource</code> interface for reusable multi-row queries. For finders domain objects need to invoke: use Separated Interface (declare interface in domain package, implement in mapper). Buy, don&#39;t build — use a commercial ORM.</p>
+<h3>Chapter 11 — Object-Relational Behavioural Patterns</h3>
+<p>Catalogue entries for Unit of Work, Identity Map, and Lazy Load with Java (UoW, Identity Map) and C# (Lazy Load ghost) examples.</p>
+<p><strong>Unit of Work</strong> (p. 184): three lists (new, dirty, removed). <code>registerNew/registerDirty/registerRemoved/registerClean</code> methods enforce invariants (can&#39;t be both new and removed, etc.). <code>commit()</code> calls <code>insertNew()</code>, <code>updateDirty()</code>, <code>deleteRemoved()</code>, each finding the appropriate mapper via a <code>MapperRegistry</code>. Thread-scoped via <code>ThreadLocal.current</code>. Implicit management: wrap a <code>UnitOfWorkServlet.doGet()</code> to create and commit the UoW around every request. Handles referential integrity write ordering (topological sort) and deadlock risk reduction (consistent table order).</p>
+<p><strong>Identity Map</strong> (p. 195): explicit maps preferred (<code>addPerson/getPerson</code> methods) over generic for compile-time type safety. <code>registerClean()</code> can place loaded objects into the map; <code>registerNew()</code> adds newly created objects; <code>registerRemoved()</code> evicts deleted objects. Best placed inside the Unit of Work. Read-only objects can use process-scoped maps (shared across sessions); updatable objects must use session-scoped maps.</p>
+<p><strong>Lazy Load</strong> (p. 200): four implementations. Lazy initialization: field-level null check in getter — simplest but adds DB dependency to domain class. Virtual proxy: looks like real object but loads on first method call — works cleanly for collections, identity problems for single domain objects. Value holder: typed wrapper around the value; domain class field becomes <code>ValueHolder</code> type; loading injected via <code>ValueLoader</code> interface at mapper time. Ghost: real object in <code>GHOST</code> state; every property getter calls <code>Load()</code>; <code>AbstractFind</code> creates and returns a ghost (inserted into Identity Map before loading) then actual SQL runs only on first property access. Ghost list (<code>DomainList</code>) avoids ripple loading for collections.</p>
+<h3>Chapter 9 — Domain Logic Patterns</h3>
+<p>The pattern catalogue entries for the four domain logic patterns, illustrated with the same <strong>revenue recognition</strong> example (word processors/spreadsheets/databases each with different recognition rules).</p>
+<p><strong>Transaction Script</strong> (p. 110): One procedure per user action. The revenue recognition example uses a <code>RecognitionService</code> with two methods — one to calculate recognitions, one to sum them. A <code>Gateway</code> wraps all SQL. The branching logic (product type S/W/D) lives directly in the script. Key tension: as rules grow more complex, this logic duplicates across scripts and becomes hard to maintain. Fowler explicitly warns that factoring helps but cannot fully solve the problem — complex domains need Domain Model.</p>
+<p><strong>Domain Model</strong> (p. 116): OO web of objects where each class combines data and behaviour. The same revenue recognition example is structured as a <code>Contract</code> → <code>Product</code> → <code>RecognitionStrategy</code> hierarchy. The runtime calculation has <strong>no conditionals</strong> — the branching was resolved when products were constructed with the appropriate <code>CompleteRecognitionStrategy</code> or <code>ThreeWayRecognitionStrategy</code> instance. Domain Model moves complexity out of algorithms and into the object structure. Domain objects deliberately hide the database — <code>Contract.calculateRecognitions()</code> delegates via <code>product.calculateRevenueRecognitions(this)</code> with no SQL visible. POJO domain models are preferable to entity beans for rich domain models; entity beans are appropriate only when domain logic is modest and classes closely mirror tables.</p>
+<p><strong>Table Module</strong> (p. 126): One class instance handles all rows for a table. The C# example passes a <code>DataSet</code> to the module constructor; the module&#39;s <code>CalculateRecognitions</code> method takes a <code>contractID</code> and updates the recognition table. An <code>allocate()</code> helper handles the rounding problem. Contrast with Domain Model: Table Module uses <code>prod.GetProductType(prodID)</code> with a conditional, not polymorphism. Table Module can&#39;t support Strategy-style extension — you must edit the conditional. But it works naturally with ADO.NET&#39;s <code>DataTable.Compute()</code> aggregate functions. Best fit when the Record Set is the first-class data vehicle in the platform.</p>
+<p><strong>Service Layer</strong> (p. 133, by Randy Stafford): The expanded Service Layer example adds application logic on top of the Domain Model example: after calculating recognitions, the service must send an email notification and publish to message-oriented middleware. <code>RecognitionService.calculateRevenueRecognitions()</code> calls <code>contract.calculateRecognitions()</code> (domain logic), then <code>getEmailGateway().sendEmailMessage(...)</code> and <code>getIntegrationGateway().publishRevenueRecognitionCalculation(contract)</code> (application logic). All three responses must be transacted atomically. Two implementation variations: <strong>domain facade</strong> (thin wrappers, all logic in Domain Model) vs <strong>operation script</strong> (thicker service classes that implement application logic and delegate to domain objects). Stafford&#39;s preference for EJB 2.0: stateless session beans with local interfaces — gets container-managed distributed transactions without the performance penalty of remote invocation.</p>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../styles/layered-architecture.html">Layered Architecture</a> — Fowler defines the three-layer model</li>
+<li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — Transaction Script, Domain Model, Table Module, Service Layer</li>
+<li><a href="../patterns/repository.html">Repository</a> — Fowler coined the Repository pattern; covered in Part 2</li>
+<li><a href="../concepts/coupling.html">Coupling</a> — distribution as coupling amplifier; layer dependencies</li>
+<li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../styles/layered-architecture.html">Layered Architecture</a></li><li><a href="../authors/martin-fowler.html">Martin Fowler</a></li><li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li><li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li><li><a href="../patterns/repository.html">Repository Pattern</a></li><li><a href="../databases/transactions.html">Transactions</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

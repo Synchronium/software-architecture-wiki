@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable…">
+  <meta property="og:title" content="Common Failure Causes — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable…">
+  <title>Common Failure Causes — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html" aria-current="page">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../operations/index.html">Operations</a> <span class="sep">›</span> Common Failure Causes</nav></div>
+      <h1>Common Failure Causes</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../operations/index.html">concept</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/reliability.html">reliability</a><a class="tag-chip" href="../tags/resiliency.html">resiliency</a><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a><a class="tag-chip" href="../tags/operations.html">operations</a></ul>
+    </div><div class="page-body"><p>A <strong>fault</strong> is a failure of an internal component or external dependency. A <strong>failure</strong> is when the system no longer provides a service meeting its specification. Some faults are tolerated with no user-visible impact; others lead to user-visible failures.</p>
+<p>Understanding failure causes is a prerequisite for building fault-tolerant systems. The causes below are ordered roughly from the less surprising to the more counter-intuitive.</p>
+<h2>Hardware Faults</h2>
+<p>HDDs, SSDs, memory modules, NICs, power supplies, CPUs can all fail. Hardware faults can also cause silent data corruption. Entire data centres can fail due to power cuts or natural disasters.</p>
+<p>Counter-intuitively, hardware faults are not the dominant cause of failures in distributed applications. The more mundane causes below are responsible for the majority of incidents.</p>
+<h2>Incorrect Error Handling</h2>
+<p>A 2014 study of user-reported failures across five popular distributed data stores found that <strong>the majority of catastrophic failures resulted from incorrect handling of non-fatal errors</strong>. Most of these bugs could have been caught with simple tests:</p>
+<ul>
+<li>Error handlers that silently ignored errors.</li>
+<li>Handlers that caught overly generic exceptions (e.g., <code>Exception</code> in Java) and aborted the entire process for no good reason.</li>
+<li>Partially implemented handlers containing <code>FIXME</code> or <code>TODO</code> comments.</li>
+</ul>
+<p>Error handling is typically an afterthought — developers write it quickly, test it rarely, and review it less carefully than business logic. Treating error paths as first-class code, with dedicated tests, is one of the highest-leverage reliability investments.</p>
+<h2>Configuration Changes</h2>
+<p>Configuration changes are one of the <strong>leading root causes of catastrophic failures</strong>. This includes both misconfigured values and valid configuration changes that enable rarely-used code paths which haven&#39;t been properly tested.</p>
+<p>What makes configuration particularly dangerous: <strong>delayed effects</strong>. If an application reads a configuration value only when a specific code path executes, an invalid value may take effect hours or days after the change — long after the change has been forgotten, making root cause analysis difficult.</p>
+<p>Configuration changes should be:</p>
+<ul>
+<li><strong>Version-controlled</strong> (same history and rollback capability as code).</li>
+<li><strong>Tested</strong> (validated against the running system, not just syntactically).</li>
+<li><strong>Released incrementally</strong> (canary configurations, not fleet-wide instant changes).</li>
+<li><strong>Validated eagerly</strong> — configuration should be read and validated at startup, not lazily at point of use.</li>
+</ul>
+<h2>Single Points of Failure (SPOFs)</h2>
+<p>A <strong>single point of failure</strong> is any component whose failure takes the entire system down. Systems commonly have multiple SPOFs that haven&#39;t been identified.</p>
+<p><strong>Humans are great SPOFs</strong>: manual operational procedures that require a sequence of steps executed in the right order, without errors, are fragile. Automation eliminates human SPOFs.</p>
+<p>Common infrastructure SPOFs:</p>
+<ul>
+<li><strong>DNS</strong>: if clients can&#39;t resolve the domain, they can&#39;t connect. Domain names expire; root-level domains have gone down. (→ <a href="../distributed/dns.html">Dns</a>)</li>
+<li><strong>TLS certificates</strong>: if the certificate expires, secure connections fail. Automated certificate rotation (Let&#39;s Encrypt, ACM) eliminates this SPOF. (→ <a href="../distributed/tls.html">Tls</a>)</li>
+<li><strong>Centralised databases or services</strong>: a single database, message broker, or config service with no redundancy.</li>
+</ul>
+<p>SPOFs should be identified at design time by examining each component and asking: &quot;what happens if this fails?&quot; Some can be eliminated by introducing redundancy; others can only have their blast radius reduced.</p>
+<h2>Network Faults</h2>
+<p>Network calls can fail in many ways: packet loss, congestion, routing changes, NIC failures. The dangerous case is not hard failure (which is detected quickly) but <strong>slow or partial failure</strong>.</p>
+<p><strong>Gray failures</strong>: a failure so subtle it can&#39;t be detected quickly or accurately. A server that is alive but very slow is almost as useless as one that is down — but its presence in the load balancer pool continues to receive traffic that times out. Gray failures are the silent killers of distributed systems; they can bring a system to its knees while being extremely hard to diagnose.</p>
+<p>Timeouts are the primary defence against gray failures, but timeout values are difficult to tune correctly (→ <a href="../distributed/failure-detection.html">Failure Detection</a>). Setting them too tight creates false positives; too loose means accepting long periods of unavailability.</p>
+<h2>Resource Leaks</h2>
+<p>A very slow process looks like a down process from the outside — neither can do useful work. Resource leaks are a common cause of progressive degradation.</p>
+<p><strong>Memory leaks</strong>: even garbage-collected languages leak — any reference to an unneeded object prevents collection. As memory depletes, the OS swaps pages to disk aggressively and the GC runs more frequently; CPU usage rises, response times increase, until memory exhaustion causes allocation failures.</p>
+<p><strong>Thread pool exhaustion</strong>: a thread making a synchronous blocking call without a timeout will never return to the pool. With a pool of fixed size, threads drain until none are left.</p>
+<p><strong>Socket pool exhaustion</strong>: HTTP clients typically reuse connections from a pool. A request made without a timeout holds a socket indefinitely. As the pool fills with stuck connections, new requests cannot be dispatched.</p>
+<p>Third-party libraries your code depends on are subject to the same leaks — their resource consumption is not isolated from yours.</p>
+<p>The watchdog pattern is a practical mitigation: a background thread monitors resource metrics (available memory, active thread count) and deliberately restarts the process when thresholds are breached, rather than waiting for a complete failure (→ <a href="../distributed/load-balancing.html">Load Balancing</a>).</p>
+<h2>Load Pressure</h2>
+<p>Every system has a capacity ceiling. Two types of load pressure:</p>
+<ul>
+<li><strong>Organic growth</strong>: gradual increase that gives autoscaling time to respond. Manageable.</li>
+<li><strong>Sudden surges</strong>: spikes from diurnal patterns, viral events, scrapers/bots, or DDoS attacks. Cannot always be absorbed by autoscaling alone — require <strong>load shedding</strong> (deliberately rejecting requests to protect the system from collapse).</li>
+</ul>
+<h2>Cascading Failures</h2>
+<p>A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally.</p>
+<p><strong>Example</strong>: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.</p>
+<p>When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a <strong>metastable failure</strong>: a self-reinforcing feedback loop that persists even after the original fault is gone.</p>
+<p>Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. These failures are very hard to mitigate once started; the best strategy is to prevent fault propagation in the first place via isolation patterns (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/bulkhead.html">Bulkhead</a>).</p>
+<h2>Risk Management</h2>
+<p>Not every potential fault requires mitigation. Prioritise by:</p>
+<pre><code>risk score = probability × impact
+</code></pre>
+<p>High probability + high impact: address immediately.
+Low probability + low impact: accept and monitor.
+High impact + low probability: invest in blast-radius reduction even if probability seems negligible.</p>
+<p>This framing also determines the right mitigation strategy: reduce probability (preventive), reduce impact (palliative), or both.</p>
+<h2>Building for Tests, Not for Production</h2>
+<p>Nygard&#39;s &quot;Trampled&quot; case study (→ <a href="../sources/release-it.html">Release It</a> ch. 15) identifies a systemic failure mode: teams optimise the system to pass QA, not to survive production.</p>
+<p><strong>Symptoms</strong>:</p>
+<ul>
+<li>Configuration files written for the test environment topology (hostnames, ports, DB passwords, firewall assumptions) that must be manually corrected for production — and often aren&#39;t.</li>
+<li>Testing with &quot;polite&quot; load scripts that follow valid navigation paths and obey cookies, missing the real-world noise: bots, scrapers, cookieless clients, 404-generating redirects, repeated URL hammering.</li>
+<li>No safety devices (circuit breakers, shed-load mechanisms, thread-pool timeouts) because tests don&#39;t trigger the failure modes they protect against.</li>
+</ul>
+<p><strong>Consequences</strong>: even after three months of intensive load testing, the system crashed within 30 minutes of launch because the real world sent noise the tests never modeled. &quot;Add noise, create chaos&quot; — load tests should include sessions from cookieless clients, invalid URL floods, and bot-like repetitive requests.</p>
+<p><strong>Mitigation</strong>:</p>
+<ul>
+<li>Separate configuration override structure from the codebase — each environment-varying property defined in exactly one place; production credentials not accessible in QA or source control.</li>
+<li>Noise testing as a first-class load test scenario alongside the happy path.</li>
+<li>Safety devices that cut off bad situations regardless of how the request arrived (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</li>
+</ul>
+<p><strong>&quot;Nothing is as permanent as a temporary fix&quot;</strong>: emergency workarounds built under launch-day pressure often outlive their creators; some lasted a decade. The true cost of not building for production is a year of remediation rather than feature development, and lost revenue from every throttled user.</p>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../operations/availability.html">Availability</a> — redundancy, the primary mitigation for hardware faults and SPOFs</li>
+<li><a href="../distributed/failure-detection.html">Failure Detection</a> — timeouts and heartbeats: the tools for detecting gray failures</li>
+<li><a href="../distributed/dns.html">Dns</a> — DNS as a common SPOF</li>
+<li><a href="../distributed/tls.html">Tls</a> — certificate expiry as a SPOF</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — prevents cascading failures by stopping traffic to failing services</li>
+<li><a href="../patterns/timeout.html">Timeout</a> — bounds how long a blocking call can hold a thread; missing timeouts are the root cause of most resource exhaustion incidents</li>
+<li><a href="../patterns/retry.html">Retry</a> — safe retry strategy after transient failures; exponential backoff prevents retry storms</li>
+<li><a href="../patterns/bulkhead.html">Bulkhead</a> — resource isolation to limit blast radius</li>
+<li><a href="../distributed/load-balancing.html">Load Balancing</a> — health checks detect gray failures; watchdog pattern</li>
+</ul>
+<h2>The Airline Cascade: A Real Resource-Exhaustion Incident</h2>
+<p>Nygard&#39;s case study (→ <a href="../sources/release-it.html">Release It</a> ch. 2) illustrates all of the above failure types interacting:</p>
+<ol>
+<li><strong>Configuration / planned change</strong>: a database failover invalidated all JDBC connections in the pool. The connections were never removed because the pool had no heartbeat check.</li>
+<li><strong>Incorrect error handling in cleanup code</strong>: <code>Statement.close()</code> throws <code>SQLException</code> after the failover (Oracle JDBC driver attempts network I/O to release server resources). The <code>finally</code> block&#39;s exception from <code>stmt.close()</code> short-circuited before <code>conn.close()</code>, leaking the connection back into the pool as permanently stuck.</li>
+<li><strong>Resource pool exhaustion</strong>: after 40 calls, all 40 slots in the connection pool were exhausted. Subsequent <code>getConnection()</code> calls blocked forever with no timeout.</li>
+<li><strong>Cascade</strong>: CF application servers hung → downstream kiosk servers and IVR servers (which called CF via EJB/RMI) exhausted their own thread pools waiting for CF responses that never came.</li>
+<li><strong>Misleading health monitoring</strong>: CF&#39;s HTTP status endpoint was served by a separate thread pool from the EJB pool. It continued to respond &quot;healthy&quot; throughout the entire outage. Only deep health checks — checks that exercise the real code path — would have detected the failure.</li>
+</ol>
+<p><strong>The root fix required at multiple layers</strong>: validate connections on checkout (or background heartbeat); add timeouts on <code>getConnection()</code>; handle exceptions in <code>finally</code> blocks correctly; use deep health checks; isolate CF&#39;s thread pool so its failure cannot exhaust kiosk/IVR thread pools.</p>
+<h2>The Black Friday Cascade: Unbalanced Capacities in Production</h2>
+<p>Nygard&#39;s second case study (→ <a href="../sources/release-it.html">Release It</a> ch. 6) illustrates Unbalanced Capacities and resource pool exhaustion at a different scale:</p>
+<ol>
+<li><strong>Self-Denial Attack</strong>: marketing published a newspaper insert offering &quot;free home delivery&quot; on Black Friday — a traffic-pattern change the engineering team did not know about, which multiplied calls to the scheduling subsystem.</li>
+<li><strong>Unbalanced Capacities</strong>: 3,000 front-end threads calling 450 order management threads calling a scheduling server with capacity for ~25 concurrent requests (3 of 4 scheduling servers were offline for holiday maintenance).</li>
+<li><strong>Resource pool exhaustion without timeout</strong>: front-end connection pools to order management had <code>checkoutBlockTime</code> not configured — no timeout. All 3,000 threads blocked waiting for pool slots that never freed. Low CPU usage everywhere was the diagnostic signature.</li>
+<li><strong>Alert fatigue</strong>: the scheduling server&#39;s on-call team had been desensitized by chronic false-positive CPU alerts and did not respond to the real signal.</li>
+<li><strong>The accidental Bulkhead</strong>: the front-end had a separate connection pool just for scheduling (Conway&#39;s Law artifact). By dynamically setting that pool&#39;s max to zero and recycling the service via live admin scripts, scheduling was disabled without requiring a full server restart. Recovery took 90 seconds rather than the 6+ hours a full restart would have required.</li>
+</ol>
+<p><strong>Key lesson</strong>: operational tooling (custom monitoring scripts, admin API access) built before the incident was the survival factor. The team survived a novel failure because they had real-time visibility into thread state across 100 servers.</p>
+<h2>Sources</h2>
+<ul>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 24) — failure taxonomy: hardware, error handling, configuration, SPOFs, network/gray failures, resource leaks, load pressure, cascading/metastable failures, risk matrix.</li>
+<li>(→ <a href="../sources/release-it.html">Release It</a> ch. 2) — airline case study: JDBC connection pool exhaustion after database failover cascades to enterprise-wide outage.</li>
+<li>(→ <a href="../sources/release-it.html">Release It</a> ch. 6) — Black Friday case study: Unbalanced Capacities, resource pool exhaustion without timeouts, alert fatigue, and the accidental Bulkhead that enabled recovery.</li>
+<li>(→ <a href="../sources/release-it.html">Release It</a> ch. 15) — &quot;Trampled&quot; case study: building for tests vs production; noise testing gap; sessions ≠ users; session-bloat failure mode; temporary fixes that last decades.</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

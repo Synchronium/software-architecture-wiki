@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Key range, hash, consistent hashing, secondary indexes (local/global), rebalancing strategies, request routing; cross-partition complexity costs">
+  <meta property="og:title" content="Partitioning — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Key range, hash, consistent hashing, secondary indexes (local/global), rebalancing strategies, request routing; cross-partition complexity costs">
+  <title>Partitioning — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html" aria-current="page">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../distributed/index.html">Distributed</a> <span class="sep">›</span> Partitioning</nav></div>
+      <h1>Partitioning</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../distributed/index.html">concept</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/partitioning.html">partitioning</a><a class="tag-chip" href="../tags/sharding.html">sharding</a><a class="tag-chip" href="../tags/scalability.html">scalability</a><a class="tag-chip" href="../tags/databases.html">databases</a></ul>
+    </div><div class="page-body"><p>Partitioning (also called sharding) divides a large dataset across multiple nodes so that each node holds a subset. The goal is to spread <strong>data volume</strong> and <strong>query load</strong> across nodes so that a single-node bottleneck is avoided. Partitioning is the primary mechanism for achieving horizontal scalability in databases, message brokers, and stream processors.</p>
+<p>The challenge is choosing a partitioning scheme that distributes load evenly — a partition that receives a disproportionate share of queries is called a <strong>hot spot</strong>. Avoiding hot spots while still supporting efficient queries is the central tension in partition design.</p>
+<h2>Partitioning by Key Range</h2>
+<p>Assign a contiguous range of keys to each partition (like encyclopaedia volumes: A-C, D-F, ...). Within each partition, keys are kept sorted.</p>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li>Range queries are efficient — all keys in a range are in one partition.</li>
+<li>Sorted within partition enables sequential reads.</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>Range boundaries must be chosen carefully to distribute load.</li>
+<li>Access patterns can create hot spots: if the key is a timestamp and all writes are to &quot;today,&quot; all writes go to one partition. Mitigation: prefix the key with something other than the timestamp (e.g., sensor ID + timestamp).</li>
+</ul>
+<p><strong>Used in</strong>: HBase, Bigtable, MongoDB (range sharding), CockroachDB.</p>
+<h2>Partitioning by Hash of Key</h2>
+<p>Apply a hash function to the key and assign each partition a range of hash values (hash ring or bucket range).</p>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li>Distributes load uniformly (assuming a good hash function and diverse key space).</li>
+<li>Hot spots from key distribution are eliminated.</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>Range queries require hitting all partitions (or a separate range index).</li>
+<li>Hash boundaries must be managed on rebalancing.</li>
+</ul>
+<blockquote>
+<p><strong>Anti-pattern</strong>: <code>hash(key) mod N</code> is the naive approach and should be avoided. When N changes (a node is added or removed), almost all keys map to a different partition — requiring moving most of the data. Virtual-node consistent hashing or fixed partitions solve this: the mapping of key → partition stays stable; only the mapping of partition → node changes.</p>
+</blockquote>
+<h3>Consistent Hashing</h3>
+<p>Arrange hash values on a conceptual ring. Each node is responsible for the range from its position to the next node&#39;s position (clockwise). On node addition/removal, only the immediately adjacent partition range is affected — not all data is reshuffled.</p>
+<p><strong>Virtual nodes (vnodes)</strong>: each physical node is assigned multiple positions on the ring. This improves load distribution (prevents load concentration when a node takes a large ring segment) and makes data migration smoother when nodes are added/removed.</p>
+<blockquote>
+<p><strong>Terminology caution</strong>: Kleppmann notes that &quot;consistent hashing&quot; as used in practice rarely matches the original 1997 paper&#39;s definition, which relied on random node positions on the ring that create uneven distribution. Modern systems use Rendezvous hashing, jump hash, or similar. &quot;Consistent hashing&quot; is best avoided as a precise term; prefer &quot;hash partitioning with virtual nodes.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 6)</p>
+</blockquote>
+<p>Used in: Amazon DynamoDB, Apache Cassandra.</p>
+<h3>Jump Hash</h3>
+<p>A minimal, deterministic hash function that maps a key uniformly to one of N buckets and minimises remapping when N changes. Used in Google&#39;s Spanner and various storage systems.</p>
+<h2>Compound Keys and Hot Spot Mitigation</h2>
+<p>A compound key (e.g., <code>(user_id, timestamp)</code>) enables partitioning by the first component (user_id) while sorting by the second (timestamp) within that partition. This supports range queries scoped to a user&#39;s data while distributing across users.</p>
+<p><strong>Celebrity/heavy-hitter problem</strong>: a small number of keys (celebrity users, viral posts) receive orders of magnitude more traffic than average. Uniform distribution cannot help — all operations on that key go to one partition.</p>
+<p>Mitigation: <strong>add a random suffix</strong> to the hot key (e.g., <code>celebrity_id_7</code>) to distribute across multiple partitions. Reads must query all suffixed variants and merge — a trade-off of write distribution against read complexity. Two-phase aggregation: distribute writes across N partitions, aggregate results at read time.</p>
+<h2>Secondary Indexes and Partitioning</h2>
+<p>Secondary indexes (indexes on non-primary key fields) interact with partitioning in non-obvious ways.</p>
+<h3>Local Secondary Index (Document-Partitioned)</h3>
+<p>Each partition maintains its own secondary index, covering only the records in that partition.</p>
+<ul>
+<li><strong>Writes</strong>: fast — update only the local index of the partition being written to.</li>
+<li><strong>Reads</strong>: <strong>scatter-gather</strong> — query must be sent to all partitions, each returns its local results, client merges. Expensive for high-fan-out queries.</li>
+</ul>
+<p>Used in: MongoDB, Cassandra, Riak, Elasticsearch (default).</p>
+<h3>Global Secondary Index (Term-Partitioned)</h3>
+<p>A global index covers all partitions, but is itself partitioned by the indexed term.</p>
+<ul>
+<li><strong>Reads</strong>: efficient — query only the partition(s) of the global index relevant to the search term.</li>
+<li><strong>Writes</strong>: expensive — writing a record may require updating the global index in multiple partitions. Usually <strong>asynchronous</strong> — there is a lag between writing a record and the global index reflecting it.</li>
+</ul>
+<p>Used in: DynamoDB (Global Secondary Indexes), Spanner, Cassandra (secondary indexes with <code>ALLOW FILTERING</code> disabled).</p>
+<h2>Rebalancing Strategies</h2>
+<p>As load grows or nodes are added/removed, partitions must be moved between nodes.</p>
+<h3>Fixed Number of Partitions</h3>
+<p>Create many more partitions than nodes at the start (e.g., 1000 partitions for 10 nodes → 100 per node). When a node is added, move some partitions to it. Entire partitions are moved — no splitting needed. Typical: ~1000 partitions for a 10-node cluster in Riak and Elasticsearch.</p>
+<ul>
+<li>Simple operationally.</li>
+<li>Initial partition count must be chosen carefully — too few limits future scaling; too many increases overhead (each partition needs metadata, state tracking).</li>
+</ul>
+<p>Used in: Elasticsearch, Couchbase, Riak, Apache Kafka.</p>
+<h3>Dynamic Partitioning</h3>
+<p>Partitions split when they exceed a size threshold (HBase default: 10GB; MongoDB default configurable); merge when they fall below a minimum. Number of partitions adapts to data volume.</p>
+<ul>
+<li>Good for variable workloads and unknown data sizes.</li>
+<li>Risk: all data starts in one partition on an empty database — pre-splitting may be needed to avoid a write hot spot at startup.</li>
+</ul>
+<p>Used in: HBase, MongoDB.</p>
+<h3>Proportional to Nodes (Cassandra)</h3>
+<p>Fixed number of partitions <strong>per node</strong> (Cassandra default: 256 per node). When a node is added, it randomly splits existing partitions and takes half the data. New partitions are created proportionally to cluster size.</p>
+<ul>
+<li>Natural scaling: adding more nodes automatically creates more partitions.</li>
+<li>Partition size stays roughly constant as the cluster grows.</li>
+<li>Random split boundaries may create unequal partition sizes.</li>
+</ul>
+<p>Used in: Cassandra (Murmur3 partitioner with virtual nodes).</p>
+<h3>Fully Automatic Rebalancing: A Risk</h3>
+<p>Fully automatic rebalancing (no human approval) can interact dangerously with failure detection. If a node is slow (e.g., overloaded), other nodes may declare it dead and initiate rebalancing — which moves load to remaining nodes, which then become overloaded, which triggers more rebalancing. This cascading failure can bring down a healthy cluster. A human approval step for rebalancing (or at least rate limiting) is important in production. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 6)</p>
+<h2>Request Routing</h2>
+<p>When a client sends a request, which node handles it? Three options:</p>
+<ol>
+<li><p><strong>Round-robin with forwarding</strong>: any node accepts the request; if it doesn&#39;t own the data, it forwards to the correct node. Simple for clients; adds a network hop.</p>
+</li>
+<li><p><strong>Routing tier / load balancer</strong>: a dedicated routing layer knows the partition-to-node mapping and directs requests. Kafka&#39;s clients use this model with ZooKeeper providing the mapping.</p>
+</li>
+<li><p><strong>Client-side routing</strong>: the client knows the partition-to-node mapping and contacts the correct node directly. Requires clients to track cluster membership — stale routing information causes errors.</p>
+</li>
+</ol>
+<p><strong>Coordination services</strong> (ZooKeeper, etcd) are commonly used to store partition-to-node mappings. Nodes register themselves; routing tiers or clients subscribe to mapping changes. HBase, Kafka, SolrCloud use ZooKeeper for this.</p>
+<p><strong>Gossip protocol</strong> (Cassandra): nodes share cluster state with each other directly, without a central coordinator. Less operationally complex but eventual consistency of routing information.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Definitive treatment — partitioning strategies, secondary index designs, rebalancing approaches, and request routing with real system examples (ch. 6)</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Covers range and hash partitioning, consistent hashing (ring model with K/N reshuffling), static vs dynamic partitioning, gateway + coordination service (etcd/ZK) for request routing; emphasises cross-partition complexity costs (aggregations, distributed transactions, hotspots) — &quot;partitioning is not a free lunch&quot; (ch. 16)</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../distributed/replication.html">Replication</a> — partitioning and replication are orthogonal: each partition can be replicated</li>
+<li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a> — ZooKeeper is used for partition assignment and membership; consensus underpins consistent routing</li>
+<li><a href="../databases/storage-engines.html">Storage Engines</a> — storage engines are per-partition; partition key determines which node runs which storage engine</li>
+<li><a href="../streams/stream-processing.html">Stream Processing</a> — Kafka partitions are the unit of parallelism for stream consumers</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/leader-election.html">Leader Election</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*Building Event-Driven Microservices* — Adam Bellemare">
+  <meta property="og:title" content="Building Event-Driven Microservices — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*Building Event-Driven Microservices* — Adam Bellemare">
+  <title>Building Event-Driven Microservices — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html" aria-current="page">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> Building Event-Driven Microservices</nav></div>
+      <h1>Building Event-Driven Microservices</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/event-driven.html">event-driven</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/streaming.html">streaming</a><a class="tag-chip" href="../tags/kafka.html">kafka</a><a class="tag-chip" href="../tags/bounded-contexts.html">bounded-contexts</a><a class="tag-chip" href="../tags/ddd.html">ddd</a></ul>
+    </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/adam-bellemare.html">Adam Bellemare</a>
+<strong>Published:</strong> 2020 (O&#39;Reilly)
+<strong>Slug:</strong> <code>building-event-driven-microservices</code></p>
+<h2>Overview</h2>
+<p>Bellemare&#39;s book is the most comprehensive available treatment of event-driven microservices as an end-to-end architectural approach — covering not just the topology but the full lifecycle: event schema design, data liberation from legacy systems, stream processing, testing, deployment, and organisational prerequisites. The central thesis is that <strong>modern event brokers (persistent, replayable, infinite-retention) fundamentally change what&#39;s possible</strong>: services no longer need to couple directly to one another to access shared domain data, because the event stream becomes the canonical data communication layer.</p>
+<p>The book draws heavily on domain-driven design (bounded contexts, domain ownership) and applies it to the event streaming world. It makes a strong case that the missing piece in most traditional architectures is not the implementation communication structure, but the <strong>data communication structure</strong> — the mechanism by which domain data flows across the organisation. EDM architectures formalise this missing layer.</p>
+<p>Technical reviewers include Ben Stopford (Confluent, Apache Kafka co-creator side) and Scott Morrison (PHEMI Systems). The book is practically oriented: it references Kafka, Kafka Connect, Debezium, Apache Avro, Protobuf, and other real tools throughout.</p>
+<h2>Key Claims</h2>
+<ul>
+<li>The data communication structure is the historically missing layer in software architectures; EDM formalises it (→ ch. 1)</li>
+<li>Events are not mere signals — they are the single source of truth; they must contain the complete description of what happened (→ ch. 3)</li>
+<li>Explicit schemas (Avro, Protobuf) with full-compatibility schema evolution are non-negotiable; implicit schemas are a long-term liability (→ ch. 3)</li>
+<li>Message brokers and event brokers are fundamentally different: event brokers retain events indefinitely and allow each consumer its own full copy (→ ch. 2)</li>
+<li>CDC frameworks (Kafka Connect, Debezium) are a bootstrap tool, not a destination; teams should eventually own their own event production (→ ch. 4)</li>
+<li>The microservice single writer principle: one producer per event stream (→ ch. 2)</li>
+<li>Hybrid architectures (sync + async) are the norm; the question is which tasks suit which model (→ ch. 1)</li>
+</ul>
+<h2>Chapter Notes</h2>
+<h3>Preamble</h3>
+<p>Book addresses a gap: existing literature either covers event-driven systems superficially (as a replacement for request-response) or covers only one aspect of the puzzle. Technical reviewers: Ben Stopford (Confluent), Scott Morrison (PHEMI Systems).</p>
+<h3>Chapter 1 — Why Event-Driven Microservices</h3>
+<p>Introduces three communication structures — business, implementation, and data — and argues that the data communication structure has historically been absent or ad hoc, forcing the implementation communication structure to serve double duty. This creates the characteristic pathologies of traditional architectures: point-to-point couplings, data access difficulty, inability to separate services cleanly.</p>
+<p>EDM architectures formalise the data communication layer via event streams, allowing services to produce domain data once and have any consumer access it independently. Conway&#39;s Law (→ <a href="../concepts/conways-law.html">Conways Law</a>) connects team communication structure to architectural structure; the event stream as a data layer partially decouples product boundaries from team boundaries.</p>
+<p>Also introduces DDD foundations: domain, subdomain, bounded context (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>). Bounded contexts should align on business requirements, not technical requirements. Key anti-pattern: technical alignment (separate app/data/ops teams) creates cross-cutting dependencies and distributed monoliths.</p>
+<p>Benefits of EDM: granularity, scalability, technological flexibility, business-requirement flexibility, loose coupling, CD support, high testability. Drawbacks of synchronous microservices: point-to-point coupling, dependent scaling, service failure handling complexity, API versioning overhead, data access tied to implementation, distributed monolith risk.</p>
+<h3>Chapter 2 — Event-Driven Microservice Fundamentals</h3>
+<p><strong>Three event types</strong>: unkeyed (singular fact, no key), entity (keyed on unique ID, tracks entity state over time), keyed (keyed, non-entity, used for partitioning and data locality). Entity events are the most important — they power the table-stream duality.</p>
+<p><strong>Table-stream duality</strong> (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>): applying entity events in order materialises a stateful table; any table can produce an event stream by publishing each update. Tombstones (null-value keyed events) signal deletion. Log compaction retains only the most recent event per key; eliminates history but reduces disk usage.</p>
+<p><strong>Event broker requirements</strong>: partitioning (parallel consumption), strict ordering within partitions, immutability, indexing (offsets), infinite retention, replayability. These distinguish an event broker from a message broker. Message brokers delete events after consumption and provide only subset-of-events per consumer; event brokers provide each consumer a full, independent copy of all events via offsets.</p>
+<p><strong>Consuming modes</strong>: as an event stream (consumer groups, independent offsets, partition assignment), or as a queue (each event consumed by one instance, no ordering guarantee, not all brokers support this).</p>
+<p><strong>Microservice single writer principle</strong>: one producer per event stream — enables traceable data lineage and clear ownership.</p>
+<p><strong>Microservice tax</strong>: the sum of costs (financial, manpower, opportunity) for running the full platform — event broker, CMS, deployment pipelines, monitoring, logging. Must be paid centrally or independently. Small organisations should consider modular monolith instead.</p>
+<h3>Chapter 3 — Communication and Data Contracts</h3>
+<p><strong>Data contract</strong> = data definition (fields, types) + triggering logic (the specific business event that caused it). Both parts are important; changing the triggering logic breaks the semantic meaning of the event, not just its format.</p>
+<p><strong>Explicit schemas</strong> (Avro, Protobuf, Thrift) are essential. Implicit schemas create tribal knowledge dependencies, inter-service inconsistencies, and silent production failures. A common library interpreting implicit schemas creates language-lock, version coupling, and release-cycle dependencies — avoid it.</p>
+<p><strong>Schema evolution</strong> (→ <a href="../concepts/contracts.html">Contracts</a>, <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>): forward compatibility (newer schema data readable by older consumer), backward compatibility (older schema data readable by newer consumer), full compatibility (both — use by default; can always loosen later, hard to tighten). Schema registry (Confluent Schema Registry, Apache Pulsar&#39;s built-in registry) manages versioning.</p>
+<p><strong>Breaking changes</strong>: for entities, always re-create under the new schema (producer&#39;s responsibility, not consumer&#39;s); keep old stream for forensics, produce new entities to a new stream. For events, create a new stream; old consumers migrate in their own time.</p>
+<p><strong>Event design principles</strong>:</p>
+<ul>
+<li>Tell the truth, the whole truth: the event is the complete record; consumers should not consult any other source</li>
+<li>One event definition per stream — mixing types makes schema validation impossible</li>
+<li>Use narrowest data types — avoid string for numbers, integers for booleans, strings for enums</li>
+<li>Keep events single-purpose — type discriminator fields (&quot;productType: Book/Movie&quot;) are an anti-pattern; they couple unrelated business domains into one schema, accumulate nullable fields, and complicate evolution</li>
+<li>Minimise event size — check whether data is truly related and bounded context is scoped correctly</li>
+<li>Involve prospective consumers in event design</li>
+<li>Avoid events as semaphores/signals — if the event doesn&#39;t carry the result, there are two sources of truth</li>
+</ul>
+<h3>Chapter 4 — Integrating Event-Driven Architectures with Existing Systems</h3>
+<p><strong>Data liberation</strong>: the publication of cross-domain data from existing systems to event streams as part of an EDM migration strategy. The liberated stream must eventually-consistently replicate the source data store; it becomes the single source of truth for downstream consumers.</p>
+<p>Three data liberation patterns (→ <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>):</p>
+<ol>
+<li><strong>Query-based</strong>: bulk load + incremental timestamp/ID polling. Flexible (any data store), customisable (views isolate internal models), but misses hard deletes, intermittent capture, potential resource load on source</li>
+<li><strong>Log-based (CDC)</strong>: reads database write-ahead logs or binary logs (Debezium for MySQL/PostgreSQL). Low latency, minimal performance impact, tracks hard deletes — but exposes internal data models and denormalization must happen externally; Debezium and Maxwell are primary tools</li>
+<li><strong>Outbox table</strong>: application writes to internal table + outbox in same transaction; relay publishes from outbox. Schema validation before writing (serialisation-before-commit) is the strongest approach; isolates internal data model; requires application code changes</li>
+</ol>
+<p><strong>Eventification</strong>: a downstream event processor that denormalises normalised relational streams (combining User + Location + Employer) into single public-facing entity events — keeps internal models private while providing clean public contracts.</p>
+<p><strong>CDC frameworks</strong> (Kafka Connect, Apache Gobblin, Apache NiFi): useful for bootstrapping and for maintenance-only legacy systems, but create cross-team dependency on the framework team. Prefer having each team own its own event production (outbox or native) to avoid connector fragility and encourage &quot;event-first&quot; thinking.</p>
+<p><strong>Data sinking</strong>: consuming events from the broker and writing to a data store — the inverse of liberation. Enables legacy non-event-driven systems to receive event data without modification.</p>
+<h3>Chapter 5 — Event-Driven Processing Basics</h3>
+<p>The basic EDM microservice loop: consume event → process → emit output events. Introduces stateless topology primitives (→ <a href="../streams/stream-processing.html">Stream Processing</a>):</p>
+<p><strong>Transformation operators</strong>: Filter (0 or 1 output), Map (changes key and/or value), MapValue (value only, no repartition required), Custom (arbitrary logic, external calls). Streams can be branched to multiple outputs or merged from multiple inputs; merging requires a coherent unified schema.</p>
+<p><strong>Repartitioning</strong>: producing a new stream with a different key, partition count, or partitioner algorithm to satisfy data locality requirements for downstream stateful consumers. <strong>Copartitioning</strong>: repartition two streams to the same count + same partitioner so events with the same key always land on the same consumer instance — the prerequisite for stateful joins.</p>
+<p><strong>Partition assignment</strong>: the partition assignor distributes partitions equitably across consumer instances. Round-robin (default) keeps copartitioned groups together. Static assignment keeps state-heavy partitions pinned to specific instances even when consumers leave and rejoin. Custom assignment based on external signals (e.g., consumer lag) is also possible.</p>
+<p>Stateless failure recovery is trivial: new instance joins the consumer group and inherits partitions. No state restoration required.</p>
+<h3>Chapter 6 — Deterministic Stream Processing</h3>
+<p>Goal: a microservice should produce the same output when reprocessing historical data as it did in near-real-time. Best-effort determinism is achievable; full determinism is not (wall-clock dependencies, external system calls, intermittent failures are inherently nondeterministic).</p>
+<p><strong>Timestamp types</strong>: event time (producer-assigned), broker ingestion time, consumer ingestion time, processing time. Event time is always preferred for determinism. Clock synchronisation via NTP provides ±100ms accuracy across the internet; local LAN NTP achieves &lt;1ms.</p>
+<p><strong>Event scheduling</strong>: when consuming from multiple partitions, select the event with the oldest timestamp for processing. Without scheduling, partition-order consumption would produce different results in real-time vs reprocessing (→ <a href="../streams/stream-processing.html">Stream Processing</a>).</p>
+<p><strong>Watermarks vs stream time</strong>: watermarks (Flink, Beam, Spark, Samza) propagate downstream declarations that all events ≤ time T have been processed; a node with multiple inputs sets its event time to the minimum of all inputs. Stream time (Kafka Streams) tracks the highest event-time seen so far; never decremented; each subtopology (split at repartition boundaries) maintains its own stream time independently.</p>
+<p><strong>Late event handling</strong>: drop, wait, or grace period — see <a href="../streams/stream-processing.html">Stream Processing</a> for full taxonomy. Strategy must be business-defined, not engineering default.</p>
+<p><strong>Reprocessing</strong>: reset consumer offsets to the beginning; recalculate all stateful consumers; assess volume/time impact; gate side-effects (emails, payments) against replay (→ <a href="../streams/stream-processing.html">Stream Processing</a>).</p>
+<h3>Chapter 7 — Stateful Streaming</h3>
+<p>Introduces the internal vs external state store taxonomy (→ <a href="../streams/stream-processing.html">Stream Processing</a>):</p>
+<p><strong>Internal state stores</strong>: co-located with the microservice (RocksDB is the canonical implementation). Partition-local materialization. <strong>Changelog</strong>: a compacted broker-backed stream that checkpoints state changes, enabling fast recovery without full input stream replay. <strong>Hot replicas</strong>: secondary copies of materialized state on standby instances — zero-downtime failover at the cost of extra disk. <strong>Global state stores</strong>: materialize all partitions to every instance; for lookup/dimension tables only, not for driving event logic (would produce duplicate output).</p>
+<p>Performance benchmark: RocksDB on local SSD = ~65μs / 15,400 req/s per thread. With 1ms network latency (network-attached disk) = ~939 req/s — 16× reduction.</p>
+<p><strong>External state stores</strong>: any technology; full data locality benefit (cross-partition queries); race condition risk (multiple instances writing from independent stream times); each microservice must own its own state — sharing state between microservices is a strong anti-pattern.</p>
+<p><strong>Effectively once processing</strong> (→ <a href="../streams/stream-processing.html">Stream Processing</a>, <a href="../distributed/idempotency.html">Idempotency</a>): with broker transactions (Kafka) — atomic commit of offsets + changelog + output events; without broker transactions — deduplication via dedupe IDs (hash of event fields, TTL-bounded store, partition-local); or state store transactions (store offsets in state store for atomic state+offset updates, but output events remain at-least-once).</p>
+<p><strong>Rebuilding vs migrating</strong>: rebuilding from source streams is always the safest approach after schema changes; migration is possible for simple additive changes but risky for complex ones.</p>
+<h3>Chapter 8 — Building Workflows with Microservices</h3>
+<p>Covers choreography and orchestration in the EDM context (→ <a href="../patterns/saga.html">Saga</a>):</p>
+<p><strong>Choreography</strong>: each service reacts to its input events independently; no central coordinator; emergent workflow from service relationships. Easy to add new steps; brittle to re-ordering; monitoring requires materializing each event stream. Best for simple workflows with 2–3 services and stable ordering.</p>
+<p><strong>Orchestration</strong>: a central orchestrator contains all workflow logic and issues commands to worker microservices; workers contain only their bounded context&#39;s business logic (not the orchestrator). The orchestrator tracks workflow state in a materialized store — easy to query and monitor.</p>
+<p><strong>Anti-pattern: God orchestrator</strong> — an orchestrator that issues granular commands to weak minion services. Breaks bounded contexts, produces poor encapsulation, and makes scaling ownership across teams impossible. The orchestrator should delegate full responsibility; workers should be self-contained.</p>
+<p><strong>Event-driven vs direct-call orchestration</strong>: event-driven is more durable (broker isolates failures, built-in retry); direct-call is faster and simpler (good for FaaS workflows). Often mixed in the same workflow.</p>
+<p><strong>Distributed transactions (sagas)</strong>: choreographed sagas work for simple 2–3 service transactions with stable ordering; orchestrated transactions better for complex workflows (centralised rollback, support for timeouts and human inputs, single output stream for transaction results).</p>
+<p><strong>Compensation workflows</strong>: when strict rollback is impractical or worse for the user than a business-level remedy. Not all workflows need to be perfectly reversible — compensation is often preferable to rollback for customer-facing systems.</p>
+<h3>Chapter 9 — Microservices Using Function-as-a-Service</h3>
+<p>FaaS (&quot;serverless&quot;) is best understood as a basic producer/consumer implementation that regularly fails — a function executes, terminates, and must re-establish any connections on the next invocation. This framing shapes all FaaS design decisions.</p>
+<p><strong>Trigger types</strong>: event-stream listener (integrated in AWS/GCP/Azure for proprietary brokers; external via Kafka Connect for open source brokers), consumer group lag monitoring (function starts when lag exceeds threshold), scheduled (periodic polling), webhook (direct invocation), resource event (file system/data store changes).</p>
+<p><strong>Critical limitation</strong>: major cloud providers (AWS/GCP/Azure) retain events in their proprietary brokers for only 7 days. This is insufficient for EDM architectures requiring reprocessing and infinite retention. Open source FaaS frameworks (OpenFaaS, OpenWhisk, Kubeless) integrate with Kafka/Pulsar and are preferable for EDM.</p>
+<p><strong>State</strong>: FaaS functions must use external state stores — local state is not guaranteed across invocations. Azure Durable Functions is an exception; it abstracts state persistence automatically.</p>
+<p><strong>Offset commit timing</strong>: commit offsets <em>after</em> processing completes (at-least-once guarantee). Committing at start risks data loss if the function fails.</p>
+<p><strong>Ordering and determinism</strong>: FaaS lacks built-in event scheduling and copartitioned state processing. Out-of-order processing is a real risk when calling other functions asynchronously. For deterministic processing, use orchestrated synchronous function calls or a full streaming framework.</p>
+<p><strong>Scaling</strong>: scale based on consumer lag; use step-based scaling or hysteresis to avoid constant consumer group rebalancing (which stalls processing).</p>
+<p><strong>Best fit for FaaS</strong>: stateless processing, highly variable load, simple stateful logic not requiring event ordering.</p>
+<h3>Chapter 10 — Basic Producer and Consumer Microservices</h3>
+<p>BPC = consume → apply business logic → emit output events. Uses basic client libraries with no built-in event scheduling, watermarks, changelogs, or local stateful scaling. Best for external state stores.</p>
+<p><strong>Where BPC works well</strong>:</p>
+<ul>
+<li><strong>Legacy system integration</strong>: embed a basic client in the legacy system, or use a sidecar BPC to sink event stream data into the legacy data store without modifying the legacy codebase</li>
+<li><strong>Gating pattern</strong>: wait for all required prerequisite events to arrive before emitting output; order-independent; materialise each input stream into a local table and check for completeness before emitting</li>
+<li><strong>Data-heavy workloads</strong>: when the business logic is offloaded entirely to an external data layer (ML model, geospatial store, full-text search) — BPC acts as an integration layer</li>
+<li><strong>Independent scaling</strong>: processing instances and data store can be scaled independently when their load patterns differ (e.g., sleep/wake cycles)</li>
+</ul>
+<p><strong>Hybrid BPC</strong>: delegate complex operations (large joins, aggregations) to an external stream-processing framework (Spark, Flink, KSQL); receive results back via an intermediate event stream. Unlocks framework capabilities without rewriting the microservice.</p>
+<p><strong>Limitations</strong>: requires custom library development for event scheduling, timestamp-based windowing, and copartitioned stateful processing — capabilities that heavyweight/lightweight frameworks (Ch 11–12) provide natively.</p>
+<h3>Chapter 11 — Heavyweight Framework Microservices</h3>
+<p>Covers Apache Spark, Flink, Storm, Heron, and Beam (→ <a href="../streams/stream-processing.html">Stream Processing</a>).</p>
+<p><strong>Two defining characteristics</strong>: (1) require a dedicated resource cluster (master + worker nodes + optional ZooKeeper); (2) use their own internal mechanisms for failure recovery, resource allocation, and shuffling — distinct from the event broker and CMS.</p>
+<p><strong>Checkpointing</strong>: operator state (partitionId → offset) + key state (key → value) must be atomically snapshotted to durable external storage (HDFS). Rebuilt before any new events are processed on recovery.</p>
+<p><strong>Dynamic scaling</strong>: cluster restart required for most frameworks. Spark&#39;s external shuffle service (ESS) enables limited live scaling by decoupling upstream producers from downstream consumers of shuffled events. Spark 3.0 added a checkpoint-free alternative.</p>
+<p><strong>Deployment evolution</strong>: CMS-integrated deployment (Flink/Spark on Kubernetes) allows each job to have isolated worker resources managed by the CMS — merging heavyweight and microservice deployment patterns.</p>
+<p><strong>Limitations for EDM</strong>: primarily analytical workloads (ETL, windowed aggregations, anomaly detection); JVM-only; not all frameworks support indefinite stream materialization required for gating patterns and table-table joins.</p>
+<h3>Chapter 12 — Lightweight Framework Microservices</h3>
+<p>Contrasts with heavyweight; no dedicated cluster (→ <a href="../streams/stream-processing.html">Stream Processing</a>).</p>
+<p><strong>Canonical implementations</strong>: Apache Kafka Streams (embedded library; KStream + KTable API; KSQL via Confluent; foreign-key table-table joins) and Apache Samza embedded mode (similar features; predates Kafka Streams; uses ZooKeeper by default but supports Kubernetes).</p>
+<p><strong>Key architectural benefit</strong>: event broker acts as the shuffle layer (internal event streams replace cluster-internal communication) AND as the state recovery layer (changelogs replace checkpoints to HDFS). Applications deploy and scale like any other microservice.</p>
+<p><strong>Dynamic scaling</strong>: add instances → consumer group rebalance → changelog replay → resume. No application restart required.</p>
+<p><strong>Trade-off</strong>: both implementations are Kafka-only and JVM-only; less portable than heavyweight frameworks.</p>
+<p>The stream-table-table join example in Kafka Streams (Advertisement-Sessions → conversion aggregation → join with Advertisement entity stream) illustrates how the lightweight framework handles complex relational event processing without a heavyweight cluster.</p>
+<h3>Chapter 13 — Integrating Event-Driven and Request-Response Microservices</h3>
+<p>EDM and request-response are complementary, not competing. External systems (mobile apps, IoT, third-party APIs, browsers) predominantly communicate via request-response; the receiving service&#39;s job is to translate these into the event stream where appropriate (→ <a href="../concepts/api-design.html">Api Design</a>).</p>
+<p><strong>External event types</strong>: <em>autonomously generated</em> events originate from client products unprompted (analytical events, sensor readings, usage metrics — Netflix watch history is the canonical example); <em>reactively generated</em> events arise from your service making a blocking call to a third-party API and converting the response to an event (payment gateway, email service). Both types are received via request-response and fed into the event stream.</p>
+<p><strong>Multi-version handling for analytical events</strong>: mobile and IoT apps cannot be force-upgraded on every schema change. Treat external event sources as a set of microservice instances; the event receiver service must handle multiple concurrent schema versions, routing each to the correct output stream by schema type.</p>
+<p><strong>Third-party API integration</strong>: embed a blocking call inside the consume-process-emit loop; commit offsets only after success. Drawbacks: nondeterminism on reprocessing (the API may return different results than during original processing), and reprocessing can flood the third-party API with a burst of requests — throttle with quotas and microservice-level rate limiting.</p>
+<p><strong>Serving state via REST API — internal state stores</strong>: each instance materializes only its assigned partition shards; request routing must reach the instance hosting the requested key. The correct instance is determined by applying the partitioner logic to the request key to get the partition ID, then cross-referencing the consumer group&#39;s partition assignments. Round-robin load balancing gives a hit rate of <code>1/instanceCount</code>. A smart load balancer pre-routes using partition + consumer group assignments, but this couples the LB to the topology — requires co-deployment and testing. Every instance must still handle misdirected requests and redirect.</p>
+<p><strong>Serving state via REST API — external state stores</strong>: any instance can serve the full domain; no routing required; scaling can exceed partition count (extra instances don&#39;t process events but serve requests and act as partition failover standby). Two sub-patterns:</p>
+<ul>
+<li><em>All-in-one</em>: same microservice executable processes events and serves the REST API; simplest deployment model.</li>
+<li><em>Separate microservice</em>: API server is a distinct executable sharing the external state store; same bounded context + same code repo + deployed together. Advantages: language independence, failure isolation between processor and server. Disadvantages: schema/topology changes must be coordinated across both executables; couples two services to a shared data store (softened by treating them as a composite unit).</li>
+</ul>
+<p><strong>Event-first request handling</strong>: parse the incoming request into an event, publish to stream, process asynchronously, materialize to state. Provides a durable record; enables any service to consume the data. Trade-off: read-after-write is eventually consistent (event must materialize before it can be joined or queried); mitigation — cache the just-written value in memory for immediate non-join use.</p>
+<p><strong>Asynchronous UI</strong>: user-facing services consuming event streams must communicate processing latency to the user (&quot;please wait&quot; with disabled input, spinning indicator). Push the UI update when the event has been materialized — business rules govern when a materialized state is &quot;ready&quot;. Account for: initial catch-up from time-zero, ongoing updates, retry duplicates (ensure idempotent consumers).</p>
+<p><strong>Approval pattern (gating with human-in-the-loop)</strong>: multiple bounded contexts, each as a separate microservice; human approvals are captured as events; each approval gate produces an event only when its approval conditions are met; downstream services consume approval events, not the original request events. This provides a full audit trail and allows the UI to be stateless (all state is in the event streams). The newspaper designer → editor approval → advertiser approval example illustrates cascading human-in-the-loop gating across three distinct bounded contexts.</p>
+<p><strong>Microfrontends</strong>: frontend components aligned to bounded contexts; each backed by its own EDM microservice. Pairs naturally with event-driven backends because both are composition-based — each service materializes exactly the state it needs from the event streams, and the microfrontend renders that state. Requires a common style guide and lean shared UI element library to maintain visual consistency. Loading state must be handled gracefully for individual component failures. See <a href="../concepts/architecture-quantum.html">Architecture Quantum</a> for the quantum-based rationale.</p>
+<h3>Chapter 14 — Supportive Tooling</h3>
+<p>EDM at scale requires tooling that the organisation can self-serve. Most tooling is custom-built; few open source implementations cover the full surface area.</p>
+<p><strong>Microservice-to-team assignment system</strong>: the foundational tool — tracks which team owns which microservice and which event stream. All other tools depend on it: offset management requires ownership checks; ACL changes require owner approval; schema notification requires routing to the team contact. Build or acquire this first.</p>
+<p><strong>Event stream metadata tagging</strong>: attach metadata to streams; only the owning team can modify tags. Key tags: <em>owner</em> (the microservice that writes it), <em>PII</em> (personal identifiers — access requires explicit approval), <em>financial</em> (billing/revenue events), <em>namespace</em> (bounded context hierarchy — hides streams from outside-namespace services), <em>deprecation</em> (grandfathered streams blocked from new consumers; delete when consumer count reaches zero). Custom tags should be defined per organisation.</p>
+<p><strong>Quotas</strong>: set at event broker level; prevent accidental denial-of-service from a chatty producer or highly parallelised consumer group; limits CPU/IO share for a given producer or consumer. Set minimum resource guarantees for steady-state services; exempt producers receiving third-party input (throttling them can cause data loss).</p>
+<p><strong>Schema registry workflow</strong>: producer serialises event → registers schema with registry → gets back a schema ID → appends the short ID to the serialised event → caches the ID locally. Consumer receives event → reads schema ID → looks up schema from local cache or registry → deserializes event → caches new schemas. Confluent&#39;s implementation stores schemas as events in the broker itself (durable by default). This eliminates schema payload from each event (only the compact ID travels), enables data discovery via free-text search, and provides a single reference for schema evolution.</p>
+<p><strong>Schema creation/modification notifications</strong>: alert consuming teams when an upstream schema they depend on changes. ACLs (next) identify which services consume which streams; cross-referencing those ACLs against the schema change log identifies affected teams. The microservice-to-team assignment system routes the notification to the right team.</p>
+<p><strong>ACLs — enforcing the single writer principle</strong>: each microservice is assigned WRITE permission to only its output streams; no other service can write them. Typical permission set: input streams → READ; output streams → CREATE + WRITE; internal/changelog streams → CREATE + WRITE + READ. Enable ACL enforcement from day one — retrofitting is extremely painful (requires auditing every existing connection). The granting/revoking of permissions should itself be stored as events (immutable audit log). ACLs also enable automatic orphan detection: a stream with no consumer READ permissions and no active producer can be marked for deletion.</p>
+<p><strong>Offset management</strong>: three operations — <em>reset</em> (reprocess from the beginning when logic changes); <em>advance</em> (skip old data, consume from latest); <em>specify</em> (set offset to an exact point in time, e.g. N minutes before a crash for disaster recovery). Access is gated by the microservice-to-team assignment system.</p>
+<p><strong>State management and application reset</strong>: tooling must be able to delete internal streams, changelog streams, and external state store materializations, then reset consumer group offsets to the start — enabling a clean reprocessing from scratch. Ownership-gated: only the microservice owner or admin can reset state.</p>
+<p><strong>Consumer offset lag monitoring</strong>: <code>lag = most_recent_offset − last_committed_offset</code>. Burrow (Apache Kafka) computes lag using historical deviation from norms, avoiding false positives in high-throughput streams where lag is never exactly zero. Hysteresis (a scaling tolerance threshold) prevents endless scale-up/scale-down loops when lag oscillates around the threshold.</p>
+<p><strong>Streamlined microservice creation (7 steps)</strong>: (1) create repo; (2) wire CI pipeline; (3) configure webhooks; (4) assign team ownership; (5) register input stream ACLs; (6) create output streams with write permissions; (7) apply microservice template/code generator. Automation ensures new projects inherit current tooling and conventions rather than copying a stale older project.</p>
+<p><strong>Dependency tracking and topology visualisation</strong>: derive all producer–consumer relationships from the ACL permission graph — guaranteed complete, because no service can operate without registering permissions. ACL-derived topology enables: data lineage tracing (which ancestor services produced this event), team overlay visualisation, data discovery, interconnectedness metrics (cross-team stream connections as a coupling proxy), and mapping of microservices to business requirements. Contrast with self-reporting: voluntary and inherently incomplete.</p>
+<h3>Chapter 15 — Testing Event-Driven Microservices</h3>
+<p>EDM topology modularity makes testing tractable: each service has well-defined I/O (event streams, state stores, request-response API). The chapter is explicitly a companion to, not a replacement for, general testing resources (→ <a href="../concepts/api-testing.html">Api Testing</a>).</p>
+<p><strong>Unit testing</strong>: stateless functions are trivial — test filter, map, and custom transformers with boundary conditions. Stateful functions need a state store available for the test duration (mock for isolation; local real implementation for fidelity). Topology testing frameworks (Kafka Streams <code>TopologyTestDriver</code>, Spark <code>MemoryStream</code>, Flink/Beam built-ins) exercise the full topology without a live broker — inject events with controlled timestamps and ordering; assert on output streams.</p>
+<p><strong>Schema evolution testing</strong>: pull schemas from schema registry; run compatibility checks as part of CI submission. Some frameworks generate schemas from code at compile time, enabling automatic comparison.</p>
+<p><strong>Local integration testing</strong>: two approaches — <em>embedded</em> (start broker + schema registry + topology in the same JVM; JVM-only, works well for Kafka/Flink which are all JVM); <em>containerized</em> (all dependencies in a shared container; polyglot-compatible, more portable). Test both event-driven and request-response logic simultaneously in local integration.</p>
+<p><strong>Event data strategies</strong>: (1) production data — accurate but security risk, potential prod impact from quota-violating copy burst; (2) curated datasets — controlled but becomes stale and schema changes require updates; (3) schema-generated mock events — no prod impact, supports fuzzing, but relationship integrity must be manually ensured.</p>
+<p><strong>Shared testing environment anti-pattern</strong>: tragedy of the commons — abandoned streams, stale data, interfering load tests. Disposable ephemeral environments (requires multicluster tooling investment) are the preferred alternative.</p>
+<p><strong>Production testing</strong>: run new microservice with its own consumer group and output streams alongside existing production services; excellent for smoke testing; risky for load testing; requires strict cleanup.</p>
+<h3>Chapter 16 — Deploying Event-Driven Microservices</h3>
+<p>Deployment complexity in EDM is amplified by stateful services that may require state store rebuilds and event stream reprocessing on deployment (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>).</p>
+<p><strong>Key deployment principles</strong>: give teams deployment autonomy (if deployments require synchronisation across services → bounded context smell); standardise process via CI; plan for reprocessing burst impacts on downstream services and SLAs; negotiate breaking schema changes with downstream teams before deploying.</p>
+<p><strong>Basic full-stop pattern (5 steps)</strong>: (1) commit → trigger CI; (2) unit + integration tests in ephemeral environment; (3) pre-deployment validation (stream existence, ACL permissions, schema compatibility); (4) stop → reset → deploy → start; (5) post-deployment validation (lag, logs, endpoint health).</p>
+<p><strong>Rolling update pattern</strong>: update one instance at a time while keeping the service live. Prerequisite: no breaking changes to state store schema, topology structure, or internal event schemas. Brief period of mixed old/new logic during rollout.</p>
+<p><strong>Breaking schema change patterns</strong>: <em>eventual migration</em> (two streams — old deprecated, new current; consumers migrate in their own time; risk: migration lingers indefinitely); <em>synchronised migration</em> (single switch; all consumers must update before cutover; rarer; high risk if consumers fail their migration). Entity stream changes always require re-creating the entity stream.</p>
+<p><strong>Blue-green deployment</strong>: zero downtime; works for event-consuming services; DOES NOT WORK for event-producing services (both blue and green write to the same output streams → entity overwrites or event duplicates). Use rolling update or full-stop for producers.</p>
+<h3>Chapter 17 — Conclusion</h3>
+<p>The conclusion provides a synthesis of the book&#39;s core arguments, not new content. Key summaries worth capturing:</p>
+<p><strong>Communication layers</strong>: a mature data communication layer decouples the ownership and production of data from its access and consumption — services no longer need to perform double duty as both business logic processors and data-access APIs for other services. Failures in one producer no longer make data inaccessible; consumers continue consuming from the broker during producer outages.</p>
+<p><strong>Microservice tax components</strong> (the essential infrastructure every EDM organisation must pay for):</p>
+<ol>
+<li>Event broker</li>
+<li>Schema registry and data exploration service</li>
+<li>Container management system (CMS)</li>
+<li>Continuous integration, delivery, and deployment service</li>
+<li>Monitoring and logging service</li>
+</ol>
+<p>Not all organisations will pay all five components at once — start with the event broker or CMS, then add others as needed. Cloud providers (AWS, GCP, Azure) significantly reduce overhead.</p>
+<p><strong>Not all microservices need to be &quot;micro&quot;</strong>: organisations that haven&#39;t yet paid the microservice tax can use fewer, larger services and still adopt EDM principles to decouple bounded contexts from one another. The transition path is clear: put important business entities and events into the event broker; use the event broker as the single source of truth; avoid direct calls between services.</p>
+<p><strong>Final position</strong>: the data communication layer is the essential architectural contribution of EDM — it extends the power of organisational data to any service that requires it, eliminates access boundaries, and reduces unnecessary coupling caused by request-response integration patterns.</p>
+<h2>Notable Quotes</h2>
+<blockquote>
+<p>&quot;One of the tenets of event-driven microservices is that core business data should be easy to obtain and usable by any service that requires it.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;An event must describe as accurately as possible what happened and why. It is a statement of fact and, when combined with all the other events in a system, provides a complete history of what has happened.&quot; (ch. 3)</p>
+</blockquote>
+<blockquote>
+<p>&quot;CDC tools are not the final destination in moving to an event-driven architecture, but instead are primarily meant to help bootstrap the process.&quot; (ch. 4)</p>
+</blockquote>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — DDD foundations; three communication structures</li>
+<li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — expanded with BEDM&#39;s event broker and microservice fundamentals</li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — data liberation patterns from ch. 4</li>
+<li><a href="../concepts/contracts.html">Contracts</a> — schema evolution, event design principles, schema registry workflow, ACL enforcement (ch. 3, 14)</li>
+<li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — table-stream duality, materialization, CDC</li>
+<li><a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a> — Avro, Protobuf, schema evolution</li>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — three communication structures; Conway&#39;s Law in EDM context</li>
+<li><a href="../concepts/api-design.html">Api Design</a> — serving state from internal/external state stores, event-first request handling (ch. 13)</li>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — micro-frontends aligned to bounded contexts (ch. 13)</li>
+<li><a href="../concepts/api-testing.html">Api Testing</a> — EDM testing: topology unit testing, integration testing strategies, event data sourcing (ch. 15)</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — EDM deployment patterns: rolling update, breaking schema change, blue-green constraints (ch. 16)</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

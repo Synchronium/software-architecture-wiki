@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hash indexes, SSTables/LSM-Trees, B-Trees, OLTP vs OLAP, column-oriented storage, materialized aggregates">
+  <meta property="og:title" content="Storage Engines — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Hash indexes, SSTables/LSM-Trees, B-Trees, OLTP vs OLAP, column-oriented storage, materialized aggregates">
+  <title>Storage Engines — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html" aria-current="page">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../databases/index.html">Databases</a> <span class="sep">›</span> Storage Engines</nav></div>
+      <h1>Storage Engines</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../databases/index.html">database</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/storage.html">storage</a><a class="tag-chip" href="../tags/internals.html">internals</a><a class="tag-chip" href="../tags/performance.html">performance</a><a class="tag-chip" href="../tags/oltp.html">oltp</a><a class="tag-chip" href="../tags/olap.html">olap</a></ul>
+    </div><div class="page-body"><p>A storage engine determines how a database stores data on disk and how it retrieves it. The design choices are driven by fundamental physical constraints: sequential disk I/O is orders of magnitude faster than random I/O; memory is orders of magnitude faster than disk; SSDs close the gap for reads but not for writes. Understanding these constraints explains why different engines make different trade-offs.</p>
+<h2>Hash Indexes</h2>
+<p>The simplest possible index: an in-memory hash map from key to byte offset in an append-only log file.</p>
+<p><strong>Writes</strong>: append the new key-value pair to the end of the file; update the in-memory map.
+<strong>Reads</strong>: look up the byte offset in the hash map, then seek to that position in the file.</p>
+<p><strong>Compaction and merging</strong>: the log grows unboundedly unless compacted. Compaction discards duplicate keys, keeping only the most recent value. Multiple segments can be merged by iterating through them in sorted order.</p>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li>All keys must fit in memory — no disk-based hash map is practical.</li>
+<li>Range queries are inefficient (no sorted order).</li>
+</ul>
+<p><strong>Crash recovery</strong>: snapshot hash maps periodically to disk; replay the log to reconstruct since last snapshot. <strong>Tombstones</strong>: deleted keys are appended as a special deletion record; compaction skips tombstoned keys.</p>
+<p>Used in: Bitcask (Riak&#39;s default storage engine).</p>
+<h2>SSTables and LSM-Trees</h2>
+<p><strong>SSTables</strong> (Sorted String Tables) impose a key constraint on log segments: keys within each segment must be sorted. This one change unlocks significant improvements.</p>
+<p><strong>LSM-Trees</strong> (Log-Structured Merge-Trees) build on SSTables with a write-optimised architecture:</p>
+<ol>
+<li>Incoming writes accumulate in an in-memory <strong>memtable</strong> (a balanced tree, e.g. red-black tree — maintains sorted order).</li>
+<li>When the memtable reaches a size threshold, it is flushed to disk as an SSTable segment.</li>
+<li>Background <strong>compaction</strong> periodically merges SSTable files, discarding overwritten or deleted values. Two strategies:<ul>
+<li><strong>Size-tiered</strong>: newer, smaller SSTables merged into older, larger ones (Cassandra default, HBase).</li>
+<li><strong>Leveled</strong>: segments organised by level; each level is 10× larger than the previous (LevelDB, RocksDB, Cassandra option). Better for read performance and space amplification.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Reads</strong>: check memtable first, then SSTables from newest to oldest. <strong>Bloom filters</strong> (probabilistic data structure) short-circuit lookups for non-existent keys — avoids reading any SSTable on a miss.</p>
+<p><strong>Trade-offs</strong>:</p>
+<ul>
+<li>Write throughput is high because all writes are sequential (memtable flush + sequential compaction I/O).</li>
+<li>Read amplification: may need to check multiple SSTables for a single key.</li>
+<li>Compaction bandwidth can compete with write throughput — important at high write rates.</li>
+<li>Write amplification: a single logical write may result in multiple physical writes (original + compaction rewrites).</li>
+</ul>
+<p><strong>Used in</strong>: LevelDB, RocksDB, Cassandra, HBase, Lucene (for term dictionaries).</p>
+<h2>B-Trees</h2>
+<p>B-Trees are the dominant structure in relational databases. They store data in <strong>fixed-size pages</strong> (typically 4KB), organised as a balanced tree:</p>
+<ul>
+<li><strong>Leaf pages</strong> hold key-value pairs directly (or pointers to values).</li>
+<li><strong>Interior pages</strong> hold keys and child page references.</li>
+<li>The <strong>branching factor</strong> (typically several hundred) makes the tree shallow — 4 levels handles up to 256TB of data.</li>
+</ul>
+<p><strong>Reads</strong>: traverse from root to leaf — O(log n) page reads.
+<strong>Writes</strong>: find the leaf page, update in-place. If the page is full, split it into two pages and update the parent.</p>
+<p><strong>Crash safety</strong>: a <strong>Write-Ahead Log (WAL)</strong> records every modification before it is applied to the tree pages. On crash recovery, the WAL replays uncommitted operations.</p>
+<p><strong>Concurrency</strong>: latches (lightweight locks) protect pages during updates. Some implementations use <strong>copy-on-write</strong> instead of in-place update — produces a new version of the page tree, leaving the old version intact for readers.</p>
+<p><strong>Trade-offs</strong>:</p>
+<ul>
+<li>Read latency is low: a single tree traversal locates any key.</li>
+<li>Write amplification exists but is bounded by tree height.</li>
+<li>Predictable latency: no compaction pauses (unlike LSM-Trees).</li>
+<li>More fragmentation and wasted space than LSM-Trees.</li>
+</ul>
+<p><strong>Used in</strong>: PostgreSQL, MySQL (InnoDB), Oracle, SQL Server — essentially all relational databases.</p>
+<h2>In-Memory Databases</h2>
+<p>Disk&#39;s awkwardness is not just speed — it&#39;s the overhead of encoding in-memory data structures into a disk-compatible form. As RAM becomes cheaper and datasets remain small enough to fit in memory, in-memory databases become viable.</p>
+<p><strong>Durability strategies</strong> for in-memory databases:</p>
+<ul>
+<li>Battery-powered RAM (hardware approach)</li>
+<li>Write an append-only log to disk on every write (disk is used only for durability, reads are always from RAM)</li>
+<li>Periodic snapshots to disk + log replay</li>
+<li>Replication to other machines</li>
+</ul>
+<p>Despite writing to disk, these are still &quot;in-memory&quot; databases — the disk is purely for durability, not performance.</p>
+<p><strong>Performance advantage</strong>: counterintuitively, the gain is <em>not</em> from avoiding disk reads (the OS page cache already serves hot data from RAM for disk-based engines). The advantage is avoiding the overhead of encoding in-memory data structures in a form that can be written to disk.</p>
+<p><strong>Products</strong>:</p>
+<ul>
+<li><strong>Memcached</strong>: cache only — data lost on restart (intentional, for cache use case)</li>
+<li><strong>Redis, Couchbase</strong>: weak durability via asynchronous disk writes</li>
+<li><strong>VoltDB, MemSQL, Oracle TimesTen</strong>: in-memory relational databases with full ACID; vendors claim large performance improvements from removing on-disk data structure management overhead</li>
+<li><strong>RAMCloud</strong>: open source, in-memory KV store with durability (log-structured both in RAM and on disk)</li>
+</ul>
+<p><strong>Additional capability</strong>: in-memory databases can support data models impossible with disk-based engines. Redis offers priority queues, sets, sorted sets — simple to implement because all data is in RAM and there are no disk layout constraints.</p>
+<p><strong>Anti-caching</strong>: extends in-memory databases beyond available memory by evicting LRU records to disk and reloading on access. Works at record granularity (unlike OS virtual memory which evicts whole pages). Requires indexes to still fit entirely in memory.</p>
+<h2>LSM-Tree vs B-Tree Comparison</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>LSM-Tree</th>
+<th>B-Tree</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Write throughput</td>
+<td>Higher (sequential I/O)</td>
+<td>Lower (random I/O)</td>
+</tr>
+<tr>
+<td>Read latency</td>
+<td>Higher (multi-SSTable check)</td>
+<td>Lower (single tree traversal)</td>
+</tr>
+<tr>
+<td>Space amplification</td>
+<td>Lower (compaction removes duplication)</td>
+<td>Higher (fragmentation)</td>
+</tr>
+<tr>
+<td>Compression ratio</td>
+<td>Better (sequential layout compresses well)</td>
+<td>Worse</td>
+</tr>
+<tr>
+<td>Write amplification</td>
+<td>Can be high during compaction</td>
+<td>Bounded but present</td>
+</tr>
+<tr>
+<td>Latency predictability</td>
+<td>Compaction pauses can cause spikes</td>
+<td>Predictable</td>
+</tr>
+<tr>
+<td>Key lookup for range queries</td>
+<td>Both support, B-Tree often faster</td>
+<td>Both support</td>
+</tr>
+</tbody></table></div>
+<p><strong>Rule of thumb</strong>: LSM-Trees are better for write-heavy workloads; B-Trees are better for read-heavy workloads with mixed operations. High write amplification in LSM-Trees can exceed B-Tree costs under some compaction strategies — benchmarking under realistic workloads is essential.</p>
+<h2>OLTP vs OLAP</h2>
+<p>Storage engine design diverges sharply based on the access pattern:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>OLTP</th>
+<th>OLAP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read pattern</td>
+<td>Small number of rows, by key</td>
+<td>Aggregate over many rows</td>
+</tr>
+<tr>
+<td>Write pattern</td>
+<td>Low-latency individual writes</td>
+<td>Bulk load (ETL)</td>
+</tr>
+<tr>
+<td>Dataset size</td>
+<td>GB to TB</td>
+<td>TB to PB</td>
+</tr>
+<tr>
+<td>Primary users</td>
+<td>End users via application</td>
+<td>Business analysts</td>
+</tr>
+<tr>
+<td>Query type</td>
+<td>Short transactions, point lookups</td>
+<td>Long-running aggregation queries</td>
+</tr>
+</tbody></table></div>
+<p>OLAP workloads are typically served from a <strong>data warehouse</strong>: a separate read-optimised copy of operational data, loaded via ETL. Star schema (fact table + dimension tables) or snowflake schema are common data warehouse layouts.</p>
+<h2>Column-Oriented Storage</h2>
+<p>Row-oriented storage stores all values for a row together — good for OLTP (retrieve one row at a time). Column-oriented storage stores all values for a column together — good for OLAP (aggregate over a few columns across many rows).</p>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li><strong>Read fewer columns</strong>: analytic queries reference a small fraction of columns. Column storage reads only the needed columns, drastically reducing I/O.</li>
+<li><strong>High compression</strong>: a column contains values of the same type from the same domain. Run-length encoding and bitmap encoding achieve very high compression ratios.</li>
+<li><strong>Vectorised processing</strong>: compressed column data can be processed with CPU SIMD instructions — tight loop over contiguous memory.</li>
+</ul>
+<p><strong>Sort order</strong>: rows in a column store can be sorted by a chosen key column. The first sort column compresses best (long runs of repeated values). Multiple sort orders can be maintained as separate <strong>column families</strong> or <strong>projections</strong> — different queries use the most beneficial sort order.</p>
+<p><strong>Materialized aggregates</strong>: precompute common aggregations (COUNT, SUM, AVG) and cache as a <strong>data cube</strong> (OLAP cube). Extremely fast for queries that fit the cube dimensions; inflexible for other queries.</p>
+<p><strong>Used in</strong>: Redshift, BigQuery, Snowflake, Vertica, Parquet (file format), ORC.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Definitive mechanistic treatment — explains the physical constraints driving each design choice from first principles (ch. 3)</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Treats storage as background context; focuses on replication and consistency properties rather than engine internals</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../databases/transactions.html">Transactions</a> — isolation and crash recovery are implemented by the storage engine</li>
+<li><a href="../databases/data-models.html">Data Models</a> — data model determines what the storage engine must store</li>
+<li><a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a> — on-disk encoding format choices</li>
+<li><a href="../distributed/replication.html">Replication</a> — replication operates on top of the storage engine&#39;s write log</li>
+<li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — the append-only log as a storage primitive connects storage engines to event sourcing</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../databases/transactions.html">Transactions</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

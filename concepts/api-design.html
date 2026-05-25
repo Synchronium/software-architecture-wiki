@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="REST, gRPC, GraphQL exchange format decision; HTTP methods; URL modeling; status codes; OAS; versioning; Postel's Robustness Principle; non-breaking vs…">
+  <meta property="og:title" content="API Design — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="REST, gRPC, GraphQL exchange format decision; HTTP methods; URL modeling; status codes; OAS; versioning; Postel's Robustness Principle; non-breaking vs…">
+  <title>API Design — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html" aria-current="page">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> API Design</nav></div>
+      <h1>API Design</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/api.html">api</a><a class="tag-chip" href="../tags/rest.html">rest</a><a class="tag-chip" href="../tags/grpc.html">grpc</a><a class="tag-chip" href="../tags/graphql.html">graphql</a><a class="tag-chip" href="../tags/oas.html">oas</a><a class="tag-chip" href="../tags/versioning.html">versioning</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>API design is the process of defining the contract between a producer (service) and its consumers: the resources exposed, the operations available, the data formats used, the versioning strategy, and the error model. Getting the contract right matters disproportionately because APIs are harder to change than implementations — consumers build against the contract, and breaking it forces coordinated migration.</p>
+<h2>The Core Exchange Format Decision</h2>
+<p>The most consequential API design decision is which exchange format to use. The book recommends a simple rule based on traffic type (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 1):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Traffic</th>
+<th>Format</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>North–south (external consumers)</td>
+<td>REST</td>
+<td>Broad interoperability; loose coupling; stateless; cacheable</td>
+</tr>
+<tr>
+<td>East–west (internal services, controlled consumers)</td>
+<td>gRPC</td>
+<td>HTTP/2 binary; high throughput; strict schema; excellent for polyglot</td>
+</tr>
+<tr>
+<td>Client-specific aggregation (mobile, reporting)</td>
+<td>GraphQL</td>
+<td>Client drives the query; reduces over-fetching; ideal as a facade</td>
+</tr>
+</tbody></table></div>
+<p>This is not a hard rule — it is a default that should be overridden only with explicit justification in an ADR (<a href="../concepts/adrs.html">Adrs</a>).</p>
+<h2>REST</h2>
+<p>REST (Representational State Transfer) is an architectural style, not a protocol. Its constraints: stateless interactions, uniform interface, cacheable responses, layered system. The <strong>stateless</strong> constraint means every request must carry all context needed to process it — no session state is stored server-side between requests. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
+<h3>URL Resource Modeling</h3>
+<p>REST resources map to URL paths. The hierarchy should reflect the domain model:</p>
+<ul>
+<li><code>/products</code> — collection of products</li>
+<li><code>/products/42</code> — a specific product</li>
+<li><code>/products/42/reviews</code> — reviews belonging to a product</li>
+</ul>
+<p>Nesting is a balancing act: deep nesting makes URLs reflect relationships clearly but can make them brittle when relationships change. Keep nesting to 2–3 levels maximum. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
+<h3>HTTP Methods: Safe and Idempotent</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Safe</th>
+<th>Idempotent</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Read a resource</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Read headers only</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>No</td>
+<td>Yes</td>
+<td>Full replace of a resource</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>No</td>
+<td>Yes</td>
+<td>Remove a resource</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>No</td>
+<td>No</td>
+<td>Create, or operations without natural idempotency</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>No</td>
+<td>No (usually)</td>
+<td>Partial update</td>
+</tr>
+</tbody></table></div>
+<p><strong>Safe</strong>: does not modify server state. Safe implies idempotent, but not vice versa.
+<strong>Idempotent</strong>: applying multiple times has the same effect as applying once. <code>PUT /products/42</code> with the same body is idempotent; <code>POST /products</code> to create a product is not. For non-idempotent POST operations, use idempotency keys (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
+<h3>Status Codes</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Meaning</th>
+<th>Common codes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2xx</td>
+<td>Success</td>
+<td>200 OK, 201 Created, 204 No Content</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>Redirect</td>
+<td>301 Moved Permanently, 304 Not Modified</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>Client error</td>
+<td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 429 Too Many Requests</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Server error</td>
+<td>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</td>
+</tr>
+</tbody></table></div>
+<p>Key distinction: <strong>401</strong> means the request is unauthenticated (send credentials); <strong>403</strong> means the request is authenticated but the principal lacks permission. Using these correctly reduces client-side debugging friction. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
+<h3>Content Negotiation</h3>
+<p>Clients advertise accepted formats via <code>Accept</code> header; servers declare the actual format via <code>Content-Type</code>. This allows a single endpoint to serve JSON, XML, or other formats to different clients without URL changes.</p>
+<p><strong>Richardson Maturity Model (RMM)</strong> describes levels of REST adoption:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Characteristic</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>Single URI, HTTP as transport (RPC style)</td>
+<td><code>POST /rpcEndpoint</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Multiple resource URIs</td>
+<td><code>GET /attendees/123</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Correct HTTP verbs + status codes</td>
+<td><code>PUT /attendees/123</code>, <code>404</code> for missing</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HATEOAS — hypermedia links in responses</td>
+<td>Rarely used in practice</td>
+</tr>
+</tbody></table></div>
+<p>Level 2 is the practical target. Level 3 (HATEOAS) adds discoverability but significant complexity; the book does not recommend it for most APIs.</p>
+<h3>Practical REST Design Guidelines</h3>
+<p><strong>Adopt an API standard early.</strong> REST is loose; a standard (e.g., Microsoft REST API Guidelines) provides rulings on pagination, filtering, naming, and errors before you build. Retrofitting consistency after multiple APIs are live is much more expensive.</p>
+<p><strong>Pagination</strong>: never return bare arrays for collection endpoints. A bare array (<code>[...]</code>) cannot be extended without a breaking change. Wrap in an object from the start:</p>
+<pre><code class="language-json">{ &quot;value&quot;: [...], &quot;@nextLink&quot;: &quot;{opaqueUrl}&quot; }
+</code></pre>
+<p>This allows adding pagination, metadata, or cursors later without breaking consumers.</p>
+<p><strong>PII in URLs</strong>: do not put personally identifiable information in URL paths or query parameters. URLs can be logged in server logs, CDN access logs, and browser history. Use an opaque ID and return PII in the response body only. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 1)</p>
+<p><strong>Error handling</strong>: return accurate status codes — never wrap errors inside a 200 response. Do not expose stack traces or internal error details to external consumers; these aid attackers. Use an <code>InnerError</code> field or similar for internal/debug detail, stripped before reaching the external consumer. Returning the wrong range (e.g., 4xx for a server fault) causes consumer code to behave incorrectly — clients may not retry a 400 but will retry a 503.</p>
+<p><strong>Semantic versioning</strong>: API versions follow Major.Minor.Patch.</p>
+<ul>
+<li><em>Patch</em>: bug fixes; no schema change; transparent to consumers.</li>
+<li><em>Minor</em>: backward-compatible additions (new optional fields); consumers can ignore.</li>
+<li><em>Major</em>: breaking changes; consumers must actively migrate; old and new versions run simultaneously during the transition.</li>
+</ul>
+<p><strong>Versioning strategies</strong>: version in the URL (<code>/v1/attendees</code>) is practical and visible; version in a header (<code>Version: v1</code>) is more RESTful but less discoverable. The book recommends the URL approach for external APIs.</p>
+<p><strong>Detecting breaking changes</strong>: run <code>openapi-diff</code> in CI; fail the build if the new OAS is not backward-compatible with the previous version. Prevents accidental breaking changes from reaching production without a conscious version bump.</p>
+<p><strong>Chatty API antipattern (Gorton):</strong> Exposing fine-grained getter/setter-style operations as HTTP APIs causes multiple round trips for a single logical operation, each incurring network latency. Use coarse-grained resources — <code>GET</code> the whole resource, <code>PUT</code> the updated resource. Use <code>PATCH</code> only for partial modifications of specific fields, not as a workaround for fine-grained exposure. In practice: design resources around client use cases, not server data models (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5).</p>
+<p><strong>Payload compression:</strong> HTTP <code>Accept-Encoding</code>/<code>Content-Encoding</code> headers enable gzip compression of request and response bodies. Compression can reduce bandwidth and latency by 50%+. The trade-off: CPU cycles for compression/decompression, typically small relative to the savings in transit time for large payloads (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5).</p>
+<h2>Non-Breaking vs Breaking Changes (Nygard)</h2>
+<p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 14) frames API compatibility as a stack of layered agreements. A breaking change is any <em>unilateral</em> departure from a prior agreement. <strong>Postel&#39;s Robustness Principle</strong> — &quot;be conservative in what you do, be liberal in what you accept&quot; — defines the safe direction of change:</p>
+<p><strong>Always safe (non-breaking)</strong>:</p>
+<ul>
+<li>Require a <em>subset</em> of the previously required parameters</li>
+<li>Accept a <em>superset</em> of the previously accepted parameters</li>
+<li>Return a <em>superset</em> of the previously returned values</li>
+<li>Enforce a <em>subset</em> of the previously required constraints</li>
+</ul>
+<p><strong>Breaking</strong> (triggers a major version):</p>
+<ul>
+<li>Rejecting a protocol, encoding, or request syntax that previously worked</li>
+<li>Adding required fields to the request</li>
+<li>Forbidding optional input that was previously allowed</li>
+<li>Removing previously guaranteed response fields</li>
+<li>Requiring a higher level of authorization</li>
+</ul>
+<p><strong>The implementation is the de facto spec</strong>: once a service is live, its actual behaviour — including undocumented edge cases and bugs — is the real contract. Adding validation that starts rejecting previously-accepted input (even malformed input) is a breaking change regardless of what the documentation said. Postel&#39;s Principle leaves no choice: keep accepting it.</p>
+<p><strong>Bump all routes together</strong>: when introducing a major version, bump all routes at the same time — even if only one changed. Forcing consumers to track which version number applies to which route fragment is an integration hazard.</p>
+<p><strong>Version translation in controllers</strong>: methods for the old API convert old objects to the current domain model on the way in and convert current objects back to the old format on the way out. Keeps business logic deduplicated; only the controller layer does translation.</p>
+<p><strong>Inbound + outbound contract testing</strong>: <em>inbound</em> tests exercise your own API against your understanding of the spec; <em>outbound</em> tests exercise your dependencies using <em>their</em> spec but <em>your</em> interpretation. Consumer-owned contract tests (written by the consuming team, not the implementing team) are more effective — the consumer discovers misunderstood edge cases the implementing team would miss. (→ <a href="../concepts/contracts.html">Contracts</a>)</p>
+<h2>OpenAPI Specification (OAS)</h2>
+<p>OAS (formerly Swagger) is a JSON/YAML format for describing REST APIs. It enables:</p>
+<ul>
+<li><strong>Code generation</strong>: generate client SDKs and server stubs from the spec.</li>
+<li><strong>Documentation</strong>: Swagger UI, Redoc.</li>
+<li><strong>Contract validation</strong>: validate requests against the spec at the API gateway (input validation without service involvement).</li>
+<li><strong>Mock servers</strong>: generate stub responses from the spec for consumer testing.</li>
+<li><strong>Change detection</strong>: openapi-diff compares two OAS files and classifies changes as breaking or backward-compatible.</li>
+</ul>
+<p>The OAS should be the single source of truth for the API contract, written before implementation (API-first) and kept in sync with the implementation via generated or verified tooling.</p>
+<blockquote>
+<p><strong>Open question:</strong> How does OAS versioning integrate with the API lifecycle (planned → beta → live → deprecated → retired)? The book implies a 1:1 relationship between major version and lifecycle stage, but doesn&#39;t make this explicit.</p>
+</blockquote>
+<h2>gRPC</h2>
+<p>gRPC is a high-performance RPC framework using Protocol Buffers (.proto) as its interface definition language. Key properties:</p>
+<ul>
+<li><strong>Binary protocol over HTTP/2</strong>: lower overhead than JSON/HTTP/1.1; supports multiplexing and server push.</li>
+<li><strong>Strict schema</strong>: the <code>.proto</code> file is the contract; breaking changes are caught at compile time.</li>
+<li><strong>Compatibility rules</strong>: field numbers are permanent; adding new fields is backward-compatible; removing or renumbering fields is not.</li>
+<li><strong>Code generation</strong>: client and server stubs generated from <code>.proto</code> in any supported language.</li>
+<li><strong>Bidirectional streaming</strong>: supports unary, server-streaming, client-streaming, and bidirectional RPC patterns.</li>
+</ul>
+<p>gRPC is appropriate for east–west traffic because: both producer and consumer are controlled, the schema rigidity is an asset (not a constraint), and the performance advantage matters at high call volumes. It is less appropriate for external APIs because: browser support requires grpc-web (a subset), and it is harder for third parties to adopt.</p>
+<h3>Combining REST and gRPC Specifications</h3>
+<p>A tempting approach is to generate <code>.proto</code> from an OAS (or vice versa) so a single service exposes both REST and gRPC from one source of truth. This is problematic:</p>
+<ul>
+<li>Generating <code>.proto</code> from OAS assigns field numbers alphabetically. Adding a new field that sorts before existing ones <strong>changes all subsequent field numbers</strong>, breaking binary compatibility for all existing clients.</li>
+<li><code>grpc-gateway</code> can generate a REST reverse proxy from <code>.proto</code> annotations, but it couples REST URL design to the RPC method structure, creating a lowest-common-denominator API in both directions.</li>
+<li>The two models have fundamentally different semantic contracts: REST exposes a resource model with loose coupling; gRPC exposes a method interface with tight coupling. Converting between them is semantically lossy.</li>
+</ul>
+<p>The recommended approach: <strong>design the REST API and the gRPC interface independently</strong>, allowing each to evolve on its own terms. Record the decision in an ADR. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 1)</p>
+<h2>GraphQL</h2>
+<p>GraphQL is a query language for APIs where the client specifies exactly the data it needs. Key properties:</p>
+<ul>
+<li><strong>Client-driven queries</strong>: no over-fetching (fields not requested are not returned); no under-fetching (a single query can traverse multiple resources).</li>
+<li><strong>Schema as contract</strong>: the GraphQL schema defines types and resolvers.</li>
+<li><strong>Single endpoint</strong>: all queries and mutations go to one endpoint (contrast with REST&#39;s resource-based routing).</li>
+</ul>
+<p>Best uses: mobile UIs (bandwidth-constrained; need exactly the right data), reporting/analytics (variable projections over the same data), and as a facade over multiple legacy services (hide backend complexity behind a clean query interface). Not recommended as a general-purpose API style — the caching story is weaker than REST, and schema governance requires discipline.</p>
+<h2>API-First Design</h2>
+<p>API-first means designing and agreeing on the API contract (OAS document) before implementing either the producer or consumer. Benefits:</p>
+<ul>
+<li>Consumer and producer teams can work in parallel (consumer uses mocked server from OAS).</li>
+<li>Design feedback is cheaper at contract stage than at implementation stage.</li>
+<li>The contract becomes the source of truth for contract tests and gateway validation.</li>
+</ul>
+<h2>Serving State from Event-Driven Microservices</h2>
+<p>Event-driven microservices often expose a request-response API alongside their event-processing logic (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 13).</p>
+<h3>Internal state stores</h3>
+<p>State is sharded by key across instances. The correct instance is found by applying the partitioner logic to the request key → partition ID → cross-reference consumer group partition assignments → target instance. A round-robin load balancer hits the right instance only <code>1/instanceCount</code> of the time; all other requests need a redirect.</p>
+<p>A <strong>smart load balancer</strong> pre-routes using partition assignments (derived from changelog or repartition streams), eliminating most redirects. Trade-off: the LB is coupled to the topology — renaming state stores or changing topology breaks routing. Deploy the smart LB as part of the microservice&#39;s deployable unit.</p>
+<h3>External state stores</h3>
+<p>Any instance can serve the full domain (no partition sharding constraint). Instances can scale beyond partition count — extras don&#39;t process events but serve requests and act as failover standby. Two sub-patterns:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Description</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All-in-one</td>
+<td>Same executable processes events and serves REST API</td>
+<td>Simple deployment; no coordination overhead</td>
+</tr>
+<tr>
+<td>Separate microservice</td>
+<td>API server is a distinct executable in the same bounded context; same repo, built and deployed together</td>
+<td>Language independence; failure isolation; but coordinating schema changes across two executables is risky</td>
+</tr>
+</tbody></table></div>
+<h3>Event-first request handling</h3>
+<p>Instead of processing a request synchronously and writing to a database, convert the request to an event → publish to stream → let the event-driven pipeline process it → materialize to state.</p>
+<p><strong>Benefits</strong>: creates a durable, replayable record of every request; any service can consume the data independently.</p>
+<p><strong>Trade-offs</strong>: read-after-write is eventually consistent (the event must materialize before joins or queries against it can succeed). Mitigation: cache the just-written value in memory for immediate non-join use cases.</p>
+<p><strong>Async UI</strong>: when user input becomes an event, the UI must communicate the asynchronous nature of the operation — disable input, show a &quot;please wait&quot; state, and push the update when the event has been materialized. Duplicate events from retries must be handled idempotently (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../comparisons/api-protocol-selection.html">Api Protocol Selection</a> — decision guide: REST vs gRPC vs GraphQL by scenario; trade-off table; mixing protocols</li>
+<li><a href="../concepts/api-gateway.html">Api Gateway</a> — enforces contracts at the edge (input validation, rate limiting, auth)</li>
+<li><a href="../concepts/api-testing.html">Api Testing</a> — contract testing validates the OAS-defined contract across producer/consumer pairs</li>
+<li><a href="../concepts/adrs.html">Adrs</a> — exchange format decisions should be captured in ADRs</li>
+<li><a href="../streams/stream-processing.html">Stream Processing</a> — state stores that back request-response APIs</li>
+<li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — handles east–west gRPC traffic management</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../distributed/http.html">HTTP</a></li><li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li><li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

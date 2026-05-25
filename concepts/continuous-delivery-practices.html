@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eight Accelerate-validated CD capabilities; key empirical findings: config-in-VCS more predictive than code, developer-owned tests, trunk-based…">
+  <meta property="og:title" content="Continuous Delivery Practices — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Eight Accelerate-validated CD capabilities; key empirical findings: config-in-VCS more predictive than code, developer-owned tests, trunk-based…">
+  <title>Continuous Delivery Practices — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html" aria-current="page">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Continuous Delivery Practices</nav></div>
+      <h1>Continuous Delivery Practices</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/devops.html">devops</a><a class="tag-chip" href="../tags/continuous-delivery.html">continuous-delivery</a><a class="tag-chip" href="../tags/ci-cd.html">ci-cd</a><a class="tag-chip" href="../tags/trunk-based-development.html">trunk-based-development</a><a class="tag-chip" href="../tags/test-automation.html">test-automation</a><a class="tag-chip" href="../tags/shift-left-security.html">shift-left-security</a><a class="tag-chip" href="../tags/accelerate.html">accelerate</a><a class="tag-chip" href="../tags/dora.html">dora</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>Continuous delivery (CD) is the discipline of keeping software in a releasable state at all times — getting changes of all kinds into production safely, quickly, and sustainably. CD is not a single practice; it is a cluster of eight technical capabilities that, taken together, enable the four DORA delivery performance metrics (→ <a href="../concepts/four-key-metrics.html">Four Key Metrics</a>).</p>
+<p>The research basis: <em>Accelerate</em> (Forsgren, Humble, Kim, 2018) empirically validated, across four years and 23,000+ respondents, which practices predict high delivery performance. This page captures those findings and the non-obvious implications the data surfaced.</p>
+<h2>Five Principles of Continuous Delivery</h2>
+<p>From Deming&#39;s quality management philosophy, applied to software delivery (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 4):</p>
+<ol>
+<li><strong>Build quality in</strong> (Deming&#39;s Point 3): cease dependence on inspection to achieve quality. Find and fix problems when they are cheapest to address — at the point of creation, not after handoff to a separate QA phase.</li>
+<li><strong>Work in small batches</strong>: reduce batch size to reduce cycle time, variability, risk, and overhead. Small deployments are easier to verify, easier to roll back, and cheaper to fix when they fail.</li>
+<li><strong>Computers perform repetitive tasks; people solve problems</strong>: automate regression testing and deployment. Reserve human attention for judgement — reviewing code, triaging incidents, designing solutions.</li>
+<li><strong>Relentlessly pursue continuous improvement</strong>: improvement is never finished. High performers distinguish themselves not by having fewer problems but by finding and fixing them faster.</li>
+<li><strong>Everyone is responsible</strong>: system-level outcomes (delivery performance, quality, security) require collaboration across development, operations, and security. Siloed ownership of any concern undermines the rest.</li>
+</ol>
+<h2>The Eight CD Capabilities</h2>
+<p>Accelerate identified eight technical capabilities as the primary drivers of continuous delivery performance (→ <a href="../sources/accelerate.html">Accelerate</a> Appendix A):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Key requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Version control</strong></td>
+<td>All production artefacts: app code, system config, app config, build scripts</td>
+</tr>
+<tr>
+<td><strong>Deployment automation</strong></td>
+<td>Zero manual steps to deploy</td>
+</tr>
+<tr>
+<td><strong>Continuous integration</strong></td>
+<td>Short-lived branches (&lt; 1 day), trigger build + unit tests on every commit</td>
+</tr>
+<tr>
+<td><strong>Trunk-based development</strong></td>
+<td>Fewer than 3 active branches; no code freeze periods</td>
+</tr>
+<tr>
+<td><strong>Test automation</strong></td>
+<td>Developer-created and maintained; reliable enough to act on</td>
+</tr>
+<tr>
+<td><strong>Test data management</strong></td>
+<td>Test data available on demand; data doesn&#39;t limit test scope</td>
+</tr>
+<tr>
+<td><strong>Shift-left security</strong></td>
+<td>Infosec embedded in design, automated testing, and preapproved libraries</td>
+</tr>
+<tr>
+<td><strong>Continuous delivery</strong></td>
+<td>Software always in a deployable state; fast feedback from production</td>
+</tr>
+</tbody></table></div>
+<h2>Key Empirical Findings</h2>
+<h3>Configuration in Version Control Is More Predictive Than Code</h3>
+<p>One of Accelerate&#39;s more surprising findings: storing system configuration and application configuration in version control is <em>more highly correlated</em> with delivery performance than storing application code (→ ch. 4). Reasons:</p>
+<ul>
+<li>Configuration changes are a leading cause of production failures (→ <a href="../operations/common-failure-causes.html">Common Failure Causes</a>)</li>
+<li>Configuration drift between environments (&quot;works on my machine&quot;) is a primary cause of failed deployments</li>
+<li>Auditability of configuration changes is as important as auditability of code changes</li>
+</ul>
+<p>Practical implication: version control adoption is not done when the code repository is set up. It is done when every environment-specific configuration file, infrastructure declaration, and build script is also tracked.</p>
+<h3>Developer-Owned Test Automation</h3>
+<p>Tests predict IT performance only when developers (not a separate QA team or an outsourced contractor) create and maintain them (→ ch. 4). Two reasons:</p>
+<ol>
+<li><strong>Testability is designed in when developers write tests.</strong> Code written without tests is rarely testable after the fact. Developers who own the tests design systems with seams, interfaces, and dependency injection that enable testing.</li>
+<li><strong>Developers maintain tests they own.</strong> Tests created by a separate QA function are routinely allowed to rot — the team that could fix them is not the team responsible for them. Brittle, ignored tests are worse than no tests (they provide false confidence and are eventually disabled entirely).</li>
+</ol>
+<p>The corollary: <strong>test automation coverage is meaningless if the tests are not trusted.</strong> A reliable suite of 200 tests that the team acts on is more valuable than 2,000 tests that regularly produce false positives and are routinely overridden.</p>
+<h3>Trunk-Based Development</h3>
+<p>Trunk-based development is defined empirically in Accelerate as: fewer than three active branches in the repository, branch lifetime shorter than one day, no code freeze periods (→ ch. 4). GitHub Flow (short-lived feature branches merging frequently to main) qualifies if branch lifetimes are kept short.</p>
+<p>The alternative — long-lived feature branches — creates integration debt. The longer a branch lives, the larger the merge conflict when it lands. Delayed integration delays feedback on whether the change actually works with the rest of the codebase.</p>
+<p>Trunk-based development enables CI: you cannot continuously integrate if integration only happens when feature branches are complete.</p>
+<h3>Loosely Coupled Architecture Is the Biggest CD Lever</h3>
+<p>In the 2017 Accelerate data, loosely coupled, well-encapsulated architecture was the <strong>single largest contributor to continuous delivery</strong> — larger than test automation, deployment automation, or any individual technical practice (→ ch. 5).</p>
+<p>Six measurable characteristics of a loosely coupled architecture:</p>
+<ul>
+<li>Can make large-scale design changes without permission from outside the team</li>
+<li>Can make large-scale design changes without creating work for other teams</li>
+<li>Can complete work without coordinating with people outside the team</li>
+<li>Can deploy/release on demand regardless of other services</li>
+<li>Can test on demand without an integrated test environment</li>
+<li>Can deploy during normal business hours with negligible downtime</li>
+</ul>
+<p>The implication: investing in test automation on a tightly coupled architecture yields diminishing returns. The coupling is the primary bottleneck. See <a href="../concepts/bounded-contexts.html">Bounded Contexts</a> and <a href="../comparisons/decomposition-strategy.html">Decomposition Strategy</a> for decomposition strategies that create loosely coupled boundaries.</p>
+<h2>Shift-Left Security (DevSecOps)</h2>
+<p>&quot;Shifting left&quot; on security means integrating security into the delivery lifecycle from design onward, rather than treating it as a downstream gate (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 6).</p>
+<p>Three elements of shift-left security:</p>
+<ol>
+<li><strong>Security reviews for all major features</strong> — conducted <em>during</em> development, not before release</li>
+<li><strong>Infosec experts embedded in design, demos, and test automation</strong> — not a separate approvals committee</li>
+<li><strong>Preapproved, easy-to-consume libraries, packages, toolchains, and processes</strong> — developers can build security in without specialist involvement for every change</li>
+</ol>
+<p><strong>The efficiency argument</strong>: high performers spend 50% less time remediating security issues than low performers. Security work done at design time is an order of magnitude cheaper than security work done post-production.</p>
+<p><strong>The capacity argument</strong>: the ratio in large companies is approximately 1 security engineer per 10 infrastructure engineers per 100 developers. At this ratio, manual security review of every deployment is structurally impossible when deployments are frequent. The only scalable model is to give developers the means to build security in — preapproved libraries, automated scanning in the pipeline, threat modelling as a design practice.</p>
+<p><strong>Shift-left security does not slow delivery.</strong> The Accelerate data found no tradeoff: high performers deploy more frequently <em>and</em> have fewer security incidents. See also <a href="../concepts/threat-modeling.html">Threat Modeling</a> for threat modelling practices.</p>
+<h2>Lightweight Change Approval</h2>
+<p>Accelerate&#39;s finding on change management is one of the most counterintuitive in the research: Change Approval Boards (CABs) are negatively correlated with tempo <em>and</em> stability — they make delivery slower without improving the change failure rate (→ ch. 2, ch. 7).</p>
+<p><strong>Why CABs fail</strong>: external reviewers lack the intimate knowledge of the system required to accurately assess the impact of complex changes. CAB review is &quot;risk management theatre&quot; — checking boxes so that when something fails, there is a documented process trail.</p>
+<p><strong>The high-performing alternative</strong>: peer review (pair programming or code review) combined with a fully automated deployment pipeline. The pipeline records what changed, from where, what tests ran, and who approved — satisfying audit requirements. A human expert who knows the code reviews the change itself.</p>
+<p>For regulated environments where change approval must be evidenced: record peer review approvals in the version control system (GitHub PR approvals) and treat the automated pipeline as the only mechanism for applying changes to production. The audit trail is the pipeline run.</p>
+<h2>Relationship to Culture and People</h2>
+<p>Continuous delivery is not only a technical investment — it is an investment in people and culture (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 4, ch. 9, ch. 10):</p>
+<p><strong>Burnout</strong>: deployment pain (fear and anxiety when pushing code to production) is one of the five strongest predictors of burnout. CD reduces deployment pain by making releases routine rather than high-stakes events. High performers deploy more frequently <em>and</em> experience less deployment pain — frequency builds confidence.</p>
+<p><strong>Job satisfaction</strong>: automation of rote work (repetitive deployment tasks, manual regression testing) frees engineers for judgement-based work. Survey data shows DevOps technical practices are predictors of job satisfaction.</p>
+<p><strong>Culture</strong>: CD predicts more generative Westrum culture (→ <a href="../concepts/westrum-culture.html">Westrum Culture</a>). The causal mechanism: blameless postmortems are easier when deployment frequency is high and batch sizes are small — each failure is smaller in scope, easier to diagnose, and less consequential to attribute openly.</p>
+<p><strong>eNPS</strong>: high performers are 2.2× more likely to recommend their organisation as a great place to work. Delivery performance, Westrum culture, and Lean management together predict employee Net Promoter Score.</p>
+<p><strong>Virtuous cycle</strong>: CD → better products → higher job satisfaction + stronger org identity → generative culture → org performance → better hiring and retention.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/accelerate.html">Accelerate</a></td>
+<td>Primary source: empirical evidence for which specific practices predict delivery performance; trunk-based development and developer-owned tests as the non-obvious findings; config-in-VCS as more predictive than code-in-VCS; loosely coupled architecture as the single largest CD lever; shift-left security; CABs negatively correlated with both tempo and stability</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Deployment pipelines as fitness function automation infrastructure; CD as the operational foundation of evolutionary architecture; cycle time as a business differentiator; enterprise pipeline templates</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — the four DORA metrics are what CD practices improve; delivery frequency and lead time are direct CD measures</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the mechanical implementation of CD: pipeline stages, fitness function placement, zero-downtime deployment, release strategies</li>
+<li><a href="../concepts/westrum-culture.html">Westrum Culture</a> — CD is both a predictor of generative culture and predicted by it; the virtuous cycle</li>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — automated quality gates within the deployment pipeline; the mechanism that makes CD safe</li>
+<li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — loosely coupled architecture (the largest CD lever) is achieved through well-designed bounded contexts</li>
+<li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy</a> — architectural decomposition decisions directly affect the testability and deployability that make CD possible</li>
+<li><a href="../concepts/threat-modeling.html">Threat Modeling</a> — shift-left security at the design level; complements automated security scanning in pipelines</li>
+<li><a href="../concepts/api-testing.html">Api Testing</a> — test pyramid, consumer-driven contracts, test data management; maps to the pipeline stage structure</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

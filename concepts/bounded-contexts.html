@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DDD strategic design: subdomain taxonomy (core/generic/supporting), bounded context definition, subdomains vs bounded contexts, physical/ownership…">
+  <meta property="og:title" content="Bounded Contexts and Domain-Driven Design — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="DDD strategic design: subdomain taxonomy (core/generic/supporting), bounded context definition, subdomains vs bounded contexts, physical/ownership…">
+  <title>Bounded Contexts and Domain-Driven Design — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html" aria-current="page">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Bounded Contexts and Domain-Driven Design</nav></div>
+      <h1>Bounded Contexts and Domain-Driven Design</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/bounded-contexts.html">bounded-contexts</a><a class="tag-chip" href="../tags/domain.html">domain</a><a class="tag-chip" href="../tags/subdomains.html">subdomains</a><a class="tag-chip" href="../tags/microservices.html">microservices</a><a class="tag-chip" href="../tags/coupling.html">coupling</a><a class="tag-chip" href="../tags/conways-law.html">conways-law</a><a class="tag-chip" href="../tags/ubiquitous-language.html">ubiquitous-language</a></ul>
+    </div><div class="page-body"><h2>DDD Foundations</h2>
+<p>Domain-driven design (Eric Evans, 2003) provides the conceptual vocabulary for aligning software boundaries with business boundaries. The key terms:</p>
+<p><strong>Domain</strong>: the problem space a business occupies and provides solutions to. Exists independently of any specific implementation — it&#39;s the business reality, not the software.</p>
+<p><strong>Subdomain</strong>: a fine-grained area of business activity. All subdomains together form the business domain. Subdomains are themselves domains — the decomposition can recurse as granularity requires.</p>
+<p><strong>Domain (or subdomain) model</strong>: an abstraction of the domain useful for business purposes. Models belong to the solution space; they are constructs built to solve problems in the domain.</p>
+<p><strong>Bounded context</strong>: the logical boundary — including inputs, outputs, events, processes, requirements, and data models — relevant to a subdomain. A bounded context is the unit of implementation ownership in microservice architectures. While ideally a bounded context aligns perfectly with its subdomain, legacy systems and technical debt create exceptions (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1).</p>
+<h2>Subdomain Taxonomy</h2>
+<p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 1) provides the definitive taxonomy of subdomain types. The type determines implementation strategy:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Competitive advantage</th>
+<th>Complexity</th>
+<th>Volatility</th>
+<th>Implementation</th>
+<th>Problem type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Core</strong></td>
+<td>Yes</td>
+<td>High</td>
+<td>High</td>
+<td>In-house (best engineers)</td>
+<td>Interesting</td>
+</tr>
+<tr>
+<td><strong>Generic</strong></td>
+<td>No</td>
+<td>High</td>
+<td>Low</td>
+<td>Buy/adopt off-the-shelf</td>
+<td>Solved</td>
+</tr>
+<tr>
+<td><strong>Supporting</strong></td>
+<td>No</td>
+<td>Low</td>
+<td>Low</td>
+<td>In-house or outsource</td>
+<td>Obvious</td>
+</tr>
+</tbody></table></div>
+<p><strong>Core subdomains</strong> are what a company does <em>differently</em> from its competitors. Must be hard to copy — competitive advantage requires high entry barriers. Because they are emergent (never finished, continuously evolving), they need the most advanced engineering techniques and the organisation&#39;s best talent. Core subdomains are not necessarily technical: a jewellery designer&#39;s competitive advantage is the design, not the online shop.</p>
+<p><strong>Generic subdomains</strong> are complex but already-solved problems (authentication, encryption, accounting, billing). Use existing solutions rather than implementing from scratch — the existing solution is likely more reliable, more secure, and cheaper than a bespoke one.</p>
+<p><strong>Supporting subdomains</strong> have simple business logic (CRUD interfaces, ETL transformations) that supports the core but provides no competitive advantage. Simple enough to outsource or assign to junior engineers. No ready-made solutions exist (otherwise they&#39;d be generic), but the simplicity means the cost of building them is low.</p>
+<p><strong>Identifying boundaries</strong>: start with departments/organisational units (coarse-grained), then drill down. Use &quot;coherent use cases&quot; as the stopping criterion — a set of interrelated use cases operating on the same actors and data is a subdomain boundary. For core subdomains, distil as far as possible to extract generic and supporting concerns. For generic/supporting, stop when further distillation yields no new strategic insight.</p>
+<p><strong>Heuristics</strong>:</p>
+<ul>
+<li>&quot;Would someone pay for this on its own?&quot; → core</li>
+<li>&quot;Is it simpler to hack a quick implementation than to integrate an external solution?&quot; → supporting (not generic)</li>
+<li>&quot;Does this logic resemble complex algorithms and business rules, or CRUD interfaces?&quot; → former is core; latter is supporting</li>
+</ul>
+<h2>What Is a Bounded Context?</h2>
+<p>A bounded context is the consistency boundary of a ubiquitous language. Within a bounded context, a model is consistent, precise, and unambiguous. The same term can mean something entirely different in a different bounded context — this is intentional, not a problem (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3).</p>
+<p><strong>The motivating problem</strong>: different domain experts hold inconsistent models of the same entity. In a telemarketing company, &quot;lead&quot; means a contact event in the marketing department but a full lifecycle process in the sales department. A single enterprise-wide model produces an enormous ERD that is the &quot;jack of all trades, master of none&quot; — overcomplicated everywhere, useful nowhere.</p>
+<p>The solution: divide the <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> into multiple fine-grained languages, each with an explicit applicability context.</p>
+<blockquote>
+<p>&quot;A model cannot exist without a boundary; it will expand to become a copy of the real world.&quot; (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
+</blockquote>
+<p><strong>Scope</strong>: bounded context size is not dictated by a rule — it depends on the problem domain. Too wide: hard to keep the language consistent. Too narrow: excessive integration overhead. Reasons to split a context further include: constituting new engineering teams, needing different scaling characteristics, or needing independent deployment lifecycles. Avoid splitting coherent use cases (same actors, same data) — that forces simultaneous deployment and defeats the purpose.</p>
+<h2>Subdomains vs Bounded Contexts</h2>
+<p>This is the most important distinction in strategic DDD:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>Subdomains</th>
+<th>Bounded Contexts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Origin</td>
+<td>Discovered (defined by business strategy)</td>
+<td>Designed (strategic engineering decisions)</td>
+</tr>
+<tr>
+<td>Who defines</td>
+<td>The business; software engineers analyse</td>
+<td>Software architects and engineers</td>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Problem space</td>
+<td>Solution space</td>
+</tr>
+<tr>
+<td>Relationship</td>
+<td>Often 1:1 with bounded contexts, but not required</td>
+<td>Can span multiple subdomains, or subdivide one</td>
+</tr>
+</tbody></table></div>
+<p>The design decision of how many bounded contexts to create, and where their boundaries fall, is the architect&#39;s choice. One bounded context per subdomain is common and reasonable. Using multiple bounded contexts for one subdomain is valid when different parts need different models. A single bounded context spanning multiple subdomains is valid for small systems. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
+<h2>Physical and Ownership Boundaries</h2>
+<p><strong>Physical boundaries</strong>: each bounded context should be implemented as an independent service or project — independently developed, versioned, and deployed. This allows each bounded context to use the technology stack that best fits its needs. When a bounded context contains multiple subdomains, the bounded context is the physical boundary and each subdomain is a logical boundary (namespace, module, package).</p>
+<p><strong>Ownership boundaries</strong>: exactly one team owns each bounded context. Two teams cannot work on the same bounded context — that would recreate the implicit assumptions that bounded contexts are designed to eliminate. One team can own multiple bounded contexts; the constraint is unidirectional. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
+<h2>Bounded Context Sizing Heuristic</h2>
+<blockquote>
+<p>&quot;Treat the bounded context&#39;s size as a function of the model it encompasses.&quot; — Nick Tune (cited in → <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 10)</p>
+</blockquote>
+<p>A common mistake is optimising for <em>small</em> bounded contexts. Size is one of the least useful heuristics. The correct approach is the inverse: let the model determine the size.</p>
+<p><strong>When to start wide</strong>: cross-context changes require inter-team coordination and are expensive. If bounded context boundaries turn out to be wrong (especially likely during early implementation of a core subdomain), refactoring <em>logical</em> boundaries (within a wide context) is much cheaper than refactoring <em>physical</em> boundaries (separate services, separate deployments). For core subdomains — which are volatile and uncertain by definition — start with a wide bounded context. Include other subdomains that the core interacts with most heavily.</p>
+<p><strong>When to split</strong>: decompose only when you have enough domain knowledge to do it correctly. Triggers: gaining domain expertise that reveals distinct models; adding new engineering teams that need ownership boundaries; requiring different scaling or deployment lifecycles per module. Avoid splitting use cases that are coherent (same actors, same data) — forced coordination defeats the purpose.</p>
+<p><strong>Implication</strong>: microservices are bounded contexts at their natural granularity, but starting with a monolith or a wide bounded context is the safer default during the uncertain early phases of a core subdomain. Decompose as knowledge stabilises. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 10, ch. 14)</p>
+<h2>Subdomain Type Evolution</h2>
+<p>Subdomain types are not fixed — they evolve as business strategy and competitive landscape change. All six transitions are possible (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Transition</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Core → Generic</td>
+<td>A competitor or SaaS provider commoditises what was previously a differentiator</td>
+</tr>
+<tr>
+<td>Generic → Core</td>
+<td>The organisation decides to invest in a bespoke implementation for strategic advantage (Amazon AWS example)</td>
+</tr>
+<tr>
+<td>Supporting → Generic</td>
+<td>An open-source or off-the-shelf solution becomes available for what was a bespoke CRUD system</td>
+</tr>
+<tr>
+<td>Supporting → Core</td>
+<td>Business logic grows in complexity in a way that creates competitive advantage</td>
+</tr>
+<tr>
+<td>Core → Supporting</td>
+<td>The previously complex logic is simplified; investment no longer justified</td>
+</tr>
+<tr>
+<td>Generic → Supporting</td>
+<td>Integration cost of an external solution exceeds building a simple in-house version</td>
+</tr>
+</tbody></table></div>
+<p><strong>Strategic design consequences</strong>: a change in subdomain type directly affects integration patterns and implementation strategy:</p>
+<ul>
+<li>A core subdomain gains separate ways and loses the conformist pattern</li>
+<li>A generic subdomain loses the need for anticorruption layers and in-house investment</li>
+<li>Duplication (separate ways) is only appropriate for generic and supporting subdomains; if a subdomain turns core, the separated implementations must be integrated</li>
+</ul>
+<p><strong>Tactical design signal</strong>: the primary indicator of a subdomain type change is when the existing technical design can no longer support business needs. A supporting subdomain using transaction script that accumulates complex rules and invariants is a sign of core subdomain emergence. Use the &quot;pain&quot; of maintaining the existing design as a trigger to reassess subdomain classification.</p>
+<h2>Growth Management</h2>
+<p>As a project grows, design boundaries accumulate accidental complexity. Three levels to monitor (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
+<p><strong>Subdomains</strong>: revisit boundaries using the coherent-use-cases heuristic. If a subdomain has grown to contain distinct sets of use cases with different actors and data, split it. Especially important for core subdomains — distil out generic and supporting concerns so that engineering investment focuses where it matters.</p>
+<p><strong>Bounded contexts</strong>: bounded contexts that lose focus and accumulate unrelated logic are accumulating accidental complexity. Signs: a bounded context becomes &quot;chatty&quot; and cannot complete operations without calling multiple other contexts — redesign boundaries for greater autonomy. Always look to extract laser-focused bounded contexts.</p>
+<p><strong>Aggregates</strong>: aggregates that grow beyond their original consistency boundary are accumulating accidental complexity. When an aggregate includes data not required to be strongly consistent with its core logic, extract it. Extracted aggregates often reveal hidden models that warrant their own bounded contexts.</p>
+<p>The guiding principle: <strong>eliminate accidental complexity; manage essential complexity</strong> using DDD tools.</p>
+<h2>Properties of Well-Designed Bounded Contexts</h2>
+<p><strong>High cohesion</strong>: internal operations should be intensive and closely related. Most communication should happen <em>within</em> the context, not across its boundaries. High cohesion reduces design scope and simplifies implementation.</p>
+<p><strong>Loose coupling</strong>: changes made within one bounded context should minimise or eliminate impact on neighbouring contexts. Loose coupling prevents requirement changes in one context from cascading through the system.</p>
+<p><strong>Business-requirement alignment</strong>: bounded contexts should be designed around business requirements, not technical requirements. Business requirements change; implementation technology changes more rarely and independently. Aligning on business requirements allows teams to make changes in a loosely coupled, highly cohesive way with minimal inter-team dependencies.</p>
+<p><strong>Anti-pattern — technical alignment</strong>: organising bounded contexts by technical layer (frontend team, backend team, DBA team) distributes business responsibility across multiple contexts. A single business requirement change requires coordination across all teams touching that technical layer. No single team can deliver a feature end-to-end. This pattern is frequently seen in decomposed monoliths that retained their technical layering.</p>
+<h2>Three Communication Structures</h2>
+<p>Bellemare identifies three communication structures in any organisation (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1). Understanding their interaction explains why data access is hard in traditional architectures:</p>
+<p><strong>Business communication structure</strong>: how teams and departments communicate with one another to fulfil goals. Dictates ownership and responsibility assignment. Changes over time as organisations grow and restructure.</p>
+<p><strong>Implementation communication structure</strong>: the data and logic pertaining to subdomain models. Formalises business processes and data structures. The quintessential example is the monolithic database application — data and logic are held together and accessed internally. Implementation structures excel at serving their own bounded context but are poor at sharing data across context boundaries.</p>
+<p><strong>Data communication structure</strong>: the mechanism by which data flows across business contexts and between implementations. Historically absent or ad hoc in most organisations. When missing, the implementation communication structure plays double duty — leaking internal data models, creating point-to-point couplings, and accumulating tribal knowledge. This is the structural root cause of most distributed systems complexity.</p>
+<p><strong>EDM&#39;s contribution</strong>: event-driven microservices formalise the data communication structure. Event streams become the canonical mechanism by which any team can access domain data from any other team, without coupling to that team&#39;s implementation. Producers publish to event streams; consumers read independently. The event broker is the data communication layer (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>).</p>
+<h2>Conway&#39;s Law Implications</h2>
+<p>Conway&#39;s Law (→ <a href="../concepts/conways-law.html">Conways Law</a>) predicts that software structure mirrors team communication structure. This applies directly to bounded contexts:</p>
+<ul>
+<li>Teams organised around technical layers → technically partitioned architectures → implementation communication structure plays double duty → data silos</li>
+<li>Teams organised around bounded contexts → domain-partitioned architectures → independent ownership of data and logic → event streams enable decoupled data sharing</li>
+</ul>
+<p>The Inverse Conway Maneuver (restructuring teams to produce the desired architecture) requires aligning team boundaries with bounded context boundaries first. The event stream then provides the data communication layer that previously required point-to-point couplings or shared databases.</p>
+<h2>Relationship to Microservice Sizing</h2>
+<p>A bounded context is the natural unit of microservice granularity — one team, one bounded context, one (or a small set of) microservices. A &quot;small&quot; microservice is typically scoped to something that:</p>
+<ul>
+<li>Can be mentally modeled by one person</li>
+<li>Takes no more than ~two weeks to rewrite</li>
+<li>Maps cleanly to a single business responsibility within a bounded context</li>
+</ul>
+<p>Service granularity below the bounded context level introduces excessive inter-service coordination for what would otherwise be internal calls (→ <a href="../concepts/service-granularity.html">Service Granularity</a>).</p>
+<h2>Evans&#39; Originating Treatment</h2>
+<p>Evans introduced BOUNDED CONTEXT in ch. 14 (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a>) as the primary tool for maintaining model integrity in systems that necessarily contain multiple models.</p>
+<p><strong>The core motivation</strong>: large systems inevitably contain more than one model. Without explicit boundaries, models blur — terms that seem the same actually mean different things (false cognates), or the same concept is tracked in duplicate and diverges over time (duplicate concepts). The BOUNDED CONTEXT makes the boundary explicit so each model can be kept internally consistent.</p>
+<p><strong>Continuous Integration within a context</strong>: Evans pairs BOUNDED CONTEXT with CONTINUOUS INTEGRATION as the mechanism that keeps a context unified: frequent code merges prevent divergence; exercises of the UBIQUITOUS LANGUAGE in conversation prevent conceptual drift. Together they are the maintenance practice for a healthy context.</p>
+<p><strong>The CONTEXT MAP</strong>: Evans&#39; term for the high-level diagram of all contexts and their integration relationships. The map names enter the UBIQUITOUS LANGUAGE; it must reflect current reality, not aspirational structure. Evans describes specific integration patterns (SHARED KERNEL, CUSTOMER/SUPPLIER, CONFORMIST, ANTICORRUPTION LAYER, SEPARATE WAYS, OPEN HOST SERVICE, PUBLISHED LANGUAGE) as the vocabulary for annotating the map.</p>
+<p><strong>Context sizing</strong>: Evans frames the tension as a trade-off between larger contexts (smoother flow, shared language, simpler model) and smaller contexts (smaller teams, easier CI, specialised vocabularies). His rule of thumb: one team per context; one team can own multiple contexts but multiple teams cannot share one effectively.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/domain-driven-design.html">Domain Driven Design</a></td>
+<td>Originating treatment (ch. 14): BOUNDED CONTEXT as model integrity tool; CONTINUOUS INTEGRATION as the maintenance practice; CONTEXT MAP as the global diagram; full integration pattern vocabulary</td>
+</tr>
+<tr>
+<td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>The definitive treatment: full subdomain taxonomy (core/generic/supporting), bounded context definition, ubiquitous language, integration patterns, tactical patterns — DDD as a complete methodology</td>
+</tr>
+<tr>
+<td><a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a></td>
+<td>Focuses on the three communication structures; bounded context alignment on business vs technical requirements; event streams as the data communication layer</td>
+</tr>
+<tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Mentions bounded contexts as the design principle behind technical vs domain partitioning; used to justify microservices and service-based architecture boundaries</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
+<td>Applies bounded context thinking to data ownership — each domain service owns its data; cross-domain data access requires explicit patterns (→ <a href="../concepts/data-decomposition.html">Data Decomposition</a>)</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Migration-focused treatment: bounded contexts are the <em>primary unit of decomposition</em> in a microservice migration. Start by mapping BCs from domain modelling (EventStorming); each BC is a candidate service. Use inbound/outbound dependency counts between BCs to prioritise extraction order — low inbound dependencies = easier to extract without touching the monolith. Split on aggregate boundaries only when team size or loose aggregate coupling justifies it.</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — each bounded context has its own ubiquitous language; the two concepts are mutually defining</li>
+<li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — bounded context alignment predicts architectural partitioning style</li>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — team communication structure mirrors bounded context structure; one team per bounded context is the ownership rule</li>
+<li><a href="../concepts/service-granularity.html">Service Granularity</a> — bounded context as the natural sizing unit for microservices</li>
+<li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — EDM provides the data communication layer that formalises cross-context data sharing</li>
+<li><a href="../concepts/data-decomposition.html">Data Decomposition</a> — data ownership within and across bounded contexts</li>
+<li><a href="../concepts/modularity.html">Modularity</a> — cohesion and coupling metrics operationalise bounded context design quality</li>
+<li><a href="../patterns/context-map.html">Context Map</a> — graphical notation for plotting integration between bounded contexts</li>
+<li><a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a> — the mechanism for protecting a downstream bounded context&#39;s model from an upstream&#39;s language</li>
+<li><a href="../comparisons/build-vs-buy.html">Build Vs Buy</a> — subdomain taxonomy (core/generic/supporting) is the primary framework for the build-vs-buy decision</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../patterns/repository.html">Repository Pattern</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

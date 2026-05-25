@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JSON/XML, Thrift, Protobuf, Avro; schema evolution; forward/backward compatibility; dataflow modes">
+  <meta property="og:title" content="Encoding and Evolution — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="JSON/XML, Thrift, Protobuf, Avro; schema evolution; forward/backward compatibility; dataflow modes">
+  <title>Encoding and Evolution — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html" aria-current="page">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../databases/index.html">Databases</a> <span class="sep">›</span> Encoding and Evolution</nav></div>
+      <h1>Encoding and Evolution</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../databases/index.html">database</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/databases.html">databases</a><a class="tag-chip" href="../tags/encoding.html">encoding</a><a class="tag-chip" href="../tags/serialisation.html">serialisation</a><a class="tag-chip" href="../tags/schema-evolution.html">schema-evolution</a><a class="tag-chip" href="../tags/compatibility.html">compatibility</a></ul>
+    </div><div class="page-body"><p>Data needs to be encoded to cross process boundaries — written to disk, sent over a network, or passed between services. The choice of encoding format determines how much data you can evolve over time without breaking things. This matters because <strong>data outlives code</strong>: a database may contain records written years ago by a version of the code that no longer exists.</p>
+<h2>Language-Specific Serialisation</h2>
+<p>Most languages provide built-in serialisation (Java&#39;s <code>Serializable</code>, Ruby&#39;s <code>Marshal</code>, Python&#39;s <code>pickle</code>). These are convenient for transient use, but have deep problems for cross-system or long-lived data:</p>
+<ul>
+<li><strong>Language-locked</strong>: reading data in another language is very difficult.</li>
+<li><strong>Security risk</strong>: decoding instantiates arbitrary classes, enabling remote code execution if an attacker controls the byte stream.</li>
+<li><strong>No versioning</strong>: forward/backward compatibility are afterthoughts.</li>
+<li><strong>Poor performance</strong>: Java&#39;s built-in serialisation is notoriously slow and bloated.</li>
+</ul>
+<p><strong>Rule</strong>: never use language-specific serialisation for data stored durably or exchanged across processes.</p>
+<h2>Human-Readable Formats</h2>
+<h3>JSON and XML</h3>
+<p>Ubiquitous, human-readable, language-independent. Used for REST APIs, config files, event logs.</p>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li>Ambiguous number types: JSON has no integer/float distinction (problems with numbers &gt; 2⁵³ in JavaScript).</li>
+<li>No binary string support — base64 encoding adds ~33% overhead.</li>
+<li>No schema validation by default — applications must handle missing/unexpected fields.</li>
+<li>Verbose — significant space overhead for key names on every record.</li>
+</ul>
+<p><strong>CSV</strong>: even simpler but deeply ambiguous (commas in values, escaping rules, no types).</p>
+<p>JSON with schema validation (JSON Schema, OpenAPI) addresses the schema concern but not the binary or space concerns.</p>
+<h2>Binary Encodings</h2>
+<h3>MessagePack</h3>
+<p>Binary encoding of JSON. Same data model, smaller encoding — saves ~20% vs JSON. No schema required. Rarely used; JSON&#39;s tooling ubiquity usually wins.</p>
+<h3>Apache Thrift (Facebook)</h3>
+<p>Uses <strong>field tags</strong> (integers) instead of field names in the binary encoding. Three formats:</p>
+<ul>
+<li><strong>BinaryProtocol</strong>: straightforward binary, moderately compact.</li>
+<li><strong>CompactProtocol</strong>: variable-length integers, more compact.</li>
+<li><strong>DenseProtocol</strong>: experimental.</li>
+</ul>
+<p>Schema defined in an IDL (Interface Definition Language). Code generation produces typed readers/writers in each language.</p>
+<h3>Protocol Buffers (Protobuf, Google)</h3>
+<p>Very similar to Thrift CompactProtocol. Field tags are the primary schema mechanism. More widely adopted outside Facebook. Used by Google internally and as gRPC&#39;s wire format.</p>
+<p><strong>Field tags for evolution</strong>:</p>
+<ul>
+<li><strong>Never change a field tag</strong> — it is the field&#39;s identity in the binary.</li>
+<li><strong>Add new fields</strong>: assign a new tag, make optional — old code ignores unknown tags (forward compat); new code handles missing optional fields with defaults (backward compat).</li>
+<li><strong>Remove fields</strong>: mark deprecated, never reuse the tag number.</li>
+<li><strong>Required fields</strong>: can never be safely removed — avoid required.</li>
+</ul>
+<h3>Apache Avro</h3>
+<p>Avro is the most compact binary encoding because it <strong>has no field tags</strong> in the encoded data. Instead, schema resolution happens by matching the <strong>writer&#39;s schema</strong> against the <strong>reader&#39;s schema</strong> at decode time.</p>
+<ul>
+<li>The encoding is just values, in the order defined by the writer&#39;s schema.</li>
+<li>The reader uses its own schema to interpret the values, with schema resolution rules to handle differences.</li>
+<li>For schema evolution: added fields get defaults from the reader&#39;s schema; removed fields are ignored.</li>
+</ul>
+<p><strong>Schema registry</strong>: since the writer&#39;s schema is required to decode, Avro encoders embed a schema version ID (fingerprint) in the file/message. A schema registry stores schema versions; decoders fetch the writer&#39;s schema on demand.</p>
+<p>Used in: Hadoop ecosystem (Avro files), Kafka (with Confluent Schema Registry), Parquet (uses Avro schemas).</p>
+<h2>Schema Evolution Rules</h2>
+<p>The two compatibility directions every encoding format must handle:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Meaning</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Backward compatibility</strong></td>
+<td>New code reads old data</td>
+<td>Old fields still decodable; new optional fields absent in old data get defaults</td>
+</tr>
+<tr>
+<td><strong>Forward compatibility</strong></td>
+<td>Old code reads new data</td>
+<td>Old code must tolerate unknown/new fields (typically: ignore them)</td>
+</tr>
+</tbody></table></div>
+<p>For rolling deployments (new and old code running simultaneously), you need <strong>both</strong> directions simultaneously. Thrift and Protobuf achieve this via optional fields + ignoring unknown tags. Avro achieves it via reader/writer schema resolution with defaults.</p>
+<p><strong>What you can safely do</strong>:</p>
+<ul>
+<li>Add an optional field with a default value.</li>
+<li>Remove an optional field (it will be absent in new data; old code ignores unknown fields).</li>
+<li>Rename a field (in Avro: add an alias; in Thrift/Protobuf: field name is not in the wire format).</li>
+</ul>
+<p><strong>What breaks compatibility</strong>:</p>
+<ul>
+<li>Remove a required field (old readers expect it).</li>
+<li>Change a field&#39;s data type in an incompatible way.</li>
+<li>Change a field tag (Thrift/Protobuf only — breaks field identity).</li>
+</ul>
+<h2>Dataflow Modes</h2>
+<p>The same compatibility concerns arise differently depending on how data flows between systems.</p>
+<h3>Through Databases</h3>
+<p>The database is a long-lived store: a value written today may be read by code five years from now. This is the most demanding evolution scenario.</p>
+<ul>
+<li><strong>Schema migrations</strong> (<code>ALTER TABLE</code>) are often slow and risky on large tables — some require zero-downtime strategies (expand-contract pattern).</li>
+<li><strong>Schema-on-read alternative</strong>: add new columns as nullable; old code writes null, new code handles both null and values.</li>
+<li>Data written by old code may be read by new code (backward compat) and vice versa during rolling deploys (forward compat).</li>
+</ul>
+<p>See: <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> for the expand/contract pattern.</p>
+<h3>REST vs SOAP vs RPC</h3>
+<p><strong>REST</strong> is not a protocol but a design philosophy building on HTTP: simple data formats, URLs as resource identifiers, HTTP features (caching, authentication, content negotiation). Associated with microservices. RESTful APIs use OpenAPI/Swagger for description. No code generation required.</p>
+<p><strong>SOAP</strong> is an XML-based protocol designed to be independent of HTTP (unlike REST, which leverages HTTP). Comes with WS-* standards for features, WSDL for description, code generation tooling. Vendor interoperability is poor. Falling out of favour except in large enterprises.</p>
+<p><strong>RPC fundamental problem</strong>: RPC tries to make a network call look like a local function call (location transparency). This abstraction is fundamentally flawed — a network call is not like a local call:</p>
+<ul>
+<li>Network calls can time out; a local call either succeeds or throws an exception.</li>
+<li>A failed request may have been received and acted on (at-least-once problem) — you need idempotency for safe retry.</li>
+<li>Return values must be encoded/decoded (cannot pass pointers).</li>
+<li>Cannot pass large objects by reference (must copy).</li>
+<li>Different programming language types must translate.</li>
+</ul>
+<p>Modern RPC frameworks (gRPC/Protobuf, Thrift, Finagle) acknowledge these differences rather than hiding them. They provide futures/promises for async calls and explicit retry policies.</p>
+<h3>Through Services (REST/gRPC)</h3>
+<p>Services exchange data via API calls. Multiple versions of client and server code coexist:</p>
+<ul>
+<li><strong>REST</strong>: versioning via URL (<code>/v1/</code>, <code>/v2/</code>) or <code>Accept</code> header. JSON is common — liberal in what you accept (ignore unknown fields), conservative in what you send.</li>
+<li><strong>gRPC</strong>: Protocol Buffers enforces schema. Forward and backward compatibility rules of Protobuf apply. Server can add new optional fields; clients ignore unknown fields.</li>
+</ul>
+<p><strong>Service versioning policy</strong>: maintain n-1 backward compatibility — new server must serve old clients. Deprecation window for removing old fields.</p>
+<h3>Through Async Message Passing</h3>
+<p>Events in a message broker (Kafka, RabbitMQ) can be consumed long after they were produced. The encoding is chosen once at produce time and must remain decodable by all future consumers.</p>
+<p>This makes Avro + schema registry a natural choice for Kafka: the schema version is recorded with each message; consumers fetch the writer&#39;s schema by version ID.</p>
+<p><strong>Key concern</strong>: if an event represents a business fact (order placed, payment made), it may be replayed years later for audit or reprocessing. The encoding must survive schema evolution over that period. Using field tags (Protobuf) or reader/writer schema resolution (Avro) is safer than JSON for long-lived event stores.</p>
+<h2>Format Selection Guide</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>Recommended format</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public REST APIs</td>
+<td>JSON</td>
+<td>Interoperability, human-readable, tooling</td>
+</tr>
+<tr>
+<td>Internal gRPC services</td>
+<td>Protobuf</td>
+<td>Type-safe, compact, fast, schema enforcement</td>
+</tr>
+<tr>
+<td>Kafka/event streaming</td>
+<td>Avro + schema registry</td>
+<td>Most compact, schema evolution, no field tag collision</td>
+</tr>
+<tr>
+<td>Config files</td>
+<td>YAML/JSON</td>
+<td>Human-editable</td>
+</tr>
+<tr>
+<td>Long-lived data lake</td>
+<td>Parquet (columnar) or Avro</td>
+<td>Schema evolution, efficient analytics reads</td>
+</tr>
+</tbody></table></div>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Definitive treatment — explains encoding formats from binary layout up; introduces the forward/backward compatibility framework (ch. 4)</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>API-focused: OpenAPI Specification (OAS) for REST, Protobuf for gRPC, schema-first design; compatibility as API governance concern</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../databases/data-models.html">Data Models</a> — the data model determines what needs to be encoded</li>
+<li><a href="../concepts/api-design.html">Api Design</a> — encoding and versioning are central API design decisions</li>
+<li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — long-lived event logs make encoding evolution critical</li>
+<li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — database schema evolution strategies</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

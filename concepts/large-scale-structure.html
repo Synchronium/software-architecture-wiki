@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="organising principle for entire system; four patterns: System Metaphor, Responsibility Layers (Potential/Operations/Decision Support/Policy/Commitment),…">
+  <meta property="og:title" content="Large-Scale Structure — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="organising principle for entire system; four patterns: System Metaphor, Responsibility Layers (Potential/Operations/Decision Support/Policy/Commitment),…">
+  <title>Large-Scale Structure — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html" aria-current="page">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Large-Scale Structure</nav></div>
+      <h1>Large-Scale Structure</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/strategic-design.html">strategic-design</a><a class="tag-chip" href="../tags/architecture-patterns.html">architecture-patterns</a><a class="tag-chip" href="../tags/responsibility-layers.html">responsibility-layers</a></ul>
+    </div><div class="page-body"><h2>Definition</h2>
+<p>A large-scale structure is a language that lets you discuss and understand a system in broad strokes. A set of high-level concepts or rules — or both — establishes a pattern of design for an entire system, allowing the role of each individual part to be understood without detailed knowledge of the whole (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 16).</p>
+<h2>Why It Matters</h2>
+<p>BOUNDED CONTEXTS prevent corruption but do not themselves make a system comprehensible as a whole. Distillation focuses attention on the CORE DOMAIN but doesn&#39;t explain how supporting elements relate to each other or to the CORE. On large projects, without an overarching principle developers cannot make design decisions that are consistent with each other; specialists in different modules cannot help each other; Continuous Integration breaks down.</p>
+<p>A large-scale structure is optional — it should only be imposed when costs and benefits favour it, and when a fitting structure can actually be found. An ill-fitting structure is worse than none.</p>
+<h2>Evolving Order</h2>
+<p>The primary rule: <strong>let the structure evolve with the application</strong>. Up-front architectural impositions become straitjackets. Developers dumb down the application to fit the structure, or subvert it, producing no structure at all.</p>
+<p>The structure must be:</p>
+<ul>
+<li>Applicable across BOUNDED CONTEXTS (it provides a unifying vocabulary for the whole project)</li>
+<li>Loose enough to accommodate practical constraints (legacy systems, external subsystems)</li>
+<li>Minimal — address the most serious concerns, leave the rest case-by-case</li>
+<li>Allowed to change completely as understanding deepens</li>
+</ul>
+<p>&quot;Large-scale structure should be applied when a structure can be found that greatly clarifies the system without forcing unnatural constraints on model development. Less is more.&quot;</p>
+<h2>The Four Patterns</h2>
+<h3>SYSTEM METAPHOR</h3>
+<p>A concrete analogy that captures team imagination and leads thinking in a useful direction. The classic example: &quot;firewall&quot; in networking. When a metaphor fits, it shapes design decisions consistently across teams and BOUNDED CONTEXTS; it becomes a reference point in discussions more concrete than the model itself.</p>
+<p>Use when a genuine metaphor presents itself. Don&#39;t force one — XP&#39;s &quot;naive metaphor&quot; (using the domain model itself as the system metaphor) conflates the concept and should be retired. If no metaphor presents itself, the UBIQUITOUS LANGUAGE is sufficient.</p>
+<p>Risk: all metaphors carry baggage; overextended metaphors lead the design astray.</p>
+<h3>RESPONSIBILITY LAYERS</h3>
+<p>Partition the domain model by broad responsibility categories that correspond to natural domain strata. Objects, AGGREGATES, and MODULES are assigned so each fits within exactly one layer. Layer dependencies flow downward: upper layers depend on lower; lower layers are independent of upper.</p>
+<p>Characteristics of good layers:</p>
+<ul>
+<li><em>Storytelling</em>: layers communicate the domain&#39;s priorities and realities, not just technical concerns</li>
+<li><em>Conceptual dependency</em>: upper-layer concepts have meaning against the backdrop of lower-layer concepts; lower-layer concepts are meaningful standing alone</li>
+<li><em>CONCEPTUAL CONTOURS</em>: different rates of change or different sources of change are accommodated by layer boundaries</li>
+</ul>
+<p>Common layer vocabulary in enterprise systems:</p>
+<ul>
+<li><strong>Potential (Capability)</strong>: what the organisation <em>can</em> do — resources, people, contracts, infrastructure</li>
+<li><strong>Operations</strong>: what the organisation <em>is doing</em> — active activities, current state, operational plans</li>
+<li><strong>Decision Support</strong>: what action <em>should</em> be taken — analysis, automated decision making, recommendations</li>
+<li><strong>Policy</strong>: what the <em>rules and goals</em> are — constraints and targets that govern other layers (often passive; may be implemented in a rules engine while sharing the domain model)</li>
+<li><strong>Commitment</strong>: what the organisation <em>has promised</em> — combines policy-like goal-setting with operations-like emergence from ongoing activity</li>
+</ul>
+<p>Keep layering to 4–5 layers maximum. More layers recreate the complexity the structure was meant to solve.</p>
+<p><strong>Effect on design decisions</strong>: once layers are adopted, design choices that violate the layering must be refactored. Example: an attribute encoding a decision-making policy on a Capability-layer entity violates the structure; it must be extracted into the Decision Support layer as an explicit Policy object.</p>
+<h3>KNOWLEDGE LEVEL</h3>
+<p>A group of objects that describes how another group of objects should behave. Separates the <em>meta level</em> (Knowledge Level: rules, types, long-standing policies) from the <em>operations level</em> (base level: day-to-day operational objects). Based on the REFLECTION pattern from POSA (Buschmann et al. 1996), applied to the domain layer rather than the technical infrastructure.</p>
+<p>Used when roles and relationships between ENTITIES must be customised at installation or runtime. The operations-level objects reference knowledge-level objects for their rules; the knowledge-level objects describe the structure and constraints of the operations level.</p>
+<p>Unlike RESPONSIBILITY LAYERS, dependencies in KNOWLEDGE LEVEL run <em>bidirectionally</em> between levels. It can coexist with most other large-scale structures as an additional dimension of organisation.</p>
+<p>Employee payroll example: EmployeeType (Knowledge Level) constrains Employee (Operations Level) by associating it with a Retirement Plan and a Payroll. A superuser configures the Knowledge Level; ordinary users work with the Operations Level. This separation allows policy to be explicit without overconstrained or underconstrained base objects.</p>
+<p>Use sparingly — it adds indirection and makes system behaviour harder to understand if the Knowledge Level itself becomes complex.</p>
+<h3>PLUGGABLE COMPONENT FRAMEWORK (most mature)</h3>
+<p>Distill an ABSTRACT CORE of interfaces and interactions; create a framework that allows diverse implementations to be freely substituted. Any application uses those components strictly through the ABSTRACT CORE&#39;s interfaces. The central hub operates within a SHARED KERNEL; individual components may be in separate BOUNDED CONTEXTS.</p>
+<p>Requires precision in interface design and a deep model to capture the necessary behaviour in the ABSTRACT CORE. Only viable after multiple applications have already been implemented in the same domain. Downside: freezes CORE refactoring — the ABSTRACT CORE cannot be changed without changing all components&#39; protocols.</p>
+<p>SEMATECH CIM Framework example: defined abstract interfaces for semiconductor MES domain (Process Machine, Lot Movement); required all applications to implement a hosting protocol. Allowed thousands of developers to build interoperable components independently.</p>
+<h2>How Restrictive Should a Structure Be?</h2>
+<p>Ranges from loose (SYSTEM METAPHOR) to restrictive (PLUGGABLE COMPONENT FRAMEWORK). The most important contribution is conceptual coherence and insight into the domain. Resist the temptation to build frameworks that regiment the implementation of the structure. &quot;Each structural rule should make development easier.&quot;</p>
+<h2>Refactoring Toward a Fitting Structure</h2>
+<ul>
+<li><strong>Minimalism</strong>: keep simple and lightweight; don&#39;t attempt to be comprehensive</li>
+<li><strong>Communication and self-discipline</strong>: the structure&#39;s terminology must enter the UBIQUITOUS LANGUAGE; the entire team must follow it</li>
+<li><strong>Restructuring yields supple design</strong>: models that have been structurally transformed repeatedly become easier to transform again — like a leather jacket that softens with wear</li>
+<li><strong>Distillation lightens the load</strong>: removing GENERIC SUBDOMAINS and COHESIVE MECHANISMS from the CORE leaves less to restructure; supporting elements should be designed to fit cleanly within the structure</li>
+</ul>
+<h2>Who Sets the Structure?</h2>
+<p>Two patterns Evans observed:</p>
+<ol>
+<li><em>Emergent structure</em>: self-disciplined teams with good communication; informal leaders (often the coach); organic order from EVOLVING ORDER</li>
+<li><em>Customer-focused architecture team</em>: collaborating peer teams, not ivory tower; team members rotate through application teams; decisions absorb feedback from hands-on development</li>
+</ol>
+<p>Six essentials for strategic design decision making: decisions reach everyone → process absorbs feedback → plan allows evolution → architecture teams don&#39;t siphon the best talent → minimalism and humility → developers are generalists, objects are specialists.</p>
+<p><strong>Beware the Master Plan</strong> (Christopher Alexander&#39;s critique): master plans create totalitarian, not organic, order. They are too rigid and too imprecise at the same time. The analogy to software: a set of principles for piecemeal growth produces order that adapts to circumstances; a master plan produces order that constrains them.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/domain-driven-design.html">Domain Driven Design</a></td>
+<td>Originating treatment (ch. 16–17): large-scale structure as optional complement to bounded contexts and distillation; four patterns (System Metaphor, Responsibility Layers, Knowledge Level, Pluggable Component Framework); Evolving Order; who sets strategy; six essentials</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/core-domain.html">Core Domain</a> — large-scale structure clarifies the CORE DOMAIN&#39;s position in the whole; the structure itself may be part of the CORE</li>
+<li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — large-scale structure typically spans multiple BOUNDED CONTEXTS; one structure can organise the entire CONTEXT MAP</li>
+<li><a href="../concepts/supple-design.html">Supple Design</a> — CONCEPTUAL CONTOURS from supple design guide where to draw layer boundaries; repeatedly restructured designs become supple</li>
+<li><a href="../concepts/model-driven-design.html">Model Driven Design</a> — large-scale structure is a strategic complement to the tactical MODEL-DRIVEN DESIGN; must not prevent model-code alignment</li>
+<li><a href="../patterns/context-map.html">Context Map</a> — a large-scale structure organises the CONTEXT MAP when it spans multiple BOUNDED CONTEXTS</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li><li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

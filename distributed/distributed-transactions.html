@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ACID, 2PL, OCC, MVCC, 2PC, Spanner, Saga, Outbox; XA limitations; coordination-avoiding correctness; Newman's &quot;just say no&quot; to 2PC during migration">
+  <meta property="og:title" content="Distributed Transactions — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="ACID, 2PL, OCC, MVCC, 2PC, Spanner, Saga, Outbox; XA limitations; coordination-avoiding correctness; Newman's &quot;just say no&quot; to 2PC during migration">
+  <title>Distributed Transactions — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html" aria-current="page">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../distributed/index.html">Distributed</a> <span class="sep">›</span> Distributed Transactions</nav></div>
+      <h1>Distributed Transactions</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../distributed/index.html">concept</a>
+        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/transactions.html">transactions</a><a class="tag-chip" href="../tags/consistency.html">consistency</a><a class="tag-chip" href="../tags/atomicity.html">atomicity</a><a class="tag-chip" href="../tags/coordination.html">coordination</a></ul>
+    </div><div class="page-body"><p>A distributed transaction spans multiple nodes or services and must satisfy ACID properties across all of them. The fundamental challenge: how to achieve atomicity (all-or-nothing) when each participant is independently fallible and there is no shared clock or memory.</p>
+<h2>Local ACID Recap</h2>
+<p>Single-node ACID properties:</p>
+<ul>
+<li><strong>Atomicity</strong>: transaction either commits fully or rolls back entirely (WAL enables this).</li>
+<li><strong>Consistency</strong>: transaction moves the database from one valid state to another.</li>
+<li><strong>Isolation</strong>: concurrent transactions don&#39;t interfere (implemented via locking or MVCC).</li>
+<li><strong>Durability</strong>: committed data survives crashes (WAL + replication).</li>
+</ul>
+<p>Isolation levels (weakest to strongest): Read Uncommitted → Read Committed → Repeatable Read → Serializable. Serializability prevents all anomalies: dirty writes, dirty reads, fuzzy reads, phantom reads.</p>
+<p>Concurrency control mechanisms:</p>
+<ul>
+<li><strong>2PL</strong> (Two-Phase Locking, pessimistic): acquire locks before reads/writes; hold until commit. Can deadlock.</li>
+<li><strong>OCC</strong> (Optimistic Concurrency Control): work in local workspace; validate for conflicts at commit. Better for low-conflict workloads.</li>
+<li><strong>MVCC</strong>: maintain multiple versions per row; readers never block writers. Read-only transactions never abort.</li>
+</ul>
+<h2>Two-Phase Commit (2PC)</h2>
+<p>The standard protocol for distributed atomicity:</p>
+<p><strong>Phase 1 — Prepare</strong>: coordinator asks all participants &quot;can you commit?&quot;. Each participant locks its resources and responds yes/no.</p>
+<p><strong>Phase 2 — Commit/Abort</strong>: if all said yes, coordinator broadcasts Commit. If any said no (or timed out), coordinator broadcasts Abort.</p>
+<p><strong>Critical weakness</strong>: if the coordinator crashes after Phase 1 but before Phase 2, participants are stuck holding locks indefinitely — they cannot proceed without the coordinator&#39;s decision. This is called the <strong>blocking problem</strong>.</p>
+<p><strong>2PC is uniform consensus</strong>: atomically committing a distributed transaction is a form of consensus — <em>uniform</em> consensus, where all processes (including faulty ones) must agree. This is strictly harder than standard consensus (where only non-faulty processes must agree). The practical consequence: no simple solution exists, which is why 2PC&#39;s blocking behaviour under failure is not an implementation bug but a fundamental property.</p>
+<p>Mitigation: use a durable, replicated coordinator (e.g., a Paxos group). This is the Spanner approach.</p>
+<h2>Spanner</h2>
+<p>Google&#39;s globally distributed ACID database:</p>
+<ul>
+<li><strong>2PC + 2PL</strong> for transaction management within a Paxos group.</li>
+<li><strong>Paxos state machine replication</strong> within each shard for durability and fault tolerance.</li>
+<li><strong>TrueTime</strong>: GPS + atomic clocks provide bounded uncertainty intervals <code>[t_earliest, t_latest]</code>. Each transaction is assigned the <code>t_latest</code> timestamp of the interval. Before committing, Spanner <strong>waits out the uncertainty period</strong> (<code>t_latest − t_earliest</code>) to ensure any transaction that starts after this one committed will see its changes. This gives external consistency (strict serializability globally) without a centralised clock — at the cost of commit latency proportional to clock uncertainty. Spanner keeps uncertainty small (~7 ms) by deploying GPS and atomic clocks in every data center.</li>
+</ul>
+<p><strong>CockroachDB</strong> takes a different approach: instead of GPS/atomic clocks, it uses <strong>hybrid-logical clocks</strong> composed of a physical timestamp plus a logical counter. This sidesteps the infrastructure requirement of TrueTime while providing similar ordering guarantees.</p>
+<p>Spanner shows that global ACID is achievable with sufficient infrastructure investment; CockroachDB shows it can be approximated without specialised hardware.</p>
+<h2>Asynchronous Distributed Transactions</h2>
+<p>When synchronous coordination (2PC) is too expensive or unavailable, two patterns provide eventual atomicity:</p>
+<h3>Outbox Pattern</h3>
+<p>Achieves atomic write + publish without 2PC:</p>
+<ol>
+<li>Write state change AND a message record to the same local DB in one ACID transaction.</li>
+<li>A relay process reads the outbox table and forwards to the message broker.</li>
+<li>Idempotency key on the message handles at-least-once delivery.</li>
+</ol>
+<p>The local ACID transaction ensures write and publish are either both committed or both rolled back. (→ <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>)</p>
+<h3>Saga Pattern</h3>
+<p>Replaces a distributed ACID transaction with a sequence of local transactions:</p>
+<pre><code>T₁ → T₂ → T₃ → ... → Tₙ
+</code></pre>
+<p>Each Tᵢ has a compensating transaction Cᵢ that undoes its effects. On failure at Tᵢ, the saga runs Cᵢ₋₁ → Cᵢ₋₂ → ... → C₁ to roll back.</p>
+<p><strong>Key limitation</strong>: no isolation. Between T₁ committing and T₂ committing, other transactions can see the intermediate state. Mitigation: semantic locks or designing around the lack of isolation. (→ <a href="../patterns/saga.html">Saga</a>)</p>
+<h2>Trade-offs Summary</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Atomicity</th>
+<th>Isolation</th>
+<th>Availability</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2PC</td>
+<td>Strong</td>
+<td>Full</td>
+<td>Blocking on coordinator fail</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Spanner</td>
+<td>Strong</td>
+<td>Full</td>
+<td>High (Paxos coordinator)</td>
+<td>Very high</td>
+</tr>
+<tr>
+<td>Outbox + Saga</td>
+<td>Eventual</td>
+<td>None</td>
+<td>High</td>
+<td>Medium</td>
+</tr>
+</tbody></table></div>
+<h2>XA Transactions</h2>
+<p>XA (eXtended Architecture) is a C standard API for heterogeneous 2PC — coordinating a transaction across different resource managers (PostgreSQL, MySQL, ActiveMQ, IBM MQ, etc.) from a single application-level coordinator.</p>
+<p><strong>Problems with XA</strong> (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9):</p>
+<ul>
+<li><strong>Coordinator SPOF</strong>: if the coordinator crashes after phase 1, participants hold locks indefinitely. The coordinator must be replicated (and most XA implementations are not).</li>
+<li><strong>Performance</strong>: MySQL XA transactions are ~10× slower than local transactions — 2PC overhead plus cross-system coordination.</li>
+<li><strong>Cross-system deadlocks</strong>: XA cannot detect deadlocks that span systems; operators must manually resolve.</li>
+<li><strong>Incompatible with SSI</strong>: XA requires the coordinator to survive crashes, but SSI (Serializable Snapshot Isolation) depends on transaction ID ordering within a single database.</li>
+</ul>
+<p>XA is used in Java EE application servers (JTA) for coordinating database + JMS operations. It works well when the coordinator is reliable and the performance penalty is acceptable — which is not always the case.</p>
+<h2>Coordination-Avoiding Correctness (DDIA Ch. 12)</h2>
+<p>Kleppmann&#39;s thesis: many applications that seem to require distributed transactions can achieve equivalent correctness without them, using end-to-end operation IDs + idempotency + deterministic derivation.</p>
+<p><strong>The key insight</strong>: separate timeliness from integrity (→ <a href="../distributed/consistency-models.html">Consistency Models</a>). Distributed transactions provide both (linearizability = timeliness; atomicity = integrity). But integrity can be maintained without linearizability.</p>
+<p><strong>Mechanism</strong>:</p>
+<ol>
+<li>Client generates a unique operation ID (UUID) and passes it through all hops.</li>
+<li>Each downstream service deduplicates on the operation ID (idempotent writes).</li>
+<li>Multi-partition operations: write the entire request as a single event (one atomic single-object write to a log); derive sub-operations deterministically from that single event; each sub-operation is deduplicated by the operation ID.</li>
+</ol>
+<p>This avoids 2PC by never requiring atomic commit across multiple partitions — only single-object writes, which are atomic in virtually all storage systems. The log partitioned by request ID provides a total order for conflict resolution.</p>
+<p><strong>Loosely interpreted constraints</strong>: many business constraints (uniqueness, inventory, booking) can tolerate temporary violations that are fixed via compensating transactions — reducing the need for synchronous coordination. Airlines overbook; banks allow overdrafts (with fees); both have compensation processes regardless. The question is not &quot;do we need constraints?&quot; but &quot;do we need <em>synchronous</em> enforcement before the write?&quot;</p>
+<blockquote>
+<p><strong>Contrast:</strong> <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> recommends managing distributed transactions with a replicated coordinator (Spanner model). Kleppmann recommends avoiding them entirely where possible. Both positions are valid at different scales and contexts.</p>
+</blockquote>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Covers 2PC mechanism, Spanner (2PC + Paxos + TrueTime), Outbox and Saga as async alternatives</td>
+</tr>
+<tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Most complete treatment — covers XA limitations, isolation level internals (SSI), and the coordination-avoiding correctness approach as a modern alternative (ch. 7, 9, 12)</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Migration-focused: splitting a database means losing ACID guarantees; Newman&#39;s default recommendation is &quot;just say no&quot; to 2PC in a microservice context because distributed locks, latency, and failure modes (blocking problem under coordinator failure) make it more trouble than it is worth. The first question is not &quot;how do we transact across services?&quot; but &quot;do we need to split this data at all?&quot; If the answer is yes, sagas are the default (ch. 4).</td>
+</tr>
+</tbody></table></div>
+<h2>Sources</h2>
+<ul>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 12) — ACID, 2PL, OCC, MVCC, 2PC, Spanner.</li>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13) — Outbox pattern, Saga pattern.</li>
+<li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 7) — isolation levels in depth, SSI, write skew, phantoms.</li>
+<li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) — 2PC blocking problem, XA, fault-tolerant consensus as alternative coordinator.</li>
+<li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12) — coordination-avoiding correctness, end-to-end operation IDs, loosely interpreted constraints.</li>
+</ul>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+<li><a href="../distributed/replication.html">Replication</a></li>
+<li><a href="../distributed/idempotency.html">Idempotency</a></li>
+<li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+<li><a href="../databases/transactions.html">Transactions</a></li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+<li><a href="../patterns/saga.html">Saga</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

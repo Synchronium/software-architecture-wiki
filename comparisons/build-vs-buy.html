@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Build vs buy vs open-source decision framework; subdomain type as the primary analytical tool (core → build, generic → buy/adopt, supporting → build…">
+  <meta property="og:title" content="Build vs Buy vs Adopt (Open-Source) — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Build vs buy vs open-source decision framework; subdomain type as the primary analytical tool (core → build, generic → buy/adopt, supporting → build…">
+  <title>Build vs Buy vs Adopt (Open-Source) — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html" aria-current="page">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Build vs Buy vs Adopt (Open-Source)</nav></div>
+      <h1>Build vs Buy vs Adopt (Open-Source)</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/strategy.html">strategy</a><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/bounded-contexts.html">bounded-contexts</a><a class="tag-chip" href="../tags/subdomains.html">subdomains</a><a class="tag-chip" href="../tags/make-or-buy.html">make-or-buy</a><a class="tag-chip" href="../tags/vendor.html">vendor</a><a class="tag-chip" href="../tags/open-source.html">open-source</a></ul>
+    </div><div class="page-body"><h2>The Strategic Question</h2>
+<p>The build-vs-buy decision is fundamentally a strategic question, not a technical one: <strong>does this capability create competitive advantage?</strong> The answer determines not just the procurement route but the engineering investment, team assignment, and long-term ownership model.</p>
+<p>The Khononov subdomain taxonomy (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>) provides the primary framework. Subdomain type maps directly to the sourcing decision:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Subdomain type</th>
+<th>Competitive advantage?</th>
+<th>Complexity</th>
+<th>Default sourcing decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Core</strong></td>
+<td>Yes</td>
+<td>High</td>
+<td>Build in-house; assign best engineers</td>
+</tr>
+<tr>
+<td><strong>Generic</strong></td>
+<td>No</td>
+<td>High</td>
+<td>Buy or adopt open-source</td>
+</tr>
+<tr>
+<td><strong>Supporting</strong></td>
+<td>No</td>
+<td>Low</td>
+<td>Build simple in-house, or outsource</td>
+</tr>
+</tbody></table></div>
+<p>This taxonomy makes the decision tractable: the question is not &quot;can we build it?&quot; (almost always yes) but &quot;should we invest our best engineers in building it?&quot; The answer is yes only for core subdomains — capabilities where superior execution is genuinely differentiated.</p>
+<h2>Build In-House (Core Subdomains)</h2>
+<p>Core subdomains are where the company does something <em>differently</em> from its competitors. They are:</p>
+<ul>
+<li><strong>Emergent</strong> — never finished; continuously evolving with the business</li>
+<li><strong>Hard to copy</strong> — competitive advantage requires high entry barriers</li>
+<li><strong>Worth sustained investment</strong> — cost of mediocrity is measured in lost market share</li>
+</ul>
+<p>In-house implementation is the only viable option for a core subdomain. No off-the-shelf solution can provide competitive differentiation — if a generic solution existed, every competitor would adopt it, eliminating the advantage. Core subdomains require:</p>
+<ul>
+<li>The organisation&#39;s best engineers</li>
+<li>Advanced implementation techniques (domain model, event-sourced domain model)</li>
+<li>Direct collaboration between domain experts and developers (ubiquitous language)</li>
+</ul>
+<blockquote>
+<p><strong>The in-house imperative is not about pride.</strong> It is about the fact that a competitor who buys the same solution you use cannot be outcompeted on that dimension.</p>
+</blockquote>
+<p><strong>Signals that a subdomain is core</strong>: the business is still discovering what it wants to optimise; the domain logic is complex and full of business invariants; it changes frequently in ways that reflect market learning.</p>
+<h2>Buy or Adopt (Generic Subdomains)</h2>
+<p>Generic subdomains are problems that are genuinely complex but already solved. Authentication, authorisation, encryption, billing, accounting, payroll, email delivery, SMS — these are hard problems with excellent existing solutions.</p>
+<p>Khononov&#39;s argument (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 1): the existing solution is almost always <strong>more reliable, more secure, and cheaper</strong> than a bespoke implementation. A specialist vendor or open-source project has invested years of accumulated expertise, security audits, and edge-case handling that a bespoke implementation must replicate from scratch.</p>
+<p><strong>Buy</strong> (commercial SaaS/vendor): appropriate when the problem requires ongoing specialist investment the organisation cannot sustain — compliance, security tooling, payment processing. Operational burden offloaded to the vendor.</p>
+<p><strong>Adopt open-source</strong>: appropriate when the problem is well-understood, the open-source solution has sufficient community and maturity, and the organisation has the capability to operate it. Lower licensing cost but carries operational and upgrade responsibility.</p>
+<p><strong>Heuristic</strong>: &quot;Is it simpler to hack a quick implementation than to integrate an external solution?&quot; If yes, it is probably a <strong>supporting</strong> subdomain (not generic) — genuinely generic problems have mature external solutions that are worth the integration cost.</p>
+<h3>Hidden costs of buying</h3>
+<p>Buying is not free:</p>
+<ul>
+<li><strong>Integration complexity</strong>: every external system requires an integration point, usually an <a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a> (ACL) to protect the internal domain model from the vendor&#39;s data model.</li>
+<li><strong>Vendor lock-in</strong>: the extent to which the vendor&#39;s API, data model, or contract has bled into internal code determines how costly a future switch is.</li>
+<li><strong>Customisation ceiling</strong>: vendor solutions are optimised for the common case. Business requirements that deviate from the common case require workarounds, integrations, or compromise.</li>
+<li><strong>Upgrade risk</strong>: vendor upgrades can break integrations; maintaining compatibility is a recurring cost.</li>
+<li><strong>Loss of control</strong>: outages, pricing changes, and product discontinuations are outside the organisation&#39;s control.</li>
+</ul>
+<p>The ACL pattern is the primary mitigant for vendor lock-in: translating the vendor&#39;s model at the boundary keeps the vendor&#39;s concepts out of the internal domain. If the ACL is well-maintained, switching vendors requires rewriting the ACL — not the domain.</p>
+<h2>Build Simple (Supporting Subdomains)</h2>
+<p>Supporting subdomains have simple logic — typically CRUD operations, ETL transformations, or basic data management — that supports the core but provides no competitive advantage. No mature off-the-shelf solution exists (otherwise they&#39;d be generic subdomains), but the simplicity means the build cost is low.</p>
+<p>Supporting subdomains:</p>
+<ul>
+<li>Can be implemented with simple patterns (transaction script, active record)</li>
+<li>Can be assigned to junior engineers or outsourced</li>
+<li>Do not require advanced architectural techniques (DDD domain model, event sourcing)</li>
+<li>Should not receive the same investment as core subdomains</li>
+</ul>
+<p><strong>Anti-pattern</strong>: applying domain model and full DDD tactical patterns to a supporting subdomain. Over-engineering supporting subdomains diverts engineering capacity from the core and produces unnecessary complexity (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
+<h2>Evaluating the Options: A Framework</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Favours build</th>
+<th>Favours buy</th>
+<th>Favours open-source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Competitive differentiation</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Existing mature solutions</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Customisation requirements</td>
+<td>High</td>
+<td>Low</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Security/compliance criticality</td>
+<td>Depends</td>
+<td>Yes (specialist)</td>
+<td>Varies by project</td>
+</tr>
+<tr>
+<td>Organisational capability to operate</td>
+<td>Yes</td>
+<td>Low ops burden desired</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Long-term cost sensitivity</td>
+<td>Depends</td>
+<td>Licensing cost</td>
+<td>Operational cost</td>
+</tr>
+<tr>
+<td>Vendor lock-in tolerance</td>
+<td>—</td>
+<td>Low tolerance → avoid</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Time to market pressure</td>
+<td>Slow (build takes time)</td>
+<td>Fast</td>
+<td>Medium</td>
+</tr>
+</tbody></table></div>
+<h2>The Platform Team as &quot;Build Once, Buy Internally&quot;</h2>
+<p>Team Topologies (→ <a href="../sources/team-topologies.html">Team Topologies</a>) introduces the <strong>platform team</strong> as a third option alongside vendor buy and pure in-house build: build a capability once internally as a self-service platform product, then make it available to all stream-aligned teams.</p>
+<p>This is &quot;buy internally&quot; — stream-aligned teams consume a platform service rather than building their own. The platform team invests in operational concerns (provisioning, scaling, monitoring) so that consuming teams can treat them as commodity capabilities.</p>
+<p>Platform teams are the appropriate home for generic and some supporting capabilities that are:</p>
+<ul>
+<li>Too sensitive or strategic to outsource to a vendor</li>
+<li>Too expensive for every team to build independently</li>
+<li>Stable enough to be productised for internal self-service</li>
+</ul>
+<p>The critical constraint: the platform must be genuinely self-service. A platform that requires the platform team&#39;s involvement for every use is a bottleneck, not a platform.</p>
+<h2>Subdomain Type Evolution and Sourcing Reversals</h2>
+<p>Subdomain types are not permanent. All six transitions are possible (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>). Each transition has direct sourcing implications:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Transition</th>
+<th>Sourcing consequence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Core → Generic</strong></td>
+<td>Competitor or SaaS commoditises the differentiator. Replace bespoke build with off-the-shelf; retire the in-house investment</td>
+</tr>
+<tr>
+<td><strong>Generic → Core</strong></td>
+<td>Organisation decides to invest for strategic advantage (Amazon&#39;s infrastructure → AWS). Pull capability in-house; apply core-subdomain investment</td>
+</tr>
+<tr>
+<td><strong>Supporting → Generic</strong></td>
+<td>Open-source or vendor solution appears for what was bespoke. Switch to the external solution; retire the bespoke implementation</td>
+</tr>
+<tr>
+<td><strong>Supporting → Core</strong></td>
+<td>Business logic grows to create competitive advantage. Upgrade engineering investment; apply domain model patterns</td>
+</tr>
+<tr>
+<td><strong>Core → Supporting</strong></td>
+<td>Previously complex logic simplified; investment no longer justified. Reduce team allocation; switch to simpler implementation</td>
+</tr>
+<tr>
+<td><strong>Generic → Supporting</strong></td>
+<td>Integration cost of external solution exceeds building simple in-house version. Replace vendor with minimal bespoke implementation</td>
+</tr>
+</tbody></table></div>
+<p><strong>Evolutionary implication</strong>: sourcing decisions must be revisited as business strategy changes. Building evolutionary architectures (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) recommends designing for replaceability — particularly at vendor integration points — so that a sourcing reversal does not require rewriting the entire domain. The ACL pattern is the mechanism: a well-placed ACL makes vendor replacement a bounded change.</p>
+<h2>Intra-Organisation: Build vs Reuse vs Share</h2>
+<p>Within an organisation, the same build-vs-buy logic applies to code sharing decisions (→ <a href="../concepts/reuse-patterns.html">Reuse Patterns</a>):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Reuse mechanism</th>
+<th>When appropriate</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code replication</td>
+<td>Tiny, stable utilities</td>
+<td>&quot;Free&quot; — low integration cost</td>
+</tr>
+<tr>
+<td>Shared library</td>
+<td>Stable domain code, single language</td>
+<td>Internal open-source</td>
+</tr>
+<tr>
+<td>Shared service</td>
+<td>Volatile code, polyglot, high-volume</td>
+<td>Internal SaaS</td>
+</tr>
+<tr>
+<td>Sidecar</td>
+<td>Operational concerns only</td>
+<td>Platform capability</td>
+</tr>
+</tbody></table></div>
+<p>The same principle applies: <strong>reuse = abstraction + slow rate of change</strong>. Code that changes frequently should not be shared — the coordination cost exceeds the benefit. Only stable, well-abstracted code is safe to share.</p>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — core/generic/supporting subdomain taxonomy is the primary analytical tool for the build-vs-buy decision</li>
+<li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — subdomain type determines implementation pattern; generic and supporting subdomains do not need domain model complexity</li>
+<li><a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a> — the primary mechanism for protecting the internal domain from vendor model leakage; enables vendor replaceability</li>
+<li><a href="../concepts/reuse-patterns.html">Reuse Patterns</a> — the intra-organisation version of the same decision: shared library vs shared service vs sidecar</li>
+<li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a> — platform team as the &quot;build once internally&quot; model for generic and operational capabilities</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — designing for replaceability at vendor integration points; the six Rs (replace, retire, retain, etc.)</li>
+<li><a href="../concepts/service-granularity.html">Service Granularity</a> — shared code is a granularity integrator; reuse decisions and granularity decisions are coupled</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

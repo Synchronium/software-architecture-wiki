@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CDC, event sourcing, CQRS, immutability, write/read path, correctness without coordination; DDD: CQRS sync/async projections, architectural slices,…">
+  <meta property="og:title" content="Event Sourcing and CQRS — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="CDC, event sourcing, CQRS, immutability, write/read path, correctness without coordination; DDD: CQRS sync/async projections, architectural slices,…">
+  <title>Event Sourcing and CQRS — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html" aria-current="page">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../streams/index.html">Streams</a> <span class="sep">›</span> Event Sourcing and CQRS</nav></div>
+      <h1>Event Sourcing and CQRS</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../streams/index.html">stream</a>
+        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/event-sourcing.html">event-sourcing</a><a class="tag-chip" href="../tags/cqrs.html">cqrs</a><a class="tag-chip" href="../tags/cdc.html">cdc</a><a class="tag-chip" href="../tags/immutability.html">immutability</a><a class="tag-chip" href="../tags/audit.html">audit</a><a class="tag-chip" href="../tags/derived-data.html">derived-data</a><a class="tag-chip" href="../tags/streaming.html">streaming</a><a class="tag-chip" href="../tags/ddd.html">ddd</a><a class="tag-chip" href="../tags/domain-model.html">domain-model</a></ul>
+    </div><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
+<h2>Change Data Capture (CDC)</h2>
+<p>CDC is the <strong>low-level</strong> version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems.</p>
+<p><strong>Problem solved</strong>: dual writes — when an application writes to a database and separately writes to a message broker, the two writes can fail independently, creating inconsistency. CDC eliminates the dual write: the database is the <strong>only</strong> write target, and the CDC mechanism reads the database&#39;s own write-ahead log to produce events.</p>
+<p><strong>How it works</strong>:</p>
+<ul>
+<li>The database&#39;s write-ahead log (WAL) or binlog records every write operation.</li>
+<li>A CDC tool reads this log and publishes events to a message broker (Kafka).</li>
+<li>Downstream consumers (search index, caches, data warehouses, analytics) consume the event stream.</li>
+</ul>
+<p><strong>Log compaction</strong>: a Kafka topic with log compaction (one entry per key, latest wins) enables a consumer to reconstruct the full current state of the database without an initial snapshot. This is effectively a continuously-updated snapshot.</p>
+<p><strong>Tools</strong>: Debezium (MySQL, PostgreSQL, MongoDB, SQL Server), Maxwell (MySQL), Mongoriver (MongoDB), LinkedIn Databus.</p>
+<p><strong>Limitation</strong>: CDC operates at the database level — it captures rows and column changes, not the application-level meaning of the change. You see &quot;column X changed from A to B,&quot; not &quot;user Y cancelled their order.&quot;</p>
+<p><strong>Asynchrony</strong>: CDC is asynchronous, like replication. Consumers will see events with some lag. This is the same trade-off as read replicas — accept eventual consistency for the derived stores.</p>
+<h2>Event Sourcing</h2>
+<p>Event sourcing is the <strong>application-level</strong> version: the application deliberately records business events as the primary store, not a mutable state database.</p>
+<h3>Commands vs Events</h3>
+<ul>
+<li><strong>Command</strong>: a request to do something. Can be validated and rejected. Example: &quot;place order for item X.&quot;</li>
+<li><strong>Event</strong>: an immutable fact — something that happened. Cannot be undone (only compensated). Example: &quot;order for item X was placed at timestamp T.&quot;</li>
+</ul>
+<p>Commands are validated against current state and, if valid, produce events. Events are appended to the event log. Read models are derived from the event log by replaying events.</p>
+<h3>Properties</h3>
+<ul>
+<li><strong>Multiple read views</strong>: the same event log can be projected into different read models for different purposes — a &quot;current state&quot; view, an &quot;order history&quot; view, a &quot;fraud analysis&quot; view, each optimised for its query pattern.</li>
+<li><strong>Richer information</strong>: a mutable database records only the current state. An event log records what happened — including cancelled items, failed attempts, intermediate states. This is valuable for analytics, debugging, and audit.</li>
+<li><strong>Deterministic replay</strong>: given the same event log and the same projection logic, you always get the same read model. This enables rebuilding read models from scratch, fixing projections after bugs, and &quot;time-travel&quot; debugging.</li>
+<li><strong>Natural audit trail</strong>: the event log is the audit log. Each event is an immutable fact, signed by the system that produced it.</li>
+</ul>
+<h3>Contrast with CDC</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>CDC</th>
+<th>Event Sourcing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Level</td>
+<td>Database internals (WAL/binlog)</td>
+<td>Application (business events)</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td>Row-level changes</td>
+<td>Domain events with business meaning</td>
+</tr>
+<tr>
+<td>Log compaction</td>
+<td>Can compact: latest state per key is sufficient</td>
+<td>Full history needed — compaction loses information</td>
+</tr>
+<tr>
+<td>Semantics</td>
+<td>What rows changed</td>
+<td>What happened in the business domain</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Transparent to application</td>
+<td>Requires application redesign</td>
+</tr>
+</tbody></table></div>
+<h2>CQRS — Command Query Responsibility Segregation</h2>
+<p>CQRS separates the <strong>write model</strong> (commands → events) from the <strong>read model</strong> (queries against materialized views).</p>
+<pre><code>Command → Validate → Event → Event Log
+                                ↓
+                         Projection 1 (SQL read model)
+                         Projection 2 (search index)
+                         Projection 3 (analytics store)
+</code></pre>
+<p><strong>Write path</strong>: synchronous — commands are validated against current state, events are written.
+<strong>Read path</strong>: asynchronous — projections are updated from the event log with some lag.</p>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li>Read models are independently optimised for their query patterns — different data stores, schemas, indexing strategies.</li>
+<li>Write model stays clean — no denormalization or query optimisation on the write side.</li>
+<li>New read models can be built from the existing event log without touching write-side code.</li>
+</ul>
+<p><strong>Disadvantage</strong>:</p>
+<ul>
+<li>Eventual consistency between write and read models. Application must handle &quot;you submitted a command, results will be visible shortly.&quot;</li>
+<li>Operational complexity: multiple stores to manage, sync to monitor.</li>
+</ul>
+<h2>State = Integral of Event Stream</h2>
+<p>The relationship between events and state is mathematical:</p>
+<pre><code>State = ∫ (event stream) dt        [from t=0]
+Change stream = d(State) / dt
+</code></pre>
+<p>A database is an accumulated view of all writes. A changelog is the derivative — the sequence of changes. Given the changelog (event log), you can reconstruct any version of the state. Given two state snapshots, you can compute the changelog.</p>
+<p>This symmetry means batch and stream processing are equivalent:</p>
+<ul>
+<li><strong>Batch reprocessing</strong>: replay the full event log through a new projection function.</li>
+<li><strong>Stream processing</strong>: apply new events to an existing materialized view.</li>
+</ul>
+<p>The unified batch+stream model (Apache Flink, Apache Beam) exploits this — the same code path handles historical replay and live events.</p>
+<h2>Immutability: Benefits and Limits</h2>
+<h3>Benefits</h3>
+<ul>
+<li><strong>Debugging</strong>: see exactly what happened, in order, with all intermediate states visible.</li>
+<li><strong>Recovery</strong>: if a bug produces wrong data, replay from the event log through fixed code.</li>
+<li><strong>Auditability</strong>: immutable log is tamper-evident; hash chains (Merkle trees) can cryptographically verify integrity.</li>
+<li><strong>Concurrency</strong>: immutable events need no locking — writers append, readers replay.</li>
+<li><strong>Multiple projections</strong>: different consumers can project the same event log differently.</li>
+</ul>
+<h3>Limits</h3>
+<ul>
+<li><strong>GDPR / privacy</strong>: true deletion is required for some data (personal data on erasure request). An immutable log cannot truly delete. Datomic supports &quot;excision&quot; (removing specific values while maintaining the rest of the log). Kafka log compaction can delete tombstoned keys. Neither is as clean as a simple <code>DELETE FROM</code>.</li>
+<li><strong>Storage</strong>: immutable logs grow without bound. Periodic snapshotting + trimming old events is needed for long-lived systems.</li>
+<li><strong>Schema evolution</strong>: event sourcing requires the event log to remain interpretable forever. Events written years ago by an old schema must still be processable — more demanding than database schema migration. Forward/backward compatible encoding (Avro, Protobuf) is essential (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>).</li>
+</ul>
+<h2>Write Path and Read Path</h2>
+<p>From Kleppmann&#39;s Ch. 12 framing:</p>
+<ul>
+<li><strong>Write path</strong>: precomputed, eager — data is transformed and derived at write time. Example: search indexing (index the document on ingest).</li>
+<li><strong>Read path</strong>: on-demand, lazy — data is computed at query time. Example: full-text search with grep (scan on every query).</li>
+</ul>
+<p>The <strong>derived dataset</strong> is where these paths meet: the materialized view, search index, or cache is precomputed enough to support fast queries, but derived from a more fundamental event log.</p>
+<p><strong>Shifting the write/read boundary</strong> is a fundamental caching and materialization decision:</p>
+<ul>
+<li>More precomputation → faster reads, slower writes, more storage.</li>
+<li>Less precomputation → slower reads, faster writes, less storage.</li>
+</ul>
+<p>Event sourcing + CQRS explicitly separates these concerns, making the trade-off visible.</p>
+<h2>End-to-End Event Streams</h2>
+<p>The event sourcing pattern can extend all the way to the client. Frameworks like React/Redux and Elm already manage client-side state as a stream of events (user interactions + server responses). Server-sent events and WebSockets push state changes from server to client. In this model:</p>
+<ul>
+<li>A user action on one device produces an event.</li>
+<li>The event flows through the event log and stream processors.</li>
+<li>The resulting state change is pushed to all subscribed clients.</li>
+<li>Client UI updates reactively.</li>
+</ul>
+<p>This is a natural extension of CQRS: the read model is the client-side state, and it is subscribed to the change stream rather than polled.</p>
+<h2>Correctness Without Coordination</h2>
+<p>From Kleppmann&#39;s Ch. 12: strong integrity guarantees can be achieved without distributed transactions or linearizability, by combining end-to-end idempotency with deterministic derivation. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12)</p>
+<h3>The End-to-End Argument</h3>
+<p>The <strong>end-to-end argument</strong> (Saltzer, Reed &amp; Clark, 1984): TCP duplicate suppression, database transactions, and stream processor exactly-once semantics are each correct within their scope — but none is sufficient for application-level correctness. A network timeout leaves the client not knowing if the request was processed. Retry risks double-processing. Correctness must be enforced end-to-end, from origin client to ultimate storage.</p>
+<p><strong>Solution</strong>: assign a unique operation ID (UUID) at the request&#39;s origin. This ID flows with the request through all layers and is written to the database as a unique constraint. The database rejects duplicate IDs regardless of retries. This is more robust than 2PC: it works across heterogeneous services, survives network partitions, and requires no cross-service coordination.</p>
+<h3>Uniqueness Constraints Without Distributed Transactions</h3>
+<p>Uniqueness constraints (e.g., unique username, idempotent payment) can be enforced log-based:</p>
+<ol>
+<li><strong>Partition the event log by the constrained value</strong> (e.g., hash of username).</li>
+<li><strong>Stream processor reads sequentially</strong> per partition — one consumer, deterministic ordering.</li>
+<li>The processor applies first-write-wins: the first request for a value commits; subsequent requests for the same value are rejected asynchronously.</li>
+</ol>
+<p>No cross-partition coordination. Trade-off: rejection is async, not a synchronous error.</p>
+<h3>Multi-Partition Requests Without Distributed Transactions</h3>
+<p>For operations that span multiple partitions (e.g., two-account transfer), a 3-step log-based approach avoids distributed transactions:</p>
+<ol>
+<li><strong>Log the request as a single message</strong> partitioned by request ID — the durable record of intent.</li>
+<li><strong>Derive partition-specific instructions</strong> from the request event (one message per affected partition).</li>
+<li><strong>Consumers process their partition&#39;s instructions</strong>, deduplicating by the original request ID.</li>
+</ol>
+<p>Each step is a deterministic derivation from immutable events. No coordinator required. Replay from the log recovers the correct state after any failure.</p>
+<h3>Timeliness vs Integrity</h3>
+<p>Two distinct correctness properties that are commonly conflated:</p>
+<ul>
+<li><strong>Timeliness</strong>: whether reads reflect the most recent writes (what CAP&#39;s &quot;C&quot; and linearizability address).</li>
+<li><strong>Integrity</strong>: whether the system is free from data loss and contradiction (whether committed facts remain correct).</li>
+</ul>
+<p>Violations of timeliness are eventual consistency — temporary and often acceptable. Violations of integrity are <strong>perpetual inconsistency</strong> — data is wrong and may never self-correct. Integrity is far more important than timeliness, and can be achieved without strong timeliness guarantees via deterministic derivation + end-to-end operation IDs + idempotent writes.</p>
+<blockquote>
+<p>&quot;Violations of timeliness are &#39;eventual consistency,&#39; whereas violations of integrity are &#39;perpetual inconsistency.&#39;&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12)</p>
+</blockquote>
+<p>See also: <a href="../distributed/consistency-models.html">Consistency Models</a> for the full spectrum; <a href="../distributed/cap-theorem.html">Cap Theorem</a> for how timeliness vs integrity reframes the CAP debate.</p>
+<h2>CQRS in the DDD Context</h2>
+<p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 8) situates CQRS within the domain model pattern: the domain model&#39;s aggregate is the write model (strongly consistent, single source of truth), and projections derived from domain events form the read models.</p>
+<h3>Projection Types</h3>
+<p><strong>Synchronous projection</strong> (simple): implemented as a catch-up subscription. After each command completes, the system updates the read model synchronously. The projection stores a checkpoint (e.g., a <code>processed_offset</code> column) representing the last event it processed. On startup, or after a crash, it reads from that checkpoint onwards — no events are missed or replayed twice. Strong consistency: reads immediately reflect recent writes.</p>
+<p><strong>Asynchronous projection</strong> (complex): implemented via a message bus subscription. The aggregate publishes domain events to a message broker; projections consume these events and update their read models independently. Eventual consistency: reads may lag behind writes. More fragile (broker failures, consumer lag) but decouples projection performance from command execution.</p>
+<h3>Commands and Read Models</h3>
+<p>A nuance often missed: <strong>commands are not required to return nothing</strong>. The standard CQRS principle that commands and queries must be strictly separated applies to the <em>model</em>, not the method return type. After persisting an updated aggregate, the application layer can immediately query the strongly consistent write model and return data to the caller. This avoids forcing callers to do a subsequent query to get the new state.</p>
+<h3>Architectural Slices</h3>
+<p>CQRS (and other architectural patterns) apply <strong>per module</strong> within a bounded context, not at the bounded context boundary. A bounded context with multiple subdomains may use CQRS for its core subdomain module and a simpler transaction script + layered architecture for its supporting subdomain modules. This per-slice application of patterns prevents over-engineering simple modules with unnecessary infrastructure.</p>
+<hr>
+<h2>Event-Sourced Domain Model (DDD Perspective)</h2>
+<p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 7) frames event sourcing as a tactical DDD pattern — the most advanced of the four business logic implementation patterns (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>). The <strong>event-sourced domain model</strong> uses event sourcing to manage aggregate state: instead of persisting current state, every change to an aggregate produces and persists a domain event.</p>
+<p><strong>Four-step operation cycle</strong>:</p>
+<ol>
+<li>Load all domain events for the aggregate from the event store</li>
+<li>Rehydrate (project events into in-memory state representation)</li>
+<li>Execute the command (business logic validates rules, produces new events)</li>
+<li>Append new domain events to the event store</li>
+</ol>
+<p><strong>Key distinction</strong>: DDIA&#39;s event sourcing is a data-system pattern; LDDD&#39;s event-sourced domain model is a tactical DDD pattern. LDDD uses the same building blocks as the domain model (aggregates, value objects, domain events — see <a href="../patterns/domain-model.html">Domain Model</a>). The difference is only in persistence: state-based aggregates persist current state; event-sourced aggregates persist the events themselves.</p>
+<p><strong>Event store</strong>: append-only storage; exposes Fetch(aggregateId) and Append(aggregateId, events, expectedVersion). expectedVersion enables optimistic concurrency (fail if events were appended by another process since the expected version).</p>
+<p><strong>Snapshot pattern</strong>: performance optimisation for aggregates that accumulate 10K+ events. Cache the projected state at a version checkpoint; on load, apply only events after the snapshot. Most systems won&#39;t need this — average aggregate lifespans rarely exceed 100 events.</p>
+<p><strong>Forgettable payload pattern</strong>: for GDPR compliance — store sensitive event fields encrypted with a per-aggregate key. To &quot;delete,&quot; remove the key from the key store. The events remain but sensitive data is permanently unreadable.</p>
+<p><strong>Advantages</strong> (DDD framing):</p>
+<ul>
+<li>Time travel: reconstitute any past state of an aggregate</li>
+<li>Deep insight: multiple projections from the same event log for analysis and search</li>
+<li>Audit log: the event store is the strongly consistent, append-only audit trail (required by law in some domains)</li>
+<li>Advanced OCC: can inspect exactly which concurrent events collided and make domain-driven decisions about conflict resolution</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>Learning curve: sharp departure from state-based modeling</li>
+<li>Schema evolution: events must remain interpretable indefinitely; changing schemas is harder than DB migrations</li>
+<li>Architectural complexity: requires CQRS to build read models; see DDIA section above</li>
+</ul>
+<p><strong>When to use</strong>: core subdomains where deep insight, audit logs, or complex time-based analysis is genuinely needed. Not for supporting subdomains where simpler patterns suffice.</p>
+<h3>Migrating from Domain Model to Event-Sourced Domain Model</h3>
+<p>The main challenge is the existing aggregate state: there is no event history to replay. Two approaches (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
+<p><strong>Generating past transitions</strong>: infer probable past events from current state and generate an approximate event stream. The generated stream can be projected back to the current state and verified. <em>Limitation</em>: intermediate state (e.g., how many times a contact was attempted before conversion) is irrecoverable.</p>
+<p><strong>Migration events</strong>: define an explicit <code>migrated-from-legacy</code> event containing the full current state. Projections must handle this event type permanently. <em>Advantage</em>: the absence of historical data is made explicit — no one mistakenly assumes the event stream is complete. <em>Disadvantage</em>: the legacy marker remains in the event store indefinitely.</p>
+<p>The migration event approach is generally preferred because it preserves epistemic honesty: it accurately represents what is and is not known about the aggregate&#39;s history.</p>
+<h2>Fowler&#39;s Event Taxonomy (via Nygard)</h2>
+<p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 16, citing Martin Fowler&#39;s &quot;What Do You Mean by &#39;Event-Driven&#39;?&quot;) identifies four distinct uses of the word &quot;event&quot; that are commonly conflated:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Response expected</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Event notification</strong></td>
+<td>Fire-and-forget announcement</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Event-carried state transfer</strong></td>
+<td>Event replicates entity state so consumers can work independently</td>
+<td>None (data is in the event)</td>
+</tr>
+<tr>
+<td><strong>Event sourcing</strong></td>
+<td>All changes recorded as events; current state derived by replaying</td>
+<td>None (event is the record)</td>
+</tr>
+<tr>
+<td><strong>CQRS</strong></td>
+<td>Read and write use separate structures</td>
+<td>— (not technically &quot;events&quot;)</td>
+</tr>
+</tbody></table></div>
+<p>The distinction matters: event notification only tells consumers <em>that</em> something happened; event-carried state transfer gives consumers <em>what</em> changed so they can avoid round-trips; event sourcing makes events the primary store of truth. Systems that use all three concepts often muddle them in the design.</p>
+<p><strong>Versioning caveat</strong> (Nygard): event format versioning is a long-horizon problem — a message sender communicates with a future (possibly not-yet-written) reader; a message reader receives a call from the distant past. Avoid closed formats (serialised objects, annotation-based mapping frameworks); use open, self-describing formats (JSON) and treat messages as data, not objects.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Definitive mechanistic treatment: CDC mechanism (WAL/binlog), Kafka log compaction, event sourcing vs CDC distinction, CQRS, write/read path framing, immutability benefits and GDPR limits; correctness without coordination (end-to-end argument, uniqueness via log, timeliness vs integrity) (ch. 11–12)</td>
+</tr>
+<tr>
+<td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>DDD-centric treatment: event-sourced domain model as a tactical pattern choice for core subdomains; four-step operation cycle; event store interface; snapshot pattern; forgettable payload for GDPR; advantages and disadvantages from a domain modeling perspective (ch. 7)</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>Treats event-driven architecture as a deployment seam for the strangler fig pattern; focuses on API evolution rather than storage internals</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Event sourcing as a tool for evolutionary database design; event logs enable schema migration without big-bang migrations</td>
+</tr>
+<tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>Fowler&#39;s four-way event taxonomy (notification vs state transfer vs event sourcing vs CQRS); versioning challenge of long-lived event formats; prefer open formats and treat messages as data not objects</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../streams/stream-processing.html">Stream Processing</a> — stream processors consume event logs to maintain derived state</li>
+<li><a href="../streams/batch-processing.html">Batch Processing</a> — batch reprocessing of event logs to rebuild read models</li>
+<li><a href="../databases/storage-engines.html">Storage Engines</a> — the append-only log is the shared primitive between LSM-Trees and event sourcing</li>
+<li><a href="../distributed/idempotency.html">Idempotency</a> — event consumers must be idempotent for at-least-once delivery to be safe</li>
+<li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a> — event sourcing + outbox pattern replaces 2PC for cross-service consistency</li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — the database-level implementation of event publishing without dual writes</li>
+<li><a href="../patterns/saga.html">Saga</a> — sagas are event-sourced distributed transactions</li>
+<li><a href="../patterns/domain-model.html">Domain Model</a> — the domain model pattern is the basis for the event-sourced domain model; same building blocks (aggregates, value objects, domain events)</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>

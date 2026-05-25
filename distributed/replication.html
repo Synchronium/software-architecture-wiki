@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="State machine replication (Raft), chain replication (head/tail topology, failure modes, data/control plane split), leader-follower, Dynamo-style;…">
+  <meta property="og:title" content="Replication — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="State machine replication (Raft), chain replication (head/tail topology, failure modes, data/control plane split), leader-follower, Dynamo-style;…">
+  <title>Replication — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html" aria-current="page">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../distributed/index.html">Distributed</a> <span class="sep">›</span> Replication</nav></div>
+      <h1>Replication</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../distributed/index.html">concept</a>
+        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a><a class="tag-chip" href="../tags/replication.html">replication</a><a class="tag-chip" href="../tags/consistency.html">consistency</a><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a><a class="tag-chip" href="../tags/scalability.html">scalability</a></ul>
+    </div><div class="page-body"><p>Replication stores copies of data on multiple nodes to achieve fault tolerance, read scalability, and geographic distribution. The core challenge is keeping replicas consistent when writes happen.</p>
+<h2>State Machine Replication (Raft)</h2>
+<p>The standard model for strong consistency replication:</p>
+<ol>
+<li>Leader receives write → appends to its log.</li>
+<li>Leader replicates log entry to a quorum of followers.</li>
+<li>Once quorum acknowledges, entry is <strong>committed</strong>.</li>
+<li>Leader applies committed entry → returns to client.</li>
+<li>Followers apply committed entries in order → converge to same state.</li>
+</ol>
+<p>Only committed entries survive a leader failure. Raft guarantees linearizability for reads if they go through the leader and are confirmed by a quorum.</p>
+<p><strong>Leader election</strong> (→ <a href="../distributed/leader-election.html">Leader Election</a>): Raft uses randomized election timeouts to avoid split votes. A candidate wins by collecting a majority. The leader broadcasts heartbeats to suppress new elections.</p>
+<h2>Chain Replication</h2>
+<p>An alternative to leader-based replication with cleanly separated read/write roles. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10)</p>
+<p><strong>Normal operation:</strong></p>
+<ul>
+<li>Processes are arranged in a linear chain: head → node₂ → ... → tail.</li>
+<li>Writes go exclusively to the <strong>head</strong>, which updates local state and forwards to its successor.</li>
+<li>Each process in the chain updates local state and forwards downstream until the write reaches the <strong>tail</strong>.</li>
+<li>The <strong>tail commits</strong> the write (applies it locally) and sends an acknowledgment back up the chain to the head.</li>
+<li>Reads are served exclusively by the <strong>tail</strong> — which always has the most recent committed state.</li>
+</ul>
+<p>This gives strong consistency: both reads and writes are serialised through the tail.</p>
+<p><strong>Fault tolerance</strong> is delegated to a separate <strong>control plane</strong> (itself using Raft for fault tolerance), which monitors the chain and reconfigures it on failure:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Failure mode</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Head fails</td>
+<td>Successor becomes the new head; client retries (write never committed — safe)</td>
+</tr>
+<tr>
+<td>Tail fails</td>
+<td>Predecessor becomes the new tail (all predecessor state ⊇ tail state)</td>
+</tr>
+<tr>
+<td>Intermediate node X fails</td>
+<td>Control plane links X&#39;s predecessor to X&#39;s successor; X&#39;s successor reports last committed sequence number; predecessor sends missing updates downstream</td>
+</tr>
+</tbody></table></div>
+<p><strong>Distributing reads for throughput</strong>: replicas can serve reads while maintaining linearizability using a <strong>dirty flag</strong>. Each replica marks an update dirty as it propagates from head to tail. The tail&#39;s acknowledgment travels back up the chain, marking updates clean. A replica can serve a read immediately if the latest version is clean; if dirty, it contacts the tail for the committed version. This allows reads to be distributed across the chain without sacrificing consistency.</p>
+<p><strong>Data plane / control plane split</strong>: the chain&#39;s data plane (handling individual client requests) requires no leader — it is purely concerned with throughput. The control plane (handling failure reconfiguration) requires a leader (Raft), but it only acts on failures, which are rare. This separation keeps the common case (client requests) free of coordination overhead. Separating <a href="../distributed/control-plane-data-plane.html">data plane from control plane</a> is a general distributed systems pattern. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 22)</p>
+<p><strong>Properties vs. Raft:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Chain Replication</th>
+<th>Raft</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Write latency</td>
+<td>All N nodes in critical path — one slow node stalls all writes</td>
+<td>Quorum (N/2+1) — tolerant of slow tail</td>
+</tr>
+<tr>
+<td>Read throughput</td>
+<td>Can distribute reads across replicas (dirty flag)</td>
+<td>Leader is read bottleneck (unless followers used, sacrificing consistency)</td>
+</tr>
+<tr>
+<td>Failure handling</td>
+<td>Control plane must reconfigure before writes resume</td>
+<td>Leader handles without stopping progress</td>
+</tr>
+<tr>
+<td>Simplicity</td>
+<td>Fewer failure modes to reason about</td>
+<td>More complex state machine</td>
+</tr>
+<tr>
+<td>Pipeline throughput</td>
+<td>Writes can be pipelined — higher raw throughput</td>
+<td>Leader serialises writes</td>
+</tr>
+</tbody></table></div>
+<p><strong>Real-world application — Azure Storage</strong>: Azure&#39;s blob store uses chain replication in its stream layer. The stream layer implements a distributed append-only filesystem; the unit of replication is an <strong>extent</strong> (a chunk of a stream), replicated synchronously across a chain of storage servers. A separate stream manager (control plane, itself fault-tolerant) assigns extents to chains and reconfigures them on failure. This sits underneath a partition layer (range-partitioned file index, split/merge on load) and a stateless front-end layer (reverse proxy for auth + routing) — a concrete data/control plane separation. Azure Storage was built with strong consistency from the start; AWS S3 only added strong consistency in 2021. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 17)</p>
+<h2>Leader-Follower (Database Replication)</h2>
+<p>Common in relational databases:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Behaviour</th>
+<th>Tradeoff</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Async</strong></td>
+<td>Leader returns immediately; followers catch up asynchronously</td>
+<td>Low latency; can lose data on leader crash</td>
+</tr>
+<tr>
+<td><strong>Sync</strong></td>
+<td>Leader waits for all followers to acknowledge</td>
+<td>Durable; slow (worst follower sets pace)</td>
+</tr>
+<tr>
+<td><strong>Semi-sync</strong></td>
+<td>Leader waits for one follower to acknowledge</td>
+<td>Practical compromise</td>
+</tr>
+</tbody></table></div>
+<p>Managed databases (RDS, Azure SQL) automate failover. Async followers can serve stale reads — useful for read scaling, not for linearizability.</p>
+<h3>Replication Log Formats</h3>
+<p>How writes are communicated to followers differs by format (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Mechanism</th>
+<th>Strengths</th>
+<th>Weaknesses</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Statement-based</strong></td>
+<td>Replicate the SQL statement itself</td>
+<td>Simple, compact</td>
+<td>Nondeterministic functions (NOW(), RAND(), auto-increment) produce different values on followers; stored procedures with side effects; ORDER BY on non-unique columns</td>
+</tr>
+<tr>
+<td><strong>WAL shipping</strong></td>
+<td>Ship the write-ahead log (storage engine&#39;s internal byte format)</td>
+<td>Exact byte-for-byte replica</td>
+<td>Tightly coupled to storage engine version — cannot run follower on a newer DB version (prevents zero-downtime upgrades)</td>
+</tr>
+<tr>
+<td><strong>Logical (row-based)</strong></td>
+<td>Log actual row changes: new values for inserts/updates, PK for deletes</td>
+<td>Decoupled from storage engine → cross-version replication, CDC possible</td>
+<td>More verbose than WAL</td>
+</tr>
+<tr>
+<td><strong>Trigger-based</strong></td>
+<td>Application/DB triggers write changes to a separate log table</td>
+<td>Maximum flexibility</td>
+<td>Highest overhead, most error-prone</td>
+</tr>
+</tbody></table></div>
+<p>Logical replication (MySQL binlog, PostgreSQL logical decoding) is the basis for Change Data Capture (CDC), enabling derived systems (search indexes, caches, data warehouses) to follow the primary database.</p>
+<h3>Failover Problems</h3>
+<p>Automated failover has failure modes that are worse than the failure they try to prevent:</p>
+<ul>
+<li><strong>Unreplicated writes</strong>: if an async follower is promoted to leader, writes the old leader received but didn&#39;t replicate are lost. If the new leader then receives writes for those same keys, the discarded writes may conflict with what clients already received — a consistency violation the client cannot detect.</li>
+<li><strong>Split brain</strong>: if two nodes both believe they are the leader, both accept writes, diverging silently. Safe failover requires fencing the old leader before the new one accepts writes.</li>
+<li><strong>The GitHub incident</strong>: MySQL follower promoted to leader had an auto-increment counter at a lower value than what Redis had cached. New writes reused old IDs → private data from other users became accessible.</li>
+<li><strong>Timeout tuning</strong>: too short → unnecessary failovers under load spike; too long → extended downtime after a genuine failure.</li>
+</ul>
+<h2>Dynamo-Style (Leaderless) Replication</h2>
+<p>Any replica accepts reads and writes. Consistency is enforced by quorum intersection:</p>
+<ul>
+<li><strong>W</strong> write replicas must acknowledge a write.</li>
+<li><strong>R</strong> read replicas must be consulted for a read.</li>
+<li>If <strong>W + R &gt; N</strong> (total replicas), at least one read replica overlaps with the write quorum → latest value is always visible.</li>
+</ul>
+<p><strong>Important caveat</strong>: W + R &gt; N does not guarantee linearizability on its own. If a write succeeds on fewer than W replicas before the coordinator fails, replicas are left in an inconsistent state — some reads return the latest version while others return stale. For linearizability, writes must be bundled into an atomic transaction so partial writes are prevented. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11)</p>
+<p>Anti-entropy mechanisms keep replicas in sync:</p>
+<ul>
+<li><strong>Read repair</strong>: detect stale replicas during reads and correct them.</li>
+<li><strong>Merkle tree hashes</strong>: background comparison of replica state to find and repair divergence.</li>
+<li><strong>Anti-entropy process</strong>: background process continually compares replicas and copies missing data. Voldemort lacks anti-entropy → missing data may not appear until next read repair.</li>
+</ul>
+<p>Used in: Cassandra, Riak, DynamoDB (default reads).</p>
+<h3>Sloppy Quorums and Hinted Handoff</h3>
+<p>During a network partition, fewer than W home nodes for a key may be reachable. A <strong>sloppy quorum</strong> allows the write to proceed by using any W available nodes, even if they are not the &quot;home&quot; nodes for that key. The substitute nodes accept the write with a hint indicating the intended home node.</p>
+<p>When the home nodes recover, the substitute nodes perform <strong>hinted handoff</strong>: they forward the write to the appropriate home node.</p>
+<ul>
+<li>Sloppy quorums improve write durability during partitions.</li>
+<li>They do <strong>not</strong> provide linearizability — the home nodes may be completely unaware of the write until handoff. A strict quorum of home nodes (W+R&gt;N using only home nodes) is required for linearizability.</li>
+<li>Cassandra, Riak, and the original Dynamo paper use sloppy quorums. DynamoDB does not.</li>
+</ul>
+<h3>Version Vectors</h3>
+<p>In leaderless (and multi-leader) replication, version vectors track the write history to distinguish overwrites from concurrent writes:</p>
+<ul>
+<li>Each replica maintains a per-key version number (or per-replica version number).</li>
+<li>The version vector is returned to clients on reads.</li>
+<li>When a client writes, it includes the version vector it last read; the server uses this to detect whether the new write is causally after, before, or concurrent with what it already has.</li>
+<li><strong>Concurrent writes</strong>: if two writes arrive with the same version base, they are concurrent — the server stores both as siblings for the application to resolve.</li>
+<li>Riak uses <strong>dotted version vectors</strong> (Riak 2.0) — a refinement that prevents false concurrency detection.</li>
+</ul>
+<blockquote>
+<p><strong>Version vectors ≠ vector clocks</strong>: vector clocks track causality between events in a distributed computation; version vectors compare state of replicas of a single key. The distinction is subtle but important — using the term &quot;vector clock&quot; for replica state comparison is technically imprecise. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5)</p>
+</blockquote>
+<h2>Consistency and Replication</h2>
+<p>The replication strategy directly determines the achievable consistency model (→ <a href="../distributed/consistency-models.html">Consistency Models</a>):</p>
+<ul>
+<li>State machine replication with quorum reads → linearizability.</li>
+<li>Async leader-follower with follower reads → eventual consistency.</li>
+<li>Leaderless with W+R&gt;N → tunable (strong quorum reads or eventual reads).</li>
+</ul>
+<h2>Replication Lag and Its Consequences</h2>
+<p>When followers are asynchronous, they can lag behind the leader. Kleppmann identifies three important anomalies that arise from replication lag (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5):</p>
+<ul>
+<li><strong>Read-your-writes (read-after-write consistency)</strong>: a user writes something, then reads it back — but the read goes to a lagging follower and the write is not yet visible. Solution: route a user&#39;s own reads to the leader, or track the user&#39;s last write timestamp and wait for followers to catch up.</li>
+<li><strong>Monotonic reads</strong>: a user makes two reads in sequence from different followers; the second read returns older data than the first (the second follower lags more). Solution: route a user&#39;s reads to the same follower consistently.</li>
+<li><strong>Consistent prefix reads</strong>: if writes happen in causal order (B causes A) but a follower applies them out of order, a reader may see B before A — a causality violation. Solution: causally related writes must go to the same partition.</li>
+</ul>
+<p>These anomalies are forms of eventual consistency in practice. They do not occur with synchronous replication or with single-leader reads.</p>
+<h2>Multi-Leader Replication</h2>
+<p>Multi-leader replication (active-active, master-master) allows multiple nodes to accept writes. Use cases: multi-datacenter deployments, offline-capable clients, real-time collaborative editing.</p>
+<p><strong>Conflict resolution is unavoidable</strong> because two leaders can independently modify the same data. Strategies:</p>
+<ul>
+<li><strong>Last-write-wins (LWW)</strong>: the write with the highest timestamp wins. Loses data if timestamps overlap due to clock skew (silent data loss). Dangerous in multi-leader setups.</li>
+<li><strong>Version vectors</strong>: each node maintains a vector of write counts per replica. Enables detection of concurrent writes vs. causally ordered writes.</li>
+<li><strong>CRDTs</strong>: data structures designed to merge automatically without conflict (→ <a href="../distributed/crdts.html">Crdts</a>).</li>
+<li><strong>On-write conflict handlers</strong>: trigger custom conflict logic on write (Bucardo for PostgreSQL, custom Perl handlers).</li>
+<li><strong>On-read (all versions preserved)</strong>: store all concurrent writes as siblings, return all to the application on next read for resolution (CouchDB approach).</li>
+<li><strong>Application-level merge</strong>: expose conflicts to the application for custom resolution; Riak and Dynamo use this.</li>
+</ul>
+<p><strong>Multi-leader topologies</strong> (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>Structure</th>
+<th>Fault tolerance</th>
+<th>Failure mode</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Circular</strong></td>
+<td>Each node forwards to one downstream node</td>
+<td>Low — one failed node breaks the ring</td>
+<td>Default in MySQL multi-leader; nodes tag writes with their ID to detect/drop duplicates already forwarded</td>
+</tr>
+<tr>
+<td><strong>Star</strong></td>
+<td>One central forwarding node</td>
+<td>Low — central node is a SPOF</td>
+<td>Simpler to configure than all-to-all</td>
+</tr>
+<tr>
+<td><strong>All-to-all</strong></td>
+<td>Each node writes directly to every other</td>
+<td>High — no SPOF</td>
+<td>Causality violations: writes can arrive out of order if one network path is faster than another; version vectors help but don&#39;t fully solve</td>
+</tr>
+</tbody></table></div>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>State machine replication (Raft), chain replication, Dynamo-style leaderless — focused on correctness proofs and system models</td>
+</tr>
+<tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Most complete treatment — adds replication lag anomalies (read-your-writes, monotonic reads, consistent prefix reads), multi-leader conflict resolution, Dynamo-style in depth (ch. 5)</td>
+</tr>
+<tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Scalability and operations framing. Inconsistency window (duration with no upper bound; affected by replica count, operational load, geographic distance). RYOWs implementation (leader reads; Neo4j bookmark-based). Tunable consistency (N/W/R parameters) as a practical per-request control. Version vectors for conflict detection in leaderless systems. Merkle tree anti-entropy: build binary hash trees per partition, compare root hashes first, traverse to divergent leaves — CPU-intensive, scheduled during low load. Read repair (digest reads for efficiency). In the wild: Netflix Cassandra (6+ PB), bet365 Riak KV. (ch. 10–11)</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><strong>Agreement</strong>: both sources treat Raft as the reference protocol for strongly consistent single-leader replication. Vitillo proves properties more formally; Kleppmann gives more operational detail.</p>
+</blockquote>
+<h2>Sources</h2>
+<ul>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10) — state machine replication (Raft), chain replication, consistency models, CAP/PACELC.</li>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11) — leaderless (Dynamo-style), anti-entropy, CRDTs.</li>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 17) — Azure Storage architecture: chain replication in stream layer, range-partitioned file index, data/control plane separation.</li>
+<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 19) — database replication (leader-follower, NoSQL/NewSQL).</li>
+<li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5) — single-leader, multi-leader, leaderless; replication lag anomalies; conflict resolution in depth.</li>
+</ul>
+<h2>Related Pages</h2>
+<ul>
+<li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+<li><a href="../distributed/cap-theorem.html">Cap Theorem</a></li>
+<li><a href="../distributed/crdts.html">Crdts</a></li>
+<li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+<li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+<li><a href="../databases/transactions.html">Transactions</a></li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/leader-election.html">Leader Election</a></li><li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li><li><a href="../databases/storage-engines.html">Storage Engines</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field.
+  </footer>
+  <script>(function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(!btn)return;
+    var labels={auto:'Auto',light:'Light',dark:'Dark'};
+    var cycle={auto:'light',light:'dark',dark:'auto'};
+    function get(){return localStorage.getItem('theme')||'auto';}
+    function apply(t){
+      if(t==='auto')document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',t);
+      btn.textContent=labels[t];
+      btn.setAttribute('aria-label','Colour scheme: '+labels[t]+'. Click to change.');
+    }
+    btn.addEventListener('click',function(){var t=cycle[get()];localStorage.setItem('theme',t);apply(t);});
+    apply(get());
+  })();</script>
+  <script src="../pagefind/pagefind-ui.js"></script>
+  <script>(function(){
+    if(!window.PagefindUI)return;
+    new PagefindUI({element:'#search',showImages:false,bundlePath:new URL('../pagefind/',location.href).href});
+    var btn=document.querySelector('.search-toggle');
+    var dlg=document.getElementById('search-dialog');
+    function openSearch(){dlg?.showModal();setTimeout(function(){dlg?.querySelector('input')?.focus();},50);}
+    btn?.addEventListener('click',openSearch);
+    dlg?.querySelector('.search-close')?.addEventListener('click',function(){dlg.close();});
+    dlg?.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+    document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+  })();</script>
+</body>
+</html>
