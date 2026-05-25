@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
 <h2>Change Data Capture (CDC)</h2>
 <p>CDC is the <strong>low-level</strong> version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems.</p>

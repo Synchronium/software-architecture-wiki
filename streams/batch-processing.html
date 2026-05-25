@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>Batch processing takes a bounded, immutable input dataset and produces a new output dataset. Unlike online systems (which process requests in milliseconds) or stream processors (which handle unbounded event streams with low latency), batch jobs are distinguished by three properties: <strong>offline execution</strong> (latency of minutes to hours is acceptable), <strong>bounded input</strong> (a defined dataset to process in full), and <strong>immutable inputs</strong> (the source data is never modified). Immutability is the key insight: it enables retry, replay, and rollback without the careful ordering constraints of stateful online systems.</p>
 <h2>Unix Philosophy as Template</h2>
 <p>The Unix command-line tools model the principles that batch processing frameworks formalise at scale:</p>

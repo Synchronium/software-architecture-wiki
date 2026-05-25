@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>A transaction groups a set of reads and writes into a logical unit that either commits entirely or aborts entirely. Transactions simplify the error-handling model: instead of reasoning about every possible partial failure in concurrent execution, application code handles two outcomes — commit or abort — and the database handles everything else. However, the degree of protection provided depends heavily on the <strong>isolation level</strong> chosen, and most databases deliver weaker guarantees than their documentation claims.</p>
 <h2>ACID Properties</h2>
 <p>ACID is often cited but poorly defined. Kleppmann&#39;s precise reading (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 7):</p>

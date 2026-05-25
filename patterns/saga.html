@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>A Saga is a sequence of local transactions used to implement a long-running distributed transaction without 2PC. Each local transaction T₁…Tₙ is followed by a compensating transaction C₁…Cₙ that can undo its effects. On failure at step i, the saga executes the compensating chain Cᵢ₋₁ → ... → C₁ to restore consistency.</p>
 <h2>Structure</h2>
 <pre><code>SUCCESS:  T₁ → T₂ → T₃ → ... → Tₙ ✓

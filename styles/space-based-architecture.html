@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><h2>Definition</h2>
 <p>Space-based architecture (SBA) eliminates the central database as the scalability bottleneck by distributing data across in-memory replicated caches that each processing unit carries. Multiple instances of a processing unit run simultaneously, each with a full copy of the shared data in memory. Requests are routed to any available processing unit, which reads from and writes to its local cache; asynchronous data writers persist changes to the database in the background.</p>
 <p>The name comes from <em>tuple space</em> — a shared distributed memory model from parallel computing. Also called <em>cloud architecture pattern</em>, though Richards prefers &quot;space-based&quot; because processing units do not need to run on cloud infrastructure — they can reside on local servers.</p>

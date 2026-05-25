@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 28)</p>
 <h2>Load Shedding</h2>
 <p>When a server is at capacity, it should reject excess requests immediately rather than queueing them — queued requests under overload only delay the inevitable and consume resources needed to serve the requests already in-flight.</p>

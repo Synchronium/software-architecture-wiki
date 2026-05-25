@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>Partitioning (also called sharding) divides a large dataset across multiple nodes so that each node holds a subset. The goal is to spread <strong>data volume</strong> and <strong>query load</strong> across nodes so that a single-node bottleneck is avoided. Partitioning is the primary mechanism for achieving horizontal scalability in databases, message brokers, and stream processors.</p>
 <p>The challenge is choosing a partitioning scheme that distributes load evenly — a partition that receives a disproportionate share of queries is called a <strong>hot spot</strong>. Avoiding hot spots while still supporting efficient queries is the central tension in partition design.</p>
 <h2>Partitioning by Key Range</h2>

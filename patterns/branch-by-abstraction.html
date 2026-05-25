@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><h2>Definition</h2>
 <p><strong>Branch by Abstraction</strong> is a migration technique for replacing a deeply embedded component that cannot be intercepted at an external seam. Rather than using a proxy (as in <a href="../patterns/strangler-fig.html">Strangler Fig</a>), an abstraction layer is created inside the codebase, allowing the old and new implementations to coexist until the new one is proven and the old can be removed. (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>)</p>
 <p>The technique works where the strangler fig does not: when the capability to be migrated is not called from outside the monolith but from many places <em>within</em> it.</p>

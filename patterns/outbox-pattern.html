@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>The Outbox pattern guarantees that a database write and a message publication are either both committed or both not committed — without using distributed transactions (2PC). It solves the fundamental dual-write problem.</p>
 <h2>The Problem: Dual-Write</h2>
 <p>A service that both writes to its database and publishes to a message broker faces a race condition:</p>

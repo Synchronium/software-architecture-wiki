@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>An operation is <strong>idempotent</strong> if applying it multiple times produces the same result as applying it once. Idempotency is the primary tool for making distributed systems safe to retry.</p>
 <h2>Why It Matters</h2>
 <p>In a distributed system, any request can fail in an ambiguous way: the server might have processed the request before the connection dropped, or might not have. The client cannot know. The only safe response is to retry — but retries are only safe if the operation is idempotent.</p>

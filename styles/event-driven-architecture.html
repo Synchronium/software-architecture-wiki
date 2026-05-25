@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><h2>Definition</h2>
 <p>Event-driven architecture (EDA) is a distributed, asynchronous style where components communicate via events rather than direct synchronous calls. Components are decoupled — producers emit events without knowing who consumes them; consumers react to events without knowing who produced them. This enables extreme scalability and elasticity but introduces significant complexity in error handling, data consistency, and debugging.</p>
 <p>EDA contrasts with the <strong>request-based model</strong>: a request is a deterministic, synchronous, data-driven instruction sent to an orchestrator (e.g., &quot;retrieve order history&quot;). An event is a situation that has occurred that the system must react to (e.g., &quot;bid submitted — determine new highest bidder&quot;). Use request-based for well-structured, data-driven queries needing certainty and control; use event-based for flexible, action-based events requiring high responsiveness and scale.</p>

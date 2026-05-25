@@ -288,6 +288,7 @@
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><p>Data needs to be encoded to cross process boundaries — written to disk, sent over a network, or passed between services. The choice of encoding format determines how much data you can evolve over time without breaking things. This matters because <strong>data outlives code</strong>: a database may contain records written years ago by a version of the code that no longer exists.</p>
 <h2>Language-Specific Serialisation</h2>
 <p>Most languages provide built-in serialisation (Java&#39;s <code>Serializable</code>, Ruby&#39;s <code>Marshal</code>, Python&#39;s <code>pickle</code>). These are convenient for transient use, but have deep problems for cross-system or long-lived data:</p>
