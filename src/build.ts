@@ -115,7 +115,7 @@ async function build(): Promise<void> {
   const indexRawBody = (pages as Array<PageData & { _body?: string }>)
     .find(p => p.urlPath === "index")?._body ?? "";
   const summaryMap = indexRawBody
-    ? buildSummaryMap(resolveWikilinks(indexRawBody, linkMap, "index"))
+    ? buildSummaryMap(indexRawBody)
     : new Map<string, string>();
 
   // 6. Resolve wikilinks + convert Markdown → HTML
@@ -131,8 +131,9 @@ async function build(): Promise<void> {
   const tagMap = new Map<string, TagEntry[]>();
 
   for (const page of pages) {
-    const html =
-      page.urlPath === "index" ? renderHome(page, nav) : renderPage(page, nav);
+    const html = page.urlPath === "index"
+      ? renderHome(page, nav)
+      : renderPage(page, nav, summaryMap.get(page.urlPath));
     write(page.outPath, html);
 
     // Accumulate tag entries

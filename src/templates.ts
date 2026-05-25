@@ -105,12 +105,19 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
 
 // ─── Base shell ───────────────────────────────────────────────────────────────
 
+function truncDesc(text: string, max = 155): string {
+  if (text.length <= max) return text;
+  return text.slice(0, max).replace(/\s\S*$/, "") + "…";
+}
+
 function renderBase(opts: {
   title: string;
   urlPath: string;
   content: string;
   nav: NavSection[];
   footerNote?: string;
+  description?: string;
+  noindex?: boolean;
 }): string {
   const depth = opts.urlPath.split("/").length - 1;
   const prefix = depth > 0 ? "../".repeat(depth) : "";
@@ -119,12 +126,16 @@ function renderBase(opts: {
     : `${opts.title} — Software Architecture`;
 
   const sidebar = renderSidebar(opts.nav, opts.urlPath);
+  const metaRobots = opts.noindex ? '\n  <meta name="robots" content="noindex">' : "";
+  const metaDesc = opts.description
+    ? `\n  <meta name="description" content="${escapeHtml(truncDesc(opts.description))}">`
+    : "";
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">${metaRobots}${metaDesc}
   <title>${escapeHtml(pageTitle)}</title>
   <link rel="stylesheet" href="${prefix}assets/style.css">
 </head>
@@ -147,7 +158,7 @@ function renderBase(opts: {
 
 // ─── Wiki page ────────────────────────────────────────────────────────────────
 
-export function renderPage(page: PageData, nav: NavSection[]): string {
+export function renderPage(page: PageData, nav: NavSection[], description?: string): string {
   const { meta, bodyHtml, urlPath } = page;
 
   // Badge links to the section index if this page lives inside a section
@@ -169,7 +180,7 @@ export function renderPage(page: PageData, nav: NavSection[]): string {
 
   const wrappedBody = wrapTables(bodyHtml);
   const content = `${header}<div class="page-body">${wrappedBody}</div>`;
-  return renderBase({ title: meta.title, urlPath, content, nav });
+  return renderBase({ title: meta.title, urlPath, content, nav, description });
 }
 
 // ─── Home / index page ────────────────────────────────────────────────────────
@@ -182,7 +193,13 @@ export function renderHome(page: PageData, nav: NavSection[]): string {
     </div>
     <div class="page-body home-body">${wrappedBody}</div>`;
 
-  return renderBase({ title: "Software Architecture", urlPath: "index", content, nav });
+  return renderBase({
+    title: "Software Architecture",
+    urlPath: "index",
+    content,
+    nav,
+    description: "A personal knowledge base on software architecture — patterns, principles, distributed systems, and engineering trade-offs, synthesised from key books in the field.",
+  });
 }
 
 // ─── Tag index page ───────────────────────────────────────────────────────────
@@ -216,6 +233,8 @@ export function renderTagIndex(tag: string, entries: TagEntry[], nav: NavSection
     urlPath: `tags/${tag}`,
     content,
     nav,
+    noindex: true,
+    description: `${count} ${count === 1 ? "page" : "pages"} tagged "${toTitleCase(tag)}" in the Software Architecture wiki.`,
   });
 }
 
@@ -248,7 +267,13 @@ export function renderSectionIndex(
     </div>
     <ul class="tag-index-list">${items}</ul>`;
 
-  return renderBase({ title: label, urlPath, content, nav });
+  return renderBase({
+    title: label,
+    urlPath,
+    content,
+    nav,
+    description: `All ${count} ${count === 1 ? "page" : "pages"} in the ${label} section of the Software Architecture wiki.`,
+  });
 }
 
 // ─── All-tags index page ──────────────────────────────────────────────────────
@@ -277,7 +302,14 @@ export function renderTagAllIndex(tagMap: Map<string, TagEntry[]>, nav: NavSecti
     </div>
     <ul class="tag-index-list">${items}</ul>`;
 
-  return renderBase({ title: "Tags", urlPath: "tags/index", content, nav });
+  return renderBase({
+    title: "Tags",
+    urlPath: "tags/index",
+    content,
+    nav,
+    noindex: true,
+    description: `Browse all ${totalTags} tags used across the Software Architecture wiki.`,
+  });
 }
 
 // ─── Table wrapper (for overflow-x scroll on mobile) ─────────────────────────

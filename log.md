@@ -2248,3 +2248,13 @@ Audited tags across all 172 wiki pages. Started with 188 singleton tags and 306 
 - `databases/object-relational-mapping`: added `databases, ddd, enterprise`
 
 Result: 167 singleton tags remaining (down from 188), 266 unique tags total (down from 306). Remaining singletons are legitimately unique technical terms (acid, mvcc, chaos-engineering, zero-trust, raft, oauth2, etc.) covering concepts specific to a single page. Build: 172 pages, 266 tag indexes.
+
+## [2026-05-25] lint | SEO audit — meta tags, noindex, descriptions
+
+Added SEO meta tags across all page types:
+
+- **`noindex`**: individual tag pages (`tags/*.html`) and the all-tags index (`tags/index.html`) now carry `<meta name="robots" content="noindex">` — these are thin auto-generated lists and should not be indexed.
+- **`<meta name="description">`**: all page types now emit a description tag. Content pages use their summary from `index.md` (truncated to 155 chars); tag pages use "N pages tagged X"; section index pages use "All N pages in the X section"; the home page uses a fixed description; the all-tags index uses a fixed description.
+- **Bug fix**: `buildSummaryMap` in `build.ts` was being called with `resolveWikilinks(indexRawBody, ...)` output — HTML with `<a href>` anchors — but the function's regex expects `[[path]] — summary` wikilink syntax. Summaries have therefore been empty since the feature was built. Fixed by passing `indexRawBody` directly. Section index and tag pages now correctly show page summaries.
+
+Changes: `src/build.ts` (fix summaryMap call, thread description into renderPage), `src/templates.ts` (renderBase gains `description`/`noindex` opts, all render functions pass appropriate values).
