@@ -81,6 +81,7 @@ Slugs are the kebab-case full book title. Use these in frontmatter `sources:` fi
 | `software-architecture-metrics` | Software Architecture Metrics — Ciceri et al. |
 | `a-philosophy-of-software-design` | A Philosophy of Software Design — John Ousterhout |
 | `accelerate` | Accelerate: The Science of Lean Software and DevOps — Forsgren, Humble & Kim |
+| `site-reliability-engineering` | Site Reliability Engineering — Beyer, Jones, Petoff, Murphy (eds.) |
 
 ---
 

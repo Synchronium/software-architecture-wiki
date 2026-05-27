@@ -2,9 +2,9 @@
 title: "Batch Processing"
 type: stream
 tags: [batch, mapreduce, data-processing, etl, distributed-systems, databases]
-sources: [designing-data-intensive-applications]
+sources: [designing-data-intensive-applications, site-reliability-engineering]
 created: 2026-05-13
-updated: 2026-05-13
+updated: 2026-05-27
 ---
 
 # Batch Processing
@@ -146,11 +146,28 @@ Graph algorithms (PageRank, shortest path, connected components) require iterati
 
 **Fault tolerance**: periodic checkpointing; roll back all vertices to last checkpoint on failure.
 
+## Operational Failure Patterns in Periodic Pipelines
+
+Well-tuned periodic pipelines are stable. Under organic growth, several failure modes emerge. (→ [[sources/site-reliability-engineering]] ch. 25)
+
+**Hanging chunk problem**: "embarrassingly parallel" workloads partition input into chunks. When a chunk requires disproportionate resources (e.g., a very large customer in a customer-partitioned workload), the pipeline is blocked on the worst-case chunk. Because most periodic pipelines lack checkpointing, the naive fix — kill and restart — discards all completed work.
+
+**Thundering herd in batch scheduling**: a large periodic pipeline starts thousands of workers simultaneously. Misconfigured retry logic compounds the problem: failed workers retry immediately, multiplying load on cluster services. Adding more workers (the intuitive response) makes it worse, not better.
+
+**Moiré load pattern**: two or more pipelines with similar intervals whose execution windows occasionally overlap, causing simultaneous resource spikes on shared infrastructure. Observable as interference patterns in resource usage graphs. Difficult to diagnose because no single pipeline looks problematic in isolation.
+
+**Monitoring gap**: periodic pipelines typically emit metrics only on completion. If the job fails mid-run, no telemetry is produced. Real-time operational visibility requires either continuous pipelines or explicit mid-job instrumentation.
+
+**Minimum effective interval**: reducing the scheduling interval below the job's execution time causes jobs to queue or overlap, rather than producing more progress. The minimum effective interval is bounded by (job execution time + scheduling delay).
+
+**Recommendation**: if a pipeline needs to run more frequently than its execution time, or if data processing needs to be continuous, a continuously running pipeline architecture (like Kafka Streams, Flink, or a leader-follower system with leases) will be more reliable than a faster periodic schedule.
+
 ## How Different Sources Treat It
 
 | Source | Perspective |
 |--------|-------------|
 | [[sources/designing-data-intensive-applications]] | Definitive treatment — derives batch processing from Unix philosophy, mechanistic MapReduce explanation, join algorithms, Hadoop vs MPP analysis, dataflow engines, Pregel (ch. 10) |
+| [[sources/site-reliability-engineering]] | Operational failure modes of periodic pipelines at scale: hanging chunks, thundering herd, Moiré load pattern, monitoring gap, minimum effective interval. Advocates for continuous pipeline systems when frequency requirements push against job execution time. (ch. 25) |
 
 ## Related Concepts
 

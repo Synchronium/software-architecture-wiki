@@ -2,9 +2,9 @@
 title: "Monitoring"
 type: concept
 tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call]
-sources: [understanding-distributed-systems, release-it]
+sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-27
 ---
 
 # Monitoring
@@ -12,6 +12,15 @@ updated: 2026-05-19
 ## Definition
 
 Monitoring is the practice of continuously tracking a system's health in production, primarily to detect failures that impact users and to trigger alerts to human operators. A secondary use is providing dashboards that give a high-level view of system health.
+
+## Counters vs Gauges
+
+Two fundamental metric types (→ [[sources/site-reliability-engineering]] ch. 10):
+
+- **Counter**: a monotonically increasing value (never decreases). Measures total events since process start — total requests served, total errors, total bytes written. Rate computation (`rate()`) is safe even across missed collection intervals, because the counter difference is still correct if a collection is skipped.
+- **Gauge**: a value that can go up or down — current queue depth, active connections, memory usage. Prone to missed events: if a queue empties and refills between two collection intervals, the gauge appears unchanged even though work was done.
+
+Prefer counters where possible. Alert on rates derived from counters rather than on gauge values directly.
 
 ## Black-Box vs White-Box Monitoring
 
@@ -40,7 +49,15 @@ A ratio of 0 means completely broken; 1 means the measured dimension is working 
 - **Availability**: successful requests / total requests.
 - **Response time**: fraction of requests completing faster than a given threshold.
 
+**SLI categories by service type** (→ [[sources/site-reliability-engineering]] ch. 4):
+- **User-facing serving systems**: availability, latency, throughput
+- **Storage systems**: latency, availability, durability
+- **Big data pipelines**: throughput, end-to-end latency
+- **All systems**: correctness (was the right answer returned?)
+
 **Where to measure**: measure where it best represents the user experience. Client-side latency (accounting for full network path) is more meaningful than service-internal latency. If client-side collection is too costly, work inward to the next best proxy.
+
+**Standardise definitions**: define reusable SLI templates specifying aggregation interval (e.g. "averaged over 1 minute"), aggregation region, measurement frequency, which requests are included, how data is acquired, and latency basis (e.g. "time to last byte"). Templates prevent reasoning from first principles for every SLI.
 
 **Percentiles over averages**: response times are right-skewed and long-tailed. Averages hide the distribution and are easily distorted by outliers. Percentiles (P99, P99.9) are a better representation. Long-tail latencies disproportionately affect high-value users (those making the most requests), and their business impact is measurable — a 100 ms increase in load time can reduce conversion by 7%.
 
@@ -68,7 +85,59 @@ The complement of the SLO target is the **error budget**: the number of failures
 
 **Priority signalling**: when an error budget is exhausted, repair items take priority over features. Incident severity is measurable as the fraction of error budget burned.
 
+**As few SLOs as possible**: choose just enough to give good coverage. If an SLO cannot win a priority conversation — if quoting it never changes what gets worked on — it is not worth having. (→ [[sources/site-reliability-engineering]] ch. 4)
+
+**Don't overachieve**: users build on the actual performance they observe, not the stated SLO. A service that consistently exceeds its SLO causes users to over-depend on that level of reliability. When the service eventually regresses to its stated target, those users break. Google's Chubby lock service became so reliable that dependent teams assumed it would never fail; when it did, they had no fallback. SRE's fix: synthesize planned outages if Chubby has not naturally hit its SLO target in a quarter. This flushes out over-dependencies before they become production liabilities. The broader principle: operate close to your stated SLO, not far above it. (→ [[sources/site-reliability-engineering]] ch. 4)
+
+**Internal vs external SLO**: maintain a tighter internal target than the published SLA. This safety margin allows response to chronic problems before external breach, and accommodates reimplementations that trade performance for maintainability.
+
 **Chaos testing**: periodically inject controlled failures into production to prevent dependencies from over-relying on behaviour that exceeds the documented SLA, and to validate that resiliency mechanisms work. (→ [[operations/chaos-engineering]], [[operations/common-failure-causes]], [[patterns/circuit-breaker]])
+
+## The Four Golden Signals
+
+The SRE book's canonical monitoring framework for user-facing systems (→ [[sources/site-reliability-engineering]] ch. 6): if you can only measure four metrics, measure these:
+
+| Signal | What it measures | Notes |
+|--------|----------------|-------|
+| **Latency** | Time to service a request | Track error latency separately — a fast error is still an error, but a slow error is worse than both |
+| **Traffic** | Demand on the system | Requests/sec, sessions, transactions/sec — chosen to match the system's primary activity |
+| **Errors** | Rate of failed requests | Explicit (HTTP 5xx), implicit (200 with wrong content), or by policy (response > SLO threshold) |
+| **Saturation** | How "full" the system is | The most constrained resource (CPU, memory, I/O); latency increases are often a leading indicator |
+
+Saturation differs from the others: it is about predicting impending failure, not measuring current failure. A utilisation target is essential because many systems degrade before reaching 100% utilisation.
+
+## Symptoms vs Causes
+
+Alert on **symptoms** (what's broken from the user's perspective), not causes (why it's broken). Cause-based alerts generate noise — a CPU spike isn't actionable; a user-visible error rate is. (→ [[sources/site-reliability-engineering]] ch. 6)
+
+Causes are for debugging after an alert fires. White-box monitoring provides the cause-level detail needed to diagnose; black-box monitoring provides the symptom-level signal needed to alert.
+
+> **One person's cause is another person's symptom**: slow database reads are a symptom for the database SRE but a cause for the frontend SRE observing slow page loads. The distinction depends on which layer you're examining.
+
+## Alert Quality Criteria
+
+Every alert that pages a human must satisfy these criteria (→ [[sources/site-reliability-engineering]] ch. 6):
+
+1. **Actionable** — the on-call engineer can do something in response right now.
+2. **Requires intelligence** — the response is not a rote script or fixed procedure. If it is, automate it.
+3. **Urgent or imminent** — the problem is already affecting users, or will shortly.
+4. **Novel** — alerts that fire repeatedly for the same known condition should be resolved at the root cause or automated.
+
+Pages that fail these criteria cause fatigue, cause engineers to ignore pages, and mask real incidents. Alert volume is a proxy for operational health — rising alert counts should trigger investigation of root causes, not just faster response.
+
+## Monitoring Output Taxonomy (SRE)
+
+The SRE book defines three — and only three — valid categories of monitoring output (→ [[sources/site-reliability-engineering]] ch. 1):
+
+| Output | Meaning | Required response |
+|--------|---------|------------------|
+| **Alert** | Something is happening or about to happen that requires immediate human action | Page on-call now |
+| **Ticket** | Action is needed, but not urgently — the system cannot self-resolve, but a few days' delay causes no harm | Create a ticket for the next working day |
+| **Log** | Recorded for diagnostic or forensic purposes; no one reads it unless prompted by another signal | None |
+
+If a monitoring signal does not clearly fit one of these categories, it should not exist. Monitoring that requires a human to interpret whether it matters is "fundamentally flawed" — the software should do the interpreting. (→ [[sources/site-reliability-engineering]] ch. 1)
+
+> **Contradiction:** This taxonomy implies that dashboards are not monitoring output — they are tools for investigation *after* an alert fires. Nygard's economic framing below treats dashboards as first-class operational instruments. The SRE view is that proactive dashboard-watching is a form of toil; the Nygard view is that business-process dashboards have independent value for detecting degradation that SLOs may miss.
 
 ## Alerts
 
@@ -145,6 +214,16 @@ A healthy on-call rotation requires that developers are responsible for operatin
 - After mitigation: root cause analysis, repair items, postmortem. Severity is proportional to error budget consumed.
 - If error budget is exhausted or alert volume is out of control: the whole team stops feature work until a healthy rotation is restored.
 - All incident actions should be communicated to a shared channel to enable handover and cross-team visibility.
+
+**SRE on-call capacity rules** (→ [[sources/site-reliability-engineering]] ch. 11):
+- At most 25% of time on-call (a sub-rule of the overall 50% ops cap); at least 50% must be engineering.
+- Maximum ~2 paging incidents per 12-hour shift (each incident = ~6 hours of work). A component that pages daily has an unsustainable failure rate.
+- Minimum team size for 24/7 single-site coverage: 8 engineers (primary + secondary, honouring 25% rule).
+- For multi-site "follow the sun" coverage: ≥6 engineers per site; avoids night shifts and their health consequences.
+- Operational underload (never on-call) is also harmful: engineers lose production intuition; minimum once or twice per quarter.
+- **"Give back the pager"**: if a service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets standards. Alert flap prevention: minimum duration (≥2 evaluation cycles) before an alert fires prevents transient collection failures from paging.
+
+**Incident psychology**: stress hormones impair deliberate, rational cognition and promote habitual responses — exactly the wrong mode for complex incident handling. Reducing on-call stress through clear escalation paths, runbooks, and blameless postmortem culture enables the deliberate thinking complex incidents require. (→ [[sources/site-reliability-engineering]] ch. 11)
 
 ## Related Concepts
 

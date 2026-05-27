@@ -2,9 +2,9 @@
 title: "Consensus Algorithms"
 type: concept
 tags: [distributed-systems, consensus, raft, coordination, fault-tolerance]
-sources: [designing-data-intensive-applications, understanding-distributed-systems, foundations-of-scalable-systems]
+sources: [designing-data-intensive-applications, understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-13
-updated: 2026-05-18
+updated: 2026-05-27
 ---
 
 # Consensus Algorithms
@@ -146,6 +146,60 @@ Two-Phase Commit (2PC) solves a related but different problem: atomic commit acr
 
 **3PC**: theoretically non-blocking but requires bounded network delays and process response times — unrealistic in partial synchrony. Not used in production systems.
 
+## Ad Hoc Coordination Failure Patterns
+
+Before consensus services existed, teams assembled ad hoc coordination mechanisms. Three recurring failures illustrate why ad hoc approaches cannot provide consensus guarantees. (→ [[sources/site-reliability-engineering]] ch. 23)
+
+1. **STONITH + heartbeat timeout**: primary and replica used a heartbeat to detect failure and a STONITH mechanism to fence the other node. On a network partition, each node concluded the other was dead. Depending on timing, either both shut down (nothing serving) or both became primary (conflicting writes and data corruption). The underlying problem: heartbeat timeouts cannot distinguish a failed node from a partitioned one.
+
+2. **Human-intervened failover**: manually triggered failover has unbounded MTTR and doesn't scale. Operators are overwhelmed exactly when most needed. Humans are the bottleneck.
+
+3. **Gossip-based cluster membership**: gossip protocols detect failures by exchanging member state, but they cannot reach agreement on *who* is the authoritative leader — they provide eventual consistency, not consensus. On a network partition, each half elected its own master, causing split-brain writes.
+
+## Replicated State Machine (RSM)
+
+The RSM is the fundamental building block of reliable coordination. A consensus algorithm (Paxos, Raft, Zab) provides a totally ordered log; the RSM executes operations in that order. The result: any deterministic state machine — a key-value store, a distributed lock, a task queue, a configuration service — can be made highly available across f failures with 2f+1 replicas. (→ [[sources/site-reliability-engineering]] ch. 23)
+
+**Components correctly built on RSM**:
+- **Datastores and config stores** (Chubby, etcd, ZooKeeper) — strongly consistent reads and writes
+- **Leader election** — one master at a time, guaranteed
+- **Distributed locks** — use *leases*, not indefinite locks. Leases expire automatically if the holder crashes; indefinite locks require explicit release, which may never happen if the lock holder dies
+- **Task queues** — claim tasks with leases, not deletions. If a worker crashes mid-task, the lease expires and the task becomes reclaimable
+- **Pub/sub systems** — atomic broadcast (which requires consensus) ensures all subscribers see events in the same order
+
+## Replica Count and Placement
+
+**Minimum viable**: 3 nodes tolerates 1 failure (2f+1 where f=1). **Best practice**: 5 nodes tolerates 2 simultaneous failures — one planned maintenance and one concurrent hardware failure. Running fewer than 5 means any planned maintenance leaves no tolerance for coincident failure.
+
+**Placement — failure domains**: replicas should span different racks, switches, and power domains. Losing two replicas in the same rack on a switch failure must be survivable.
+
+**Placement — network topology**: naive placement by count can create a **linchpin replica** problem. In a 5-replica deployment, if one replica sits at a network topology choke point, losing it may effectively partition the cluster even though a quorum still technically exists. Topology must be accounted for, not just replica count.
+
+**Geo-distributed replicas**: increase fault tolerance at the cost of increased consensus latency (speed of light over wide-area links). Hierarchical quorums (e.g., 9-replica cross-region) can reduce latency vs flat quorums by optimising for intra-region rounds. (→ [[sources/site-reliability-engineering]] ch. 23)
+
+## Multi-Paxos Performance
+
+In steady state with a stable leader, Multi-Paxos requires **1 round-trip** per consensus operation (the leader sends accepts; followers respond; the leader commits). The two-phase election only happens when the leader changes.
+
+**Duelling proposers** (two nodes simultaneously trying to be leader) cause livelock — each aborts the other's proposal. Mitigated by randomised backoff before re-proposing.
+
+**Disk write latency** (~1–10ms) limits throughput to ~100 ops/s in serial operation. Two techniques break this limit:
+- **Batching**: accumulate multiple operations and commit them in one consensus round
+- **Pipelining**: have multiple consensus rounds in flight simultaneously; don't wait for round N to complete before starting round N+1
+
+**Quorum leases**: grant read leases to quorum members, allowing them to serve strongly consistent reads locally without a consensus round. The master withholds lease renewal when it needs to make a change, preventing stale reads during the lease window.
+
+## Monitoring Consensus Systems
+
+Key signals to monitor (→ [[sources/site-reliability-engineering]] ch. 23):
+- **Member count and health** — alert if any member is unreachable or lagging
+- **Number of lagging replicas** — count + bytes behind leader
+- **Leader existence** — alert if no leader currently elected (cluster has halted)
+- **Leader change rate** — high churn indicates instability (split votes, network issues)
+- **Consensus transaction number** — must increase monotonically; a non-increasing number is a bug
+- **Proposal counts** — unexpected spikes indicate contention or repeated leader elections
+- **Throughput and latency** — end-to-end consensus operation time, not just disk write time
+
 ## How Different Sources Treat It
 
 | Source | Perspective |
@@ -153,6 +207,7 @@ Two-Phase Commit (2PC) solves a related but different problem: atomic commit acr
 | [[sources/designing-data-intensive-applications]] | Most rigorous treatment — proves equivalence theorem, distinguishes 2PC from consensus, covers FLP result, covers ZooKeeper/etcd use cases, critiques XA (ch. 9) |
 | [[sources/understanding-distributed-systems]] | Covers Raft and consensus at a high level; focuses on practical use (ZooKeeper for leader election, partition assignment) rather than theoretical depth |
 | [[sources/foundations-of-scalable-systems]] | Database practitioner framing. Raft election mechanics (election terms as logical clocks; RequestVote; randomized timers; candidacy requires up-to-date log); Raft implementations: Neo4j, YugabyteDB, Hazelcast (complementing etcd, CockroachDB from other sources). 2PC failure cascade: coordinator failure holds participant locks → concurrent transactions time out → circuit breakers open → cascading failures in loaded systems. VoltDB SPI mechanism: single CPU core per partition, serial single-threaded execution, no locking needed → no 2PC for single-partition transactions; MPI drives 2PC only for multi-partition. Cloud Spanner TrueTime: GPS + atomic clock hardware, ~7ms bounded skew, commit wait period (hold locks for skew duration) to guarantee real-time ordering of linearizable commits. (ch. 12) |
+| [[sources/site-reliability-engineering]] | SRE operations perspective. Three case studies of ad hoc coordination failures (STONITH, human failover, gossip). RSM as the correct foundation. Components built on consensus (datastores, leader election, leases, task queues). Replica count guidance: minimum 3, best practice 5. Multi-Paxos performance: 1 RTT in steady state, batching and pipelining, quorum leases for local reads. Replica placement: failure domains, linchpin replica problem, geo-distribution vs latency. Monitoring: member health, lagging replicas, leader existence and change rate, transaction number monotonicity. (ch. 23) |
 
 ## Related Concepts
 

@@ -290,6 +290,20 @@ Embed a commit SHA or content hash in the URL *path* (not query string) — some
 
 The first batch in a rolling deployment is the canary group. Pause after the canary to evaluate SLIs (error rate, latency, memory) before continuing. Use health-check-based graceful drain (phase 2 above) rather than abruptly removing the instance from the pool, which would kill in-flight requests.
 
+## Hermetic Builds
+
+A hermetic build is deterministic and environment-independent: two engineers building the same source revision on different machines must get identical outputs. (→ [[sources/site-reliability-engineering]] ch. 8)
+
+Properties of a hermetic build:
+- **Known tool versions**: depends on specified versions of compilers, linkers, and build tools — not whatever is installed on the build machine.
+- **Vendored or pinned dependencies**: libraries are fetched at known versions; no live fetches from the internet during a build.
+- **Self-contained**: the build process does not call external services.
+- **Reproducible at any revision**: rebuilding at an older revision (e.g., to cherry-pick a fix) uses the original compiler and dependency versions, not the latest.
+
+Hermetic builds enable: cherry-pick-based hotfix workflows (the release branch can be rebuilt at the same tools version as the original), artifact signing and chain of custody, and confidence that the artifact in production matches the tested artifact.
+
+> **Contradiction:** Hermetic builds are aspirational for most organisations. Common failure modes include build steps that curl dependencies from the internet, build scripts that use installed system tools, and Docker images that use `FROM ubuntu:latest` (mutable tag). These all produce "mostly hermetic" builds that are hermetic enough in practice but can diverge across environments.
+
 ## Immutable and Disposable Infrastructure
 
 Nygard (→ [[sources/release-it]] ch. 8) makes a strong case for immutable infrastructure over mutable configuration management (Chef, Puppet, Ansible).
@@ -310,6 +324,7 @@ Mutable configuration management produces "layers of stucco" — the machine's s
 | [[sources/mastering-api-architecture]] | API lifecycle (planned → beta → live → deprecated → retired); canary, blue-green, traffic mirror release strategies |
 | [[sources/building-event-driven-microservices]] | EDM-specific: stateful deployment constraints, reprocessing impacts, rolling update prerequisites, breaking schema change patterns, blue-green applicability limits |
 | [[sources/release-it]] | Immutable infrastructure > mutable configuration management; supply chain security; zero-downtime deployment as a first-class feature; four deploy phases (prepare/drain/apply/start); expand/contract relational schema pattern; trickle-then-batch schemaless migration; canary group evaluation |
+| [[sources/site-reliability-engineering]] | Hermetic builds (same revision = identical output, environment-independent); branch + cherry-pick (never merge release branch back to mainline); risk-profiled deployment cadence (dev → hourly auto; large user-facing → exponential; sensitive infra → multi-day across regions); "Push on Green"; four configuration management models |
 
 ## Related Concepts
 

@@ -2,9 +2,9 @@
 title: "Load Balancing"
 type: concept
 tags: [distributed-systems, scalability, availability, networking, load-balancing]
-sources: [understanding-distributed-systems, foundations-of-scalable-systems]
+sources: [understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-27
 ---
 
 # Load Balancing
@@ -29,16 +29,23 @@ The simplest approach: add multiple server IP addresses to a DNS A record. Clien
 **Limitations**:
 - Failures are not handled — the DNS server keeps serving failed IPs until the record is manually updated.
 - Even after a DNS update, changes take time to propagate due to TTL caching (→ [[distributed/dns]]).
+- DNS replies must fit within 512 bytes (RFC 1035), limiting the number of addresses per reply.
+- Recursive resolvers sit between clients and authoritative nameservers: the authoritative server sees the resolver's IP, not the client's, so geographic optimisation targets the resolver's location rather than the user's. The EDNS0 client subnet extension (supported by major resolvers) includes the client's subnet in the query to enable true client-side optimisation.
+- Recursive resolvers cache responses up to the TTL, so a single authoritative reply may be forwarded to thousands of users. This makes it impossible to control exactly how many users receive each reply. (→ [[sources/site-reliability-engineering]] ch. 19)
 
-**Practical use**: global traffic steering to different data centres or CDN clusters (global DNS load balancing). Not suitable for fine-grained, failure-aware routing within a data centre.
+**Practical use**: global traffic steering to different data centres or CDN clusters (global DNS load balancing). Not suitable for fine-grained, failure-aware routing within a data centre. Large-scale DNS load balancers integrate with global control systems to track capacity, health, and geographic distribution per resolver.
 
 ## L4 Load Balancing (Transport Layer)
 
 A Layer 4 load balancer operates at the TCP level. Clients open a TCP connection to the load balancer's **virtual IP (VIP)**; the load balancer forwards the packets to a backend server transparently via address translation.
 
-**Connection assignment**: consistent hashing on the connection 4-tuple (source IP/port, destination IP/port) ensures all packets in a connection go to the same server. Minimises disruption when servers are added or removed.
+A VIP is not assigned to a specific network interface — it is shared across many load balancer instances. From the user's perspective it is a single stable IP regardless of how many backends sit behind it.
 
-**Direct server return (DSR)**: because outbound traffic (responses) is typically larger than inbound, servers can be configured to reply directly to the client rather than through the load balancer, significantly reducing load balancer throughput requirements.
+**Connection assignment**: consistent hashing on the connection 4-tuple (source IP/port, destination IP/port) ensures all packets in a connection go to the same server. Minimises disruption when servers are added or removed. The simpler `id(packet) mod N` formula causes almost all connections to remap when N changes (one backend added or removed) — consistent hashing avoids this. (→ [[sources/site-reliability-engineering]] ch. 19)
+
+**Direct server return (DSR)**: because outbound traffic (responses) is typically larger than inbound, servers can be configured to reply directly to the client rather than through the load balancer, significantly reducing load balancer throughput requirements. DSR is stateless at the load balancer.
+
+**GRE encapsulation**: DSR using layer-2 (MAC address rewriting) requires all load balancers and backends to be in the same broadcast domain — a constraint that becomes impractical at scale. Using GRE (Generic Routing Encapsulation) wraps the forwarded packet in a new IP packet addressed to the backend. Backends strip the outer IP+GRE layer and process the inner packet normally. The load balancer and backends can now be in different network segments or even different regions. Overhead: 24 bytes per packet (IPv4+GRE), which may require a larger internal MTU or fragmentation. (→ [[sources/site-reliability-engineering]] ch. 19)
 
 **Horizontal scaling**: L4 load balancers can be scaled out using **Anycast + ECMP** (Equal-Cost Multi-Path). Multiple load balancer instances announce the same Anycast IP address to edge routers. Routers distribute packets across instances using equal-cost multi-path consistent hashing, keeping packets of a single connection on the same load balancer instance.
 
@@ -97,6 +104,24 @@ This mechanism underpins **autoscaling**: cloud providers provision new servers 
 
 **Health check failure cascade**: if a misconfigured health endpoint causes all servers to fail checks simultaneously, a naive load balancer empties the pool and takes the application down. A robust load balancer detects the mass-failure signal, treats the health checks as unreliable, and keeps routing traffic to the pool rather than removing all servers.
 
+## Lame Duck State
+
+Rather than stopping immediately when shutting down, a backend should enter **lame duck state**: it continues to accept connections and complete in-flight requests, but signals all connected clients to stop sending new requests. Inactive clients also receive the signal via periodic UDP health checks.
+
+Benefits: (1) avoids serving errors to requests that were in-flight when shutdown began; (2) enables clean rolling deploys without user-visible errors; (3) allows backends in warm-up phase (e.g., JIT compilation) to delay receiving traffic until performance is nominal. (→ [[sources/site-reliability-engineering]] ch. 20)
+
+Shutdown sequence: receive SIGTERM → enter lame duck state → broadcast to clients → drain in-flight requests → exit cleanly.
+
+## Subsetting
+
+In large systems, each client process maintains long-lived connections to a subset of backends (typically 20–100 rather than all). Benefits: bounds memory and CPU overhead for connection maintenance; reduces health-check traffic.
+
+**Random subsetting fails at scale**: at a 10% subset size, the most loaded backend receives ~150% of the average and the least receives ~50%. To achieve uniform distribution with random subsetting, subset sizes of ~75% are needed — defeating the purpose.
+
+**Deterministic subsetting**: divide client tasks into "rounds"; within each round, each backend is assigned to exactly one client. Different rounds use different random shuffles (so a failing backend's load spreads across different backend subsets, not the same N backends). Result: nearly perfectly uniform connection distribution, with at most a difference of 1 connection per backend.
+
+The subset size depends on: ratio of clients to backends; burst behaviour (clients with frequent large fan-outs need larger subsets). (→ [[sources/site-reliability-engineering]] ch. 20)
+
 ## Load Balancing Algorithms
 
 | Algorithm | How it works | Best for |
@@ -105,8 +130,11 @@ This mechanism underpins **autoscaling**: cloud providers provision new servers 
 | Least-connections | Route to server with fewest active connections | Variable request cost |
 | Consistent hashing | Hash of request attribute → fixed server | Session stickiness, cache affinity |
 | **Power of two choices** | Pick two servers at random; route to the less loaded one | Load-aware routing without oscillation |
+| **Weighted round robin** | Backends report QPS, error rate, and CPU utilisation in response/health-check headers; clients adjust per-backend capability scores and route proportionally | Large services with machine diversity and variable query cost; reduces spread from ~2× to near-uniform |
 
 **Power of two choices** deserves emphasis. Tracking actual server load via polling introduces delay — a freshly joined server reports load 0 and gets hammered until the next poll; then it reports overloaded and receives nothing. The system oscillates. Randomly picking two servers and routing to the lesser-loaded one avoids this entirely: it requires no polling, naturally distributes load, and is mathematically near-optimal for most distributions. (→ [[sources/understanding-distributed-systems]] ch. 18)
+
+**Least-connections sinkhole pitfall**: a fast-failing unhealthy backend appears to have few active requests (errors are cheap to return). The load balancer interprets this as "lightly loaded" and floods it with new requests, which also fail quickly, making the problem worse. Fix: count recent errors as active requests in the routing decision — a backend that is fast-failing will accumulate a high effective load and be bypassed. (→ [[sources/site-reliability-engineering]] ch. 20)
 
 ## Client-Side Load Balancing (Sidecar)
 
@@ -122,6 +150,7 @@ Disadvantages: every client needs a sidecar and the collection requires a contro
 |--------|-------------|
 | [[sources/understanding-distributed-systems]] | DNS LB, L4 and L7 mechanics, service discovery via coordination service, health checks, watchdog, power of two choices, sidecar as client-side LB (ch. 18) |
 | [[sources/foundations-of-scalable-systems]] | Load balancer as the enabling mechanism for scale-out; stateless services as the prerequisite — any per-session state must be stored externally so the load balancer can route freely; scale-out as the transition from the monolith bottleneck once vertical scaling is exhausted (ch. 2) |
+| [[sources/site-reliability-engineering]] | Multi-level approach: DNS geographic steering → VIP → datacenter internal. DNS: recursive resolver hides client IP; EDNS0 extension; TTL floor; 512-byte limit. VIP: consistent hashing; GRE encapsulation for cross-segment DSR (ch. 19). Datacenter: lame duck state for graceful shutdown; deterministic subsetting for uniform connection distribution; weighted round robin; least-connected sinkhole pitfall (ch. 20) |
 
 ## Related Concepts
 
@@ -137,3 +166,4 @@ Disadvantages: every client needs a sidecar and the collection requires a contro
 
 - (→ [[sources/understanding-distributed-systems]] ch. 18) — DNS LB, L4, L7, service discovery, health checks, power of two choices.
 - (→ [[sources/foundations-of-scalable-systems]] ch. 2) — load balancer as the stateless scale-out enabler; stateless services requirement; session state externalisation.
+- (→ [[sources/site-reliability-engineering]] ch. 19) — multi-level LB architecture; DNS limitations and EDNS0; VIP consistent hashing; GRE encapsulation.

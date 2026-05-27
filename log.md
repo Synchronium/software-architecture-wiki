@@ -2258,3 +2258,133 @@ Added SEO meta tags across all page types:
 - **Bug fix**: `buildSummaryMap` in `build.ts` was being called with `resolveWikilinks(indexRawBody, ...)` output — HTML with `<a href>` anchors — but the function's regex expects `[[path]] — summary` wikilink syntax. Summaries have therefore been empty since the feature was built. Fixed by passing `indexRawBody` directly. Section index and tag pages now correctly show page summaries.
 
 Changes: `src/build.ts` (fix summaryMap call, thread description into renderPage), `src/templates.ts` (renderBase gains `description`/`noindex` opts, all render functions pass appropriate values).
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 00–01 (preamble + introduction)
+
+Began ingestion of *Site Reliability Engineering* (Beyer, Jones, Petoff, Murphy, 2016).
+
+**New pages (5):**
+- `wiki/sources/site-reliability-engineering.md` — source page with overview, key claims, chapter notes for ch. 1–2
+- `wiki/operations/error-budgets.md` — error budget model: 1 − SLO target; resolves dev/ops conflict; budget exhaustion mechanics; burn rate alerting
+- `wiki/operations/site-reliability-engineering.md` — SRE as discipline: dev/ops structural conflict, error budgets, toil cap, SLO-driven alerting, blameless postmortems, SRE vs DevOps, applicability outside Google
+- `wiki/authors/betsy-beyer.md`
+- `wiki/authors/benjamin-treynor-sloss.md`
+
+**Updated pages (2):**
+- `wiki/operations/monitoring.md` — added SRE monitoring output taxonomy (alerts/tickets/logging); contradiction with Nygard's dashboard-first approach flagged
+- `wiki/operations/availability.md` — added SRE "100% is always the wrong target" argument with safety-critical systems contradiction noted
+
+**Other:** Added `site-reliability-engineering` slug to CLAUDE.md book slug table.
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 2–15
+
+Ingested chapters 2–15 of *Site Reliability Engineering* (Beyer, Jones, Petoff, Murphy).
+
+**Created pages (3):**
+- `wiki/operations/automation.md` — automation vs autonomy, 5-level hierarchy, safety properties, MySQL on Borg case study
+- `wiki/operations/incident-management.md` — hypothetico-deductive troubleshooting, ICS roles, "only Ops modifies", blameless postmortems, triggers, review, Wheel of Misfortune
+- `wiki/authors/betsy-beyer.md` (moved from batch 1 note — confirmed created)
+
+**Updated pages (8):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 2–15
+- `wiki/operations/error-budgets.md` — reliability continuum, ISP noise floor, quarterly budget formation, tiered service levels (Bigtable)
+- `wiki/operations/availability.md` — request-success-rate availability formula
+- `wiki/operations/site-reliability-engineering.md` — risk management framing, toil taxonomy, on-call floor calculation
+- `wiki/operations/monitoring.md` — SLI categories by service type, Chubby/"don't overachieve", counters vs gauges, Four Golden Signals, symptoms vs causes, alert quality criteria, SRE on-call capacity rules
+- `wiki/concepts/deployment-pipelines.md` — hermetic builds section (determinism, cherry-pick enablement)
+- `wiki/concepts/software-complexity.md` — essential vs accidental complexity (Brooks), dead code / Knight Capital
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 16–17
+
+**Chapters:** Tracking Outages (ch. 16), Testing for Reliability (ch. 17)
+
+**Created pages (1):**
+- `wiki/operations/testing-for-reliability.md` — zero-MTTR philosophy, traditional test hierarchy, production tests (config/stress/canary), production probes, configuration file risk management, barrier defence pattern, statistical testing (Chaos Monkey/Jepsen), testing culture practices
+
+**Updated pages (3):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 16–17
+- `wiki/operations/incident-management.md` — added Outage Tracking section: aggregation/tagging/analysis layers, cross-team visibility, system-of-record use, postmortems vs outage tracking distinction
+- `wiki/index.md` — added entries for automation, incident-management, testing-for-reliability pages
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 18–19
+
+**Chapters:** Software Engineering in SRE (ch. 18), Load Balancing at the Frontend (ch. 19)
+
+**Updated pages (2):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 18–19; intent-based capacity planning (Auxon), multi-level load balancing, DNS limitations, VIP/GRE
+- `wiki/distributed/load-balancing.md` — added DNS limitations (recursive resolver, EDNS0, 512-byte limit), GRE encapsulation as scale-beyond-L2-DSR, consistent hashing explanation; added SRE source row to comparison table
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 20–21
+
+**Chapters:** Load Balancing in the Datacenter (ch. 20), Handling Overload (ch. 21)
+
+**Updated pages (4):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 20–21
+- `wiki/distributed/load-balancing.md` — lame duck state, subsetting (random vs deterministic), weighted round robin, least-connected sinkhole pitfall
+- `wiki/distributed/rate-limiting.md` — client-side adaptive throttling (formula, K multiplier), request criticality (4-level model, propagation, orthogonal to latency)
+- `wiki/patterns/retry.md` — per-client retry budget (10% ratio), retry metadata/histogram signal, "overloaded; don't retry" concept
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 22–23
+
+**Chapters:** Addressing Cascading Failures (ch. 22), Managing Critical State: Distributed Consensus for Reliability (ch. 23)
+
+**Updated pages (3):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 22–23
+- `wiki/operations/common-failure-causes.md` — expanded Cascading Failures section with: GC death spiral, service unavailability snowball, LIFO/CoDel queue discipline, load shedding vs graceful degradation, deadline propagation and bimodal latency trap, latency vs capacity cache distinction, "always go downward in the stack", testing for cascading failures (gradual + impulse), immediate mitigation steps; added site-reliability-engineering to sources frontmatter
+- `wiki/distributed/consensus-algorithms.md` — added: three ad hoc coordination failure case studies (STONITH, human failover, gossip), RSM section (correct foundation + components: datastores, leader election, leases, task queues, pub/sub), replica count guidance (min 3, best 5), Multi-Paxos performance (1 RTT steady-state, batching, pipelining, quorum leases), replica placement (failure domains, linchpin problem, geo-distribution), monitoring signals; added SRE row to comparison table
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 24–25
+
+**Chapters:** Distributed Periodic Scheduling with Cron (ch. 24), Data Processing Pipelines (ch. 25)
+
+**Updated pages (3):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 24–25: distributed cron design (Paxos leader/follower, two sync points, partial failure recovery via precomputed idempotent names, state storage trade-offs, thundering herd mitigation via `?` wildcard); periodic pipeline failure modes (hanging chunk, thundering herd, Moiré load pattern, monitoring gap, minimum effective interval) and Workflow correctness guarantees (4 levels: barriers, leases, unique output filenames, server token)
+- `wiki/streams/batch-processing.md` — added Operational Failure Patterns section: hanging chunk, thundering herd in batch scheduling, Moiré load pattern, monitoring gap, minimum effective interval, recommendation for continuous pipelines; added SRE row to comparison table; updated frontmatter sources and date
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 26–27
+
+**Chapters:** Data Integrity: What You Read Is What You Wrote (ch. 26), Reliable Product Launches at Scale (ch. 27)
+
+**Created pages (1):**
+- `wiki/operations/data-integrity.md` — Data integrity vs availability distinction; replication ≠ recoverability; failure mode matrix (cause × scope × rate); three defence layers (soft deletion / lazy deletion, tiered backups, out-of-band validation); point-in-time recovery; exabyte-scale trust-points approach; continuous restore testing; Gmail 2011 and Google Music 2012 case studies; SRE principles applied to data integrity
+
+**Updated pages (3):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 26–27
+- `wiki/index.md` — added data-integrity entry; updated common-failure-causes entry to include SRE content
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 28–29
+
+**Chapters:** Accelerating SREs to On-Call and Beyond (ch. 28), Dealing with Interrupts (ch. 29)
+
+**Updated pages (1):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 28–29: SRE onboarding practices (anti-pattern vs recommended table, Wheel of Misfortune, on-call learning checklist, shadow on-call); interrupt management (three categories, cognitive flow state, polarise time, dedicated interrupt roles, random ticket assignment anti-pattern, root-cause scrubs)
+
+No new concept pages — both chapters are SRE operational culture rather than systems architecture.
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 30–31
+
+**Chapters:** Embedding an SRE to Recover from Operational Overload (ch. 30), Communication and Collaboration in SRE (ch. 31)
+
+**Updated pages (1):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 30–31: embedded SRE model (three phases: learn, share context, drive change; ops mode vs nonlinear scaling; kindling identification; SLO as the single most important lever; don't fix things yourself; Bad Apple Theory is false); production meetings (weekly agenda, rotating chair, compulsory attendance, collaborative doc pattern); Viceroy case study; cross-site collaboration guidelines; SRE-Dev collaboration best at design phase; DFP → F1 migration case study
+
+No new concept pages — both chapters are SRE organisational and communication practices rather than systems architecture.
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 32–33
+
+**Chapters:** The Evolving SRE Engagement Model (ch. 32), Lessons Learned from Other Industries (ch. 33)
+
+**Updated pages (1):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 32–33: three SRE engagement models (Simple PRR phases, Early Engagement benefits, Frameworks/SRE Platform approach and scaling benefits, shared responsibility model); cross-industry reliability survey (nuclear, aviation, telecom, LASIK, manufacturing, proprietary trading); four SRE themes across industries (preparedness/disaster testing, postmortem culture, automation, structured decision making); near-miss analysis; <30-minute automation rule; Knight Capital/Flash Crash; key distinction between Google's velocity appetite and life-critical industries
+
+No new concept pages — both chapters are contextual/organisational rather than technical architecture.
+
+## [2026-05-27] ingest | Site Reliability Engineering — ch. 34 (final)
+
+**Chapter:** Conclusion (ch. 34) + Appendix B (Best Practices for Production Services)
+
+**Updated pages (2):**
+- `wiki/sources/site-reliability-engineering.md` — chapter notes for ch. 34: 747 aviation analogy for SRE scaling; two consistent dynamics (stable concerns, evolving activities); Appendix B best practices summary (fail sanely, progressive rollouts, SLO measurement, error budgets, monitoring outputs, graceful degradation, team sizing)
+- `README.md` — added *Site Reliability Engineering* to the Sources ingested table
+
+**Completed:** *Site Reliability Engineering* fully ingested (all 34 chapters processed). Processing directory removed.

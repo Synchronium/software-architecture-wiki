@@ -2,9 +2,9 @@
 title: "Availability"
 type: concept
 tags: [distributed-systems, reliability, resiliency, slos, operations, measurement]
-sources: [understanding-distributed-systems, release-it, software-architecture-metrics]
+sources: [understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-22
+updated: 2026-05-27
 ---
 
 # Availability
@@ -38,6 +38,20 @@ Availability is conventionally expressed in "nines" — the number of nines in t
 Three nines (99.9%) is typically considered acceptable to users. Four nines and above is considered **highly available**. Each additional nine reduces allowable downtime by roughly 10×.
 
 Note that these are aggregate figures — meeting five nines means the system can be down for at most 5 minutes over an entire year, including all planned maintenance.
+
+## Request-Success-Rate Availability
+
+For globally distributed services, time-based availability is often misleading: if a service is "partially up" somewhere in the world at all times (due to multi-region deployment and fault isolation), the time-based metric is nearly always 100%, even during significant impairment.
+
+Google therefore defines availability as a **request success rate** (→ [[sources/site-reliability-engineering]] ch. 3):
+
+```
+Availability = successful requests / total requests
+```
+
+This yield-based metric captures user-visible impact directly: a system that drops 0.1% of requests has 99.9% availability regardless of whether it was "up" or "down." The metric also generalises beyond serving systems — batch pipelines and storage systems can define "successful units of work" and apply the same formula.
+
+> **Contradiction:** The time-based formula (uptime / total time) is the conventional industry definition and is embedded in most SLAs. The request-success-rate formula is strictly superior for multi-region services but requires instrumented request counting, which is not always available in simpler systems.
 
 ## Availability vs Reliability vs Resiliency
 
@@ -104,6 +118,18 @@ Both count toward downtime:
 - **Unplanned**: crashes, network partitions, cascading failures.
 
 **Continuous deployment** (deploy without downtime via rolling updates, blue/green, canary) is the primary technique for eliminating planned downtime. (→ [[concepts/deployment-pipelines]])
+
+## The 100% Availability Trap (SRE)
+
+The SRE book argues explicitly that 100% is the wrong reliability target for almost any software system (→ [[sources/site-reliability-engineering]] ch. 1, 3):
+
+1. Users cannot distinguish between 100% and 99.999% availability — other components in the path (ISP, home network, device) collectively fall below 99.999% anyway.
+2. The engineering cost per additional nine increases roughly by an order of magnitude.
+3. Targeting 100% prohibits the team from ever deploying risky changes, stifling the feature development that creates business value.
+
+The practical consequence: once a service is "reliable enough," further reliability investment yields diminishing user-visible returns. That investment is better spent on features. This reasoning underpins the error budget model. (→ [[operations/error-budgets]])
+
+> **Contradiction:** This argument applies to services where some unavailability is acceptable. Safety-critical systems (pacemakers, anti-lock brakes, nuclear controls) are explicitly excluded by the SRE book itself. For regulated systems, the cost-benefit calculus is different.
 
 ## SLAs, SLOs, SLIs
 

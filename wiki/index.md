@@ -119,12 +119,18 @@ updated: 2026-05-25
 
 ## Operations
 
-- [[operations/availability]] — Uptime/downtime definition; the nines table (90%–99.999%); techniques for high availability; dependency chaining effects; design-for-production philosophy; ROI of availability investment; MTBF/MTTR/RPO/RTO measurement framework; tyranny of the nines antipattern; Allspaw: MTTR > MTBF (informed by: understanding-distributed-systems, release-it, software-architecture-metrics)
+- [[operations/availability]] — Uptime/downtime definition; the nines table (90%–99.999%); techniques for high availability; dependency chaining effects; design-for-production philosophy; ROI of availability investment; MTBF/MTTR/RPO/RTO measurement framework; tyranny of the nines antipattern; Allspaw: MTTR > MTBF; SRE: 100% is always the wrong target (informed by: understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering)
 - [[operations/chaos-engineering]] — definition, prerequisites, experiment design, injection types (Chaos Monkey/Latency Monkey/FIT), targeting strategy, automation and moderation, disaster simulations; theoretical foundations (drift into failure, regulator paradox, antifragility) (informed by: release-it)
-- [[operations/common-failure-causes]] — failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable failures; risk = probability × impact; airline/Black Friday/"Trampled" case studies; building-for-tests vs building-for-production (informed by: understanding-distributed-systems, release-it)
+- [[operations/common-failure-causes]] — failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable failures; risk = probability × impact; airline/Black Friday/"Trampled" case studies; building-for-tests vs building-for-production; GC death spiral, queue management (LIFO/CoDel), deadline propagation, latency vs capacity cache (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)
+- [[operations/error-budgets]] — error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is wrong target argument (informed by: site-reliability-engineering)
 - [[operations/manageability]] — Dynamic configuration (config store, runtime re-read); feature flags (progressive rollout, A/B testing, kill switch, deployment-release decoupling); operational triad: monitor → observe → manage (informed by: understanding-distributed-systems)
-- [[operations/monitoring]] — Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs (ratio definition, percentiles, Little's Law); SLOs (error budget, burn rate alerting, stakeholder alignment); dashboards (SLO/API/service types); chaos testing; on-call practices (informed by: understanding-distributed-systems)
+- [[operations/monitoring]] — Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs (ratio definition, percentiles, Little's Law); SLOs (error budget, burn rate alerting, stakeholder alignment); SRE output taxonomy (alerts/tickets/logs); dashboards (SLO/API/service types); chaos testing; on-call practices (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)
 - [[operations/observability]] — Observability as superset of monitoring; three telemetry sources (metrics, logs, traces); structured event logs (one event per work unit, request ID, sampling); distributed tracing (trace ID propagation, spans, Zipkin/X-Ray); metrics and traces as derived views of event logs; Newman: log aggregation first, correlation IDs, Jaeger, synthetic transactions (informed by: understanding-distributed-systems, monolith-to-microservices)
+- [[operations/site-reliability-engineering]] — SRE as discipline: dev/ops conflict; error budgets; toil cap (50%); SLO-driven alerting; blameless postmortems; SRE vs DevOps distinction; applicability outside Google (informed by: site-reliability-engineering)
+- [[operations/automation]] — Automation vs autonomy; 5-level hierarchy (manual → autonomous); safety properties (rate limiting, idempotency); MySQL on Borg case study (informed by: site-reliability-engineering)
+- [[operations/incident-management]] — Hypothetico-deductive troubleshooting; ICS roles; "only Ops modifies"; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis) (informed by: site-reliability-engineering)
+- [[operations/testing-for-reliability]] — Zero-MTTR via pre-production testing; traditional test hierarchy; production tests (config tests, stress tests, canary); production probes; barrier defence pattern; configuration file risk management (informed by: site-reliability-engineering)
+- [[operations/data-integrity]] — Data integrity vs availability distinction; replication ≠ recoverability; failure mode matrix (cause × scope × rate); defence in depth: soft deletion / tiered backups / out-of-band validation; point-in-time recovery; continuously test restore; Gmail and Google Music case studies (informed by: site-reliability-engineering)
 
 ---
 
@@ -207,6 +213,7 @@ updated: 2026-05-25
 - [[sources/foundations-of-scalable-systems]] — *Foundations of Scalable Systems* — Ian Gorton (fully ingested 2026-05-21)
 - [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
 - [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
+- [[sources/site-reliability-engineering]] — *Site Reliability Engineering* — Beyer, Jones, Petoff, Murphy (in progress 2026-05-27)
 
 ---
 
@@ -246,4 +253,6 @@ updated: 2026-05-25
 - [[authors/john-ousterhout]] — Author of *A Philosophy of Software Design*; Stanford CS professor; creator of Tcl and Raft; deep modules, information hiding, and complexity management advocate
 - [[authors/nicole-forsgren]] — Co-author of *Accelerate*; PhD in MIS; DORA research programme; psychometric and statistical rigour applied to DevOps; four key metrics originator
 - [[authors/jez-humble]] — Co-author of *Accelerate*; co-author of *Continuous Delivery*; CI/CD, Lean, DevOps practitioner; DORA research programme
+- [[authors/betsy-beyer]] — Co-editor of *Site Reliability Engineering*; Google Technical Writer for SRE; cultural and documentary aspects of reliability
+- [[authors/benjamin-treynor-sloss]] — Wrote Ch. 1 of *Site Reliability Engineering*; VP Engineering at Google; originator of the term "Site Reliability Engineering"; creator of the error budget model
 - [[authors/gene-kim]] — Co-author of *Accelerate*; founder and CTO of Tripwire; co-author of *The Phoenix Project* and *The DevOps Handbook*; high-performing technology organisation researcher

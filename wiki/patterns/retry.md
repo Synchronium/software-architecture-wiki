@@ -2,9 +2,9 @@
 title: "Retry"
 type: pattern
 tags: [resiliency, stability, distributed-systems, fault-tolerance, transient-failures, microservices]
-sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
+sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-18
-updated: 2026-05-18
+updated: 2026-05-27
 ---
 
 # Retry
@@ -71,13 +71,17 @@ A ──(3 retries)──► B ──(3 retries)──► C
 
 As the chain deepens, amplification compounds exponentially. This can turn a partial failure at C into a full overload — the retry behaviour intended to help causes more harm than the original failure.
 
-**Mitigation**: retry at one level of the chain only. All other levels should fail fast and propagate the error. The level closest to the user (or the level with a human-readable fallback) is usually the right place to retry. (→ [[sources/understanding-distributed-systems]] ch. 27)
+**Mitigation**: retry at one level of the chain only — the layer immediately above the one that is rejecting. All other layers should propagate the error without retrying. When a backend determines a request cannot be served and retrying is futile, it should return an explicit "overloaded; don't retry" signal rather than a generic error, preventing higher layers from unnecessarily retrying. (→ [[sources/understanding-distributed-systems]] ch. 27; → [[sources/site-reliability-engineering]] ch. 21)
 
 ## Maximum Retry Budget
 
 Set an explicit maximum retry count. Unlimited retries are not a strategy — they guarantee that a sustained failure becomes a resource leak (threads, connections, memory) accumulating retry work.
 
 Typical values: 2–4 attempts total (1 original + 1–3 retries). Beyond 3 retries, you are usually better served by a circuit breaker opening than by continuing to hammer a struggling downstream.
+
+**Per-client retry budget**: in addition to a per-request budget, maintain a ratio limit across all requests. Google's RPC framework limits retries to 10% of total attempts per client. Combined with a per-request budget of 3 attempts, this caps total request amplification at ~1.1× in the general case, rather than ~3× from the per-request limit alone. (→ [[sources/site-reliability-engineering]] ch. 21)
+
+**Retry metadata**: include a retry counter in request metadata. Backends accumulate histograms of retry counts in recent traffic. When the histogram shows significant retries (indicating datacenter-wide overload rather than single-task overload), the backend returns "overloaded; don't retry" to suppress further retries higher in the stack.
 
 When the retry budget is exhausted, the circuit breaker's fault accumulation should trip — stopping further calls entirely until the downstream recovers (→ [[patterns/circuit-breaker]]).
 

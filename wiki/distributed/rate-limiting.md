@@ -2,9 +2,9 @@
 title: "Rate Limiting and Upstream Resiliency"
 type: concept
 tags: [resiliency, rate-limiting, load-shedding, upstream, distributed-systems, scalability]
-sources: [understanding-distributed-systems, release-it]
+sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-27
 ---
 
 # Rate Limiting and Upstream Resiliency
@@ -95,6 +95,44 @@ Benefits:
 The tradeoff: constant work is more expensive than minimal work (always reading/writing the full state). It is worth the cost in data planes where reliability and predictability are paramount.
 
 The pattern is closely related to static stability (→ [[distributed/control-plane-data-plane]]): the data plane continues operating even when the control plane is unavailable, using the last full dump.
+
+## Client-Side Adaptive Throttling
+
+When a backend starts rejecting quota-exceeded requests, even rejections consume backend resources. If enough requests are being rejected, the backend can become overloaded processing rejections alone. Client-side throttling solves this by making the client self-regulate before requests even reach the network. (→ [[sources/site-reliability-engineering]] ch. 21)
+
+Each client tracks two values over a trailing window (e.g., two minutes):
+- `requests`: all attempts by the application layer
+- `accepts`: requests actually accepted by the backend
+
+Under normal operation, `requests ≈ accepts`. As the backend starts rejecting, `accepts` falls. The client self-throttles by rejecting requests locally with probability:
+
+```
+max(0, (requests - K × accepts) / (requests + 1))
+```
+
+where K=2 by default. Locally rejected requests still increment `requests`, which increases the throttling probability over time. The system reaches equilibrium at roughly one rejection per accepted request at the backend. Setting K lower (e.g., 1.1) makes the client more aggressive; higher values are more permissive. The decision is entirely local — no coordination required.
+
+**vs load shedding**: load shedding is server-side; adaptive throttling is client-side. They complement each other: adaptive throttling prevents backends from drowning in rejected work; load shedding protects against requests that slip through.
+
+## Request Criticality
+
+When a system must shed load, not all requests are equally important. Assigning criticality levels allows overloaded services to reject unimportant traffic first, preserving capacity for the highest-value requests. (→ [[sources/site-reliability-engineering]] ch. 21)
+
+Google's four-level model (from highest to lowest):
+
+| Level | Use | Rejection precedence |
+|-------|-----|---------------------|
+| CRITICAL_PLUS | Most critical — serious user-visible impact if it fails | Last to be rejected |
+| CRITICAL | Default for production jobs — user impact, but less severe | Second to last |
+| SHEDDABLE_PLUS | Batch jobs — partial unavailability expected; can retry minutes/hours later | Second to reject |
+| SHEDDABLE | Frequent unavailability acceptable | First to reject |
+
+Key properties:
+- **Propagates automatically**: when a backend receives request A and makes downstream requests B and C, B and C inherit A's criticality by default. Set criticality as close to the user-facing layer as possible.
+- **Orthogonal to latency**: a sheddable request may have stringent latency requirements (e.g., inline search suggestions — fine to drop if overloaded, but must be fast when not dropped).
+- **Per-customer quotas by criticality**: quota limits can be set per criticality level, not just per customer.
+
+> **Open question**: four levels is Google's answer to the trade-off between expressive power and operational complexity. Fewer levels is simpler; more levels adds precision at the cost of harder-to-reason-about interactions.
 
 ## Back Pressure
 

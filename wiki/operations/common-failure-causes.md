@@ -2,9 +2,9 @@
 title: "Common Failure Causes"
 type: concept
 tags: [distributed-systems, reliability, resiliency, fault-tolerance, operations]
-sources: [understanding-distributed-systems, release-it]
+sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-27
 ---
 
 # Common Failure Causes
@@ -85,13 +85,62 @@ Every system has a capacity ceiling. Two types of load pressure:
 
 ## Cascading Failures
 
-A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally.
+A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally through a positive feedback loop.
 
-**Example**: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.
+**Canonical example**: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.
 
-When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a **metastable failure**: a self-reinforcing feedback loop that persists even after the original fault is gone.
+When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a **metastable failure**: a self-reinforcing feedback loop that persists even after the original fault is gone. Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. (→ [[sources/understanding-distributed-systems]])
 
-Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. These failures are very hard to mitigate once started; the best strategy is to prevent fault propagation in the first place via isolation patterns (→ [[patterns/circuit-breaker]], [[patterns/bulkhead]]).
+### Resource Exhaustion Cascade Mechanisms
+
+Cascades compound through several interconnected pathways. (→ [[sources/site-reliability-engineering]] ch. 22)
+
+**GC death spiral**: CPU exhaustion → GC pauses lengthen → throughput falls → more requests accumulate → more RAM used → more frequent GC → further CPU exhaustion. In garbage-collected runtimes, memory pressure directly feeds back into CPU usage.
+
+**Service unavailability snowball**: if 10% of servers fail, survivors must absorb ~11% more load. If this tips them over their limit, more failures cascade — and even routing back to 90% of original load may not stabilise the system once only 10% of capacity remains.
+
+**Overloaded servers take longer to respond** → in-flight requests occupy resources for longer → effective capacity drops → more requests pile up → cache hit rate falls → more requests reach backends → backends become more overloaded.
+
+### Queue Management Under Overload
+
+Short queues are better under sustained overload. Long queues accumulate requests that have already timed out at the caller — completing them wastes resources on results that will be discarded.
+
+Under overload, prefer **LIFO** or **CoDel** (Controlled Delay) queue disciplines over FIFO. FIFO is the worst choice: the head of the queue contains the requests that have been waiting longest and are most likely to have already expired. Processing them consumes resources that could serve fresher, still-viable requests.
+
+### Load Shedding and Graceful Degradation
+
+**Load shedding**: when concurrently in-flight requests exceed a configured threshold (approximating server capacity), return HTTP 503 immediately rather than queueing. Immediate rejection preserves CPU for requests that can succeed. (→ [[distributed/rate-limiting]])
+
+**Graceful degradation**: instead of failing completely, return a reduced-quality response — omit non-critical features, serve stale data, or simplify the computation. Distinct from load shedding: load shedding drops requests; graceful degradation serves degraded results to more requests.
+
+### Deadline Propagation
+
+The calling client sets a deadline representing the latest time a response is needed. At each RPC hop, the elapsed time is subtracted from the remaining deadline before the request is forwarded. A backend that receives a request with 2ms remaining should not attempt to process it — it will certainly miss the deadline and the result will be discarded, wasting resources.
+
+**Bimodal latency trap**: if 5% of requests take 100 seconds and the deadline is also 100 seconds, those requests hold threads for the full duration. A thread pool of 100 threads can serve 1,900 fast requests and 5 slow ones — but under load, slow requests accumulate faster than they complete, and the pool exhausts. 5% of bad requests can cause 80%+ error rate.
+
+**Rule of thumb**: deadlines should be within an order of magnitude of mean latency. Very long deadlines defeat the purpose of having them.
+
+### Latency Caches vs Capacity Caches
+
+- **Latency cache**: the system can sustain full load without the cache; the cache reduces latency and cost but is not required for feasibility.
+- **Capacity cache**: the system *cannot* serve its full load without the cache; the cache is a hard dependency.
+
+Capacity caches require special handling during cold-start scenarios (new cluster, maintenance return, rolling restarts): restart in stages rejecting traffic until the cache is sufficiently warm; gate rollout progress on cache fill percentage; avoid simultaneous restarts across replicas.
+
+### Stack Communication Rules
+
+**"Always go downward in the stack"**: service-to-service calls should flow from higher-level services to lower-level dependencies only. Lateral calls between services at the same tier create hidden dependency cycles that can produce distributed deadlocks — each service waits on another in a ring, and no one makes progress.
+
+### Testing for Cascading Failures
+
+Test *past* the breaking point, not just up to capacity. Testing only to the expected peak load tells you how the system behaves under normal stress; it does not reveal what happens when the system first tips into overload.
+
+Test both gradual load increases and **impulse loads** (sudden large spikes). Systems often handle gradual ramp-up gracefully but collapse under sharp impulses because queues and caches haven't had time to adjust.
+
+### Immediate Mitigation
+
+Once a cascade is in progress: (1) add capacity or replicas; (2) stop health-check-driven kills if they are removing servers faster than the system can recover; (3) drop traffic to ~1% to let the system stabilise, then ramp up gradually; (4) suppress retry storms via a server-wide retry budget (→ [[patterns/retry]]).
 
 ## Risk Management
 
@@ -167,3 +216,4 @@ Nygard's second case study (→ [[sources/release-it]] ch. 6) illustrates Unbala
 - (→ [[sources/release-it]] ch. 2) — airline case study: JDBC connection pool exhaustion after database failover cascades to enterprise-wide outage.
 - (→ [[sources/release-it]] ch. 6) — Black Friday case study: Unbalanced Capacities, resource pool exhaustion without timeouts, alert fatigue, and the accidental Bulkhead that enabled recovery.
 - (→ [[sources/release-it]] ch. 15) — "Trampled" case study: building for tests vs production; noise testing gap; sessions ≠ users; session-bloat failure mode; temporary fixes that last decades.
+- (→ [[sources/site-reliability-engineering]] ch. 22) — GC death spiral, service unavailability snowball, queue management (LIFO/CoDel), load shedding vs graceful degradation, deadline propagation, bimodal latency, latency vs capacity cache, "always go downward", testing for cascading failures, immediate mitigation.

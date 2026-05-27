@@ -2,12 +2,23 @@
 title: "Software Complexity"
 type: concept
 tags: [complexity, modularity, cognitive-load, technical-debt, strategic-programming]
-sources: [a-philosophy-of-software-design]
+sources: [a-philosophy-of-software-design, site-reliability-engineering]
 created: 2026-05-18
-updated: 2026-05-18
+updated: 2026-05-27
 ---
 
 # Software Complexity
+
+## Essential vs Accidental Complexity
+
+Fred Brooks ("No Silver Bullet", 1986) distinguishes two types of complexity:
+
+- **Essential complexity**: inherent in the problem itself. It cannot be designed away — a web server serving pages quickly has essential complexity.
+- **Accidental complexity**: introduced by implementation choices and can be resolved with engineering effort. Writing a web server in a GC language and fighting garbage collection pauses is accidental complexity.
+
+SRE teams should actively eliminate accidental complexity in the systems they operate (→ [[sources/site-reliability-engineering]] ch. 9). Accidental complexity compounds reliability problems: complex systems fail in complex ways, and complex failure modes are harder to diagnose, mitigate, and prevent. Every layer of unnecessary complexity is a source of future incidents.
+
+> "The price of reliability is the pursuit of the utmost simplicity." — C.A.R. Hoare (ch. 9 epigraph)
 
 ## Definition
 
