@@ -99,6 +99,12 @@ updated: YYYY-MM-DD
 ---
 ```
 
+**Date rule:** `updated` must always be today's actual date — never a future date, never a guess. Get it with:
+
+```bash
+date +%Y-%m-%d
+```
+
 ---
 
 ## H1 and Title Convention
