@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is…">
+  <meta property="og:title" content="Error Budgets — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is…">
+  <title>Error Budgets — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html" aria-current="page">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../operations/index.html">Operations</a> <span class="sep">›</span> Error Budgets</nav></div>
+      <h1>Error Budgets</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../operations/index.html">concept</a>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/sre.html">sre</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/availability.html">availability</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/risk.html">risk</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>An error budget is the acceptable amount of unreliability for a service over a given time window. It is derived directly from the SLO:</p>
+<pre><code>error budget = 1 − SLO target
+</code></pre>
+<p>A service with a 99.9% availability SLO has a 0.1% error budget — it may be unavailable for up to 0.1% of requests (or time) in the window before the SLO is breached. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1)</p>
+<h2>Why It Matters</h2>
+<p>The error budget resolves the structural tension between development teams (who want to ship features quickly) and operations teams (who want stability). Without a shared metric, the two teams optimise for incompatible goals and resort to procedural conflict — launch gates, flag flips, and friction. The error budget converts this into a shared variable both teams want to manage well:</p>
+<ul>
+<li>If budget is plentiful, the development team can take risks, ship faster, and experiment with riskier rollout strategies.</li>
+<li>If budget is nearly exhausted, the team must slow down and prioritise reliability work — not because an ops team said so, but because the shared agreement demands it.</li>
+</ul>
+<blockquote>
+<p>&quot;An outage is no longer a &#39;bad&#39; thing — it is an expected part of the process of innovation, and an occurrence that both development and SRE teams manage rather than fear.&quot; (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1)</p>
+</blockquote>
+<h2>Reliability as a Continuum</h2>
+<p>SRE conceptualises risk and reliability as a continuum, not a binary property. The cost of an incremental reliability improvement is non-linear — each additional nine may cost an order of magnitude more than the previous one, in two forms:</p>
+<ul>
+<li><strong>Redundancy cost</strong>: hardware, compute, and infrastructure to support failover.</li>
+<li><strong>Opportunity cost</strong>: engineering resources spent on reliability rather than features.</li>
+</ul>
+<p>The goal is to place a service at the right point on that continuum — explicitly, based on business risk tolerance — rather than to default to &quot;as reliable as possible.&quot; An SLO should therefore be treated as both a floor (minimum) and a ceiling (maximum): exceeding the target wastes capacity that could have funded features or debt reduction. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3)</p>
+<h2>100% Is Always the Wrong Target</h2>
+<p>The SRE book argues that 100% availability is the wrong target for almost any system:</p>
+<ol>
+<li>Users cannot perceive the difference between 100% and 99.999% — other components in the path (ISP, home network, user device) collectively fall short of 99.999% anyway.</li>
+<li>The engineering cost of each additional nine increases roughly by an order of magnitude.</li>
+<li>Targeting 100% prevents the team from ever deploying risky changes, stifling the feature development that creates business value.</li>
+</ol>
+<p><strong>ISP noise floor</strong>: The typical background error rate across ISPs is 0.01%–1%. Once a service&#39;s error rate falls below this floor, users cannot distinguish service errors from normal connection noise. Driving reliability beyond this floor yields no user-visible benefit. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3)</p>
+<p>Setting an SLO of, say, 99.9% explicitly acknowledges that 0.1% failure is acceptable — and then treats that budget as a resource to spend on risk-taking, not a limit to be avoided at all costs. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1, 3)</p>
+<h2>Forming an Error Budget</h2>
+<p>The standard Google process for quarterly error budgets (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3):</p>
+<ol>
+<li><strong>Product Management</strong> defines the SLO — the availability target for the quarter.</li>
+<li>The <strong>monitoring system</strong> is the neutral third party that measures actual uptime.</li>
+<li>The difference between target and actual is the remaining budget available for risk-taking.</li>
+<li>As long as budget remains, releases can proceed. When budget is exhausted, releases halt and reliability investment takes priority.</li>
+</ol>
+<p><strong>Cost/benefit framing</strong>: For any proposed improvement in reliability, the question is whether the revenue value of the additional uptime exceeds the engineering cost. Example: improving from 99.9% → 99.99% on a $1M/year revenue service adds 0.09% × $1M = $900 of value. If the engineering investment exceeds $900, it is not economically justified. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3)</p>
+<h2>Tiered Service Levels for Infrastructure</h2>
+<p>Consumer services have clear product owners to define SLOs. Infrastructure services (storage, proxies, load balancers) serve multiple clients with divergent needs — some require low latency and high reliability; others care about throughput. Attempting to engineer all infrastructure to the highest tier is prohibitively expensive.</p>
+<p>The SRE solution: offer infrastructure at explicitly delineated service tiers. Clients choose the tier that fits their risk tolerance and pay the corresponding cost. Example — Bigtable low-latency clusters (high redundancy, slack capacity, isolation) vs throughput clusters (run hot, reduced redundancy) at 10–50% of the cost. This externalises the cost of reliability and motivates clients to choose the lowest tier that meets their needs. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3)</p>
+<h2>How Budgets Are Spent</h2>
+<p>The error budget can be consumed by anything that degrades the SLI: planned deployments, A/B experiments, canary rollouts, hardware failures, software bugs, or dependency outages. This means the development team has a strong incentive to:</p>
+<ul>
+<li>Keep deployments safe (progressive rollouts, fast rollback)</li>
+<li>Invest in testing and staging environments</li>
+<li>Maintain spare error budget before large launches</li>
+</ul>
+<h2>Budget Exhaustion</h2>
+<p>When the error budget is exhausted — i.e., the SLO has been violated — the recommended response is to halt feature releases for the remainder of the SLO window and focus entirely on reliability improvements. This is not a penalty; it is a natural consequence of having spent the shared resource. Because both development and SRE teams agreed to the SLO, the decision to stop releases is not an ops team imposing friction — it is the contract activating. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1)</p>
+<h2>Burn Rate Alerting</h2>
+<p>Rather than alerting when the SLO is breached (too late), burn rate alerting fires when the error budget is being consumed faster than sustainable. The burn rate expresses how quickly the budget is depleting relative to the SLO window:</p>
+<pre><code>burn rate = (% budget consumed) / (% of SLO window elapsed)
+</code></pre>
+<ul>
+<li>Burn rate = 1: budget will last exactly until the end of the window.</li>
+<li>Burn rate = 10: budget will be exhausted in 10% of the window.</li>
+</ul>
+<p>Multiple thresholds create tiered response: a low burn rate triggers a ticket; a high burn rate pages immediately. (→ <a href="../operations/monitoring.html">Monitoring</a>)</p>
+<h2>Relationship to SLOs and SLIs</h2>
+<p>Error budgets, SLOs, and SLIs form a hierarchy:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SLI</strong></td>
+<td>The measured metric (e.g., fraction of successful requests)</td>
+</tr>
+<tr>
+<td><strong>SLO</strong></td>
+<td>The target for the SLI (e.g., 99.9% of requests succeed)</td>
+</tr>
+<tr>
+<td><strong>Error budget</strong></td>
+<td>The complement of the SLO target; what can be spent on risk</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>The contractual commitment to customers, with consequences for breach</td>
+</tr>
+</tbody></table></div>
+<p>The SLO is an internal agreement; the SLA is an external contract. Error budgets are typically set on SLOs, not SLAs — you want to exhaust the SLO budget before approaching SLA violation.</p>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a> — the broader discipline in which error budgets originate</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — burn rate alerting makes error budget consumption visible</li>
+<li><a href="../operations/availability.html">Availability</a> — error budgets operationalise availability targets</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — deployment pipelines implement the progressive rollout strategies that preserve error budget</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

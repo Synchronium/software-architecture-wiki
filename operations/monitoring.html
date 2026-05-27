@@ -135,12 +135,18 @@
       <summary>Operations</summary>
       <ul>
         <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
         <li><a href="../operations/availability.html">Availability</a></li>
         <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
         <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
         <li><a href="../operations/manageability.html">Manageability</a></li>
         <li><a href="../operations/monitoring.html" aria-current="page">Monitoring</a></li>
         <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
       </ul>
     </details>
     <details>
@@ -224,6 +230,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
         <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
@@ -238,6 +245,8 @@
         <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
         <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
         <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
@@ -282,7 +291,7 @@
       <h1>Monitoring</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/monitoring.html">monitoring</a></li><li><a class="tag-chip" href="../tags/sli.html">sli</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/alerting.html">alerting</a></li><li><a class="tag-chip" href="../tags/dashboards.html">dashboards</a></li><li><a class="tag-chip" href="../tags/observability.html">observability</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -291,6 +300,13 @@
     <span class="listen-experimental">← experimental</span>
   </div><div class="page-body"><h2>Definition</h2>
 <p>Monitoring is the practice of continuously tracking a system&#39;s health in production, primarily to detect failures that impact users and to trigger alerts to human operators. A secondary use is providing dashboards that give a high-level view of system health.</p>
+<h2>Counters vs Gauges</h2>
+<p>Two fundamental metric types (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 10):</p>
+<ul>
+<li><strong>Counter</strong>: a monotonically increasing value (never decreases). Measures total events since process start — total requests served, total errors, total bytes written. Rate computation (<code>rate()</code>) is safe even across missed collection intervals, because the counter difference is still correct if a collection is skipped.</li>
+<li><strong>Gauge</strong>: a value that can go up or down — current queue depth, active connections, memory usage. Prone to missed events: if a queue empties and refills between two collection intervals, the gauge appears unchanged even though work was done.</li>
+</ul>
+<p>Prefer counters where possible. Alert on rates derived from counters rather than on gauge values directly.</p>
 <h2>Black-Box vs White-Box Monitoring</h2>
 <p><strong>Black-box monitoring</strong> observes a system from the outside without knowledge of its internals — e.g., periodically sending test requests from synthetic scripts (synthetics) to external API endpoints and recording latency and success. Deployed in the same regions as users. Catches issues invisible from within the service (DNS failures, connectivity problems, infrequently-exercised API paths).</p>
 <p><strong>White-box monitoring</strong> instruments the application itself to report on its internal behaviour — cache hit rates, repository response times, handler durations. Introduced by Etsy&#39;s statsd. Complements black-box monitoring: black-box catches symptoms, white-box helps identify root cause.</p>
@@ -307,7 +323,15 @@
 <li><strong>Availability</strong>: successful requests / total requests.</li>
 <li><strong>Response time</strong>: fraction of requests completing faster than a given threshold.</li>
 </ul>
+<p><strong>SLI categories by service type</strong> (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 4):</p>
+<ul>
+<li><strong>User-facing serving systems</strong>: availability, latency, throughput</li>
+<li><strong>Storage systems</strong>: latency, availability, durability</li>
+<li><strong>Big data pipelines</strong>: throughput, end-to-end latency</li>
+<li><strong>All systems</strong>: correctness (was the right answer returned?)</li>
+</ul>
 <p><strong>Where to measure</strong>: measure where it best represents the user experience. Client-side latency (accounting for full network path) is more meaningful than service-internal latency. If client-side collection is too costly, work inward to the next best proxy.</p>
+<p><strong>Standardise definitions</strong>: define reusable SLI templates specifying aggregation interval (e.g. &quot;averaged over 1 minute&quot;), aggregation region, measurement frequency, which requests are included, how data is acquired, and latency basis (e.g. &quot;time to last byte&quot;). Templates prevent reasoning from first principles for every SLI.</p>
 <p><strong>Percentiles over averages</strong>: response times are right-skewed and long-tailed. Averages hide the distribution and are easily distorted by outliers. Percentiles (P99, P99.9) are a better representation. Long-tail latencies disproportionately affect high-value users (those making the most requests), and their business impact is measurable — a 100 ms increase in load time can reduce conversion by 7%.</p>
 <p><strong>Little&#39;s Law and tail latency</strong>: if 1% of requests suddenly take 20s instead of 200ms, the thread pool must double just to handle that 1%. Tail latency degrades the average case and can cascade into resource exhaustion.</p>
 <h2>Service-Level Objectives (SLOs)</h2>
@@ -326,7 +350,87 @@
 <li>Targets must be agreed on by engineers (achievable without excessive toil) and product managers (sufficient for a good user experience). &quot;If you can&#39;t win a conversation about priorities by quoting a particular SLO, it&#39;s probably not worth having.&quot; (→ Google SRE book)</li>
 </ul>
 <p><strong>Priority signalling</strong>: when an error budget is exhausted, repair items take priority over features. Incident severity is measurable as the fraction of error budget burned.</p>
+<p><strong>As few SLOs as possible</strong>: choose just enough to give good coverage. If an SLO cannot win a priority conversation — if quoting it never changes what gets worked on — it is not worth having. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 4)</p>
+<p><strong>Don&#39;t overachieve</strong>: users build on the actual performance they observe, not the stated SLO. A service that consistently exceeds its SLO causes users to over-depend on that level of reliability. When the service eventually regresses to its stated target, those users break. Google&#39;s Chubby lock service became so reliable that dependent teams assumed it would never fail; when it did, they had no fallback. SRE&#39;s fix: synthesize planned outages if Chubby has not naturally hit its SLO target in a quarter. This flushes out over-dependencies before they become production liabilities. The broader principle: operate close to your stated SLO, not far above it. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 4)</p>
+<p><strong>Internal vs external SLO</strong>: maintain a tighter internal target than the published SLA. This safety margin allows response to chronic problems before external breach, and accommodates reimplementations that trade performance for maintainability.</p>
 <p><strong>Chaos testing</strong>: periodically inject controlled failures into production to prevent dependencies from over-relying on behaviour that exceeds the documented SLA, and to validate that resiliency mechanisms work. (→ <a href="../operations/chaos-engineering.html">Chaos Engineering</a>, <a href="../operations/common-failure-causes.html">Common Failure Causes</a>, <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>)</p>
+<h2>The Four Golden Signals</h2>
+<p>The SRE book&#39;s canonical monitoring framework for user-facing systems (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6): if you can only measure four metrics, measure these:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What it measures</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Latency</strong></td>
+<td>Time to service a request</td>
+<td>Track error latency separately — a fast error is still an error, but a slow error is worse than both</td>
+</tr>
+<tr>
+<td><strong>Traffic</strong></td>
+<td>Demand on the system</td>
+<td>Requests/sec, sessions, transactions/sec — chosen to match the system&#39;s primary activity</td>
+</tr>
+<tr>
+<td><strong>Errors</strong></td>
+<td>Rate of failed requests</td>
+<td>Explicit (HTTP 5xx), implicit (200 with wrong content), or by policy (response &gt; SLO threshold)</td>
+</tr>
+<tr>
+<td><strong>Saturation</strong></td>
+<td>How &quot;full&quot; the system is</td>
+<td>The most constrained resource (CPU, memory, I/O); latency increases are often a leading indicator</td>
+</tr>
+</tbody></table></div>
+<p>Saturation differs from the others: it is about predicting impending failure, not measuring current failure. A utilisation target is essential because many systems degrade before reaching 100% utilisation.</p>
+<h2>Symptoms vs Causes</h2>
+<p>Alert on <strong>symptoms</strong> (what&#39;s broken from the user&#39;s perspective), not causes (why it&#39;s broken). Cause-based alerts generate noise — a CPU spike isn&#39;t actionable; a user-visible error rate is. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6)</p>
+<p>Causes are for debugging after an alert fires. White-box monitoring provides the cause-level detail needed to diagnose; black-box monitoring provides the symptom-level signal needed to alert.</p>
+<blockquote>
+<p><strong>One person&#39;s cause is another person&#39;s symptom</strong>: slow database reads are a symptom for the database SRE but a cause for the frontend SRE observing slow page loads. The distinction depends on which layer you&#39;re examining.</p>
+</blockquote>
+<h2>Alert Quality Criteria</h2>
+<p>Every alert that pages a human must satisfy these criteria (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6):</p>
+<ol>
+<li><strong>Actionable</strong> — the on-call engineer can do something in response right now.</li>
+<li><strong>Requires intelligence</strong> — the response is not a rote script or fixed procedure. If it is, automate it.</li>
+<li><strong>Urgent or imminent</strong> — the problem is already affecting users, or will shortly.</li>
+<li><strong>Novel</strong> — alerts that fire repeatedly for the same known condition should be resolved at the root cause or automated.</li>
+</ol>
+<p>Pages that fail these criteria cause fatigue, cause engineers to ignore pages, and mask real incidents. Alert volume is a proxy for operational health — rising alert counts should trigger investigation of root causes, not just faster response.</p>
+<h2>Monitoring Output Taxonomy (SRE)</h2>
+<p>The SRE book defines three — and only three — valid categories of monitoring output (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Meaning</th>
+<th>Required response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Alert</strong></td>
+<td>Something is happening or about to happen that requires immediate human action</td>
+<td>Page on-call now</td>
+</tr>
+<tr>
+<td><strong>Ticket</strong></td>
+<td>Action is needed, but not urgently — the system cannot self-resolve, but a few days&#39; delay causes no harm</td>
+<td>Create a ticket for the next working day</td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td>Recorded for diagnostic or forensic purposes; no one reads it unless prompted by another signal</td>
+<td>None</td>
+</tr>
+</tbody></table></div>
+<p>If a monitoring signal does not clearly fit one of these categories, it should not exist. Monitoring that requires a human to interpret whether it matters is &quot;fundamentally flawed&quot; — the software should do the interpreting. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1)</p>
+<blockquote>
+<p><strong>Contradiction:</strong> This taxonomy implies that dashboards are not monitoring output — they are tools for investigation <em>after</em> an alert fires. Nygard&#39;s economic framing below treats dashboards as first-class operational instruments. The SRE view is that proactive dashboard-watching is a form of toil; the Nygard view is that business-process dashboards have independent value for detecting degradation that SLOs may miss.</p>
+</blockquote>
 <h2>Alerts</h2>
 <p>Alerts are triggered when a monitored condition is met and route to automation (e.g., automated restart) or a human operator on call.</p>
 <p><strong>SLO-based alerting is preferred</strong>: CPU spikes are not actionable; an SLO breach is — it directly quantifies user impact.</p>
@@ -407,6 +511,16 @@
 <li>If error budget is exhausted or alert volume is out of control: the whole team stops feature work until a healthy rotation is restored.</li>
 <li>All incident actions should be communicated to a shared channel to enable handover and cross-team visibility.</li>
 </ul>
+<p><strong>SRE on-call capacity rules</strong> (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 11):</p>
+<ul>
+<li>At most 25% of time on-call (a sub-rule of the overall 50% ops cap); at least 50% must be engineering.</li>
+<li>Maximum ~2 paging incidents per 12-hour shift (each incident = ~6 hours of work). A component that pages daily has an unsustainable failure rate.</li>
+<li>Minimum team size for 24/7 single-site coverage: 8 engineers (primary + secondary, honouring 25% rule).</li>
+<li>For multi-site &quot;follow the sun&quot; coverage: ≥6 engineers per site; avoids night shifts and their health consequences.</li>
+<li>Operational underload (never on-call) is also harmful: engineers lose production intuition; minimum once or twice per quarter.</li>
+<li><strong>&quot;Give back the pager&quot;</strong>: if a service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets standards. Alert flap prevention: minimum duration (≥2 evaluation cycles) before an alert fires prevents transient collection failures from paging.</li>
+</ul>
+<p><strong>Incident psychology</strong>: stress hormones impair deliberate, rational cognition and promote habitual responses — exactly the wrong mode for complex incident handling. Reducing on-call stress through clear escalation paths, runbooks, and blameless postmortem culture enables the deliberate thinking complex incidents require. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 11)</p>
 <h2>Related Concepts</h2>
 <ul>
 <li><a href="../operations/observability.html">Observability</a> — observability extends monitoring with logs and traces for root cause diagnosis</li>
@@ -418,7 +532,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

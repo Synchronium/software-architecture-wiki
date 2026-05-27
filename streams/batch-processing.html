@@ -135,12 +135,18 @@
       <summary>Operations</summary>
       <ul>
         <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
         <li><a href="../operations/availability.html">Availability</a></li>
         <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
         <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
         <li><a href="../operations/manageability.html">Manageability</a></li>
         <li><a href="../operations/monitoring.html">Monitoring</a></li>
         <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
       </ul>
     </details>
     <details>
@@ -224,6 +230,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
         <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
@@ -238,6 +245,8 @@
         <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
         <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
         <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
@@ -282,7 +291,7 @@
       <h1>Batch Processing</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../streams/index.html">stream</a>
-        <span class="page-updated">Updated 13<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/batch.html">batch</a></li><li><a class="tag-chip" href="../tags/mapreduce.html">mapreduce</a></li><li><a class="tag-chip" href="../tags/data-processing.html">data-processing</a></li><li><a class="tag-chip" href="../tags/etl.html">etl</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/databases.html">databases</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -426,6 +435,14 @@
 <li><strong>Vertices remember state between supersteps</strong> — no need to re-read the full graph per iteration.</li>
 </ol>
 <p><strong>Fault tolerance</strong>: periodic checkpointing; roll back all vertices to last checkpoint on failure.</p>
+<h2>Operational Failure Patterns in Periodic Pipelines</h2>
+<p>Well-tuned periodic pipelines are stable. Under organic growth, several failure modes emerge. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 25)</p>
+<p><strong>Hanging chunk problem</strong>: &quot;embarrassingly parallel&quot; workloads partition input into chunks. When a chunk requires disproportionate resources (e.g., a very large customer in a customer-partitioned workload), the pipeline is blocked on the worst-case chunk. Because most periodic pipelines lack checkpointing, the naive fix — kill and restart — discards all completed work.</p>
+<p><strong>Thundering herd in batch scheduling</strong>: a large periodic pipeline starts thousands of workers simultaneously. Misconfigured retry logic compounds the problem: failed workers retry immediately, multiplying load on cluster services. Adding more workers (the intuitive response) makes it worse, not better.</p>
+<p><strong>Moiré load pattern</strong>: two or more pipelines with similar intervals whose execution windows occasionally overlap, causing simultaneous resource spikes on shared infrastructure. Observable as interference patterns in resource usage graphs. Difficult to diagnose because no single pipeline looks problematic in isolation.</p>
+<p><strong>Monitoring gap</strong>: periodic pipelines typically emit metrics only on completion. If the job fails mid-run, no telemetry is produced. Real-time operational visibility requires either continuous pipelines or explicit mid-job instrumentation.</p>
+<p><strong>Minimum effective interval</strong>: reducing the scheduling interval below the job&#39;s execution time causes jobs to queue or overlap, rather than producing more progress. The minimum effective interval is bounded by (job execution time + scheduling delay).</p>
+<p><strong>Recommendation</strong>: if a pipeline needs to run more frequently than its execution time, or if data processing needs to be continuous, a continuously running pipeline architecture (like Kafka Streams, Flink, or a leader-follower system with leases) will be more reliable than a faster periodic schedule.</p>
 <h2>How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
@@ -437,6 +454,10 @@
 <tbody><tr>
 <td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
 <td>Definitive treatment — derives batch processing from Unix philosophy, mechanistic MapReduce explanation, join algorithms, Hadoop vs MPP analysis, dataflow engines, Pregel (ch. 10)</td>
+</tr>
+<tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>Operational failure modes of periodic pipelines at scale: hanging chunks, thundering herd, Moiré load pattern, monitoring gap, minimum effective interval. Advocates for continuous pipeline systems when frequency requirements push against job execution time. (ch. 25)</td>
 </tr>
 </tbody></table></div>
 <h2>Related Concepts</h2>

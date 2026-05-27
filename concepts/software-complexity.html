@@ -135,12 +135,18 @@
       <summary>Operations</summary>
       <ul>
         <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
         <li><a href="../operations/availability.html">Availability</a></li>
         <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
         <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
         <li><a href="../operations/manageability.html">Manageability</a></li>
         <li><a href="../operations/monitoring.html">Monitoring</a></li>
         <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
       </ul>
     </details>
     <details>
@@ -224,6 +230,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
         <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
@@ -238,6 +245,8 @@
         <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
         <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
         <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
@@ -282,14 +291,24 @@
       <h1>Software Complexity</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/complexity.html">complexity</a></li><li><a class="tag-chip" href="../tags/modularity.html">modularity</a></li><li><a class="tag-chip" href="../tags/cognitive-load.html">cognitive-load</a></li><li><a class="tag-chip" href="../tags/technical-debt.html">technical-debt</a></li><li><a class="tag-chip" href="../tags/strategic-programming.html">strategic-programming</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><div class="page-body"><h2>Essential vs Accidental Complexity</h2>
+<p>Fred Brooks (&quot;No Silver Bullet&quot;, 1986) distinguishes two types of complexity:</p>
+<ul>
+<li><strong>Essential complexity</strong>: inherent in the problem itself. It cannot be designed away — a web server serving pages quickly has essential complexity.</li>
+<li><strong>Accidental complexity</strong>: introduced by implementation choices and can be resolved with engineering effort. Writing a web server in a GC language and fighting garbage collection pauses is accidental complexity.</li>
+</ul>
+<p>SRE teams should actively eliminate accidental complexity in the systems they operate (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 9). Accidental complexity compounds reliability problems: complex systems fail in complex ways, and complex failure modes are harder to diagnose, mitigate, and prevent. Every layer of unnecessary complexity is a source of future incidents.</p>
+<blockquote>
+<p>&quot;The price of reliability is the pursuit of the utmost simplicity.&quot; — C.A.R. Hoare (ch. 9 epigraph)</p>
+</blockquote>
+<h2>Definition</h2>
 <p>Ousterhout (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 2): <strong>complexity is anything related to the structure of a software system that makes it hard to understand and modify.</strong> It is defined from the developer&#39;s perspective — a system&#39;s complexity is what a developer experiences when trying to achieve a goal.</p>
 <p>A crude mathematical model: the overall complexity of a system (C) is the sum of each part&#39;s complexity (cp) weighted by the fraction of time developers spend working on that part (tp):</p>
 <pre><code>C = Σ(cp × tp)

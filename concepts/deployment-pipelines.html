@@ -135,12 +135,18 @@
       <summary>Operations</summary>
       <ul>
         <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
         <li><a href="../operations/availability.html">Availability</a></li>
         <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
         <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
         <li><a href="../operations/manageability.html">Manageability</a></li>
         <li><a href="../operations/monitoring.html">Monitoring</a></li>
         <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
       </ul>
     </details>
     <details>
@@ -224,6 +230,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
         <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
@@ -238,6 +245,8 @@
         <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
         <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
         <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
@@ -593,6 +602,19 @@
 <p>Embed a commit SHA or content hash in the URL <em>path</em> (not query string) — some CDNs and proxies strip query parameters when caching. Deploy assets to all hosts before deploying the code changes that reference them, or enforce session affinity to prevent a user from being served mismatched HTML and assets.</p>
 <h3>Canary Group Evaluation</h3>
 <p>The first batch in a rolling deployment is the canary group. Pause after the canary to evaluate SLIs (error rate, latency, memory) before continuing. Use health-check-based graceful drain (phase 2 above) rather than abruptly removing the instance from the pool, which would kill in-flight requests.</p>
+<h2>Hermetic Builds</h2>
+<p>A hermetic build is deterministic and environment-independent: two engineers building the same source revision on different machines must get identical outputs. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 8)</p>
+<p>Properties of a hermetic build:</p>
+<ul>
+<li><strong>Known tool versions</strong>: depends on specified versions of compilers, linkers, and build tools — not whatever is installed on the build machine.</li>
+<li><strong>Vendored or pinned dependencies</strong>: libraries are fetched at known versions; no live fetches from the internet during a build.</li>
+<li><strong>Self-contained</strong>: the build process does not call external services.</li>
+<li><strong>Reproducible at any revision</strong>: rebuilding at an older revision (e.g., to cherry-pick a fix) uses the original compiler and dependency versions, not the latest.</li>
+</ul>
+<p>Hermetic builds enable: cherry-pick-based hotfix workflows (the release branch can be rebuilt at the same tools version as the original), artifact signing and chain of custody, and confidence that the artifact in production matches the tested artifact.</p>
+<blockquote>
+<p><strong>Contradiction:</strong> Hermetic builds are aspirational for most organisations. Common failure modes include build steps that curl dependencies from the internet, build scripts that use installed system tools, and Docker images that use <code>FROM ubuntu:latest</code> (mutable tag). These all produce &quot;mostly hermetic&quot; builds that are hermetic enough in practice but can diverge across environments.</p>
+</blockquote>
 <h2>Immutable and Disposable Infrastructure</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 8) makes a strong case for immutable infrastructure over mutable configuration management (Chef, Puppet, Ansible).</p>
 <p>Mutable configuration management produces &quot;layers of stucco&quot; — the machine&#39;s state is the history of all applied recipes, including side effects not described by any recipe (e.g., post-install scripts that set TCP parameters that a later RPM only partially reverses). Machines in partially-applied or failed states are common and hard to reason about.</p>
@@ -630,6 +652,10 @@
 <td><a href="../sources/release-it.html">Release It</a></td>
 <td>Immutable infrastructure &gt; mutable configuration management; supply chain security; zero-downtime deployment as a first-class feature; four deploy phases (prepare/drain/apply/start); expand/contract relational schema pattern; trickle-then-batch schemaless migration; canary group evaluation</td>
 </tr>
+<tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>Hermetic builds (same revision = identical output, environment-independent); branch + cherry-pick (never merge release branch back to mainline); risk-profiled deployment cadence (dev → hourly auto; large user-facing → exponential; sensitive infra → multi-day across regions); &quot;Push on Green&quot;; four configuration management models</td>
+</tr>
 </tbody></table></div>
 <h2>Related Concepts</h2>
 <ul>
@@ -647,7 +673,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li></ul>
+        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li><li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li></ul>
       </aside>
     </main>
   </div>

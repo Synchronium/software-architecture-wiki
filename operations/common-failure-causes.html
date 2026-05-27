@@ -135,12 +135,18 @@
       <summary>Operations</summary>
       <ul>
         <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
         <li><a href="../operations/availability.html">Availability</a></li>
         <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
         <li><a href="../operations/common-failure-causes.html" aria-current="page">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
         <li><a href="../operations/manageability.html">Manageability</a></li>
         <li><a href="../operations/monitoring.html">Monitoring</a></li>
         <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
       </ul>
     </details>
     <details>
@@ -224,6 +230,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
         <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
@@ -238,6 +245,8 @@
         <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
         <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
         <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
@@ -282,7 +291,7 @@
       <h1>Common Failure Causes</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -340,10 +349,37 @@
 <li><strong>Sudden surges</strong>: spikes from diurnal patterns, viral events, scrapers/bots, or DDoS attacks. Cannot always be absorbed by autoscaling alone — require <strong>load shedding</strong> (deliberately rejecting requests to protect the system from collapse).</li>
 </ul>
 <h2>Cascading Failures</h2>
-<p>A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally.</p>
-<p><strong>Example</strong>: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.</p>
-<p>When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a <strong>metastable failure</strong>: a self-reinforcing feedback loop that persists even after the original fault is gone.</p>
-<p>Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. These failures are very hard to mitigate once started; the best strategy is to prevent fault propagation in the first place via isolation patterns (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/bulkhead.html">Bulkhead</a>).</p>
+<p>A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally through a positive feedback loop.</p>
+<p><strong>Canonical example</strong>: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.</p>
+<p>When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a <strong>metastable failure</strong>: a self-reinforcing feedback loop that persists even after the original fault is gone. Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
+<h3>Resource Exhaustion Cascade Mechanisms</h3>
+<p>Cascades compound through several interconnected pathways. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 22)</p>
+<p><strong>GC death spiral</strong>: CPU exhaustion → GC pauses lengthen → throughput falls → more requests accumulate → more RAM used → more frequent GC → further CPU exhaustion. In garbage-collected runtimes, memory pressure directly feeds back into CPU usage.</p>
+<p><strong>Service unavailability snowball</strong>: if 10% of servers fail, survivors must absorb ~11% more load. If this tips them over their limit, more failures cascade — and even routing back to 90% of original load may not stabilise the system once only 10% of capacity remains.</p>
+<p><strong>Overloaded servers take longer to respond</strong> → in-flight requests occupy resources for longer → effective capacity drops → more requests pile up → cache hit rate falls → more requests reach backends → backends become more overloaded.</p>
+<h3>Queue Management Under Overload</h3>
+<p>Short queues are better under sustained overload. Long queues accumulate requests that have already timed out at the caller — completing them wastes resources on results that will be discarded.</p>
+<p>Under overload, prefer <strong>LIFO</strong> or <strong>CoDel</strong> (Controlled Delay) queue disciplines over FIFO. FIFO is the worst choice: the head of the queue contains the requests that have been waiting longest and are most likely to have already expired. Processing them consumes resources that could serve fresher, still-viable requests.</p>
+<h3>Load Shedding and Graceful Degradation</h3>
+<p><strong>Load shedding</strong>: when concurrently in-flight requests exceed a configured threshold (approximating server capacity), return HTTP 503 immediately rather than queueing. Immediate rejection preserves CPU for requests that can succeed. (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>)</p>
+<p><strong>Graceful degradation</strong>: instead of failing completely, return a reduced-quality response — omit non-critical features, serve stale data, or simplify the computation. Distinct from load shedding: load shedding drops requests; graceful degradation serves degraded results to more requests.</p>
+<h3>Deadline Propagation</h3>
+<p>The calling client sets a deadline representing the latest time a response is needed. At each RPC hop, the elapsed time is subtracted from the remaining deadline before the request is forwarded. A backend that receives a request with 2ms remaining should not attempt to process it — it will certainly miss the deadline and the result will be discarded, wasting resources.</p>
+<p><strong>Bimodal latency trap</strong>: if 5% of requests take 100 seconds and the deadline is also 100 seconds, those requests hold threads for the full duration. A thread pool of 100 threads can serve 1,900 fast requests and 5 slow ones — but under load, slow requests accumulate faster than they complete, and the pool exhausts. 5% of bad requests can cause 80%+ error rate.</p>
+<p><strong>Rule of thumb</strong>: deadlines should be within an order of magnitude of mean latency. Very long deadlines defeat the purpose of having them.</p>
+<h3>Latency Caches vs Capacity Caches</h3>
+<ul>
+<li><strong>Latency cache</strong>: the system can sustain full load without the cache; the cache reduces latency and cost but is not required for feasibility.</li>
+<li><strong>Capacity cache</strong>: the system <em>cannot</em> serve its full load without the cache; the cache is a hard dependency.</li>
+</ul>
+<p>Capacity caches require special handling during cold-start scenarios (new cluster, maintenance return, rolling restarts): restart in stages rejecting traffic until the cache is sufficiently warm; gate rollout progress on cache fill percentage; avoid simultaneous restarts across replicas.</p>
+<h3>Stack Communication Rules</h3>
+<p><strong>&quot;Always go downward in the stack&quot;</strong>: service-to-service calls should flow from higher-level services to lower-level dependencies only. Lateral calls between services at the same tier create hidden dependency cycles that can produce distributed deadlocks — each service waits on another in a ring, and no one makes progress.</p>
+<h3>Testing for Cascading Failures</h3>
+<p>Test <em>past</em> the breaking point, not just up to capacity. Testing only to the expected peak load tells you how the system behaves under normal stress; it does not reveal what happens when the system first tips into overload.</p>
+<p>Test both gradual load increases and <strong>impulse loads</strong> (sudden large spikes). Systems often handle gradual ramp-up gracefully but collapse under sharp impulses because queues and caches haven&#39;t had time to adjust.</p>
+<h3>Immediate Mitigation</h3>
+<p>Once a cascade is in progress: (1) add capacity or replicas; (2) stop health-check-driven kills if they are removing servers faster than the system can recover; (3) drop traffic to ~1% to let the system stabilise, then ramp up gradually; (4) suppress retry storms via a server-wide retry budget (→ <a href="../patterns/retry.html">Retry</a>).</p>
 <h2>Risk Management</h2>
 <p>Not every potential fault requires mitigation. Prioritise by:</p>
 <pre><code>risk score = probability × impact
@@ -406,10 +442,11 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 2) — airline case study: JDBC connection pool exhaustion after database failover cascades to enterprise-wide outage.</li>
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 6) — Black Friday case study: Unbalanced Capacities, resource pool exhaustion without timeouts, alert fatigue, and the accidental Bulkhead that enabled recovery.</li>
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 15) — &quot;Trampled&quot; case study: building for tests vs production; noise testing gap; sessions ≠ users; session-bloat failure mode; temporary fixes that last decades.</li>
+<li>(→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 22) — GC death spiral, service unavailability snowball, queue management (LIFO/CoDel), load shedding vs graceful degradation, deadline propagation, bimodal latency, latency vs capacity cache, &quot;always go downward&quot;, testing for cascading failures, immediate mitigation.</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

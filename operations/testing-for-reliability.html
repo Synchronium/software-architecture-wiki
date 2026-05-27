@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zero-MTTR via pre-production testing; traditional test hierarchy; production tests (config tests, stress tests, canary); production probes; barrier…">
+  <meta property="og:title" content="Testing for Reliability — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Zero-MTTR via pre-production testing; traditional test hierarchy; production tests (config tests, stress tests, canary); production probes; barrier…">
+  <title>Testing for Reliability — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html" aria-current="page">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../operations/index.html">Operations</a> <span class="sep">›</span> Testing for Reliability</nav></div>
+      <h1>Testing for Reliability</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../operations/index.html">concept</a>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/testing.html">testing</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/sre.html">sre</a></li><li><a class="tag-chip" href="../tags/ci-cd.html">ci-cd</a></li><li><a class="tag-chip" href="../tags/canary.html">canary</a></li><li><a class="tag-chip" href="../tags/chaos-engineering.html">chaos-engineering</a></li><li><a class="tag-chip" href="../tags/mttr.html">mttr</a></li><li><a class="tag-chip" href="../tags/production-testing.html">production-testing</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>Testing for reliability is the practice of using software tests to quantify confidence in a system&#39;s future behaviour. Confidence has two sources: historical monitoring data, and predictions derived from demonstrating equivalence across changes. Each test that passes both before and after a change reduces uncertainty about whether the change has degraded reliability. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 17)</p>
+<h2>Testing and MTTR</h2>
+<p>A test that blocks a failing push catches a bug with <strong>zero MTTR</strong> — the bug never reaches production. Monitoring that catches the same bug in production has non-zero MTTR (detection latency + mitigation latency). More zero-MTTR catches → higher MTBF experienced by users, which in turn encourages faster iteration (higher release velocity). The relationship is self-reinforcing: better test coverage → fewer production incidents → more confidence to release faster → more opportunities to add coverage.</p>
+<h2>Traditional Test Hierarchy</h2>
+<pre><code>Unit tests          → milliseconds; cheapest; test a single function/class in isolation
+Integration tests   → seconds to minutes; test assembled components; dependency injection for mocks
+System tests        → minutes to hours; test end-to-end assembled system
+  └── Smoke tests       → critical-path sanity; short-circuit expensive testing if basics fail
+  └── Performance tests → detect O(n) resource growth over the lifecycle of a component
+  └── Regression tests  → prevent known bugs from re-entering the codebase
+</code></pre>
+<p>Cost increases dramatically up the stack. Test cost (time and compute) must be managed deliberately — test coverage is not just a correctness investment but also a developer-productivity investment.</p>
+<h2>Production Tests</h2>
+<p>Production tests operate against a live system rather than a hermetic environment. They complement traditional tests by covering what cannot be verified offline.</p>
+<h3>Configuration Tests</h3>
+<p>Verify that a binary&#39;s live configuration matches its checked-in source file. Configuration tests are inherently non-hermetic — they reach into production state. They are particularly valuable as distributed monitoring: the pattern of pass/fail across a fleet identifies rollout paths that produce invalid configuration combinations before those paths affect users.</p>
+<p>A configuration test is versioned alongside its config file. Comparing which test version is passing against the target version indicates how far production currently lags behind the latest engineering work.</p>
+<h3>Stress Tests</h3>
+<p>Identify the limits of a component before it catastrophically fails. Most components degrade non-gracefully at some threshold rather than gracefully degrading. Knowing the threshold enables capacity planning and SLO-setting with real data rather than estimates.</p>
+<h3>Canary Tests</h3>
+<p>The canary is <strong>not technically a test</strong> — the SRE book explicitly notes it is &quot;conspicuously absent from the list of production tests.&quot; A canary is structured user acceptance: a subset of servers receives the new version and is left in an incubation period (&quot;baking the binary&quot;) before the rollout proceeds.</p>
+<p>Unlike deterministic tests, canaries expose code to unpredictable live traffic. They detect fault orders:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Order</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U=1</td>
+<td>Fault scales linearly with traffic — user&#39;s request hit broken code</td>
+</tr>
+<tr>
+<td>U=2</td>
+<td>Fault randomly damages data that a future user&#39;s request will see</td>
+</tr>
+<tr>
+<td>U=3</td>
+<td>The damaged data is also a valid identifier to a previous request</td>
+</tr>
+</tbody></table></div>
+<p>Most bugs are U=1 and can be caught by converting anomalous request logs into regression tests. Higher-order bugs require order-of-magnitude more exposure to detect and cannot be caught by simply replaying the same requests.</p>
+<p><strong>Exponential rollout rule of thumb</strong>: start at 0.1% of traffic; scale by an order of magnitude every 24 hours while varying geographic location (day 2: 1%, day 3: 10%, day 4: 100%).</p>
+<h2>Production Probes</h2>
+<p>Monitoring probes that replay known-good and known-bad requests against live production. These differ from release tests because they use the real frontend and backend — not fake or hermetic equivalents.</p>
+<p>All four combinations of old/new probe against old/new application are continuously generated during rollouts. A probe failure indicates an API incompatibility between production and release environments. The production updater can detect probe failures and halt or roll back the rollout before user traffic is routed to the broken version.</p>
+<h2>Zero MTTR and the Testing-Reliability Loop</h2>
+<pre><code>Better test coverage
+  → more bugs caught pre-production (zero MTTR)
+  → higher MTBF observed by users
+  → greater confidence to release more frequently
+  → more versions pass through CI, each well-understood
+  → bugs mapped unambiguously to their introducing commit
+  → more opportunities to catch regressions
+</code></pre>
+<p>The feedback loop is bidirectional: if release cadence is increased without improving test coverage, MTBF drops and users see more failures, which creates pressure to slow releases.</p>
+<h2>Configuration Files as a Reliability Risk</h2>
+<p>Configuration files present a distinct reliability challenge because they change frequently but are often not tested with the same rigour as code.</p>
+<p><strong>Two categories</strong>:</p>
+<ol>
+<li><strong>MTTR-purpose configs</strong> — changed only during incidents; release cadence slower than MTBF. A moderate level of uncertainty is tolerable because changes are rare.</li>
+<li><strong>Frequently-changed configs</strong> (e.g., release state, feature flags) — must be treated as application releases with equivalent testing discipline. If not, they dominate site reliability negatively.</li>
+</ol>
+<p><strong>Break-glass mechanism</strong>: an emergency override that allows pushing a config before testing completes. Should be auditable, noisy (file a bug automatically), and should run tests asynchronously, back-annotating the push with any failures so the next action can be better informed.</p>
+<p><strong>Config syntax and schema</strong>: configuration written as an interpreted language (Python) has no upper bound on loading time and can execute arbitrary code. Protocol buffers define schema statically and are checked at load time with bounded runtime — the preferred approach for safety-critical config.</p>
+<h2>Testing SRE Tools</h2>
+<p>Automation tools that operate outside the mainstream API have a subtly different risk profile from ordinary software. They can alter system state in ways that are invisible to the regular API. Two properties distinguish SRE tools:</p>
+<ul>
+<li><strong>SRE operational tools</strong>: side effects remain within the mainstream API; isolated from user-facing production by release barriers</li>
+<li><strong>Automation tools</strong>: the actual operation targets a robust, predictable API; the purpose is a side effect invisible to other API clients</li>
+</ul>
+<p><strong>Barrier defence pattern</strong> for risky software: (1) use a separate tool to place a barrier that causes the replica to fail its health check; (2) configure risky software to only operate on unhealthy replicas; (3) use the black-box health monitor to remove the barrier and return the replica to service. This prevents maintenance software from accidentally operating on user-facing replicas.</p>
+<h2>Statistical Testing</h2>
+<p>Techniques such as Chaos Monkey, Jepsen, and fuzzing are not repeatable — rerunning with a new seed doesn&#39;t prove the original bug is fixed. Useful practices:</p>
+<ul>
+<li>Log the random number seed (or full action sequence) immediately on failure</li>
+<li>Replay the sequence several times before starting the bug report to characterise the fault&#39;s reproducibility</li>
+<li>Multiple replay runs may reveal more severe manifestations of the same fault, warranting a severity escalation</li>
+</ul>
+<p>These techniques are especially useful for finding <strong>higher-order bugs</strong> (U≥2) that cannot be caught by deterministic replay.</p>
+<h2>Testing Culture</h2>
+<p>Building a testing culture requires structural reinforcement:</p>
+<ul>
+<li><strong>Document all bugs as test cases</strong>: every bug is converted into a failing test first, then fixed. This builds regression coverage organically.</li>
+<li><strong>Continuous build system</strong>: every commit triggers a build and test run; engineers are notified immediately when a change breaks something.</li>
+<li><strong>Broken build = highest priority</strong>: engineers must treat a broken build as the most urgent issue and drop all other work. Reasons: (1) the bug is harder to fix the more commits accumulate; (2) the team works around the breakage at increasing cost; (3) release cadences lose their value; (4) emergency release capability is impaired.</li>
+<li><strong>Explicit coverage goals</strong>: treat test coverage as an engineering project with stated targets and deadlines, not a philosophical stance.</li>
+</ul>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — Chaos Monkey and Jepsen are statistical testing tools for distributed system reliability</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — black-box monitoring and production probes serve complementary roles to testing</li>
+<li><a href="../operations/automation.html">Automation</a> — automation tools have a distinct testing risk profile (barrier defence pattern)</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — hermetic builds, canary deployments, and CI/CD are the structural context for reliability testing</li>
+<li><a href="../operations/incident-management.html">Incident Management</a> — zero-MTTR testing minimises the incidents that trigger incident management</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

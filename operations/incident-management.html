@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis)">
+  <meta property="og:title" content="Incident Management — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis)">
+  <title>Incident Management — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html" aria-current="page">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../operations/index.html">Operations</a> <span class="sep">›</span> Incident Management</nav></div>
+      <h1>Incident Management</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../operations/index.html">concept</a>
+        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/incident-management.html">incident-management</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li><li><a class="tag-chip" href="../tags/postmortems.html">postmortems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/sre.html">sre</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>Incident management is the structured process for responding to production problems — detecting, containing, investigating, and learning from events that impair service reliability. Effective incident management limits the duration and blast radius of incidents and converts failures into organisational knowledge. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 12–15)</p>
+<h2>Troubleshooting: The Hypothetico-Deductive Method</h2>
+<p>Troubleshooting is a learnable, teachable skill — not an innate talent. The formal model is the hypothetico-deductive method: given observations, form hypotheses about the cause, test them, and eliminate until one remains.</p>
+<p><strong>Steps</strong>: Triage → Examine → Diagnose → Test and Treat → Cure.</p>
+<p><strong>Triage first</strong>: in a major incident, the first instinct is to find the root cause. Resist it. Stop the bleeding first — divert traffic, reduce load, disable subsystems. &quot;Fly the airplane&quot; before troubleshooting. You are not helping users if the system dies while you investigate. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 12)</p>
+<p><strong>Common pitfalls</strong>:</p>
+<ul>
+<li>Latching on to past causes (confirmation bias — &quot;it was this last time&quot;)</li>
+<li>Spurious correlations (two things correlating by coincidence or shared cause)</li>
+<li>Improbable theories — prefer simpler explanations (Occam&#39;s Razor); think horses, not zebras</li>
+</ul>
+<p><strong>Diagnostic techniques</strong>:</p>
+<ul>
+<li><strong>&quot;What touched it last&quot;</strong>: recent changes (deployments, config changes) are the most productive starting point; systems have inertia</li>
+<li><strong>Divide and conquer / bisection</strong>: examine components systematically from one end; or bisect to identify the failing half</li>
+<li><strong>What, where, why</strong>: ask what the system is doing, where it&#39;s spending resources, why it&#39;s doing that — repeat until you reach the root cause</li>
+</ul>
+<p><strong>Negative results are magic</strong>: document what you ruled out. Negative results are conclusive, prevent others from repeating the same investigation, and contribute to a data-driven culture.</p>
+<p><strong>Make troubleshooting easier by design</strong>: observability (white-box metrics + structured logs) built into each component from the start; well-defined interfaces between components; request tracing (correlation IDs / trace IDs) across the entire stack.</p>
+<h2>Incident Command Structure</h2>
+<p>Google&#39;s incident management is based on the Incident Command System (ICS) — a scalable, clear system from emergency services. Key insight: clear role separation gives individuals more autonomy, because they don&#39;t need to second-guess colleagues whose responsibilities are well-defined.</p>
+<h3>Roles</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Incident Commander</strong></td>
+<td>Holds high-level incident state; assigns and delegates responsibilities; removes blockers; holds all unassigned roles by default</td>
+</tr>
+<tr>
+<td><strong>Ops Lead</strong></td>
+<td>Applies operational tools to the incident; <strong>the only group permitted to modify the system during an incident</strong></td>
+</tr>
+<tr>
+<td><strong>Communications Lead</strong></td>
+<td>Issues periodic stakeholder updates; maintains the live incident document; public face of the response</td>
+</tr>
+<tr>
+<td><strong>Planning Lead</strong></td>
+<td>Handles longer-term logistics: filing bugs, arranging handoffs, tracking system divergence from normal state</td>
+</tr>
+</tbody></table></div>
+<h3>Only Ops Modifies the System</h3>
+<p>&quot;Freelancing&quot; — well-intentioned engineers making independent changes to the system during an incident without coordination — is a primary cause of incidents spiralling out of control. During a managed incident, all system modifications must go through the Ops lead. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 14)</p>
+<h3>Live Incident Document</h3>
+<p>The incident commander&#39;s most important tool. Properties:</p>
+<ul>
+<li>Concurrently editable (not a single-writer document)</li>
+<li>Most critical information at the top (rendered in reading order)</li>
+<li>Captures: incident state, hypotheses tested, changes made, stakeholder updates, handoff times</li>
+<li>Retained for postmortem and meta-analysis</li>
+</ul>
+<h3>Handoff Protocol</h3>
+<p>When the incident commander hands off to another engineer: explicit verbal confirmation (&quot;You&#39;re now the incident commander, okay?&quot;) and explicit acknowledgment. The handoff is communicated to the rest of the team. The outgoing commander does not leave the call until acknowledgment is received.</p>
+<h3>When to Declare an Incident</h3>
+<p>Declare early — the cost of spinning up the framework is low; the cost of not declaring when you should have is high. Declare if any of the following is true:</p>
+<ul>
+<li>A second team needs to be involved</li>
+<li>The issue is customer-visible</li>
+<li>The issue is unresolved after one hour of concentrated analysis</li>
+</ul>
+<h3>Best Practices</h3>
+<p><strong>Prioritize</strong>: stop the bleeding, restore service, preserve evidence for root-causing.<br><strong>Prepare</strong>: develop and document procedures before incidents occur.<br><strong>Trust</strong>: give full autonomy within each role; do not micromanage.<br><strong>Introspect</strong>: if feeling panicked or overwhelmed, request more support.<br><strong>Consider alternatives</strong>: periodically re-evaluate whether the current approach is right.<br><strong>Practice</strong>: use the framework routinely (e.g. for complex planned changes) so it is second nature during real incidents.<br><strong>Rotate roles</strong>: ensure every team member is familiar with each role.</p>
+<h2>Postmortem Culture</h2>
+<p>A postmortem is a written record of an incident: its impact, actions taken to mitigate and resolve it, contributing root causes, and follow-up actions to prevent recurrence.</p>
+<h3>Blameless Postmortems</h3>
+<p>A blameless postmortem assumes everyone had good intentions and did the right thing with the information they had. It focuses on systemic causes — incomplete information, inadequate tooling, design limitations — rather than individual error. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 15)</p>
+<p>Rationale: blame-based cultures suppress reporting and leave root causes unaddressed. You cannot &quot;fix&quot; people, but you can fix systems and processes.</p>
+<p><strong>Blameless ≠ accountability-free</strong>: the postmortem explicitly identifies where and how services and processes can be improved. The individual is not indicted; the systemic failure is.</p>
+<p>Blameless culture originated in healthcare and aviation, where systematic analysis of accidents (rather than blame) dramatically improved safety outcomes.</p>
+<h3>Postmortem Triggers</h3>
+<p>Define triggers before incidents occur so there is no ambiguity about when a postmortem is required:</p>
+<ul>
+<li>User-visible downtime or degradation beyond a defined threshold</li>
+<li>Any data loss</li>
+<li>On-call intervention (rollback, traffic rerouting)</li>
+<li>Resolution time above a defined threshold</li>
+<li>Monitoring failure (implies the incident was detected manually, not automatically)</li>
+</ul>
+<p>Any stakeholder may additionally request a postmortem.</p>
+<h3>Review Process</h3>
+<ol>
+<li><strong>Draft</strong>: written collaboratively, ideally starting during incident resolution</li>
+<li><strong>Internal review</strong>: senior engineers assess completeness, root-cause depth, action plan appropriateness, and whether relevant stakeholders were notified</li>
+<li><strong>Broad sharing</strong>: published to the widest audience that benefits</li>
+</ol>
+<blockquote>
+<p><strong>&quot;No postmortem left unreviewed&quot;</strong>: an unreviewed postmortem might as well not exist.</p>
+</blockquote>
+<p>Action items from postmortems must be tracked and prioritised — an unactioned postmortem is a prediction of a future incident.</p>
+<h3>Postmortem as Culture</h3>
+<p>Culture-building activities that sustain postmortem practice:</p>
+<ul>
+<li><strong>Postmortem of the month</strong>: an interesting, well-written postmortem shared widely in a regular newsletter</li>
+<li><strong>Reading clubs</strong>: team discussion of past postmortems, including incidents from months or years ago</li>
+<li><strong>Wheel of Misfortune</strong>: reenact a past incident with new engineers playing the roles; the original incident commander provides context</li>
+</ul>
+<p>Visibly reward good incident handling — quick rollback decisions, clear communication, transparent escalation. Recognition from peers and leadership reinforces the behaviours that reduce incident impact.</p>
+<h2>Outage Tracking</h2>
+<p>Postmortems (→ above) cover individual high-impact incidents in depth. Outage tracking systems address a complementary gap: <strong>high-frequency, low-severity events</strong> that individually don&#39;t warrant a postmortem but collectively reveal systemic weaknesses.</p>
+<p>Google&#39;s system (&quot;Outalator&quot;) passively receives all alerts and supports: (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 16)</p>
+<p><strong>Aggregation</strong>: Multiple alerts from a single event are grouped into one incident entity. A network failure triggering alerts across ten teams is one incident, not ten. This separation of &quot;alerts per day&quot; from &quot;incidents per day&quot; is analytically critical — one measures monitoring noise; the other measures actual service disruption.</p>
+<p><strong>Tagging</strong>: Free-form hierarchical tags (<code>cause:network:switch</code>, <code>customer:132456</code>, <code>bogus</code>) applied at any level. Teams develop their own tag vocabularies through use rather than having a predetermined list imposed. Tags that encode <code>cause:</code> and <code>action:</code> namespaces are particularly useful for systematic analysis.</p>
+<p><strong>Analysis layers</strong>:</p>
+<ol>
+<li>Basic counts — incidents/week, alerts/incident</li>
+<li>Trend comparison — across teams and over time; establishes what is &quot;normal&quot;</li>
+<li>Semantic analysis — which infrastructure component causes the most incidents? What is the cost/benefit of fixing it versus the horizontal impact across all affected teams?</li>
+</ol>
+<p><strong>Cross-team visibility</strong>: Seeing that the relevant team has <em>not</em> been alerted about an apparent failure in their component is as operationally useful as seeing that they have been. Cross-team awareness accelerates diagnosis and coordination.</p>
+<p><strong>System-of-record use</strong>: Dummy escalator configurations (no human recipient) provide an auditable log of privileged account access, periodic job runs, or schema migrations — visible alongside real incidents in the outage tracker.</p>
+<blockquote>
+<p><strong>Postmortems vs outage tracking</strong>: postmortems provide deep insight per incident; outage tracking provides breadth across all incidents, including those too small for a postmortem. Both are necessary; neither substitutes for the other.</p>
+</blockquote>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../operations/monitoring.html">Monitoring</a> — SLOs and burn rate alerting detect incidents; alert quality determines on-call effectiveness</li>
+<li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a> — the broader discipline; error budgets quantify incident impact</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> — incident severity is expressed as error budget consumed</li>
+<li><a href="../operations/observability.html">Observability</a> — logs and traces enable effective examination and diagnosis during incidents</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — deliberate failure injection to surface incident response gaps before real incidents</li>
+<li><a href="../operations/automation.html">Automation</a> — automating common incident responses (failover, rollback) reduces MTTR</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>
