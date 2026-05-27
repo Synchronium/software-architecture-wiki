@@ -59,7 +59,7 @@ List remaining files in order:
 ls _incoming/processing/<slug>/ | sort
 ```
 
-Take the **first 5 files** from this sorted list. These are the chapters to ingest in this session.
+Take the **first 2 files** from this sorted list. These are the chapters to ingest in this batch.
 
 ### For each chapter in the batch:
 
@@ -84,7 +84,7 @@ Check whether any `.txt` files remain:
 ls _incoming/processing/<slug>/
 ```
 
-**If files remain:** Tell the user how many chapters are left and that they can run `/ingest` again to continue.
+**If files remain:** Without pausing or asking the user, immediately continue to the next batch of 2 files. Keep looping — ingest 2 chapters, move them, check again — until no files remain.
 
 **If no files remain:** The book is fully ingested. Move any residual files (preamble, foreword, appendix, index files — anything not already moved), then remove the now-empty processing directory:
 ```bash
