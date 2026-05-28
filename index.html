@@ -220,6 +220,7 @@
         <li><a href="sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
         <li><a href="sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
         <li><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
         <li><a href="sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
@@ -249,6 +250,7 @@
         <li><a href="authors/betsy-beyer.html">Betsy Beyer</a></li>
         <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a></li>
         <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="authors/dave-farley.html">Dave Farley</a></li>
@@ -271,6 +273,7 @@
         <li><a href="authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="authors/neal-ford.html">Neal Ford</a></li>
         <li><a href="authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="authors/patrick-kua.html">Patrick Kua</a></li>
         <li><a href="authors/pramod-sadalage.html">Pramod Sadalage</a></li>
         <li><a href="authors/rebecca-parsons.html">Rebecca Parsons</a></li>
@@ -396,7 +399,7 @@
 <h2>Operations</h2>
 <ul>
 <li><a href="operations/availability.html">Availability</a> — Uptime/downtime definition; the nines table (90%–99.999%); techniques for high availability; dependency chaining effects; design-for-production philosophy; ROI of availability investment; MTBF/MTTR/RPO/RTO measurement framework; tyranny of the nines antipattern; Allspaw: MTTR &gt; MTBF; SRE: 100% is always the wrong target (informed by: understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering)</li>
-<li><a href="operations/chaos-engineering.html">Chaos Engineering</a> — definition, prerequisites, experiment design, injection types (Chaos Monkey/Latency Monkey/FIT), targeting strategy, automation and moderation, disaster simulations; theoretical foundations (drift into failure, regulator paradox, antifragility) (informed by: release-it)</li>
+<li><a href="operations/chaos-engineering.html">Chaos Engineering</a> — definition, prerequisites, experiment design, injection types (Chaos Monkey/Latency Monkey/FIT), targeting strategy, automation and moderation, disaster simulations; theoretical foundations (drift into failure, regulator paradox, antifragility); complex systems foundations (accidental vs essential complexity, emergent failures, composability of safety); Netflix origin story; Chaos Maturity Model (informed by: release-it, chaos-engineering)</li>
 <li><a href="operations/common-failure-causes.html">Common Failure Causes</a> — failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable failures; risk = probability × impact; airline/Black Friday/&quot;Trampled&quot; case studies; building-for-tests vs building-for-production; GC death spiral, queue management (LIFO/CoDel), deadline propagation, latency vs capacity cache (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)</li>
 <li><a href="operations/error-budgets.html">Error Budgets</a> — error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is wrong target argument (informed by: site-reliability-engineering)</li>
 <li><a href="operations/manageability.html">Manageability</a> — Dynamic configuration (config store, runtime re-read); feature flags (progressive rollout, A/B testing, kill switch, deployment-release decoupling); operational triad: monitor → observe → manage (informed by: understanding-distributed-systems)</li>
@@ -484,6 +487,7 @@
 <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a> — <em>Software Architecture Metrics</em> — Ciceri et al. (fully ingested 2026-05-22)</li>
 <li><a href="sources/accelerate.html">Accelerate</a> — <em>Accelerate: The Science of Lean Software and DevOps</em> — Forsgren, Humble &amp; Kim (fully ingested 2026-05-18)</li>
 <li><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a> — <em>Site Reliability Engineering</em> — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)</li>
+<li><a href="sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em> — Rosenthal &amp; Jones (eds.); complex systems theory, Five Advanced Principles, Game Days, LDFI, Chaos Maturity Model, Continuous Verification, Security Chaos Engineering, organisational/human factors (informed by: chaos-engineering)</li>
 </ul>
 <hr>
 <h2>Authors</h2>
@@ -525,6 +529,8 @@
 <li><a href="authors/betsy-beyer.html">Betsy Beyer</a> — Co-editor of <em>Site Reliability Engineering</em>; Google Technical Writer for SRE; cultural and documentary aspects of reliability</li>
 <li><a href="authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a> — Wrote Ch. 1 of <em>Site Reliability Engineering</em>; VP Engineering at Google; originator of the term &quot;Site Reliability Engineering&quot;; creator of the error budget model</li>
 <li><a href="authors/gene-kim.html">Gene Kim</a> — Co-author of <em>Accelerate</em>; founder and CTO of Tripwire; co-author of <em>The Phoenix Project</em> and <em>The DevOps Handbook</em>; high-performing technology organisation researcher</li>
+<li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a> — Co-author of <em>Chaos Engineering</em>; built and managed Netflix&#39;s Chaos Engineering team; co-creator of the Principles of Chaos Engineering</li>
+<li><a href="authors/nora-jones.html">Nora Jones</a> — Co-author of <em>Chaos Engineering</em>; Netflix Chaos Engineering team; safety science and sociotechnical systems perspective</li>
 </ul>
 </div>
     </main>
