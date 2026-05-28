@@ -65,6 +65,7 @@
         <li><a href="concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -73,12 +74,14 @@
         <li><a href="concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="concepts/coupling.html">Coupling</a></li>
         <li><a href="concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -91,6 +94,7 @@
         <li><a href="concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="concepts/supple-design.html">Supple Design</a></li>
         <li><a href="concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -105,6 +109,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="distributed/index.html">Index</a></li>
+        <li><a href="distributed/backpressure.html">Backpressure</a></li>
         <li><a href="distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="distributed/caching.html">Caching</a></li>
         <li><a href="distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -123,6 +128,7 @@
         <li><a href="distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="distributed/replication.html">Replication</a></li>
         <li><a href="distributed/scalability.html">Scalability</a></li>
@@ -163,6 +169,7 @@
         <li><a href="patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="patterns/repository.html">Repository Pattern</a></li>
         <li><a href="patterns/retry.html">Retry</a></li>
         <li><a href="patterns/saga.html">Saga Pattern</a></li>
@@ -188,6 +195,7 @@
       <ul>
         <li><a class="section-index-link" href="streams/index.html">Index</a></li>
         <li><a href="streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -335,11 +343,14 @@
 <li><a href="concepts/architect-soft-skills.html">Architect Soft Skills</a> — Diagramming, presenting, team leadership (architect personality types, elastic leadership, team warning signs, checklists), negotiation (4 C&#39;s, stakeholder/architect/developer tactics), career (20-minute rule, personal technology radar) (informed by: fundamentals-of-software-architecture)</li>
 <li><a href="concepts/architectural-decomposition.html">Architectural Decomposition</a> — Modularity drivers (availability, scalability, deployability, testability, maintainability); scalability vs elasticity; component-based vs tactical forking; six decomposition patterns; architecture stories (informed by: software-architecture-the-hard-parts)</li>
 <li><a href="concepts/architecture-characteristics.html">Architecture Characteristics</a> — The &quot;-ilities&quot;: taxonomy, selection, measurement, governance (informed by: fundamentals-of-software-architecture)</li>
+<li><a href="concepts/architecture-documentation.html">Architecture Documentation</a> — Purpose and audience taxonomy; C4 / UML / ArchiMate notations; ADRs as the durable documentation form; diagrams-as-code; &quot;just sufficient&quot; principle; presentation craft (two-channel model, infodecks vs presentations, Bullet-Riddled Corpse anti-pattern) (informed by: fundamentals-of-software-architecture, building-evolutionary-architectures, learning-domain-driven-design, mastering-api-architecture)</li>
 <li><a href="concepts/architecture-quantum.html">Architecture Quantum</a> — Independently deployable artifact; static/dynamic coupling distinction; quantum count by architecture style; micro-frontends (including EDM pairing); 3D dynamic coupling space → 8 saga types (informed by: fundamentals-of-software-architecture, building-evolutionary-architectures, software-architecture-the-hard-parts, building-event-driven-microservices)</li>
+<li><a href="concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — Cost as first-class quality attribute; five cost dimensions (build/run/change/downtime/opportunity); architecture style as dominant cost driver; ROI patterns (deployment automation 18×, observability, stability patterns); common cost traps; cost-vs-other-ilities trade-offs (informed by: release-it, foundations-of-scalable-systems, fundamentals-of-software-architecture, building-evolutionary-architectures, site-reliability-engineering)</li>
 <li><a href="concepts/coupling.html">Coupling</a> — Coupling taxonomy: structural (Ca/Ce, Martin A/I/D, connascence), operational (Newman&#39;s implementation/temporal/deployment/domain types), contract (strict/loose, stamp coupling), integration-style spectrum (File Transfer → Messaging); coupling and quantum boundaries; coordinated deployments as coupling signal; concept leakage and flatten-when-publishing (informed by: fundamentals-of-software-architecture, software-architecture-the-hard-parts, monolith-to-microservices, building-evolutionary-architectures, enterprise-integration-patterns, release-it)</li>
 <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a> — Fitness function automation; stages, fan-in/fan-out; CD vs CDP; cycle time as business metric; zero-downtime deployment (four phases: prepare/drain/apply/start); expand/contract relational schema pattern; trickle-then-batch schemaless migration; canary group evaluation; immutable infrastructure; EDM deployment patterns (informed by: building-evolutionary-architectures, understanding-distributed-systems, mastering-api-architecture, building-event-driven-microservices, release-it)</li>
 <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — Three pillars; evolvability by style; strangler fig; six Rs; guidelines; antipatterns; DDD brownfield modernisation strategy; &quot;form follows failure&quot;; bad layering (horizontal coupling); component-based decomposition; decision loop speed and thrashing; service extinction; Farley: testability+deployability as operational drivers, TDD as architectural feedback, architectural descriptions as &quot;tourist maps&quot; (informed by: building-evolutionary-architectures, mastering-api-architecture, fundamentals-of-software-architecture, learning-domain-driven-design, monolith-to-microservices, release-it, software-architecture-metrics)</li>
 <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — Expand/contract pattern; Flyway/Liquibase; shared DB decomposition; reporting antipattern; Newman&#39;s ~12 database decomposition patterns (database view, wrapping service, tracer write, synchronize in application, etc.) (informed by: building-evolutionary-architectures, monolith-to-microservices)</li>
+<li><a href="concepts/feature-flags.html">Feature Flags</a> — Application-layer release control; Hodgson&#39;s four toggle types (release/experiment/ops/permission) with different lifecycles; flag lifecycle discipline; default behaviour and cohort routing; kill switches and load-shedding flags; flags as technical debt with a use-by date (informed by: building-evolutionary-architectures, understanding-distributed-systems, accelerate, monolith-to-microservices, release-it)</li>
 <li><a href="concepts/fitness-functions.html">Fitness Functions</a> — Full classification taxonomy; priority tiers; enterprise fitness functions; mechanism and concern taxonomies; fitness function testing pyramid (triggered/continuous × atomic/holistic → three pyramid layers); ISO 25010 quality attribute anchoring (informed by: building-evolutionary-architectures, fundamentals-of-software-architecture, mastering-api-architecture, software-architecture-metrics)</li>
 <li><a href="concepts/four-key-metrics.html">Four Key Metrics</a> — DORA four key metrics (deployment frequency, lead time for changes, change failure rate, time to restore service); empirical basis (4-year, 23K+ respondents, Accelerate); Lean conceptual basis; cluster analysis; no-tradeoff finding; CABs negatively correlated with both metrics; Goodhart&#39;s Law warning; pipeline topology variants; instrumentation; MVD; virtuous cycle mechanism; complementary metrics (informed by: accelerate, software-architecture-metrics)</li>
 <li><a href="concepts/goal-question-metric.html">Goal Question Metric</a> — GQM framework (Basili &amp; Weiss 1984): goal → questions → metrics → data tree; goal statement structure (purpose/object/issue/viewpoint); metric selection criteria (signal strength, cost, cross-question reuse); 9-step workshop; Foo Service case study (rate-limit incident → heartbeat + fail-fast ADR → 10-minute detection before user impact) (informed by: software-architecture-metrics)</li>
@@ -348,6 +359,7 @@
 <li><a href="concepts/risk-storming.html">Risk Storming</a> — Collaborative risk identification: risk matrix, risk assessment, 3-activity process (informed by: fundamentals-of-software-architecture)</li>
 <li><a href="concepts/service-granularity.html">Service Granularity</a> — Granularity vs modularity distinction; six disintegrators; four integrators; volatility-based decomposition; MTTS; trade-off-to-business-question method (informed by: software-architecture-the-hard-parts)</li>
 <li><a href="concepts/software-complexity.html">Software Complexity</a> — Ousterhout&#39;s complexity definition: three symptoms (change amplification, cognitive load, unknown unknowns), two causes (dependencies, obscurity), incremental accumulation; strategic vs. tactical programming; technical debt as borrowed time (informed by: a-philosophy-of-software-design)</li>
+<li><a href="concepts/stability-patterns.html">Stability Patterns</a> — Coherent navigation hub for Nygard&#39;s stability pattern set; failure-arresting (timeout/circuit-breaker/bulkhead), load-handling (shed load/backpressure/handshaking), defensive (fail fast/let it crash/steady state/retry), and architectural (decoupling middleware/test harnesses/governor); pattern composition; antipatterns they defend against (informed by: release-it, understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering)</li>
 <li><a href="concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — Technical (layered) vs domain (bounded context) top-level component design (informed by: fundamentals-of-software-architecture)</li>
 </ul>
 <h3>API &amp; Integration</h3>
@@ -370,6 +382,7 @@
 <hr>
 <h2>Distributed Systems</h2>
 <ul>
+<li><a href="distributed/backpressure.html">Backpressure</a> — Flow-control mechanism: downstream signals upstream to slow producers rather than overwhelm consumers; bounded queues vs unbounded; backpressure vs load shedding (internal vs boundary); credit-based flow control; pull-based streams; anti-patterns (unbounded queues, retries defeating backpressure) (informed by: release-it, foundations-of-scalable-systems, understanding-distributed-systems, designing-data-intensive-applications)</li>
 <li><a href="distributed/broadcast-protocols.html">Broadcast Protocols</a> — best-effort, reliable (eager/gossip), total order broadcast; consensus requirement; relationship to CRDTs and replication (informed by: understanding-distributed-systems)</li>
 <li><a href="distributed/caching.html">Caching</a> — HTTP caching (Cache-Control, ETag, fresh/stale, immutable static resources); reverse proxies; application-layer: side vs inline cache, LRU eviction, TTL, local vs external cache, thundering herd, cascading failure; 80% hit rate as scalability threshold (informed by: understanding-distributed-systems, foundations-of-scalable-systems)</li>
 <li><a href="distributed/cap-theorem.html">Cap Theorem</a> — CAP theorem and PACELC extension; Kleppmann&#39;s critique (&quot;best avoided&quot;); timeliness vs integrity distinction (informed by: understanding-distributed-systems, designing-data-intensive-applications)</li>
@@ -388,6 +401,7 @@
 <li><a href="distributed/load-balancing.html">Load Balancing</a> — DNS LB, L4 (transport), L7 (application), service discovery, health checks, power of two choices, sidecar as client-side LB; stateless services as prerequisite for scale-out (informed by: understanding-distributed-systems, foundations-of-scalable-systems)</li>
 <li><a href="distributed/logical-clocks.html">Logical Clocks</a> — Physical clock failures (drift, NTP jumps, monotonic); happened-before relation; Lamport clocks (total order); vector clocks (partial order, concurrent detection) (informed by: understanding-distributed-systems)</li>
 <li><a href="distributed/partitioning.html">Partitioning</a> — Key range, hash, consistent hashing, secondary indexes (local/global), rebalancing strategies, request routing; cross-partition complexity costs (informed by: designing-data-intensive-applications, understanding-distributed-systems)</li>
+<li><a href="distributed/queueing-theory.html">Queueing Theory</a> — Little&#39;s Law (L=λW), utilisation curves (W=S/(1−ρ)) and hyperbolic response-time growth, tail latency amplification in fan-out designs, percentile arithmetic (averages lie; can&#39;t average percentiles; t-digest/HdrHistogram), queues in series, thread pools as queueing systems; practical heuristics for capacity and tuning (informed by: foundations-of-scalable-systems, designing-data-intensive-applications, release-it, site-reliability-engineering, understanding-distributed-systems)</li>
 <li><a href="distributed/rate-limiting.html">Rate Limiting</a> — Load shedding (503, priority/age ordering), load leveling (async channel + auto-scaling), rate limiting (sliding window buckets, distributed atomic increment, fail-open), constant work pattern (periodic full-state dump, antifragile, self-healing) (informed by: understanding-distributed-systems)</li>
 <li><a href="distributed/replication.html">Replication</a> — State machine replication (Raft), chain replication (head/tail topology, failure modes, data/control plane split), leader-follower, Dynamo-style; replication lag anomalies; multi-leader conflict resolution (informed by: understanding-distributed-systems, designing-data-intensive-applications)</li>
 <li><a href="distributed/scalability.html">Scalability</a> — definition; replication vs optimization strategies; scale up vs scale out; stateless services requirement; Amdahl&#39;s Law; hyperscale; quality attribute trade-offs (performance, availability, security, manageability); architecture evolution pattern (informed by: foundations-of-scalable-systems)</li>
@@ -424,6 +438,7 @@
 <li><a href="patterns/strangler-fig.html">Strangler Fig</a> — Incremental migration pattern: identify → implement → redirect via proxy; HTTP/FTP/message variants; UI composition (page, widget, micro frontends); deployment ≠ release; feature freeze (informed by: monolith-to-microservices)</li>
 <li><a href="patterns/branch-by-abstraction.html">Branch By Abstraction</a> — Migration for deeply embedded capabilities: 5 steps; feature toggles; verify variant with automatic fallback (informed by: monolith-to-microservices)</li>
 <li><a href="patterns/parallel-run.html">Parallel Run</a> — Correctness verification: both implementations run per request; old result returned; GitHub Scientist; dark launching vs canary vs parallel run; progressive delivery (informed by: monolith-to-microservices)</li>
+<li><a href="patterns/progressive-delivery.html">Progressive Delivery</a> — Release in stages exposing change to controlled subsets; deployment vs release decoupling; canary/blue-green/ring/dark-launch/parallel-run/feature-flag spectrum; SRE order-of-fault model; &quot;roll back first, diagnose second&quot;; prerequisites and anti-patterns (informed by: site-reliability-engineering, release-it, mastering-api-architecture, building-evolutionary-architectures, monolith-to-microservices, accelerate)</li>
 <li><a href="patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — East–west traffic governance: mTLS, service authorisation, evolution from libraries to eBPF; sidecar as reuse mechanism for operational concerns; orthogonal coupling; data-sinking sidecar for EDM legacy integration (informed by: understanding-distributed-systems, mastering-api-architecture, software-architecture-the-hard-parts, building-event-driven-microservices)</li>
 <li><a href="patterns/anti-corruption-layer.html">Anti Corruption Layer</a> — Translation boundary protecting a bounded context&#39;s model from upstream language corruption; structure (FACADE+ADAPTER); ACL vs Conformist vs Open-Host Service; migration use with Strangler Fig (informed by: domain-driven-design, learning-domain-driven-design, monolith-to-microservices, building-evolutionary-architectures)</li>
 <li><a href="patterns/context-map.html">Context Map</a> — Six bounded context integration patterns grouped by team collaboration type; context map notation; model translation: stateless proxy (sync/async) and stateful aggregation (stream processing, BFF); private vs public events; Evans&#39; originating eight-pattern taxonomy (Shared Kernel, Customer/Supplier, Conformist, ACL, Separate Ways, OHS, Published Language, CI) and transformation recipes (informed by: domain-driven-design, learning-domain-driven-design)</li>
@@ -447,6 +462,7 @@
 <li><a href="streams/batch-processing.html">Batch Processing</a> — Unix philosophy, MapReduce, join algorithms, Hadoop vs MPP, Spark/Flink dataflow engines, Pregel graph processing (informed by: designing-data-intensive-applications)</li>
 <li><a href="streams/stream-processing.html">Stream Processing</a> — Log-based brokers (Kafka), stateless topology primitives, partition assignment, windowing, late event strategies, watermarks vs stream time, reprocessing, state stores (internal/external, changelog, hot replicas), effectively once processing, heavyweight vs lightweight framework comparison, stream joins, exactly-once fault tolerance; Kafka production mechanics: producer batching (acks/idempotence), consumer commit semantics, semantic partitioning, consumer groups, ISR (informed by: designing-data-intensive-applications, building-event-driven-microservices, foundations-of-scalable-systems)</li>
 <li><a href="streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — CDC, event sourcing, CQRS, immutability, write/read path, correctness without coordination; DDD: CQRS sync/async projections, architectural slices, event-sourced domain model four-step cycle; Fowler&#39;s four-way event taxonomy (notification/state-transfer/event-sourcing/CQRS) (informed by: designing-data-intensive-applications, learning-domain-driven-design, release-it)</li>
+<li><a href="streams/change-data-capture.html">Change Data Capture</a> — Observing DB changes as event stream; log-based (Debezium, WAL/binlog/oplog), trigger-based, query-based mechanisms; CDC vs event sourcing; dual-write problem solved by outbox + CDC; data liberation patterns; strangler migration; schema coupling; log-compacted topics for bootstrap; backpressure on consumers (informed by: designing-data-intensive-applications, building-event-driven-microservices, monolith-to-microservices, software-architecture-the-hard-parts)</li>
 </ul>
 <hr>
 <h2>Reference</h2>

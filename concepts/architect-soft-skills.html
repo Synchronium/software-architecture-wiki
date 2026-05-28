@@ -65,6 +65,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -73,12 +74,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -91,6 +94,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -105,6 +109,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -123,6 +128,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -163,6 +169,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -188,6 +195,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -294,7 +302,7 @@
       <h1>Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/soft-skills.html">soft-skills</a></li><li><a class="tag-chip" href="../tags/leadership.html">leadership</a></li><li><a class="tag-chip" href="../tags/negotiation.html">negotiation</a></li><li><a class="tag-chip" href="../tags/diagramming.html">diagramming</a></li><li><a class="tag-chip" href="../tags/career.html">career</a></li><li><a class="tag-chip" href="../tags/teams.html">teams</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -648,13 +656,14 @@
 <ul>
 <li><a href="../concepts/risk-storming.html">Risk Storming</a> — risk identification and mitigation technique</li>
 <li><a href="../concepts/adrs.html">Adrs</a> — capturing architectural decisions and their justifications</li>
+<li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a> — the broader portfolio of documentation forms (C4/UML/ADRs/presentations) and presentation craft</li>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — directional tracking of architecture risk over time</li>
 <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — the &quot;-ilities&quot; that inform pragmatic vs visionary trade-offs</li>
 <li><a href="../concepts/conways-law.html">Conways Law</a> — team structure shapes architecture (links to architect team leadership decisions)</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li></ul>
+        <ul><li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li><li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li></ul>
       </aside>
     </main>
   </div>

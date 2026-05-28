@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Application-layer release control; Hodgson's four toggle types (release/experiment/ops/permission) with different lifecycles; flag lifecycle discipline;…">
+  <meta property="og:title" content="Feature Flags — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Application-layer release control; Hodgson's four toggle types (release/experiment/ops/permission) with different lifecycles; flag lifecycle discipline;…">
+  <title>Feature Flags — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html" aria-current="page">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Feature Flags</nav></div>
+      <h1>Feature Flags</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/feature-flags.html">feature-flags</a></li><li><a class="tag-chip" href="../tags/feature-toggles.html">feature-toggles</a></li><li><a class="tag-chip" href="../tags/deployment.html">deployment</a></li><li><a class="tag-chip" href="../tags/release.html">release</a></li><li><a class="tag-chip" href="../tags/progressive-delivery.html">progressive-delivery</a></li><li><a class="tag-chip" href="../tags/technical-debt.html">technical-debt</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>A feature flag (or feature toggle) is a runtime conditional in application code that determines whether a given code path is active for a given request. The flag&#39;s state is controlled by configuration external to the deployment, so the same deployed artefact can present different behaviour to different users without redeployment. Variants include release toggles, experiment toggles, ops toggles, and permission toggles — each with different lifecycles and audiences.</p>
+<h2>Why It Matters</h2>
+<p>Feature flags are the application-layer mechanism that makes <a href="../patterns/progressive-delivery.html">Progressive Delivery</a> possible without infrastructure changes. They decouple <strong>deployment</strong> (placing code in production) from <strong>release</strong> (exposing it to users), enabling:</p>
+<ul>
+<li><strong>Trunk-based development of large changes:</strong> ship incomplete code behind a flag rather than maintaining a long-lived branch (→ <a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a>)</li>
+<li><strong>Targeted rollouts:</strong> enable for internal users, then 1% of traffic, then a cohort, then everyone</li>
+<li><strong>Kill switches:</strong> instant disable of a misbehaving feature without rollback</li>
+<li><strong>A/B testing and experimentation:</strong> route different cohorts to different code paths and measure</li>
+<li><strong>Operational levers:</strong> disable expensive features under load shedding (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>)</li>
+</ul>
+<p>The cost is that every flag is a runtime branch with two behaviours that must be maintained, tested, and eventually removed. Flags accumulate as technical debt with a use-by date.</p>
+<h2>Toggle Categories</h2>
+<p>Pete Hodgson&#39;s taxonomy (referenced in <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) distinguishes four kinds, each with different lifecycle expectations:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+<th>Audience</th>
+<th>Expected lifetime</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Release toggle</strong></td>
+<td>Hide unfinished features in trunk</td>
+<td>Developers, then users</td>
+<td>Short (days to weeks); remove on launch</td>
+</tr>
+<tr>
+<td><strong>Experiment toggle</strong></td>
+<td>A/B test variants</td>
+<td>Users (cohort-based)</td>
+<td>Medium (weeks); remove on decision</td>
+</tr>
+<tr>
+<td><strong>Ops toggle</strong></td>
+<td>Operational control under load</td>
+<td>Operators</td>
+<td>Long-lived; documented as ops lever</td>
+</tr>
+<tr>
+<td><strong>Permission toggle</strong></td>
+<td>Premium/entitlement gating</td>
+<td>Users (entitlement-based)</td>
+<td>Permanent (becomes a feature of the product)</td>
+</tr>
+</tbody></table></div>
+<p>Conflating these categories is the most common source of feature-flag mess. A &quot;temporary release toggle&quot; that quietly becomes a permission toggle becomes a permanent runtime conditional with no owner. The taxonomy is partly a discipline for forcing the question: <em>which kind of toggle is this, and what&#39;s the removal trigger?</em></p>
+<h2>Lifecycle Discipline</h2>
+<p>Flags are technical debt that pays back only if it is repaid. The lifecycle:</p>
+<ol>
+<li><strong>Introduce</strong> — wrap the new code path in a flag; flag defaults to off</li>
+<li><strong>Test</strong> — internal users / dev environment with flag on</li>
+<li><strong>Roll out</strong> — enable for cohorts of increasing size; observe (→ <a href="../patterns/progressive-delivery.html">Progressive Delivery</a>)</li>
+<li><strong>Stabilise</strong> — flag is on for 100% of traffic; old path is unused</li>
+<li><strong>Remove</strong> — delete the flag, delete the old code path, simplify the conditional</li>
+</ol>
+<p>Step 5 is the most commonly skipped. The remedy is process discipline:</p>
+<ul>
+<li>Every flag has an owner and an expected removal date in its config</li>
+<li>Stale-flag dashboards flag toggles past their expected removal</li>
+<li>&quot;Toggle debt&quot; is a backlog item, not a &quot;nice to have&quot;</li>
+</ul>
+<p>From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: feature toggles are tracked as technical debt; teams that accumulate dozens of permanent &quot;temporary&quot; flags develop runtime behaviour they no longer understand.</p>
+<h2>Architectural Implications</h2>
+<h3>Flags as configuration, not deployment</h3>
+<p>The flag store is a configuration system — runtime-mutable, low-latency, available even when the deployment pipeline is not. From <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>: feature flags belong to the <a href="../operations/manageability.html">Manageability</a> triad — dynamic configuration that can be changed without redeploying. The config store itself must be designed for availability; a flag store outage that defaults closed turns a routine config issue into an outage.</p>
+<h3>Default behaviour matters</h3>
+<p>Every flag has a default-when-the-config-system-is-unreachable. &quot;Default off&quot; is conservative (new feature stays off if config is unavailable). &quot;Default on&quot; is required for ops toggles whose default state is the steady-state behaviour. Make the default explicit in code, not implicit in the config store&#39;s behaviour.</p>
+<h3>Cohort routing</h3>
+<p>User-targeted flags need a stable bucketing function — typically a hash of <code>(user_id, flag_name)</code> modulo the rollout percentage. Stability matters: a user who sees the new behaviour at 5% should still see it at 10%, not be re-shuffled into the old behaviour. Hash-based bucketing handles this; random per-request bucketing doesn&#39;t.</p>
+<h3>Multi-flag interactions</h3>
+<p>Two flags that are each safe alone may interact unexpectedly. The combinatorial space is N² for N flags. Mitigations: limit the set of simultaneously rolling-out flags; document known interactions; treat the cross-product space the way <a href="../operations/chaos-engineering.html">Chaos Engineering</a> treats combined-failure experiments.</p>
+<h3>Flags and architectural coupling</h3>
+<p>A flag-heavy codebase has a high &quot;static coupling&quot; cost: code paths that may or may not execute at runtime are harder to reason about than code paths that are simply present or absent. Use flags where the runtime control is genuinely needed; prefer build-time exclusion (compile-time feature toggles, branch-based) when runtime control is not needed.</p>
+<h2>Feature Flags vs Other Release Mechanisms</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Granularity</th>
+<th>Runtime control</th>
+<th>Lifecycle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Feature flags</td>
+<td>Per-user/per-request</td>
+<td>Yes (instant)</td>
+<td>Short → permanent (4 toggle types)</td>
+</tr>
+<tr>
+<td>Canary deployment</td>
+<td>Traffic fraction</td>
+<td>Via routing</td>
+<td>Single release</td>
+</tr>
+<tr>
+<td>Blue-green</td>
+<td>All/nothing</td>
+<td>Via routing</td>
+<td>Single release</td>
+</tr>
+<tr>
+<td>Branch-by-abstraction</td>
+<td>Code level</td>
+<td>No</td>
+<td>During migration</td>
+</tr>
+<tr>
+<td>Parallel run</td>
+<td>All requests</td>
+<td>Via routing</td>
+<td>During verification</td>
+</tr>
+</tbody></table></div>
+<p>Feature flags are the <em>finest-grained</em> of these tools and the only one with per-user targeting. They are also the only one with significant ongoing maintenance cost — the others end when the release ends.</p>
+<h2>Operational Patterns</h2>
+<h3>Kill switches</h3>
+<p>Every newly launched feature should have an ops-toggle kill switch that disables it instantly. This is distinct from a release toggle: a release toggle is removed when rollout completes; a kill switch is kept indefinitely as an operational lever. The cost of a permanent kill switch is one runtime conditional; the benefit is sub-minute MTTR for feature-induced incidents (→ <a href="../operations/availability.html">Availability</a>).</p>
+<h3>Circuit-breaker-driven flags</h3>
+<p>Connect flag state to circuit-breaker state: when a downstream dependency&#39;s circuit opens, automatically disable features that depend on it. The flag becomes the application&#39;s response to the breaker, gracefully degrading rather than failing (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../operations/common-failure-causes.html">Common Failure Causes</a>).</p>
+<h3>Load-shedding flags</h3>
+<p>Expensive features (search, recommendations, personalisation) can be flagged off under load shedding — the system degrades to the cheap baseline rather than failing entirely (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</p>
+<h2>Anti-patterns</h2>
+<p><strong>Permanent &quot;temporary&quot; flags.</strong> The flag was added for a 2-week rollout three years ago. The team that owned it doesn&#39;t exist. Removing it is risky because no one knows what depends on the off-path. Prevention: every flag has an owner and an expected removal date.</p>
+<p><strong>Flag-driven branching that should be subtyping.</strong> A flag becomes a permanent toggle because the two behaviours are genuinely different products. Move to a real subtype/strategy pattern; reserve flags for <em>transient</em> behaviour differences.</p>
+<p><strong>Configuration coupled across services.</strong> A flag that controls behaviour in multiple services creates implicit coordination requirements. Either the flag becomes a release-coordination point (defeating independent deployment) or services drift out of sync. Prefer per-service flags whose interaction is explicit.</p>
+<p><strong>Untested off-path / on-path.</strong> If the test suite only exercises one flag state, regressions can hide in the unexercised path. Test both paths; if testing both is too expensive, that&#39;s evidence the flag should be removed.</p>
+<p><strong>Flag state as security boundary.</strong> A permission toggle that&#39;s the only thing standing between a user and a premium feature can be bypassed by a client that controls the flag check. Permission decisions belong server-side, not in a UI-visible flag.</p>
+<p><strong>Flag thrashing during incidents.</strong> Flipping a flag back and forth during an incident creates a moving target for diagnosis. Stabilise (on or off) and observe; flip once.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Feature toggles as the mechanism that makes deployment ≠ release possible; explicit recognition as technical debt with a use-by date; key enabler for trunk-based development of large changes.</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Feature flags as part of the <a href="../operations/manageability.html">Manageability</a> triad: dynamic configuration that can be changed at runtime; kill switches; A/B test routing.</td>
+</tr>
+<tr>
+<td><a href="../sources/accelerate.html">Accelerate</a></td>
+<td>Empirical evidence: trunk-based development + feature flags correlate with higher <a href="../concepts/four-key-metrics.html">Four Key Metrics</a> performance. The mechanism by which CD practices are realised in code with incomplete features.</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Toggles support strangler migrations: route a fraction of traffic to the new service; route specific user cohorts; instant rollback if a migration step misbehaves.</td>
+</tr>
+<tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>Ops toggles as resilience tools: kill switches, load-shedding flags, dependency-failure graceful-degradation flags. Feature flags as part of the &quot;design for production&quot; toolkit.</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — the broader release pattern feature flags enable</li>
+<li><a href="../operations/manageability.html">Manageability</a> — flags as dynamic configuration</li>
+<li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a> — flags as a prerequisite for trunk-based dev</li>
+<li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — flags improve deployment frequency and reduce change-failure rate</li>
+<li><a href="../patterns/strangler-fig.html">Strangler Fig</a> — flags as the routing mechanism for incremental migration</li>
+<li><a href="../patterns/parallel-run.html">Parallel Run</a> — flags for routing between old and new implementations</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — flags as automatic responses to breaker state</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> — flag-driven feature disable as a budget-preservation tool</li>
+</ul>
+<h2>Key Quotes</h2>
+<blockquote>
+<p>&quot;Feature toggles allow developers to deploy code to production that isn&#39;t yet active for users — but each toggle is technical debt with a use-by date.&quot; — <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></p>
+</blockquote>
+<blockquote>
+<p>&quot;Deployment ≠ release.&quot; — <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></p>
+</blockquote>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

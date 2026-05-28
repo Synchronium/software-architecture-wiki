@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Purpose and audience taxonomy; C4 / UML / ArchiMate notations; ADRs as the durable documentation form; diagrams-as-code; &quot;just sufficient&quot; principle;…">
+  <meta property="og:title" content="Architecture Documentation — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Purpose and audience taxonomy; C4 / UML / ArchiMate notations; ADRs as the durable documentation form; diagrams-as-code; &quot;just sufficient&quot; principle;…">
+  <title>Architecture Documentation — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html" aria-current="page">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Architecture Documentation</nav></div>
+      <h1>Architecture Documentation</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/documentation.html">documentation</a></li><li><a class="tag-chip" href="../tags/c4.html">c4</a></li><li><a class="tag-chip" href="../tags/uml.html">uml</a></li><li><a class="tag-chip" href="../tags/archimate.html">archimate</a></li><li><a class="tag-chip" href="../tags/diagrams.html">diagrams</a></li><li><a class="tag-chip" href="../tags/communication.html">communication</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>Architecture documentation is the set of artefacts — written, diagrammatic, and presentational — that capture an architecture&#39;s <em>intent</em>, <em>structure</em>, and <em>decisions</em> in a form that can be understood by readers who weren&#39;t in the room when the architecture was decided. The defining purpose: enabling future engineers (including the architects&#39; future selves) to maintain, evolve, and govern the system without having to re-derive context from the code.</p>
+<p>Documentation differs from comments and code: comments explain local choices to readers of the code; documentation explains system-level structure to readers of the architecture.</p>
+<h2>Why It Matters</h2>
+<p>Architecture lives in three places: the code, the architects&#39; heads, and the documentation. The first is authoritative but illegible at scale; the second is fast but mortal; the third is the only one that survives team turnover and scales to multiple readers. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: ADRs serve as documentation that captures &quot;intent, not just structure&quot; — the <em>why</em> that cannot be reconstructed from reading the code (→ <a href="../concepts/adrs.html">Adrs</a>).</p>
+<p>Documentation has known failure modes: it&#39;s expensive to write, it goes stale quickly, and engineers under-invest in it because the readers are future people who don&#39;t yet have a voice in priority discussions. Most architecture documentation traditions are pragmatic compromises against these failure modes — making documentation <em>just sufficient</em>, <em>lightweight</em>, and <em>automatable</em> where possible.</p>
+<h2>What to Document</h2>
+<p>Documentation purposes differ; one set of artefacts cannot serve all of them.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Audience</th>
+<th>Artefact type</th>
+<th>Update frequency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Decision capture</td>
+<td>Future architects, governance</td>
+<td><a href="../concepts/adrs.html">Adrs</a></td>
+<td>Per-decision (append-only)</td>
+</tr>
+<tr>
+<td>Structural overview</td>
+<td>New engineers, stakeholders</td>
+<td>C4 diagrams</td>
+<td>Major structural change</td>
+</tr>
+<tr>
+<td>Runtime behaviour</td>
+<td>On-call, debugging</td>
+<td>Sequence diagrams, runbooks</td>
+<td>Per significant feature</td>
+</tr>
+<tr>
+<td>API contracts</td>
+<td>Consumers, internal/external</td>
+<td>OpenAPI, Pact, schema docs</td>
+<td>Per API change</td>
+</tr>
+<tr>
+<td>Strategic context</td>
+<td>Leadership, cross-team</td>
+<td>Domain vision, context maps</td>
+<td>Major business shift</td>
+</tr>
+<tr>
+<td>Stakeholder communication</td>
+<td>Non-engineers</td>
+<td>Presentations, infodecks</td>
+<td>Per meeting / initiative</td>
+</tr>
+</tbody></table></div>
+<p>Treating these as the same artefact (the dreaded &quot;architecture document&quot;) is the most common documentation failure. Each has different update cadence, audience, and lifespan.</p>
+<h2>Notational Conventions</h2>
+<h3>C4 Model</h3>
+<p>Simon Brown&#39;s C4 model (Context, Container, Component, Class) is the most widely adopted lightweight architecture notation. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 19: &quot;C4 (Context/Container/Component/Class; Simon Brown; better suited to monolithic than distributed architectures).&quot;</p>
+<p>The four hierarchical levels:</p>
+<ul>
+<li><strong>System Context</strong> — the system in its environment (users, external systems)</li>
+<li><strong>Container</strong> — applications, data stores, microservices within the system</li>
+<li><strong>Component</strong> — major logical groupings within a container</li>
+<li><strong>Class</strong> — implementation-level (rarely drawn; usually skipped in favour of code)</li>
+</ul>
+<p>C4&#39;s value is its progressive zoom — each diagram answers questions at its level without trying to be comprehensive. Notation is deliberately informal: boxes and arrows with labels. Notable limitation flagged by <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: better suited to monolithic than distributed architectures, because container relationships in heavily-distributed systems become cluttered.</p>
+<h3>UML</h3>
+<p>The Unified Modeling Language remains useful for specific diagram types but has fallen into general disuse. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;Class and sequence diagrams still useful; most other types fell into disuse.&quot; Sequence diagrams in particular remain valuable for documenting runtime interactions; class diagrams for non-trivial inheritance hierarchies.</p>
+<p>UML&#39;s failure mode is its complexity: the full standard is too large to learn casually, and most teams use a small idiosyncratic subset. The C4 model is in part a response to UML over-engineering.</p>
+<h3>ArchiMate</h3>
+<p>The Open Group&#39;s enterprise modelling language. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;Open-source enterprise modelling language; Open Group standard; deliberately &#39;as small as possible&#39;.&quot; Most useful at the enterprise architecture layer rather than for single-system documentation. Tooling is heavier (Archi, BizzDesign); adoption is concentrated in large enterprises with formal EA functions.</p>
+<h3>Informal box-and-line diagrams</h3>
+<p>What most teams actually use. The lack of standard notation is a feature for casual diagrams (low cost to produce, no learning curve) and a bug for diagrams that need to survive (no shared interpretation). Mitigate by adding a brief legend; reserve formal notation for diagrams that will be referenced over months.</p>
+<h3>Diagrams-as-code</h3>
+<p>Mermaid, PlantUML, Structurizr DSL — tools that generate diagrams from text. Trade-off: lower diagram fidelity, but diagrams version-control with the code, render automatically in PR reviews, and avoid the &quot;diagram drifts from the system&quot; failure mode. Increasingly the default for technical-audience documentation.</p>
+<h2>ADRs (the documentation that stays current)</h2>
+<p>Architecture Decision Records are the single documentation practice that consistently survives in living codebases. See <a href="../concepts/adrs.html">Adrs</a> for the full pattern. Why ADRs work where other documentation fails:</p>
+<ul>
+<li><strong>Append-only.</strong> Decisions are recorded once, superseded but not edited. No staleness because no updates.</li>
+<li><strong>Local context.</strong> Each ADR captures the situation that led to the decision; the context is preserved with the choice.</li>
+<li><strong>Lightweight.</strong> A typical ADR is ~1 page: context, decision, consequences.</li>
+<li><strong>Per-decision granularity.</strong> Unlike &quot;the architecture document,&quot; ADRs are bounded — one decision per ADR.</li>
+<li><strong>Searchable history.</strong> Reading the ADRs in order tells the story of how the architecture got to where it is.</li>
+</ul>
+<p>From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;The Context section describes the architecture; the Decision section documents the reasoning; the Consequences section covers trade-offs. Together they form architecture documentation that captures the intent, not just the structure.&quot;</p>
+<h2>Documentation Practices</h2>
+<h3>Documentation as code</h3>
+<p>Store documentation in the repository, treat it like code: PR review, linting, automatic publication, version with the system. From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: the fitness-function approach extends to documentation — automated checks ensure ADRs are present for major changes, diagrams are renderable, links don&#39;t rot.</p>
+<h3>Just sufficient</h3>
+<p>The &quot;least worst documentation&quot; principle: document what readers genuinely need; don&#39;t document what the code already shows. Code is the authoritative source for <em>what the system does</em>; documentation should focus on <em>why</em> and <em>how to navigate</em>. From <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> on bounded contexts and context maps: high-level strategic documentation is far more durable and useful than low-level structural documentation that the IDE can derive from code.</p>
+<h3>Tracking decision context</h3>
+<p>The most important documentation property is captured context: which forces were in play, which alternatives were considered, what would invalidate the decision. ADRs nail this; running prose tends not to.</p>
+<h3>Stakeholder-appropriate</h3>
+<p>From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 22 on presentations: &quot;Presenters have verbal and visual channels. Bullet-Riddled Corpse anti-pattern overloads one channel.&quot; Documentation for a presentation differs from documentation for archival reading; <strong>infodecks</strong> (slide decks emailed as standalone documents) need comprehensive content, while <strong>presentations</strong> deliberately need only half — the other half is the speaker.</p>
+<h3>Diagrams that survive</h3>
+<p>The diagrams that survive over multiple years tend to share properties: they are at the <em>context</em> or <em>container</em> level (not the component or class level, which churn); they include a legend; they are checked into the repository; they have an owner whose name is on them. Most low-level diagrams are write-once, read-once.</p>
+<h2>Anti-patterns</h2>
+<p><strong>The Big Up-Front Architecture Document.</strong> A 50-page document produced before development starts. By month three of development, the document is out of date; by month six, no one references it. Replace with progressive ADRs.</p>
+<p><strong>Comprehensive UML coverage.</strong> Diagrams for every interaction, every class, every state. The maintenance cost grows with the system; staleness sets in within months. Diagram only what readers need to navigate.</p>
+<p><strong>Documentation as bureaucratic compliance.</strong> Architecture documents produced because process requires them, read by no one. The forcing function (audit, gate review) does not produce useful documentation; it produces documents.</p>
+<p><strong>Bullet-Riddled Corpse.</strong> <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 22: slides covered in text that the speaker reads aloud. Overloads both verbal and visual channels. Use incremental builds; reveal information progressively.</p>
+<p><strong>Cookie-Cutter padding.</strong> Don&#39;t pad slides to fill space — ideas don&#39;t have a fixed word count. Padding obscures the signal.</p>
+<p><strong>Drift between code and diagrams.</strong> A diagram that contradicts the code is worse than no diagram — it actively misleads. Either keep the diagram automated (diagrams-as-code from system state) or accept the staleness and add a &quot;last validated on&quot; note.</p>
+<p><strong>Single-format documentation.</strong> Treating &quot;architecture documentation&quot; as one artefact rather than a portfolio. Different audiences need different artefacts; one document satisfying all of them satisfies none.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Canonical treatment. C4, UML, ArchiMate notations; ADRs as the durable documentation form; presentation craft (two-channel model, infodecks vs presentations, Invisibility pattern); explicit anti-patterns.</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Documentation as code; fitness functions for documentation freshness; ADRs as evolutionary architecture&#39;s audit trail.</td>
+</tr>
+<tr>
+<td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
+<td>High-level strategic documentation (context maps, domain vision) as the most durable form; ubiquitous language as documentation that lives in the code itself.</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>OpenAPI specifications as a documentation form that doubles as machine-readable contract; documentation that drives tooling (mock servers, client generators, gateway config).</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/adrs.html">Adrs</a> — the most durable documentation practice</li>
+<li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills</a> — presentation craft, stakeholder communication</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — documentation as living artefact</li>
+<li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — DDD&#39;s &quot;documentation in the code itself&quot;</li>
+<li><a href="../concepts/large-scale-structure.html">Large Scale Structure</a> — Evans on system metaphor and the documentation of pattern</li>
+<li><a href="../patterns/context-map.html">Context Map</a> — DDD&#39;s most durable strategic documentation artefact</li>
+<li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — automated documentation checks</li>
+</ul>
+<h2>Key Quotes</h2>
+<blockquote>
+<p>&quot;ADRs form architecture documentation that captures the intent, not just the structure.&quot; — <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 19</p>
+</blockquote>
+<blockquote>
+<p>&quot;Bullet-Riddled Corpse anti-pattern overloads one channel.&quot; — <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 22</p>
+</blockquote>
+<blockquote>
+<p>&quot;Infodecks need comprehensive content; presentations deliberately need only half — the other half is the speaker.&quot; — <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 22</p>
+</blockquote>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li><li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

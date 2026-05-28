@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Release in stages exposing change to controlled subsets; deployment vs release decoupling; canary/blue-green/ring/dark-launch/parallel-run/feature-flag…">
+  <meta property="og:title" content="Progressive Delivery — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Release in stages exposing change to controlled subsets; deployment vs release decoupling; canary/blue-green/ring/dark-launch/parallel-run/feature-flag…">
+  <title>Progressive Delivery — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html" aria-current="page">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../patterns/index.html">Patterns</a> <span class="sep">›</span> Progressive Delivery</nav></div>
+      <h1>Progressive Delivery</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../patterns/index.html">pattern</a>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/progressive-delivery.html">progressive-delivery</a></li><li><a class="tag-chip" href="../tags/deployment.html">deployment</a></li><li><a class="tag-chip" href="../tags/release.html">release</a></li><li><a class="tag-chip" href="../tags/canary.html">canary</a></li><li><a class="tag-chip" href="../tags/feature-flags.html">feature-flags</a></li><li><a class="tag-chip" href="../tags/risk-management.html">risk-management</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><div class="page-body"><h2>Definition</h2>
+<p>Progressive delivery is the practice of releasing changes to production in stages, where each stage exposes the change to a controlled subset of traffic or users before the next stage. The defining property is that <strong>deployment is decoupled from release</strong>: code is shipped to production servers without being immediately visible to all users; visibility ramps up over time as confidence grows. Variants include canary release, blue-green deployment, ring deployment, dark launching, and feature-flagged rollouts.</p>
+<h2>Why It Matters</h2>
+<p>The risk of any change is unknown until that change runs under real production load on real production data with real users. Pre-production testing reduces risk but cannot eliminate it (→ <a href="../operations/testing-for-reliability.html">Testing For Reliability</a>). Progressive delivery makes the production environment itself the final test bench, limiting blast radius to a controllable fraction of traffic and providing fast rollback when an issue is detected. From <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 36: &quot;Canary rigorously even for &#39;low-risk&#39; changes — the combination of a change with an unlikely configuration keyword triggered the crash-loop outage.&quot;</p>
+<p>The economic argument is in <a href="../sources/release-it.html">Release It</a> ch. 1: routine, low-risk deployment via progressive delivery transforms release from a $100K event (40-person deployment armies, midnight UAT, all-hands rollback) into a one-button operation that&#39;s safe enough to do during business hours.</p>
+<h2>The Core Decoupling: Deployment vs Release</h2>
+<p>This distinction is the cognitive shift that makes progressive delivery possible.</p>
+<ul>
+<li><strong>Deployment:</strong> placing built artefacts on production infrastructure. Routine, scriptable, low-stakes.</li>
+<li><strong>Release:</strong> exposing the deployed code to traffic. Reversible, observable, controlled.</li>
+</ul>
+<p>Without this decoupling, every deployment is a release and every release is a binary risk event. With it, a deployed-but-not-released change can be observed in production (via shadow traffic, internal users, feature flags) and released gradually. From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: feature toggles make deployment &quot;boring&quot; by removing the all-or-nothing characteristic.</p>
+<h2>Mechanisms</h2>
+<h3>Canary Release</h3>
+<p>A small fraction of traffic is routed to the new version while the rest continues to the old version. Metrics are compared; if the canary holds (error rate, latency percentiles, business KPIs within bounds), traffic is incrementally shifted toward the new version.</p>
+<p>From <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 17: &quot;Canary tests... expose new version to live traffic; exponential rollout with order-of-fault estimation (U=1: scales linearly with traffic; U=2: randomly damages data a future user will see; U=3: damaged data is also a valid identifier; most bugs are U=1).&quot; The order-of-fault model justifies exponential rollout: U=1 bugs are found cheaply at small canary fractions, so most bugs are caught before broad exposure.</p>
+<p><strong>Operational requirements:</strong></p>
+<ul>
+<li>Identical observability for canary and baseline (same dashboards, same alerts)</li>
+<li>Comparable workload routing (random sample, not &quot;European traffic only&quot;)</li>
+<li>Automated abort on metric deviation (see <a href="../operations/chaos-engineering.html">Chaos Engineering</a>&#39;s ChAP for an extreme case)</li>
+<li>Sufficient canary traffic to achieve statistical power within the rollout window</li>
+</ul>
+<h3>Blue-Green Deployment</h3>
+<p>Two identical production environments (blue = current, green = new). Deploy to green; smoke-test; switch the router to point at green. Old environment remains as instant rollback target.</p>
+<p><strong>Trade-offs vs canary:</strong></p>
+<ul>
+<li>Faster cutover, simpler routing logic</li>
+<li>Either-or; no gradual ramp</li>
+<li>Requires double the production capacity during the switch</li>
+<li>Database/state migrations are harder (both environments may share the DB)</li>
+<li>Cleaner for stateless tiers; canary is usually better for stateful systems</li>
+</ul>
+<p>Hybrid pattern: blue-green for the infrastructure, canary for the routing once green is live.</p>
+<h3>Ring / Geographic Deployment</h3>
+<p>A progression of deployment targets ordered by risk tolerance: internal users → beta users → small region → larger region → global. Standard practice at Google and Microsoft. From <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a>: &quot;<em>Progressive rollouts</em>: staged, supervised, across geographies; roll back first, diagnose second.&quot;</p>
+<p>The &quot;roll back first, diagnose second&quot; rule is the key cultural property: rollback is a routine response to deviation, not a defeat. Diagnosis happens once the production fire is out.</p>
+<h3>Dark Launching</h3>
+<p>Deploy the change and route real traffic to it, but discard the result and serve users from the old path. The new code path runs in production under real load before any user depends on it. Used heavily for performance validation, cache warming, and verifying that downstream dependencies can absorb the new traffic.</p>
+<p>Distinct from canary: in dark launching, <em>no users see the new behaviour</em>; the goal is performance/load characterisation.</p>
+<h3>Parallel Run</h3>
+<p>Both old and new code run on every request; results are compared; one result is returned. The other is logged for offline correctness analysis. See <a href="../patterns/parallel-run.html">Parallel Run</a> for the full pattern — particularly useful for refactoring or platform migration where correctness equivalence is the primary risk.</p>
+<p>GitHub&#39;s Scientist library is the canonical implementation. Distinct from canary (correctness comparison, not load-based metrics) and from dark launching (both paths execute and are compared, vs old serving and new being discarded).</p>
+<h3>Feature Flags</h3>
+<p>The release control lives in application code: a flag determines whether the new behaviour is visible to a given request. Allows runtime control, per-user/per-cohort targeting, and instant disable without redeployment. See <a href="../concepts/feature-flags.html">Feature Flags</a> for the full treatment. From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: feature toggles decouple deployment from release at the application layer rather than the infrastructure layer.</p>
+<h2>The Pattern Spectrum</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Granularity of control</th>
+<th>Rollback speed</th>
+<th>Capacity overhead</th>
+<th>Stateful-system fit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Blue-green</td>
+<td>Binary (all or none)</td>
+<td>Instant (router flip)</td>
+<td>2× during switch</td>
+<td>Difficult</td>
+</tr>
+<tr>
+<td>Canary</td>
+<td>Traffic fraction</td>
+<td>Fast (rebalance traffic)</td>
+<td>Marginal</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>Ring</td>
+<td>User cohort</td>
+<td>Per-ring</td>
+<td>Marginal</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>Dark launch</td>
+<td>None (no users see)</td>
+<td>N/A</td>
+<td>2× per-request</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Parallel run</td>
+<td>Per-request comparison</td>
+<td>Instant (drop new)</td>
+<td>2× per-request</td>
+<td>Good (read-only)</td>
+</tr>
+<tr>
+<td>Feature flag</td>
+<td>Per-user / per-cohort</td>
+<td>Instant (flag flip)</td>
+<td>None</td>
+<td>Good</td>
+</tr>
+</tbody></table></div>
+<p>Real organisations combine multiple: infrastructure-level canary deployment with application-level feature flags is common.</p>
+<h2>Prerequisites</h2>
+<p>Progressive delivery rests on a stack of preceding capabilities. From <a href="../sources/accelerate.html">Accelerate</a>&#39;s <a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a>:</p>
+<ol>
+<li><strong>Trunk-based development</strong> — long-lived branches make progressive delivery harder, not easier</li>
+<li><strong>Automated deployment pipeline</strong> — manual deployment is incompatible with frequent staged rollout (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</li>
+<li><strong>Comprehensive automated tests</strong> — pre-canary tests reduce the rate of canary aborts</li>
+<li><strong>Production observability</strong> — without metrics comparable across versions, &quot;did the canary hold?&quot; is unanswerable (→ <a href="../operations/observability.html">Observability</a>)</li>
+<li><strong>Loose architectural coupling</strong> — services that can be released independently (→ <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>)</li>
+<li><strong>Database schema evolution practices</strong> — expand/contract, dual-write, never-rename (→ <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>)</li>
+</ol>
+<h2>Anti-patterns</h2>
+<p><strong>Canary without comparable observability.</strong> If the new version has different telemetry than the baseline, deviation detection is unreliable. Decision quality is bounded by metric quality.</p>
+<p><strong>Stale-flag accumulation.</strong> Feature flags that were never removed after rollout become dead conditionals. From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: feature flags are technical debt with a use-by date. See <a href="../concepts/feature-flags.html">Feature Flags</a> for the lifecycle discipline.</p>
+<p><strong>Rollback fear.</strong> If teams treat rollback as failure, they will hesitate, diagnose first, and let the incident grow. The SRE principle is &quot;roll back first, diagnose second&quot; — rollback must be a low-status routine action.</p>
+<p><strong>Schema changes that can&#39;t be progressively delivered.</strong> A breaking database migration cannot be canaried — old code can&#39;t read new schema. Use expand/contract patterns (→ <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>) so the schema accommodates both versions during the rollout window.</p>
+<p><strong>Insufficient canary traffic for signal.</strong> A 1% canary on a low-traffic service may never generate enough samples to detect a P99 regression within the rollout window. Either scale up the canary fraction, lengthen the window, or accept that low-traffic services need different deployment patterns.</p>
+<p><strong>Coupled rollback.</strong> If the new version writes data the old version can&#39;t read, rolling back the code is not enough — you have to roll back data too. Design rollback paths during feature design, not during the incident.</p>
+<h2>How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>Canary as a structured user-acceptance test, not a &quot;test&quot; in the conventional sense; exponential rollout justified by order-of-fault analysis; &quot;roll back first, diagnose second&quot;; progressive rollouts as the geographical analogue.</td>
+</tr>
+<tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>The economic case: progressive delivery transforms release from a six-figure event into a one-button operation; coupling of deployment friction and operational cost; &quot;design for production.&quot;</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Feature toggles as the decoupling mechanism that makes evolution safe; toggles as technical debt with a use-by date; deployment ≠ release.</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>API-level progressive delivery: traffic splitting at the gateway, versioned routing, parallel run for API migration.</td>
+</tr>
+<tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Strangler fig as a long-running progressive delivery from old to new architecture; parallel run for correctness validation during migration.</td>
+</tr>
+<tr>
+<td><a href="../sources/accelerate.html">Accelerate</a></td>
+<td>Empirical evidence: high-performing organisations release more frequently, with lower change-failure rate, faster MTTR — all enabled by the progressive-delivery toolchain.</td>
+</tr>
+</tbody></table></div>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/feature-flags.html">Feature Flags</a> — application-layer release control</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the automation substrate</li>
+<li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a> — the broader capability set</li>
+<li><a href="../patterns/parallel-run.html">Parallel Run</a> — correctness-comparison variant</li>
+<li><a href="../patterns/strangler-fig.html">Strangler Fig</a> — long-running architectural progressive delivery</li>
+<li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — schema patterns that survive partial rollout</li>
+<li><a href="../operations/observability.html">Observability</a> — prerequisite for canary decisions</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — ChAP as automated canary + experiment combined</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> — budget exhaustion as a release-rate brake</li>
+<li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — deployment frequency, change failure rate, MTTR all influenced by progressive delivery</li>
+</ul>
+<h2>Key Quotes</h2>
+<blockquote>
+<p>&quot;Canary rigorously even for &#39;low-risk&#39; changes.&quot; — <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 17</p>
+</blockquote>
+<blockquote>
+<p>&quot;Roll back first, diagnose second.&quot; — <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></p>
+</blockquote>
+<blockquote>
+<p>&quot;$50,000 invested in a zero-downtime deployment pipeline returns 18× over five years.&quot; — <a href="../sources/release-it.html">Release It</a> ch. 1</p>
+</blockquote>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

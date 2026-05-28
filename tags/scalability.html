@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <meta name="description" content="11 pages tagged &quot;Scalability&quot; in the Software Architecture wiki.">
+  <meta name="description" content="12 pages tagged &quot;Scalability&quot; in the Software Architecture wiki.">
   <meta property="og:title" content="Scalability — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="11 pages tagged &quot;Scalability&quot; in the Software Architecture wiki.">
+  <meta property="og:description" content="12 pages tagged &quot;Scalability&quot; in the Software Architecture wiki.">
   <title>Scalability — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -66,6 +66,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -74,12 +75,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -92,6 +95,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -106,6 +110,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -124,6 +129,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -164,6 +170,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -189,6 +196,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -293,7 +301,7 @@
     <div class="tag-index-header">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../tags/index.html">Tags</a> <span class="sep">›</span> Scalability</nav>
       <h1>Scalability</h1>
-      <p class="tag-count">11 pages</p>
+      <p class="tag-count">12 pages</p>
     </div>
     <ul class="tag-index-list">
       <li class="tag-index-item">
@@ -325,6 +333,11 @@
         <a href="../distributed/partitioning.html">Partitioning</a>
         <span class="page-type-badge">concept</span>
         <p class="summary">Key range, hash, consistent hashing, secondary indexes (local/global), rebalancing strategies, request routing; cross-partition complexity costs</p>
+      </li>
+      <li class="tag-index-item">
+        <a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a>
+        <span class="page-type-badge">concept</span>
+        <p class="summary">Little's Law (L=λW), utilisation curves (W=S/(1−ρ)) and hyperbolic response-time growth, tail latency amplification in fan-out designs, percentile arithmetic (averages lie; can't average percentiles; t-digest/HdrHistogram), queues in series, thread pools as queueing systems; practical heuristics for capacity and tuning</p>
       </li>
       <li class="tag-index-item">
         <a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a>

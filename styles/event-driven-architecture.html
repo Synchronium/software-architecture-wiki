@@ -65,6 +65,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -73,12 +74,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -91,6 +94,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -105,6 +109,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -123,6 +128,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -163,6 +169,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -188,6 +195,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -294,7 +302,7 @@
       <h1>Event-Driven Architecture</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../styles/index.html">style</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/events.html">events</a></li><li><a class="tag-chip" href="../tags/async.html">async</a></li><li><a class="tag-chip" href="../tags/messaging.html">messaging</a></li><li><a class="tag-chip" href="../tags/domain-partitioning.html">domain-partitioning</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/streaming.html">streaming</a></li><li><a class="tag-chip" href="../tags/ddd.html">ddd</a></li><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -545,7 +553,7 @@
 <h2>Partitioning</h2>
 <p><strong>Technically partitioned</strong>: any domain is typically spread across multiple event processors tied together through mediators, queues, and topics. Changes to a domain usually touch many event processors and messaging artifacts. This is why EDA scores relatively lower on evolutionary architecture characteristics than microservices, even though both are distributed.</p>
 <h2>Competing Consumers</h2>
-<p><strong>Competing consumers</strong> are the primary scalability mechanism: multiple instances of an event processor consume from the same queue. As request load increases, additional instances are added programmatically. This is how EDA achieves its 5-star scalability and elasticity ratings. Queues provide back-pressure: if an event processor slows down or crashes, messages queue up until the processor recovers or new instances are added.</p>
+<p><strong>Competing consumers</strong> are the primary scalability mechanism: multiple instances of an event processor consume from the same queue. As request load increases, additional instances are added programmatically. This is how EDA achieves its 5-star scalability and elasticity ratings. Queues provide back-pressure (see <a href="../distributed/backpressure.html">Backpressure</a>): if an event processor slows down or crashes, messages queue up until the processor recovers or new instances are added. Pull-based consumption is the architectural reason EDA handles variable load more gracefully than synchronous chains — backpressure is built into the substrate rather than retrofitted as a stability pattern.</p>
 <h2>Hybrid Event-Driven Architectures</h2>
 <p>EDA is frequently embedded within other architecture styles rather than used standalone:</p>
 <ul>
@@ -696,7 +704,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li><li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li><li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li></ul>
+        <ul><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li><li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li><li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li></ul>
       </aside>
     </main>
   </div>

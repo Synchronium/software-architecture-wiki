@@ -65,6 +65,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -73,12 +74,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html" aria-current="page">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -91,6 +94,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -105,6 +109,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -123,6 +128,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -163,6 +169,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -188,6 +195,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -294,7 +302,7 @@
       <h1>Deployment Pipelines</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/continuous-delivery.html">continuous-delivery</a></li><li><a class="tag-chip" href="../tags/deployment.html">deployment</a></li><li><a class="tag-chip" href="../tags/fitness-functions.html">fitness-functions</a></li><li><a class="tag-chip" href="../tags/automation.html">automation</a></li><li><a class="tag-chip" href="../tags/ci-cd.html">ci-cd</a></li><li><a class="tag-chip" href="../tags/devops.html">devops</a></li><li><a class="tag-chip" href="../tags/testing.html">testing</a></li><li><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -434,7 +442,7 @@
 <p>An automated upgrade-downgrade test in the pre-production stage validates that a change is actually safe to roll back before it reaches production.</p>
 <p>The most common source of backward incompatibility is changing the serialisation format used for persistence or inter-process communication — protocol buffers, JSON schemas, database schemas.</p>
 <h2>Deployment ≠ Release: API Lifecycle and Release Strategies</h2>
-<p>Deployment pipelines operationalise the decoupling of deployment from release. Code reaches production (deployed) but may not be visible to users (not released) until a feature flag is toggled or a canary is expanded. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 5)</p>
+<p>Deployment pipelines operationalise the decoupling of deployment from release. Code reaches production (deployed) but may not be visible to users (not released) until a feature flag is toggled or a canary is expanded. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 5). See <a href="../patterns/progressive-delivery.html">Progressive Delivery</a> for the full taxonomy of staged-rollout patterns (canary, blue-green, ring, dark launch, parallel run, feature flag) and <a href="../concepts/feature-flags.html">Feature Flags</a> for the application-layer release control.</p>
 <h3>API Lifecycle</h3>
 <p>An API version progresses through defined lifecycle stages. Consumers only need to track <strong>major</strong> version changes — minor and patch are backward-compatible and received silently (→ <a href="../concepts/api-design.html">Api Design</a>):</p>
 <div class="table-wrapper"><table>
@@ -674,10 +682,13 @@
 <li><a href="../operations/testing-for-reliability.html">Testing For Reliability</a> — hermetic builds, canary tests, production probes, and configuration testing are the reliability testing layer within pipelines</li>
 <li><a href="../operations/manageability.html">Manageability</a> — feature flags are the code-level mechanism for deployment ≠ release</li>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — traffic splitting for canary and mirroring is implemented in the service mesh data plane</li>
+<li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — canonical hub for the staged-rollout pattern family (canary, blue-green, ring, dark launch, parallel run, feature flag)</li>
+<li><a href="../concepts/feature-flags.html">Feature Flags</a> — application-layer release control with lifecycle discipline</li>
+<li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — pipeline investment has 18× ROI; downtime cost as the economic justification</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li><li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li></ul>
+        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li><li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li></ul>
       </aside>
     </main>
   </div>

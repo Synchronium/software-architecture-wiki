@@ -65,6 +65,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -73,12 +74,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -91,6 +94,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -105,6 +109,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -123,6 +128,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -163,6 +169,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -188,6 +195,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -294,7 +302,7 @@
       <h1>Synchronous vs Asynchronous Communication</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
-        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li><li><a class="tag-chip" href="../tags/messaging.html">messaging</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/integration.html">integration</a></li><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/temporal-coupling.html">temporal-coupling</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -390,7 +398,7 @@
 <p><strong>Idempotency</strong>: at-least-once delivery is the reliable delivery guarantee for most messaging systems. Consumers must handle duplicate messages without double-processing. Idempotency keys are the standard mechanism (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
 <p><strong>Ordering</strong>: messages within a partition/topic are ordered; messages across partitions are not. Systems that depend on ordering (e.g., state machine transitions) must either constrain to a single partition or implement sequence numbers and out-of-order buffering.</p>
 <p><strong>Correlation</strong>: when a caller sends a message and later receives a response, it must be able to match the response to the original request. Correlation identifiers are the standard mechanism (→ <a href="../concepts/messaging.html">Messaging</a>).</p>
-<p><strong>Backpressure</strong>: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement.</p>
+<p><strong>Backpressure</strong>: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement. See <a href="../distributed/backpressure.html">Backpressure</a> for the mechanisms (bounded queues, credit-based flow control, pull-based consumption) and <a href="../distributed/queueing-theory.html">Queueing Theory</a> for why unbounded queues produce unbounded latency.</p>
 <p><strong>Distributed tracing</strong>: async message flows are invisible to traditional call-stack profilers. Trace IDs must be propagated through message headers; a distributed tracing system (Jaeger, Zipkin) is necessary to reconstruct flows (→ <a href="../operations/observability.html">Observability</a>).</p>
 <h2>The Mixed Model: Sync Outside, Async Inside</h2>
 <p>The most common pattern in mature distributed systems:</p>
@@ -455,6 +463,9 @@
 <li><a href="../concepts/coupling.html">Coupling</a> — temporal coupling is Newman&#39;s term for the availability dependency created by synchronous calls</li>
 <li><a href="../concepts/integration-styles.html">Integration Styles</a> — EIP&#39;s four styles: File Transfer and Messaging are async; RPI is synchronous; Shared Database is neither</li>
 <li><a href="../concepts/messaging.html">Messaging</a> — the implementation vocabulary for async: channels, delivery guarantees, correlation, backpressure</li>
+<li><a href="../distributed/backpressure.html">Backpressure</a> — flow control as the architectural answer to producer/consumer rate mismatch</li>
+<li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — Little&#39;s Law, utilisation curves, and tail latency in async pipelines</li>
+<li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — Decoupling Middleware as one of Nygard&#39;s stability decisions</li>
 <li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — async communication as the structural default for event-driven systems</li>
 <li><a href="../patterns/saga.html">Saga</a> — the distributed transaction pattern for sequences of async operations; choreography vs orchestration</li>
 <li><a href="../patterns/timeout.html">Timeout</a> — the required companion to every synchronous call; without it, async failure modes appear in sync code</li>
@@ -465,7 +476,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li></ul>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li></ul>
       </aside>
     </main>
   </div>

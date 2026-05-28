@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <meta name="description" content="Browse all 277 tags used across the Software Architecture wiki.">
+  <meta name="description" content="Browse all 303 tags used across the Software Architecture wiki.">
   <meta property="og:title" content="Tags — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="Browse all 277 tags used across the Software Architecture wiki.">
+  <meta property="og:description" content="Browse all 303 tags used across the Software Architecture wiki.">
   <title>Tags — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -66,6 +66,7 @@
         <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
         <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
         <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
         <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
@@ -74,12 +75,14 @@
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
         <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
@@ -92,6 +95,7 @@
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
         <li><a href="../concepts/supple-design.html">Supple Design</a></li>
         <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
         <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
@@ -106,6 +110,7 @@
       <summary>Distributed</summary>
       <ul>
         <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
         <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
         <li><a href="../distributed/caching.html">Caching</a></li>
         <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
@@ -124,6 +129,7 @@
         <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
         <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
         <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
         <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
         <li><a href="../distributed/replication.html">Replication</a></li>
         <li><a href="../distributed/scalability.html">Scalability</a></li>
@@ -164,6 +170,7 @@
         <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
         <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
         <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
         <li><a href="../patterns/repository.html">Repository Pattern</a></li>
         <li><a href="../patterns/retry.html">Retry</a></li>
         <li><a href="../patterns/saga.html">Saga Pattern</a></li>
@@ -189,6 +196,7 @@
       <ul>
         <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
         <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
         <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
         <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
       </ul>
@@ -293,7 +301,7 @@
     <div class="tag-index-header">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> Tags</nav>
       <h1>Tags</h1>
-      <p class="tag-count">277 tags</p>
+      <p class="tag-count">303 tags</p>
     </div>
     <ul class="tag-index-list">
       <li class="tag-index-item">
@@ -329,12 +337,20 @@
         <span class="page-type-badge">10 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="archimate.html">archimate</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="architecture-patterns.html">architecture-patterns</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="architecture-process.html">architecture-process</a>
         <span class="page-type-badge">2 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="architecture-trade-offs.html">architecture-trade-offs</a>
+        <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="async.html">async</a>
@@ -373,6 +389,10 @@
         <span class="page-type-badge">8 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="backpressure.html">backpressure</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="backup.html">backup</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -393,12 +413,20 @@
         <span class="page-type-badge">3 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="c4.html">c4</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="caching.html">caching</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="canary.html">canary</a>
-        <span class="page-type-badge">3 pages</span>
+        <span class="page-type-badge">4 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="capacity-planning.html">capacity-planning</a>
+        <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="career.html">career</a>
@@ -410,7 +438,11 @@
       </li>
       <li class="tag-index-item">
         <a href="cdc.html">cdc</a>
-        <span class="page-type-badge">2 pages</span>
+        <span class="page-type-badge">3 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="change-data-capture.html">change-data-capture</a>
+        <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="chaos-engineering.html">chaos-engineering</a>
@@ -454,7 +486,7 @@
       </li>
       <li class="tag-index-item">
         <a href="communication.html">communication</a>
-        <span class="page-type-badge">1 page</span>
+        <span class="page-type-badge">2 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="compatibility.html">compatibility</a>
@@ -525,6 +557,10 @@
         <span class="page-type-badge">5 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="cost.html">cost</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="coupling.html">coupling</a>
         <span class="page-type-badge">19 pages</span>
       </li>
@@ -549,6 +585,10 @@
         <span class="page-type-badge">6 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="data-integration.html">data-integration</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="data-integrity.html">data-integrity</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -562,6 +602,10 @@
       </li>
       <li class="tag-index-item">
         <a href="data-models.html">data-models</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="data-pipelines.html">data-pipelines</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
@@ -610,7 +654,7 @@
       </li>
       <li class="tag-index-item">
         <a href="deployment.html">deployment</a>
-        <span class="page-type-badge">5 pages</span>
+        <span class="page-type-badge">7 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="derived-data.html">derived-data</a>
@@ -629,6 +673,10 @@
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
+        <a href="diagrams.html">diagrams</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="discovery.html">discovery</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -638,7 +686,7 @@
       </li>
       <li class="tag-index-item">
         <a href="distributed-systems.html">distributed-systems</a>
-        <span class="page-type-badge">70 pages</span>
+        <span class="page-type-badge">71 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="document.html">document</a>
@@ -646,7 +694,7 @@
       </li>
       <li class="tag-index-item">
         <a href="documentation.html">documentation</a>
-        <span class="page-type-badge">1 page</span>
+        <span class="page-type-badge">2 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="domain.html">domain</a>
@@ -689,6 +737,10 @@
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
+        <a href="economics.html">economics</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="elasticity.html">elasticity</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -717,6 +769,10 @@
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
+        <a href="event-streaming.html">event-streaming</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="events.html">events</a>
         <span class="page-type-badge">4 pages</span>
       </li>
@@ -737,6 +793,10 @@
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
+        <a href="failure-modes.html">failure-modes</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="fault-injection.html">fault-injection</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -750,6 +810,14 @@
       </li>
       <li class="tag-index-item">
         <a href="feature-flags.html">feature-flags</a>
+        <span class="page-type-badge">3 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="feature-toggles.html">feature-toggles</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="finops.html">finops</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
@@ -759,6 +827,10 @@
       <li class="tag-index-item">
         <a href="flow.html">flow</a>
         <span class="page-type-badge">6 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="flow-control.html">flow-control</a>
+        <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="frontend.html">frontend</a>
@@ -922,7 +994,7 @@
       </li>
       <li class="tag-index-item">
         <a href="migration.html">migration</a>
-        <span class="page-type-badge">8 pages</span>
+        <span class="page-type-badge">9 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="mmi.html">mmi</a>
@@ -1041,8 +1113,12 @@
         <span class="page-type-badge">3 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="patterns.html">patterns</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="performance.html">performance</a>
-        <span class="page-type-badge">6 pages</span>
+        <span class="page-type-badge">7 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="persistence.html">persistence</a>
@@ -1077,6 +1153,10 @@
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
+        <a href="progressive-delivery.html">progressive-delivery</a>
+        <span class="page-type-badge">2 pages</span>
+      </li>
+      <li class="tag-index-item">
         <a href="protocols.html">protocols</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -1090,7 +1170,7 @@
       </li>
       <li class="tag-index-item">
         <a href="quality-attributes.html">quality-attributes</a>
-        <span class="page-type-badge">3 pages</span>
+        <span class="page-type-badge">4 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="quantum.html">quantum</a>
@@ -1098,6 +1178,14 @@
       </li>
       <li class="tag-index-item">
         <a href="query-languages.html">query-languages</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="queueing.html">queueing</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="queueing-theory.html">queueing-theory</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
@@ -1125,6 +1213,14 @@
         <span class="page-type-badge">2 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="release.html">release</a>
+        <span class="page-type-badge">2 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="release-it.html">release-it</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="reliability.html">reliability</a>
         <span class="page-type-badge">15 pages</span>
       </li>
@@ -1134,7 +1230,7 @@
       </li>
       <li class="tag-index-item">
         <a href="resilience.html">resilience</a>
-        <span class="page-type-badge">1 page</span>
+        <span class="page-type-badge">2 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="resiliency.html">resiliency</a>
@@ -1157,6 +1253,10 @@
         <span class="page-type-badge">2 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="risk-management.html">risk-management</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="safety.html">safety</a>
         <span class="page-type-badge">1 page</span>
       </li>
@@ -1166,7 +1266,7 @@
       </li>
       <li class="tag-index-item">
         <a href="scalability.html">scalability</a>
-        <span class="page-type-badge">11 pages</span>
+        <span class="page-type-badge">12 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="schema-evolution.html">schema-evolution</a>
@@ -1242,7 +1342,7 @@
       </li>
       <li class="tag-index-item">
         <a href="stability.html">stability</a>
-        <span class="page-type-badge">5 pages</span>
+        <span class="page-type-badge">7 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="stateful-processing.html">stateful-processing</a>
@@ -1285,12 +1385,16 @@
         <span class="page-type-badge">7 pages</span>
       </li>
       <li class="tag-index-item">
+        <a href="tail-latency.html">tail-latency</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
         <a href="teams.html">teams</a>
         <span class="page-type-badge">8 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="technical-debt.html">technical-debt</a>
-        <span class="page-type-badge">2 pages</span>
+        <span class="page-type-badge">3 pages</span>
       </li>
       <li class="tag-index-item">
         <a href="technical-partitioning.html">technical-partitioning</a>
@@ -1327,6 +1431,10 @@
       <li class="tag-index-item">
         <a href="toil.html">toil</a>
         <span class="page-type-badge">2 pages</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="total-cost-of-ownership.html">total-cost-of-ownership</a>
+        <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
         <a href="tracing.html">tracing</a>
@@ -1366,6 +1474,10 @@
       </li>
       <li class="tag-index-item">
         <a href="ui-composition.html">ui-composition</a>
+        <span class="page-type-badge">1 page</span>
+      </li>
+      <li class="tag-index-item">
+        <a href="uml.html">uml</a>
         <span class="page-type-badge">1 page</span>
       </li>
       <li class="tag-index-item">
