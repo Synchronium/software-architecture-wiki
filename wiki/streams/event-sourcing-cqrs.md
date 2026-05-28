@@ -4,7 +4,7 @@ type: stream
 tags: [event-sourcing, cqrs, cdc, immutability, audit, derived-data, streaming, ddd, domain-model]
 sources: [designing-data-intensive-applications, learning-domain-driven-design]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Event Sourcing and CQRS
@@ -13,7 +13,7 @@ Event sourcing and CQRS (Command Query Responsibility Segregation) are complemen
 
 ## Change Data Capture (CDC)
 
-CDC is the **low-level** version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems.
+CDC is the **low-level** version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems. See [[streams/change-data-capture]] for the full treatment of log-based vs trigger-based vs query-based mechanisms, data-liberation strategies, and the schema-coupling trade-offs.
 
 **Problem solved**: dual writes — when an application writes to a database and separately writes to a message broker, the two writes can fail independently, creating inconsistency. CDC eliminates the dual write: the database is the **only** write target, and the CDC mechanism reads the database's own write-ahead log to produce events.
 
@@ -274,6 +274,7 @@ The distinction matters: event notification only tells consumers *that* somethin
 
 - [[streams/stream-processing]] — stream processors consume event logs to maintain derived state
 - [[streams/batch-processing]] — batch reprocessing of event logs to rebuild read models
+- [[streams/change-data-capture]] — CDC as the adjacent pattern; technically faithful but domain-poor compared to event sourcing
 - [[databases/storage-engines]] — the append-only log is the shared primitive between LSM-Trees and event sourcing
 - [[distributed/idempotency]] — event consumers must be idempotent for at-least-once delivery to be safe
 - [[distributed/distributed-transactions]] — event sourcing + outbox pattern replaces 2PC for cross-service consistency

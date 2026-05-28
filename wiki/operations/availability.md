@@ -4,7 +4,7 @@ type: concept
 tags: [distributed-systems, reliability, resiliency, slos, operations, measurement]
 sources: [understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Availability
@@ -145,6 +145,9 @@ Availability is the most common SLI. SLOs should be set based on what users actu
 - [[patterns/circuit-breaker]] — prevents cascading failures from degrading availability
 - [[patterns/timeout]] — bounding wait time on every downstream call; prevents thread exhaustion under slow dependencies
 - [[patterns/bulkhead]] — isolates failures to preserve availability in remaining partitions
+- [[concepts/stability-patterns]] — the full Nygard pattern set that arrests cascading failure
+- [[concepts/cost-as-architectural-force]] — downtime cost as the link between availability investment and ROI
+- [[patterns/progressive-delivery]] — staged rollout to limit blast radius of releases
 - [[distributed/dns]] — DNS availability is a prerequisite for client-service connectivity; DNS SPOF
 - [[concepts/deployment-pipelines]] — continuous deployment reduces planned downtime
 - [[distributed/consistency-models]] — CAP theorem trades availability against consistency under partition

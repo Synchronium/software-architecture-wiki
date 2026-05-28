@@ -4,7 +4,7 @@ type: concept
 tags: [decisions, documentation, governance, architecture-process, evolutionary-architecture]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Architecture Decision Records (ADRs)
@@ -103,3 +103,5 @@ The two formats are complementary: the api-arch Guideline format can be the basi
 
 - [[concepts/fitness-functions]] — referenced in the ADR Compliance section to automate governance of the decision
 - [[concepts/risk-storming]] — identifies risks that should be captured and addressed in ADRs
+- [[concepts/architecture-documentation]] — ADRs sit within a portfolio of documentation forms; the most durable per-decision documentation
+- [[concepts/architect-soft-skills]] — presentation craft and stakeholder communication around decisions

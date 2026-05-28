@@ -4,7 +4,7 @@ type: concept
 tags: [continuous-delivery, deployment, fitness-functions, automation, ci-cd, devops, testing, evolutionary-architecture]
 sources: [building-evolutionary-architectures, understanding-distributed-systems, mastering-api-architecture, building-event-driven-microservices, release-it, software-architecture-metrics]
 created: 2026-05-13
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Deployment Pipelines
@@ -136,7 +136,7 @@ The most common source of backward incompatibility is changing the serialisation
 
 ## Deployment ≠ Release: API Lifecycle and Release Strategies
 
-Deployment pipelines operationalise the decoupling of deployment from release. Code reaches production (deployed) but may not be visible to users (not released) until a feature flag is toggled or a canary is expanded. (→ [[sources/mastering-api-architecture]] Ch 5)
+Deployment pipelines operationalise the decoupling of deployment from release. Code reaches production (deployed) but may not be visible to users (not released) until a feature flag is toggled or a canary is expanded. (→ [[sources/mastering-api-architecture]] Ch 5). See [[patterns/progressive-delivery]] for the full taxonomy of staged-rollout patterns (canary, blue-green, ring, dark launch, parallel run, feature flag) and [[concepts/feature-flags]] for the application-layer release control.
 
 ### API Lifecycle
 
@@ -340,3 +340,6 @@ Mutable configuration management produces "layers of stucco" — the machine's s
 - [[operations/testing-for-reliability]] — hermetic builds, canary tests, production probes, and configuration testing are the reliability testing layer within pipelines
 - [[operations/manageability]] — feature flags are the code-level mechanism for deployment ≠ release
 - [[patterns/sidecar-service-mesh]] — traffic splitting for canary and mirroring is implemented in the service mesh data plane
+- [[patterns/progressive-delivery]] — canonical hub for the staged-rollout pattern family (canary, blue-green, ring, dark launch, parallel run, feature flag)
+- [[concepts/feature-flags]] — application-layer release control with lifecycle discipline
+- [[concepts/cost-as-architectural-force]] — pipeline investment has 18× ROI; downtime cost as the economic justification

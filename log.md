@@ -2,6 +2,38 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-28] lint | Add inbound links from existing pages to the eight new pages
+
+Follow-up to the earlier lint pass that created eight new pages. Added inbound `[[wikilinks]]` from existing pages to the new ones so the graph is bidirectional. Touched ~29 existing pages — primarily by extending Related Concepts sections, with a few inline additions where the topic was mentioned but unlinked.
+
+Coverage by new page (each now has ≥3 inbound links from substantive existing pages):
+
+- **distributed/backpressure** ← messaging, sync-vs-async, event-driven-architecture, rate-limiting, stream-processing, common-failure-causes, scalability, retry, bulkhead, circuit-breaker
+- **distributed/queueing-theory** ← rate-limiting, stream-processing, common-failure-causes, monitoring, scalability, sync-vs-async, timeout
+- **patterns/progressive-delivery** ← deployment-pipelines, error-budgets, testing-for-reliability, parallel-run, evolutionary-architecture, manageability, continuous-delivery-practices, branch-by-abstraction, availability
+- **concepts/feature-flags** ← deployment-pipelines, error-budgets, manageability, continuous-delivery-practices, evolutionary-architecture, branch-by-abstraction, parallel-run, circuit-breaker
+- **concepts/stability-patterns** ← circuit-breaker, timeout, retry, bulkhead, rate-limiting, common-failure-causes, availability, sync-vs-async, testing-for-reliability, michael-nygard
+- **concepts/cost-as-architectural-force** ← architecture-characteristics, availability, scalability, evolutionary-architecture, deployment-pipelines, michael-nygard
+- **concepts/architecture-documentation** ← adrs, architect-soft-skills
+- **streams/change-data-capture** ← outbox-pattern, evolutionary-database-design, event-sourcing-cqrs, data-decomposition, replication, stream-processing
+
+Also updated [[authors/michael-nygard]] with a "Key Pages Informed by Nygard" section linking to stability-patterns, backpressure, queueing-theory, cost-as-architectural-force, common-failure-causes. Bumped `updated:` to 2026-05-28 on all touched files.
+
+## [2026-05-28] lint | Surface buried material into new wiki pages
+
+Lint pass to create wiki pages for topics where material already existed in source pages but no dedicated wiki page collected it. Eight new pages created, all from existing source material (no new ingestion required):
+
+- **distributed/backpressure** — flow-control mechanism distinct from load shedding (Release It! ch. 5, Foundations of Scalable Systems, Understanding Distributed Systems, DDIA)
+- **distributed/queueing-theory** — Little's Law, utilisation curves, tail latency amplification, percentile arithmetic (DDIA ch. 1, Foundations ch. 5, Release It! ch. 3, SRE)
+- **patterns/progressive-delivery** — canonical hub collecting canary, blue-green, ring, dark launch, parallel run, feature flag patterns (SRE, Release It! ch. 1, Mastering API Architecture, Building Evolutionary Architectures, Monolith to Microservices, Accelerate)
+- **concepts/feature-flags** — Hodgson's four toggle types, lifecycle discipline, kill switches, flags as technical debt (Building Evolutionary Architectures, Understanding Distributed Systems, Accelerate, Monolith to Microservices, Release It!)
+- **concepts/stability-patterns** — navigation hub for Nygard's twelve patterns and the antipatterns they defend against (Release It! ch. 4–5, plus distributed-systems treatments)
+- **concepts/cost-as-architectural-force** — cost as a first-class quality attribute with five dimensions, ROI patterns, common cost traps (Release It! ch. 1, Fundamentals, Foundations of Scalable Systems, Building Evolutionary Architectures, SRE)
+- **concepts/architecture-documentation** — purpose/audience taxonomy, C4/UML/ArchiMate, ADRs as the durable form, presentation craft (Fundamentals ch. 19/22, Building Evolutionary Architectures, Learning DDD, Mastering API Architecture)
+- **streams/change-data-capture** — log-based/trigger-based/query-based mechanisms, CDC vs event sourcing, data liberation, schema coupling, log-compacted bootstrap (DDIA ch. 11, Building Event-Driven Microservices, Monolith to Microservices, SATH)
+
+Skipped: `concepts/performance-engineering` — would mostly duplicate the new queueing-theory page. Updated index.md with all eight new entries in correct alphabetical positions.
+
 ## [2026-05-28] ingest | Chaos Engineering ch. 20–21 (Rosenthal & Jones)
 
 Ch. 20 (Security Chaos Engineering, Rinehart): SCE — applying chaos to security controls to verify they actually work under load; security controls drift post-Day-0 ("set and forget" problem); RCA-and-blame cycle dysfunction; SCE vs Red Teaming vs Purple Teaming; ChaoSlingr (UnitedHealth Group open-source platform); "Do Less, Better" principle; Blast Radius Minimisation makes SCE safe to run in production. Ch. 21 (Conclusion, Rosenthal): three counter-intuitive rules from complexity science — redundancy increases complexity (accumulates fast, limits future choices), removing complexity increases capacity more than adding redundancy, efficiency is the wrong target (destroys adaptive capacity); above-the-line vs below-the-line; Rasmussen's risk management conclusion — safety boundaries need constant active pressure to remain safe; resilience is created by people. README.md updated to mark book as fully ingested. Book complete — all 22 files moved to processed.

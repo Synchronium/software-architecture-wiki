@@ -4,7 +4,7 @@ type: concept
 tags: [scalability, distributed-systems, performance, quality-attributes]
 sources: [foundations-of-scalable-systems]
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Scalability
@@ -93,8 +93,11 @@ Systems typically scale in a predictable sequence (→ [[sources/foundations-of-
 - [[distributed/caching]] — primary optimisation strategy for read-heavy workloads
 - [[distributed/replication]] — data-tier scalability; the consistency trade-off
 - [[distributed/partitioning]] — data-tier scalability; sharding to distribute load
+- [[distributed/queueing-theory]] — Little's Law, utilisation curves, and tail latency: the formal physics of scalable design
+- [[distributed/backpressure]] — flow control that prevents producers from overrunning consumers in a scaled-out system
 - [[concepts/architecture-characteristics]] — scalability in the quality attribute taxonomy
 - [[distributed/consistency-models]] — what replication for scalability costs
 - [[concepts/messaging]] — async queueing as a scalability pattern
+- [[concepts/cost-as-architectural-force]] — scaling decisions as cost decisions
 - [[operations/observability]] — required to identify bottlenecks and guide scaling decisions
 - [[distributed/serverless]] — managed auto-scaling model where the cloud provider handles scale-out

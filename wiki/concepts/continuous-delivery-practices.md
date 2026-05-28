@@ -4,7 +4,7 @@ type: concept
 tags: [devops, continuous-delivery, ci-cd, trunk-based-development, test-automation, shift-left-security, accelerate, dora]
 sources: [accelerate, building-evolutionary-architectures]
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Continuous Delivery Practices
@@ -135,6 +135,8 @@ Continuous delivery is not only a technical investment — it is an investment i
 - [[concepts/westrum-culture]] — CD is both a predictor of generative culture and predicted by it; the virtuous cycle
 - [[concepts/fitness-functions]] — automated quality gates within the deployment pipeline; the mechanism that makes CD safe
 - [[concepts/bounded-contexts]] — loosely coupled architecture (the largest CD lever) is achieved through well-designed bounded contexts
+- [[concepts/feature-flags]] — application-layer mechanism for trunk-based development of large changes
+- [[patterns/progressive-delivery]] — staged-rollout patterns that CD pipelines deliver into
 - [[comparisons/decomposition-strategy]] — architectural decomposition decisions directly affect the testability and deployability that make CD possible
 - [[concepts/threat-modeling]] — shift-left security at the design level; complements automated security scanning in pipelines
 - [[concepts/api-testing]] — test pyramid, consumer-driven contracts, test data management; maps to the pipeline stage structure

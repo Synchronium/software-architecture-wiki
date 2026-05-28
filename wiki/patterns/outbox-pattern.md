@@ -4,7 +4,7 @@ type: pattern
 tags: [distributed-systems, messaging, transactions, reliability, microservices, data-liberation, cdc]
 sources: [understanding-distributed-systems, building-event-driven-microservices]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Outbox Pattern
@@ -61,7 +61,7 @@ Relay:  SELECT * FROM outbox WHERE processed = false ORDER BY created_at;
 
 **Polling**: relay queries the outbox table on a schedule (simple, adds DB load, latency proportional to poll interval).
 
-**Change Data Capture (CDC)**: relay subscribes to the database's replication log (e.g., Postgres WAL, MySQL binlog via Debezium). Lower latency, no extra DB queries, but requires CDC infrastructure.
+**Change Data Capture (CDC)**: relay subscribes to the database's replication log (e.g., Postgres WAL, MySQL binlog via Debezium). Lower latency, no extra DB queries, but requires CDC infrastructure. See [[streams/change-data-capture]] for the full treatment of log-based vs trigger-based vs query-based mechanisms and the schema-coupling trade-offs.
 
 ## Relationship to State Machine Replication
 
@@ -156,3 +156,4 @@ For document databases that don't support multi-collection transactions in the s
 - [[distributed/idempotency]]
 - [[styles/event-driven-architecture]] — data liberation is part of EDM migration strategy
 - [[streams/event-sourcing-cqrs]] — CDC and event sourcing connection
+- [[streams/change-data-capture]] — the transport mechanism that pairs with outbox to give domain-meaningful events with reliable propagation

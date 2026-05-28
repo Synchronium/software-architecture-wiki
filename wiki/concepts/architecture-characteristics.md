@@ -4,7 +4,7 @@ type: concept
 tags: [characteristics, ilities, quality-attributes, distributed-systems, trade-offs]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Architecture Characteristics
@@ -108,6 +108,7 @@ Once characteristics are identified, they must be measured and protected. Measur
 
 - [[concepts/architecture-quantum]] — scopes which set of characteristics applies to which part of the system
 - [[concepts/fitness-functions]] — the mechanism for governing characteristics over time
+- [[concepts/cost-as-architectural-force]] — cost as one of the -ilities; its trade-offs against availability, performance, security
 - [[distributed/cap-theorem]] — the fundamental consistency vs. availability trade-off under partitions
 - [[distributed/consistency-models]] — the spectrum of consistency characteristics
 - [[comparisons/architecture-styles-comparison]] — characteristics ratings for all 8 styles

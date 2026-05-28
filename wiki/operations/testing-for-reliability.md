@@ -4,7 +4,7 @@ type: concept
 tags: [testing, reliability, sre, ci-cd, canary, chaos-engineering, mttr, production-testing]
 sources: [site-reliability-engineering]
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Testing for Reliability
@@ -127,3 +127,5 @@ Building a testing culture requires structural reinforcement:
 - [[operations/automation]] — automation tools have a distinct testing risk profile (barrier defence pattern)
 - [[concepts/deployment-pipelines]] — hermetic builds, canary deployments, and CI/CD are the structural context for reliability testing
 - [[operations/incident-management]] — zero-MTTR testing minimises the incidents that trigger incident management
+- [[patterns/progressive-delivery]] — canary as the SRE-defined structured user-acceptance test (not technically a test)
+- [[concepts/stability-patterns]] — Test Harnesses pattern: simulating out-of-spec failures real tests can't provoke

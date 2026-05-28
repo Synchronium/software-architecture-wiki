@@ -4,7 +4,7 @@ type: pattern
 tags: [migration, testing, verification, deployment, microservices, canary]
 sources: [monolith-to-microservices]
 created: 2026-05-15
-updated: 2026-05-15
+updated: 2026-05-28
 ---
 
 # Parallel Run
@@ -55,7 +55,7 @@ A parallel run provides the strongest correctness verification because every req
 
 ## Progressive Delivery (James Governor)
 
-Progressive delivery is the umbrella term (coined by James Governor) for the family of techniques — canary releases, feature flags, A/B tests, dark launching — that allow software to be released gradually rather than all-at-once. Parallel run sits within this family as the verification-focused member.
+Progressive delivery is the umbrella term (coined by James Governor) for the family of techniques — canary releases, feature flags, A/B tests, dark launching — that allow software to be released gradually rather than all-at-once. Parallel run sits within this family as the verification-focused member. See [[patterns/progressive-delivery]] for the full pattern taxonomy and decision guide.
 
 The progressive delivery model enables:
 - Gradual exposure: increase traffic or user cohort one step at a time
@@ -78,4 +78,6 @@ The progressive delivery model enables:
 
 - [[patterns/branch-by-abstraction]] — provides the structural mechanism for running two implementations side by side
 - [[patterns/strangler-fig]] — the broader extraction pattern; parallel run is a verification tool during the redirect phase
+- [[patterns/progressive-delivery]] — the umbrella pattern family of which parallel run is the correctness-comparison member
+- [[concepts/feature-flags]] — the routing mechanism that determines which result is served
 - [[concepts/evolutionary-architecture]] — progressive delivery and parallel run as enabling practices for guided, incremental change

@@ -4,7 +4,7 @@ type: stream
 tags: [streaming, kafka, events, windowing, exactly-once, stateful-processing, distributed-systems, databases, messaging]
 sources: [designing-data-intensive-applications, building-event-driven-microservices, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-21
+updated: 2026-05-28
 ---
 
 # Stream Processing
@@ -372,6 +372,9 @@ Operator state (e.g., aggregation windows, join buffers) must survive failures. 
 
 - [[streams/event-sourcing-cqrs]] — event log as the source of truth for stream processors; CDC as the bridge between databases and streams
 - [[streams/batch-processing]] — batch is the bounded, offline version of the same computation model
+- [[streams/change-data-capture]] — log-based CDC as the canonical bridge from databases into stream pipelines
 - [[distributed/partitioning]] — stream topics are partitioned; keys determine which partition an event goes to
 - [[distributed/idempotency]] — essential for at-least-once delivery to achieve effectively-once semantics
 - [[distributed/consistency-models]] — exactly-once semantics relate to linearizability and integrity guarantees
+- [[distributed/backpressure]] — pull-based consumption as the canonical backpressure mechanism; consumer lag as observable signal
+- [[distributed/queueing-theory]] — Little's Law and percentile arithmetic for sizing stream-processing pipelines

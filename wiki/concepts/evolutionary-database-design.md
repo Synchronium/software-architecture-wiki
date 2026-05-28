@@ -4,7 +4,7 @@ type: concept
 tags: [databases, schema-evolution, data, evolutionary-architecture, coupling]
 sources: [building-evolutionary-architectures, monolith-to-microservices]
 created: 2026-05-13
-updated: 2026-05-15
+updated: 2026-05-28
 ---
 
 # Evolutionary Database Design
@@ -173,5 +173,6 @@ Newman's overall advice: physical database separation is a goal, not a prerequis
 - [[concepts/evolutionary-architecture]] — database evolution is one key dimension of evolutionary architecture
 - [[distributed/distributed-transactions]] — decomposing a shared database creates distributed transaction challenges; [[patterns/saga]] and [[patterns/outbox-pattern]] address these
 - [[patterns/outbox-pattern]] — enables atomic write + event emission without shared database coupling across services
+- [[streams/change-data-capture]] — CDC as a database-decomposition mechanism; data liberation from shared monolithic stores
 - [[concepts/fitness-functions]] — migration scripts as fitness functions: the pipeline applies and verifies schema migrations on every deploy
 - [[concepts/deployment-pipelines]] — the mechanism that applies schema migrations automatically as part of each release

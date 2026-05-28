@@ -4,7 +4,7 @@ type: concept
 tags: [evolutionary-architecture, fitness-functions, coupling, strangler-fig, cloud-migration, conways-law, testability, deployability]
 sources: [building-evolutionary-architectures, mastering-api-architecture, fundamentals-of-software-architecture, learning-domain-driven-design, monolith-to-microservices, software-architecture-metrics]
 created: 2026-05-13
-updated: 2026-05-22
+updated: 2026-05-28
 ---
 
 # Evolutionary Architecture
@@ -248,3 +248,6 @@ Nygard (→ [[sources/release-it]] ch. 16) frames organisational adaptability as
 - [[patterns/strangler-fig]] — the primary pattern for incremental migration of an existing system
 - [[patterns/branch-by-abstraction]] — for migrating deeply embedded capabilities with no external seam
 - [[patterns/parallel-run]] — correctness verification during coexistent dual-implementation phases
+- [[patterns/progressive-delivery]] — staged rollout patterns (canary, blue-green, ring, dark launch, feature flag) that make evolutionary change safe
+- [[concepts/feature-flags]] — application-layer release control; deployment ≠ release at the code level
+- [[concepts/cost-as-architectural-force]] — change cost as a compounding architectural property

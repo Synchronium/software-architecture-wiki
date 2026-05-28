@@ -4,7 +4,7 @@ type: concept
 tags: [reliability, sre, slos, availability, operations, risk]
 sources: [site-reliability-engineering, understanding-distributed-systems]
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Error Budgets
@@ -70,9 +70,10 @@ The SRE solution: offer infrastructure at explicitly delineated service tiers. C
 
 The error budget can be consumed by anything that degrades the SLI: planned deployments, A/B experiments, canary rollouts, hardware failures, software bugs, or dependency outages. This means the development team has a strong incentive to:
 
-- Keep deployments safe (progressive rollouts, fast rollback)
+- Keep deployments safe (progressive rollouts, fast rollback — see [[patterns/progressive-delivery]])
 - Invest in testing and staging environments
 - Maintain spare error budget before large launches
+- Use [[concepts/feature-flags]] to disable expensive or failure-prone features under budget pressure
 
 ## Budget Exhaustion
 

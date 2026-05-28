@@ -4,7 +4,7 @@ type: concept
 tags: [data, databases, distributed-systems, decomposition, bounded-contexts]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Data Decomposition
@@ -227,4 +227,5 @@ Both services access the same physical schema (a shared data domain), effectivel
 - [[databases/data-models]] — relational, document, graph model trade-offs (theoretical foundation)
 - [[databases/storage-engines]] — storage internals for LSM-trees (column family, key-value) and B-trees (relational)
 - [[patterns/outbox-pattern]] — atomic write+publish mechanism used when a service publishes events on data changes across domain boundaries
+- [[streams/change-data-capture]] — CDC as the propagation mechanism for column-replication and event-driven cross-domain data flows
 - [[concepts/reuse-patterns]] — shared service and data domain patterns interact with the distributed data access choices

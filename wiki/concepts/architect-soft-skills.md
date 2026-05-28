@@ -4,7 +4,7 @@ type: concept
 tags: [soft-skills, leadership, negotiation, diagramming, career, teams]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career
@@ -289,6 +289,7 @@ Practice is the only way to build architecture skills (Ted Neward). There is no 
 
 - [[concepts/risk-storming]] — risk identification and mitigation technique
 - [[concepts/adrs]] — capturing architectural decisions and their justifications
+- [[concepts/architecture-documentation]] — the broader portfolio of documentation forms (C4/UML/ADRs/presentations) and presentation craft
 - [[concepts/fitness-functions]] — directional tracking of architecture risk over time
 - [[concepts/architecture-characteristics]] — the "-ilities" that inform pragmatic vs visionary trade-offs
 - [[concepts/conways-law]] — team structure shapes architecture (links to architect team leadership decisions)

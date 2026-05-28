@@ -4,7 +4,7 @@ type: pattern
 tags: [resiliency, fault-isolation, distributed-systems, availability, microservices, stability]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Bulkhead Pattern
@@ -127,3 +127,5 @@ In a homogeneous layer of N servers, each carrying 1/N of the load, one server f
 
 - [[patterns/circuit-breaker]]
 - [[patterns/sidecar-service-mesh]]
+- [[concepts/stability-patterns]] — Nygard's full pattern set; bulkhead as the resource-isolation pattern
+- [[distributed/backpressure]] — bulkheads bound the producer-consumer rate mismatch per partition

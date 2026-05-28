@@ -4,7 +4,7 @@ type: concept
 tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Monitoring
@@ -61,7 +61,7 @@ A ratio of 0 means completely broken; 1 means the measured dimension is working 
 
 **Percentiles over averages**: response times are right-skewed and long-tailed. Averages hide the distribution and are easily distorted by outliers. Percentiles (P99, P99.9) are a better representation. Long-tail latencies disproportionately affect high-value users (those making the most requests), and their business impact is measurable — a 100 ms increase in load time can reduce conversion by 7%.
 
-**Little's Law and tail latency**: if 1% of requests suddenly take 20s instead of 200ms, the thread pool must double just to handle that 1%. Tail latency degrades the average case and can cascade into resource exhaustion.
+**Little's Law and tail latency**: if 1% of requests suddenly take 20s instead of 200ms, the thread pool must double just to handle that 1%. Tail latency degrades the average case and can cascade into resource exhaustion. See [[distributed/queueing-theory]] for the formal treatment of percentile arithmetic, tail latency amplification in fan-out designs, and why averages systematically lie about user experience.
 
 ## Service-Level Objectives (SLOs)
 
@@ -233,5 +233,6 @@ A healthy on-call rotation requires that developers are responsible for operatin
 - [[operations/automation]] — actionable, automatable alerts should trigger automation rather than paging humans
 - [[operations/common-failure-causes]] — postmortem categories; what burns error budgets
 - [[distributed/rate-limiting]] — upstream resiliency prevents load from burning error budgets
+- [[distributed/queueing-theory]] — percentile arithmetic, tail latency amplification, why P99 is the right SLI
 - [[patterns/circuit-breaker]] — downstream resiliency; prevents cascading failure from burning error budgets
 - [[concepts/deployment-pipelines]] — health signals drive bake time gating; deployment events annotate dashboards

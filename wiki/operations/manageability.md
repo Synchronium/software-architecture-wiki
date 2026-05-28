@@ -4,7 +4,7 @@ type: concept
 tags: [manageability, configuration, feature-flags, dynamic-config, canary, testing, operations, distributed-systems, deployment]
 sources: [understanding-distributed-systems, release-it]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Manageability
@@ -31,7 +31,7 @@ Once dynamic configuration is in place, feature flags become straightforward: a 
 - **A/B testing**: route subsets of users to different feature variants; measure behavioural impact before committing to one.
 - **Emergency kill switch**: disable a misbehaving feature without a rollback.
 
-Feature flags decouple deployment from release — code reaches production (deployed) before users see it (released). This complements [[concepts/deployment-pipelines]] and [[concepts/evolutionary-architecture]].
+Feature flags decouple deployment from release — code reaches production (deployed) before users see it (released). This complements [[concepts/deployment-pipelines]] and [[concepts/evolutionary-architecture]]. See [[concepts/feature-flags]] for the lifecycle discipline (Hodgson's four toggle types, kill switches, removal triggers) and [[patterns/progressive-delivery]] for how flags fit alongside canary/blue-green/ring patterns.
 
 **Risk**: flag accumulation creates technical debt. Flags should be cleaned up once migration is complete (the Knight Capital incident is the canonical warning: a legacy flag activated production code unexpectedly).
 
@@ -64,6 +64,8 @@ Nygard (→ [[sources/release-it]] ch. 10) provides a specific checklist of runt
 ## Related Concepts
 
 - [[concepts/deployment-pipelines]] — pipelines read from config stores at deploy time; feature flags decouple deployment from release
+- [[concepts/feature-flags]] — toggle taxonomy (release/experiment/ops/permission), lifecycle discipline, kill switches as resilience tools
+- [[patterns/progressive-delivery]] — staged rollout patterns that flags enable
 - [[operations/observability]] — observability diagnoses; manageability acts on the diagnosis
 - [[operations/monitoring]] — monitoring detects when a feature flag or config change degrades an SLO
 - [[operations/common-failure-causes]] — configuration changes are a leading failure cause; dynamic config + pipeline governance mitigates this

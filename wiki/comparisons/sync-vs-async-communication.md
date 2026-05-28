@@ -4,7 +4,7 @@ type: comparison
 tags: [coupling, messaging, distributed-systems, integration, resiliency, temporal-coupling]
 sources: [enterprise-integration-patterns, monolith-to-microservices, software-architecture-the-hard-parts, building-event-driven-microservices, understanding-distributed-systems, release-it, mastering-api-architecture]
 created: 2026-05-19
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Synchronous vs Asynchronous Communication
@@ -82,7 +82,7 @@ Choosing async is not free. These concerns must be handled:
 
 **Correlation**: when a caller sends a message and later receives a response, it must be able to match the response to the original request. Correlation identifiers are the standard mechanism (→ [[concepts/messaging]]).
 
-**Backpressure**: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement.
+**Backpressure**: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement. See [[distributed/backpressure]] for the mechanisms (bounded queues, credit-based flow control, pull-based consumption) and [[distributed/queueing-theory]] for why unbounded queues produce unbounded latency.
 
 **Distributed tracing**: async message flows are invisible to traditional call-stack profilers. Trace IDs must be propagated through message headers; a distributed tracing system (Jaeger, Zipkin) is necessary to reconstruct flows (→ [[operations/observability]]).
 
@@ -118,6 +118,9 @@ For Bellemare (→ [[sources/building-event-driven-microservices]]), the default
 - [[concepts/coupling]] — temporal coupling is Newman's term for the availability dependency created by synchronous calls
 - [[concepts/integration-styles]] — EIP's four styles: File Transfer and Messaging are async; RPI is synchronous; Shared Database is neither
 - [[concepts/messaging]] — the implementation vocabulary for async: channels, delivery guarantees, correlation, backpressure
+- [[distributed/backpressure]] — flow control as the architectural answer to producer/consumer rate mismatch
+- [[distributed/queueing-theory]] — Little's Law, utilisation curves, and tail latency in async pipelines
+- [[concepts/stability-patterns]] — Decoupling Middleware as one of Nygard's stability decisions
 - [[styles/event-driven-architecture]] — async communication as the structural default for event-driven systems
 - [[patterns/saga]] — the distributed transaction pattern for sequences of async operations; choreography vs orchestration
 - [[patterns/timeout]] — the required companion to every synchronous call; without it, async failure modes appear in sync code

@@ -4,7 +4,7 @@ type: pattern
 tags: [migration, decomposition, monolith, microservices, refactoring, incremental]
 sources: [monolith-to-microservices]
 created: 2026-05-15
-updated: 2026-05-15
+updated: 2026-05-28
 ---
 
 # Branch by Abstraction
@@ -34,7 +34,7 @@ A feature toggle (feature flag) allows the switch in step 4 to be applied gradua
 - Roll back instantly by flipping the toggle without a code change or deployment
 - Use per-cohort toggles (e.g., internal users first, beta users second) to control blast radius
 
-Feature toggles during migration are temporary infrastructure — remove them as part of the clean-up step. Accumulated feature toggles become a maintenance burden.
+Feature toggles during migration are temporary infrastructure — remove them as part of the clean-up step. Accumulated feature toggles become a maintenance burden. See [[concepts/feature-flags]] for Hodgson's toggle taxonomy and lifecycle discipline (the migration-toggle case is a "release toggle" with a short expected lifetime).
 
 ## Verify Variant (Steve Smith)
 
@@ -65,5 +65,7 @@ Branch by Abstraction provides the *mechanism* (the abstraction layer and the tw
 
 - [[patterns/strangler-fig]] — the alternative for extracting capabilities at an external seam; simpler when applicable
 - [[patterns/parallel-run]] — running both implementations simultaneously to verify the new one before committing
+- [[patterns/progressive-delivery]] — broader pattern family covering the staged-rollout mechanics
+- [[concepts/feature-flags]] — release toggles as the migration switch's runtime control
 - [[concepts/evolutionary-architecture]] — branch by abstraction as an enabling technique for incremental, safe architectural change
 - [[styles/microservices-architecture]] — the target state after the migration is complete

@@ -4,7 +4,7 @@ type: concept
 tags: [distributed-systems, replication, consistency, fault-tolerance, scalability]
 sources: [understanding-distributed-systems, designing-data-intensive-applications, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-18
+updated: 2026-05-28
 ---
 
 # Replication
@@ -199,3 +199,4 @@ Multi-leader replication (active-active, master-master) allows multiple nodes to
 - [[distributed/distributed-transactions]]
 - [[distributed/consensus-algorithms]]
 - [[databases/transactions]]
+- [[streams/change-data-capture]] — logical replication as the foundation for CDC; database write log as event source

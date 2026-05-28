@@ -4,7 +4,7 @@ type: style
 tags: [distributed-systems, events, async, messaging, domain-partitioning, microservices, streaming, ddd, coupling]
 sources: [fundamentals-of-software-architecture, understanding-distributed-systems, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-28
 ---
 
 # Event-Driven Architecture
@@ -171,7 +171,7 @@ Multiple quanta possible, but the count depends on database sharing and request-
 
 ## Competing Consumers
 
-**Competing consumers** are the primary scalability mechanism: multiple instances of an event processor consume from the same queue. As request load increases, additional instances are added programmatically. This is how EDA achieves its 5-star scalability and elasticity ratings. Queues provide back-pressure: if an event processor slows down or crashes, messages queue up until the processor recovers or new instances are added.
+**Competing consumers** are the primary scalability mechanism: multiple instances of an event processor consume from the same queue. As request load increases, additional instances are added programmatically. This is how EDA achieves its 5-star scalability and elasticity ratings. Queues provide back-pressure (see [[distributed/backpressure]]): if an event processor slows down or crashes, messages queue up until the processor recovers or new instances are added. Pull-based consumption is the architectural reason EDA handles variable load more gracefully than synchronous chains — backpressure is built into the substrate rather than retrofitted as a stability pattern.
 
 ## Hybrid Event-Driven Architectures
 

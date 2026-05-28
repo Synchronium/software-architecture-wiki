@@ -4,7 +4,7 @@ type: concept
 tags: [resiliency, rate-limiting, load-shedding, upstream, distributed-systems, scalability]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Rate Limiting and Upstream Resiliency
@@ -136,9 +136,9 @@ Key properties:
 
 ## Back Pressure
 
-Back pressure is the **intra-system** counterpart to Shed Load. Within a service (across components that share a deployment boundary), use **bounded queues** to create natural flow control. When a queue is full, the producer blocks — this is the signal to slow production, not to drop messages. (→ [[sources/release-it]] ch. 5)
+Back pressure is the **intra-system** counterpart to Shed Load — see [[distributed/backpressure]] for the full treatment. Within a service (across components that share a deployment boundary), use **bounded queues** to create natural flow control. When a queue is full, the producer blocks — this is the signal to slow production, not to drop messages. (→ [[sources/release-it]] ch. 5)
 
-Unbounded queues mask backlog: they accept work indefinitely, but response time grows without bound. Little's Law: `L = λW` — if arrival rate (λ) exceeds processing rate, average response time (W) grows without limit. A bounded queue makes this visible immediately.
+Unbounded queues mask backlog: they accept work indefinitely, but response time grows without bound. Little's Law: `L = λW` — if arrival rate (λ) exceeds processing rate, average response time (W) grows without limit (see [[distributed/queueing-theory]]). A bounded queue makes this visible immediately.
 
 Distinction: **Back pressure applies within a system boundary** (between internal components); **Shed Load applies at the system boundary** (to callers crossing the network edge).
 
@@ -160,7 +160,10 @@ The Governor does not prevent automation — it prevents automation from acting 
 
 - [[patterns/circuit-breaker]] — downstream resiliency counterpart (timeout, retry, circuit breaker)
 - [[patterns/bulkhead]] — fault isolation by user/tenant partitioning
+- [[distributed/backpressure]] — intra-system flow control; bounded queues, credit-based protocols
+- [[distributed/queueing-theory]] — Little's Law, utilisation curves, why unbounded queues fail
 - [[distributed/control-plane-data-plane]] — constant work as a control plane propagation strategy; static stability
 - [[concepts/messaging]] — load leveling relies on a message channel; backlog risk
+- [[concepts/stability-patterns]] — rate limiting and shed load in the full stability pattern set
 - [[concepts/api-gateway]] — rate limiting is typically implemented at the gateway for north–south traffic
 - [[operations/common-failure-causes]] — load pressure and cascading/metastable failures that these patterns prevent

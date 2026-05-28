@@ -4,7 +4,7 @@ type: concept
 tags: [distributed-systems, reliability, resiliency, fault-tolerance, operations]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-28
 ---
 
 # Common Failure Causes
@@ -186,6 +186,9 @@ Nygard's "Trampled" case study (→ [[sources/release-it]] ch. 15) identifies a 
 - [[patterns/retry]] — safe retry strategy after transient failures; exponential backoff prevents retry storms
 - [[patterns/bulkhead]] — resource isolation to limit blast radius
 - [[distributed/load-balancing]] — health checks detect gray failures; watchdog pattern
+- [[distributed/backpressure]] — bounded queues to prevent the queue-growth failure mode that drives cascades
+- [[distributed/queueing-theory]] — utilisation curves and Little's Law: why systems degrade well before 100% utilisation
+- [[concepts/stability-patterns]] — Nygard's full pattern set; the antipatterns this page catalogues are duals of those patterns
 
 ## The Airline Cascade: A Real Resource-Exhaustion Incident
 

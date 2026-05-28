@@ -4,7 +4,7 @@ type: concept
 tags: [distributed-systems, messaging, async, decoupling, queues, events, integration]
 sources: [understanding-distributed-systems, enterprise-integration-patterns, release-it, foundations-of-scalable-systems]
 created: 2026-05-14
-updated: 2026-05-19
+updated: 2026-05-28
 ---
 
 # Messaging
@@ -301,7 +301,7 @@ Hohpe & Woolf make messaging's architectural case from an integration perspectiv
 
 ## Decoupling Middleware and Stability
 
-Nygard (→ [[sources/release-it]] ch. 5) frames the synchronous vs. asynchronous choice as a **stability decision**, not just a coupling decision. Synchronous call-and-response (REST, RPC) propagates back pressure and cascading failures: a slow downstream slows the caller, which slows its callers. Asynchronous messaging decouples in **space** (the caller doesn't need the consumer's address) and **time** (the caller continues immediately; the consumer processes when ready).
+Nygard (→ [[sources/release-it]] ch. 5) frames the synchronous vs. asynchronous choice as a **stability decision**, not just a coupling decision. Synchronous call-and-response (REST, RPC) propagates back pressure and cascading failures: a slow downstream slows the caller, which slows its callers. Asynchronous messaging decouples in **space** (the caller doesn't need the consumer's address) and **time** (the caller continues immediately; the consumer processes when ready). See [[distributed/backpressure]] for the full treatment of how bounded queues create flow control without thread-blocking, and [[concepts/stability-patterns]] for how this decision composes with other stability patterns.
 
 This is an architectural decision with high switching cost — it cannot easily be retrofitted. Choose asynchronous messaging when: (1) the caller does not legitimately need a synchronous response to proceed; (2) the downstream is prone to slowness or instability; (3) load levelling across time is acceptable.
 
