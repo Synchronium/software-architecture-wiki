@@ -120,7 +120,7 @@ updated: 2026-05-25
 ## Operations
 
 - [[operations/availability]] — Uptime/downtime definition; the nines table (90%–99.999%); techniques for high availability; dependency chaining effects; design-for-production philosophy; ROI of availability investment; MTBF/MTTR/RPO/RTO measurement framework; tyranny of the nines antipattern; Allspaw: MTTR > MTBF; SRE: 100% is always the wrong target (informed by: understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering)
-- [[operations/chaos-engineering]] — definition, prerequisites, experiment design, injection types (Chaos Monkey/Latency Monkey/FIT), targeting strategy, automation and moderation, disaster simulations; theoretical foundations (drift into failure, regulator paradox, antifragility) (informed by: release-it)
+- [[operations/chaos-engineering]] — definition, prerequisites, experiment design, injection types (Chaos Monkey/Latency Monkey/FIT), targeting strategy, automation and moderation, disaster simulations; theoretical foundations (drift into failure, regulator paradox, antifragility); complex systems foundations (accidental vs essential complexity, emergent failures, composability of safety); Netflix origin story; Chaos Maturity Model (informed by: release-it, chaos-engineering)
 - [[operations/common-failure-causes]] — failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable failures; risk = probability × impact; airline/Black Friday/"Trampled" case studies; building-for-tests vs building-for-production; GC death spiral, queue management (LIFO/CoDel), deadline propagation, latency vs capacity cache (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)
 - [[operations/error-budgets]] — error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is wrong target argument (informed by: site-reliability-engineering)
 - [[operations/manageability]] — Dynamic configuration (config store, runtime re-read); feature flags (progressive rollout, A/B testing, kill switch, deployment-release decoupling); operational triad: monitor → observe → manage (informed by: understanding-distributed-systems)
@@ -214,6 +214,7 @@ updated: 2026-05-25
 - [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
 - [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
 - [[sources/site-reliability-engineering]] — *Site Reliability Engineering* — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)
+- [[sources/chaos-engineering]] — *Chaos Engineering: System Resiliency in Practice* — Rosenthal & Jones (eds.); complex systems theory, Five Advanced Principles, Game Days, LDFI, Chaos Maturity Model, Continuous Verification, Security Chaos Engineering, organisational/human factors (informed by: chaos-engineering)
 
 ---
 
@@ -256,3 +257,5 @@ updated: 2026-05-25
 - [[authors/betsy-beyer]] — Co-editor of *Site Reliability Engineering*; Google Technical Writer for SRE; cultural and documentary aspects of reliability
 - [[authors/benjamin-treynor-sloss]] — Wrote Ch. 1 of *Site Reliability Engineering*; VP Engineering at Google; originator of the term "Site Reliability Engineering"; creator of the error budget model
 - [[authors/gene-kim]] — Co-author of *Accelerate*; founder and CTO of Tripwire; co-author of *The Phoenix Project* and *The DevOps Handbook*; high-performing technology organisation researcher
+- [[authors/casey-rosenthal]] — Co-author of *Chaos Engineering*; built and managed Netflix's Chaos Engineering team; co-creator of the Principles of Chaos Engineering
+- [[authors/nora-jones]] — Co-author of *Chaos Engineering*; Netflix Chaos Engineering team; safety science and sociotechnical systems perspective

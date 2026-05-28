@@ -58,6 +58,7 @@ Reading the files directly on GitHub will show the raw `[[wikilink]]` syntax —
 | *A Philosophy of Software Design* | John Ousterhout |
 | *Accelerate: The Science of Lean Software and DevOps* | Nicole Forsgren, Jez Humble & Gene Kim |
 | *Site Reliability Engineering* | Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy (eds.) |
+| *Chaos Engineering: System Resiliency in Practice* | Casey Rosenthal & Nora Jones (eds.) |
 
 ## How this wiki was built
 
