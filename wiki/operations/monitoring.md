@@ -229,6 +229,8 @@ A healthy on-call rotation requires that developers are responsible for operatin
 
 - [[operations/observability]] — observability extends monitoring with logs and traces for root cause diagnosis
 - [[operations/availability]] — SLOs operationalise availability targets
+- [[operations/incident-management]] — alerts trigger incident response; on-call practices and blameless postmortems
+- [[operations/automation]] — actionable, automatable alerts should trigger automation rather than paging humans
 - [[operations/common-failure-causes]] — postmortem categories; what burns error budgets
 - [[distributed/rate-limiting]] — upstream resiliency prevents load from burning error budgets
 - [[patterns/circuit-breaker]] — downstream resiliency; prevents cascading failure from burning error budgets

@@ -213,7 +213,7 @@ updated: 2026-05-25
 - [[sources/foundations-of-scalable-systems]] — *Foundations of Scalable Systems* — Ian Gorton (fully ingested 2026-05-21)
 - [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
 - [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
-- [[sources/site-reliability-engineering]] — *Site Reliability Engineering* — Beyer, Jones, Petoff, Murphy (in progress 2026-05-27)
+- [[sources/site-reliability-engineering]] — *Site Reliability Engineering* — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)
 
 ---
 

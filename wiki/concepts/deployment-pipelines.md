@@ -337,5 +337,6 @@ Mutable configuration management produces "layers of stucco" — the machine's s
 - [[reference/technology-glossary]] — tool entries for Argo Rollouts, LaunchDarkly (progressive delivery tooling)
 - [[concepts/api-design]] — API lifecycle (planned → beta → live → deprecated → retired) governs when a version can be retired
 - [[operations/monitoring]] — SLOs and burn rate alerting are the signals that drive canary promotion or rollback decisions
+- [[operations/testing-for-reliability]] — hermetic builds, canary tests, production probes, and configuration testing are the reliability testing layer within pipelines
 - [[operations/manageability]] — feature flags are the code-level mechanism for deployment ≠ release
 - [[patterns/sidecar-service-mesh]] — traffic splitting for canary and mirroring is implemented in the service mesh data plane

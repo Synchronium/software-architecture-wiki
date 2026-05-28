@@ -103,6 +103,7 @@ Apply incrementally: confirm you can operate at normal load with 20% zombie rate
 
 - [[operations/monitoring]] — prerequisite: monitoring must detect small changes in failure rates; chaos tests are annotated as events on dashboards
 - [[operations/availability]] — chaos engineering operationally validates SLO targets and resiliency mechanisms
+- [[operations/testing-for-reliability]] — Chaos Monkey and Jepsen are statistical testing tools; statistical test techniques (seed logging, replay) covered there
 - [[operations/common-failure-causes]] — drift into failure; cascading failures and composability of safety
 - [[concepts/fitness-functions]] — chaos tests are a category of holistic fitness function; some teams run chaos in CI pipelines
 - [[patterns/circuit-breaker]] — chaos is the empirical test of whether circuit breakers are correctly placed and configured

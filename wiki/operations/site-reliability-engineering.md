@@ -106,5 +106,9 @@ Many SRE practices are directly applicable at smaller scale; some are not:
 - [[operations/error-budgets]] — the central mechanism aligning dev and ops incentives
 - [[operations/monitoring]] — SLO-based alerting and burn rate alerting
 - [[operations/availability]] — what SLOs are measuring
+- [[operations/incident-management]] — blameless postmortems, ICS roles, and outage tracking
+- [[operations/automation]] — the primary mechanism for eliminating toil and achieving sublinear scaling
+- [[operations/testing-for-reliability]] — zero-MTTR testing and the release/reliability feedback loop
+- [[operations/data-integrity]] — data integrity as an orthogonal requirement to uptime
 - [[operations/chaos-engineering]] — controlled failure injection to validate reliability
 - [[operations/common-failure-causes]] — what burns error budgets

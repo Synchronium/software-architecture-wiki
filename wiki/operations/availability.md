@@ -150,6 +150,9 @@ Availability is the most common SLI. SLOs should be set based on what users actu
 - [[distributed/consistency-models]] — CAP theorem trades availability against consistency under partition
 - [[distributed/cap-theorem]] — formal model of the availability/consistency trade-off
 - [[distributed/rate-limiting]] — load shedding and rate limiting preserve availability under excess load
+- [[operations/data-integrity]] — data integrity has orthogonal requirements to uptime; a service can be 100% available yet have significant data corruption
+- [[operations/incident-management]] — structured incident response reduces MTTR, the primary lever for improving availability under failure
+- [[operations/automation]] — automated failover and recovery reduce MTTR faster than human-driven processes can
 
 ## Design for Production
 

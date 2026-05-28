@@ -177,6 +177,7 @@ Nygard's "Trampled" case study (→ [[sources/release-it]] ch. 15) identifies a 
 ## Related Concepts
 
 - [[operations/availability]] — redundancy, the primary mitigation for hardware faults and SPOFs
+- [[operations/data-integrity]] — software bugs as the dominant cause of data loss; soft deletion and tiered backups as the defence
 - [[distributed/failure-detection]] — timeouts and heartbeats: the tools for detecting gray failures
 - [[distributed/dns]] — DNS as a common SPOF
 - [[distributed/tls]] — certificate expiry as a SPOF

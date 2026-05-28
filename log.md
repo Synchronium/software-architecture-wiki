@@ -2,6 +2,23 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-28] lint | Post-SRE ingest cross-reference pass
+
+Scanned all wiki pages after completing the *Site Reliability Engineering* ingest. Findings and fixes:
+
+- **Stale index entry**: `sources/site-reliability-engineering` still marked "(in progress)" — corrected to "fully ingested".
+- **4 near-orphan pages** (insufficient inbound links from content pages): `operations/data-integrity`, `operations/incident-management`, `operations/testing-for-reliability`, `operations/automation`.
+- **9 missing cross-references** across 6 pages.
+
+Files edited (7 pages):
+- `wiki/index.md` — corrected SRE source status
+- `operations/site-reliability-engineering` — added links to `incident-management`, `automation`, `testing-for-reliability`, `data-integrity`
+- `operations/monitoring` — added links to `incident-management`, `automation`
+- `operations/availability` — added links to `data-integrity`, `incident-management`, `automation`
+- `operations/chaos-engineering` — added link to `testing-for-reliability`
+- `operations/common-failure-causes` — added link to `data-integrity`
+- `concepts/deployment-pipelines` — added link to `testing-for-reliability`
+
 ## [2026-05-19] lint | Technology glossary expanded
 
 Scanned all wiki pages for tool names not covered in the glossary. Added 23 entries across 6 new sections and 3 existing sections:
