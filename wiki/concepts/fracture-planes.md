@@ -4,7 +4,7 @@ type: concept
 tags: [decomposition, monolith, teams, boundaries, flow, microservices, migration]
 sources: [team-topologies, monolith-to-microservices]
 created: 2026-05-14
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Fracture Planes
@@ -19,7 +19,7 @@ The primary goal: find splits that produce parts that can be *owned and evolved 
 
 ## Why It Matters
 
-Most problems in delivering software arise from unclear or wrong responsibility boundaries between teams. Conway's law predicts that poorly placed boundaries will produce tightly coupled systems. Fracture planes provide a vocabulary for deliberately choosing boundaries that align team cognitive load with software structure.
+Most problems in delivering software arise from unclear or wrong responsibility boundaries between teams. Conway's Law predicts that poorly placed boundaries will produce tightly coupled systems. Fracture planes provide a vocabulary for deliberately choosing boundaries that align team cognitive load with software structure.
 
 Crucially, fracture planes apply equally to initial system design and to splitting existing monoliths.
 
@@ -76,7 +76,7 @@ Parts of the system that need to change at very different frequencies should be 
 
 ### 4. Team Location
 
-Geographically distributed teams produce architecturally distributed systems (Conway's law again). If teams are in different time zones or buildings, the software boundaries should reflect that to avoid communication bottlenecks. Choose between full colocation, remote-first, or split along geographic lines.
+Geographically distributed teams produce architecturally distributed systems (Conway's Law again). If teams are in different time zones or buildings, the software boundaries should reflect that to avoid communication bottlenecks. Choose between full colocation, remote-first, or split along geographic lines.
 
 ### 5. Risk
 
@@ -120,5 +120,5 @@ Real systems typically need a combination. The goal is not to find a single "cor
 - [[concepts/cognitive-load]] — fracture planes are chosen to keep each resulting part within one team's cognitive load
 - [[concepts/team-topologies-model]] — fracture planes produce the software boundaries that stream-aligned teams own
 - [[concepts/architectural-decomposition]] — covers *how* to execute a split (strangler fig, branch by abstraction); fracture planes address *where* to split
-- [[concepts/conways-law]] — Conway's law predicts that team structure will converge on software structure; fracture planes make this deliberate
+- [[concepts/conways-law]] — Conway's Law predicts that team structure will converge on software structure; fracture planes make this deliberate
 - [[styles/microservices-architecture]] — the distributed monolith is the failure mode when microservices are created without correct fracture planes

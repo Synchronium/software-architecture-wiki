@@ -159,7 +159,7 @@ The platform team must treat the internal developer platform as a **product** �
 | Support team | Align to stream of change; use dynamic "swarming" for cross-stream incidents |
 | Architecture team | Part-time enabling team — supports other teams, does not impose designs |
 
-**Architecture team model**: the most effective pattern for an architecture function is a part-time enabling team — not a powerful separate body. Its key role is discovering effective APIs between teams and shaping team interactions with Conway's law in mind.
+**Architecture team model**: the most effective pattern for an architecture function is a part-time enabling team — not a powerful separate body. Its key role is discovering effective APIs between teams and shaping team interactions with Conway's Law in mind.
 
 ## Industry Patterns and Anti-Patterns
 

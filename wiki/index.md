@@ -1,7 +1,7 @@
 ---
 title: "Wiki Index"
 type: index
-updated: 2026-05-25
+updated: 2026-05-29
 
 ---
 
@@ -263,6 +263,9 @@ updated: 2026-05-25
 - [[authors/nicole-forsgren]] — Co-author of *Accelerate*; PhD in MIS; DORA research programme; psychometric and statistical rigour applied to DevOps; four key metrics originator
 - [[authors/jez-humble]] — Co-author of *Accelerate*; co-author of *Continuous Delivery*; CI/CD, Lean, DevOps practitioner; DORA research programme
 - [[authors/betsy-beyer]] — Co-editor of *Site Reliability Engineering*; Google Technical Writer for SRE; cultural and documentary aspects of reliability
+- [[authors/chris-jones]] — Co-editor of *Site Reliability Engineering*; Google SRE on App Engine; platform-service and capacity-planning perspective
+- [[authors/jennifer-petoff]] — Co-editor of *Site Reliability Engineering*; Google SRE Programme Manager; training, on-call rotation design, postmortem culture
+- [[authors/niall-richard-murphy]] — Co-editor of *Site Reliability Engineering*; Google SRE in Dublin; incident response, federation, cross-site coordination
 - [[authors/benjamin-treynor-sloss]] — Wrote Ch. 1 of *Site Reliability Engineering*; VP Engineering at Google; originator of the term "Site Reliability Engineering"; creator of the error budget model
 - [[authors/gene-kim]] — Co-author of *Accelerate*; founder and CTO of Tripwire; co-author of *The Phoenix Project* and *The DevOps Handbook*; high-performing technology organisation researcher
 - [[authors/casey-rosenthal]] — Co-author of *Chaos Engineering*; built and managed Netflix's Chaos Engineering team; co-creator of the Principles of Chaos Engineering

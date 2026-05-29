@@ -2,6 +2,20 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-29] lint | Audit pass: broken links, duplicate headers, casing
+
+Comprehensive audit of the 193-page wiki. Eight checks ran; six came back clean (no orphan pages of concern, no H1/title mismatches, no stale index entries, no missing-but-referenced concepts requiring new pages, no important named principles needing their own pages, author count matches index). Two found concrete issues, both fixed.
+
+**Fixes applied:**
+
+1. **Three missing author pages created.** `wiki/sources/site-reliability-engineering.md` linked to four SRE editors but only `betsy-beyer` had a page. Created stub author pages for `chris-jones`, `jennifer-petoff`, and `niall-richard-murphy` with editorial backgrounds and contributions. Added all three to `index.md`'s Authors section.
+
+2. **Duplicate `## How Different Sources Treat It` header** in `wiki/concepts/api-testing.md`. The Bellemare EDM section had been appended after the first source table, then a second source table added beneath it. Merged into a single consolidated source table at the end and renamed the EDM section to a regular content section.
+
+3. **Conway's Law casing normalised.** 10 lowercase occurrences (`Conway's law`) normalised to `Conway's Law` across 5 files (`authors/manuel-pais`, `authors/matthew-skelton`, `concepts/fracture-planes`, `concepts/team-topologies-model`, `sources/team-topologies`). The wiki had already settled on `Conway's Law` (51:10 majority) — bringing the stragglers into line.
+
+Re-ran the broken-link check after fixes — clean. The wiki is now publishable.
+
 ## [2026-05-29] lint | Next 20 pages: Key Claims blocks
 
 Continuation of the readability pass — added Key Claims blocks (3–8 bullets, after Definition) to the next 20 longest wiki pages. The reader can now assess what each page covers and what its argument is without reading the full body.

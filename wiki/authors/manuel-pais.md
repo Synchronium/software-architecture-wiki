@@ -4,7 +4,7 @@ type: author
 tags: [author, teams, organisational-design, devops, flow]
 sources: [team-topologies]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # Manuel Pais
@@ -26,4 +26,4 @@ Manuel Pais is co-author of *Team Topologies* and an independent consultant and 
 
 ### [[sources/team-topologies]] — *Team Topologies* (2019, with Matthew Skelton)
 
-The canonical book on organising technology teams for fast flow. Co-authored with Matthew Skelton. Provides a practical, adaptive model — four team types, three interaction modes — grounded in Conway's law and cognitive load theory. Widely adopted as a vocabulary and framework for restructuring engineering organisations.
+The canonical book on organising technology teams for fast flow. Co-authored with Matthew Skelton. Provides a practical, adaptive model — four team types, three interaction modes — grounded in Conway's Law and cognitive load theory. Widely adopted as a vocabulary and framework for restructuring engineering organisations.

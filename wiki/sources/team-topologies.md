@@ -4,7 +4,7 @@ type: source
 tags: [teams, organisational-design, conways-law, cognitive-load, flow]
 sources: [team-topologies]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # Team Topologies: Organising Business and Technology Teams for Fast Flow
@@ -15,11 +15,11 @@ updated: 2026-05-14
 
 ## Overview
 
-Team Topologies argues that software architecture and team organisation are not separate concerns — they are two sides of the same coin, bound together by Conway's law. The book's core thesis is that most delivery problems attributed to technology or process are actually organisational: wrong team shapes, too much cognitive load on individual teams, or poorly defined interaction modes between teams. Rather than prescribing a fixed org chart, Team Topologies provides a dynamic model: four fundamental team types and three interaction modes that can evolve as technical and organisational maturity changes.
+Team Topologies argues that software architecture and team organisation are not separate concerns — they are two sides of the same coin, bound together by Conway's Law. The book's core thesis is that most delivery problems attributed to technology or process are actually organisational: wrong team shapes, too much cognitive load on individual teams, or poorly defined interaction modes between teams. Rather than prescribing a fixed org chart, Team Topologies provides a dynamic model: four fundamental team types and three interaction modes that can evolve as technical and organisational maturity changes.
 
 The book is grounded in a humanistic premise — teams are the fundamental unit of delivery, not individuals — and makes cognitive load a first-class architectural concern. An organisation that ignores team cognitive load will produce delivery bottlenecks, poor quality, and low motivation regardless of its technical choices.
 
-It draws heavily on Conway's law and the reverse Conway maneuver, treating organisation design as a technical activity that must involve architects and engineers, not just HR and management.
+It draws heavily on Conway's Law and the reverse Conway maneuver, treating organisation design as a technical activity that must involve architects and engineers, not just HR and management.
 
 ## Key Claims
 
@@ -59,7 +59,7 @@ Detailed treatment of the three interaction modes, each with explicit advantages
 
 **Awkward interactions as diagnostic signal**: if a team using X-as-a-Service mode must constantly escalate to the providing team, the API or service is poorly designed. If two teams in collaboration mode barely communicate, the wrong teams have been placed together or the boundary is too ambitious. Awkward interaction → fix the API or team boundary, not the people.
 
-**Architect role in Team Topologies**: architects should primarily act as designers of team APIs and shapers of team-to-team interactions with Conway's law in mind. Requires both social and technical skills, and a broader organisational remit than is traditionally given.
+**Architect role in Team Topologies**: architects should primarily act as designers of team APIs and shapers of team-to-team interactions with Conway's Law in mind. Requires both social and technical skills, and a broader organisational remit than is traditionally given.
 
 **Intermittent collaboration** (Bernstein et al. research): groups that collaborated intermittently achieved nearly identical average quality to constantly-collaborating groups, while preserving solution variation that helped find best outcomes. Supports Team Topologies' prescription for time-bounded, purposeful collaboration over permanent open collaboration.
 
@@ -99,7 +99,7 @@ Team Topologies introduces four team types and three interaction modes as its co
 
 ### Chapter 2 — Conway's Law and Why It Matters
 
-Conway's law is empirically well-supported beyond software (vehicle manufacturing, aircraft engine design, open-source studies by MacCormack et al.). Ruth Malan's modern formulation: *"If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins."*
+Conway's Law is empirically well-supported beyond software (vehicle manufacturing, aircraft engine design, open-source studies by MacCormack et al.). Ruth Malan's modern formulation: *"If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins."*
 
 Key extensions beyond the existing wiki treatment:
 - Tool choices drive communication patterns (shared tools = collaboration signal; separate tools = independence signal)

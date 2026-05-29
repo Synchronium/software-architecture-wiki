@@ -157,15 +157,7 @@ Two property types:
 
 Formal specification is not an alternative to testing — it's most valuable for the parts of the system most likely to have subtle correctness bugs that traditional tests cannot reach: consensus protocols, distributed transactions, migration procedures.
 
-## How Different Sources Treat It
-
-| Source | Perspective |
-|--------|-------------|
-| [[sources/mastering-api-architecture]] | Comprehensive treatment of API-specific testing. Introduces the Pact framework and consumer-driven contracts as the primary investment for distributed systems. |
-| [[sources/understanding-distributed-systems]] | Frames testing around scope × size orthogonality, test double fidelity hierarchy, and formal verification (TLA+) for distributed correctness. Introduces user journey tests as an E2E minimisation strategy. |
-| [[sources/fundamentals-of-software-architecture]] | Mentions fitness functions (ArchUnit, Chaos Monkey) as a mechanism for automated architecture governance; doesn't address API contract testing specifically. |
-
-## Testing Event-Driven Microservices (Bellemare)
+## Testing Event-Driven Microservices
 
 Event-driven microservices are modular and relatively easy to test because their I/O is well-defined: input comes from event streams or request-response APIs; output is written to output event streams or external state stores (→ [[sources/building-event-driven-microservices]] ch. 15).
 
@@ -203,9 +195,10 @@ Event-driven microservices are modular and relatively easy to test because their
 
 | Source | Perspective |
 |--------|-------------|
-| [[sources/mastering-api-architecture]] | Contract testing (Pact), test pyramid, testing in production (canary, traffic mirror) |
-| [[sources/understanding-distributed-systems]] | Scope × size orthogonality, test double fidelity hierarchy, formal verification (TLA+), user journey tests |
-| [[sources/building-event-driven-microservices]] | EDM-specific: topology unit testing, stateful test strategies, local vs remote integration testing, event data sourcing strategies, shared-env anti-pattern |
+| [[sources/mastering-api-architecture]] | Comprehensive treatment of API-specific testing. Introduces Pact and consumer-driven contracts as the primary investment for distributed systems; test pyramid; testing in production (canary, traffic mirror). |
+| [[sources/understanding-distributed-systems]] | Frames testing around scope × size orthogonality; test double fidelity hierarchy; formal verification (TLA+) for distributed correctness; user journey tests as an E2E minimisation strategy. |
+| [[sources/building-event-driven-microservices]] | EDM-specific: topology unit testing, stateful test strategies, local vs remote integration testing, event data sourcing strategies, shared-environment anti-pattern. |
+| [[sources/fundamentals-of-software-architecture]] | Mentions fitness functions (ArchUnit, Chaos Monkey) as a mechanism for automated architecture governance; doesn't address API contract testing specifically. |
 
 ## Related Concepts
 
