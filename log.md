@@ -2,6 +2,29 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-29] lint | Top-20 pages: Key Claims, deduplication, refresh overview
+
+Quality pass on the 20 longest wiki pages, addressing three problems surfaced in review: source-tagged taxonomies fragmenting the narrative, no executive summary on long pages, and a stale overview.
+
+**Refreshed `overview.md`:**
+- Source table updated 19 → 21 (added Site Reliability Engineering and Chaos Engineering)
+- Added "At a Glance" — seven-claim synthesis of the wiki's working view of the field
+- Added six new Major Themes sections: SRE operationalising reliability, Chaos Engineering discovering unknown failure modes, Performance as queueing theory in disguise, Stability patterns as a composable set, Release as progressive, Cost as a quality attribute
+- Author list extended to include Beyer, Treynor Sloss, Rosenthal, Jones
+- Open questions refreshed to reflect current corpus
+
+**Added Key Claims blocks at the top of long pages** (3–7 bullet executive summary right after Definition): stream-processing, chaos-engineering, deployment-pipelines, messaging, team-topologies-model, modularity, event-sourcing-cqrs, event-driven-architecture, saga, fitness-functions, evolutionary-architecture, monitoring, data-decomposition, common-failure-causes, api-design, microservices-architecture, consensus-algorithms, architect-soft-skills.
+
+**Added Key Takeaways blocks before Related Concepts** on the heaviest pages: chaos-engineering, stream-processing, modularity, deployment-pipelines, saga, fitness-functions, consensus-algorithms, team-topologies-model, evolutionary-architecture. Reader can now reconstruct the page's argument from the takeaways alone.
+
+**Deduplicated source-tagged taxonomies:**
+- `fitness-functions.md`: collapsed four taxonomies (evo-arch, FOSA, api-arch, SAM) into one spine (the five dimensions) plus two complementary lenses (mechanism, concern); pyramid section trimmed; SATH section shortened.
+- `modularity.md`: collapsed six sequential "(Ousterhout)" sub-sections into three topical sections (Deep vs Shallow Modules, Information Hiding, Designing the Interface). Newman's coupling taxonomy reframed as a complementary operational lens on the structural metrics.
+- `saga.md`: source-tagged subheaders renamed to topical headers (Saga Types: the Eight-Cell Taxonomy, State Machine Implementation, etc.). "How Different Sources Treat It" table condensed; redundant "Sources" section removed.
+- `consensus-algorithms.md`: reordered to lead with the Equivalence Theorem (why consensus matters) before FLP (why it's hard).
+
+Bumped `updated:` dates on all touched files.
+
 ## [2026-05-28] lint | Add inbound links from existing pages to the eight new pages
 
 Follow-up to the earlier lint pass that created eight new pages. Added inbound `[[wikilinks]]` from existing pages to the new ones so the graph is bidirectional. Touched ~29 existing pages — primarily by extending Related Concepts sections, with a few inline additions where the topic was mentioned but unlinked.

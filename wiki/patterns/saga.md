@@ -4,12 +4,22 @@ type: pattern
 tags: [distributed-systems, transactions, microservices, consistency, coordination]
 sources: [understanding-distributed-systems, fundamentals-of-software-architecture, software-architecture-the-hard-parts, building-event-driven-microservices, learning-domain-driven-design, monolith-to-microservices]
 created: 2026-05-13
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Saga Pattern
 
 A Saga is a sequence of local transactions used to implement a long-running distributed transaction without 2PC. Each local transaction T₁…Tₙ is followed by a compensating transaction C₁…Cₙ that can undo its effects. On failure at step i, the saga executes the compensating chain Cᵢ₋₁ → ... → C₁ to restore consistency.
+
+## Key Claims
+
+- **Sagas trade isolation for availability.** Unlike 2PC, intermediate state is visible to concurrent operations — there is no atomic boundary. "Apology" semantics (compensations) replace strict atomicity.
+- **Orchestration vs choreography is the central decision.** Orchestration centralises workflow state and error handling but couples participants to the coordinator. Choreography decouples but distributes state and complicates debugging. Team ownership decides: one team owns the whole saga → orchestrate; multiple teams own different steps → choreograph.
+- **The "saga or fix granularity?" question comes first.** Richards & Ford's position: distributed transactions are usually a service-boundary problem. Don't reach for saga until you've checked that the services genuinely need to be separate.
+- **Compensations must be idempotent and may not be perfect inverses.** "Refund a charge" is not the same as "reverse a charge" — the customer sees both. Some failures need business-level workarounds (credits, apologies) rather than technical rollback.
+- **"Saga" is broader than the original definition.** *Software Architecture: The Hard Parts* uses it for any distributed workflow pattern, deriving 8 named types from three binary dimensions (sync/async × atomic/eventual × orchestrated/choreographed). The traditional compensating-transaction saga is one cell in that taxonomy.
+- **State machines beat compensating chains.** Model each saga as an FSM with explicit states and durable checkpoints. Current state is immediately queryable; compensations are FSM transitions toward terminal failure states, not a separate rollback path.
+- **Process Manager ≠ Saga.** DDD's distinction: a saga maps events to commands with no branching; a process manager has conditional logic and tracks explicit state. Trip booking is the canonical process manager; payment-after-order is a saga.
 
 ## Structure
 
@@ -77,19 +87,18 @@ Sagas are not suitable for:
 
 The [[patterns/outbox-pattern]] is typically used *within* a saga to guarantee that each local transaction reliably publishes its event/command to the next participant. Without the outbox, message publication can be lost on crash, leaving the saga in a stuck state.
 
-## Semantic vs Implementation Coupling (SATH)
+## Semantic vs Implementation Coupling
 
-*Software Architecture: The Hard Parts* (→ [[sources/software-architecture-the-hard-parts]] ch. 11) distinguishes two forms of coupling in distributed workflows:
+Two coupling layers operate in any distributed workflow (→ [[sources/software-architecture-the-hard-parts]] ch. 11):
 
-**Semantic coupling** (domain-mandated): coupling imposed by the business process itself — if a payment must confirm before an order can ship, that temporal dependency is semantic. Architects cannot remove semantic coupling; it is inherent to the domain.
+- **Semantic coupling** is domain-mandated. If payment must confirm before shipping, that temporal dependency is semantic. Architects cannot remove it; it's inherent to the problem.
+- **Implementation coupling** is architect-chosen. Sync vs async, atomic vs eventual, orchestrated vs choreographed. These are the knobs.
 
-**Implementation coupling** (architect choices): how the coordination is implemented — synchronous vs asynchronous, atomic vs eventual, orchestrated vs choreographed. These are the architect's knobs. Architects can reduce implementation coupling by choosing async over sync, eventual over atomic, and choreography over orchestration — but they can never reduce semantic coupling below what the domain requires.
+The architect's job is to minimise *implementation* coupling without falling below what semantic coupling actually requires. Choosing async over sync, eventual over atomic, and choreography over orchestration all reduce implementation coupling — but if the domain mandates atomicity, no implementation choice removes it.
 
-> Key insight: architects can only minimise *implementation* coupling. Semantic coupling is given by the problem, not a choice.
+## Orchestration vs Choreography: Extended Trade-offs
 
-## Orchestration vs Choreography (Extended Trade-offs)
-
-*Software Architecture: The Hard Parts* (→ [[sources/software-architecture-the-hard-parts]] ch. 11) provides detailed trade-off analysis beyond the basic coordination dimension:
+Beyond the basic centralised-vs-decentralised dimension, the trade-offs are richer (→ [[sources/software-architecture-the-hard-parts]] ch. 11):
 
 **Orchestration advantages**:
 - Centralised error handling — the orchestrator knows when any step fails and can trigger compensations
@@ -112,9 +121,9 @@ The [[patterns/outbox-pattern]] is typically used *within* a saga to guarantee t
 - Hard to track — "what is the current state of order #12345?" requires querying multiple services or event logs
 - Complex error handling — compensation logic is distributed; coordinating rollback is hard
 
-### Workflow State Management Options for Choreography
+### Workflow state management for choreography
 
-When choreography is chosen but workflow state visibility is needed, three approaches exist (→ [[sources/software-architecture-the-hard-parts]] ch. 11):
+Choreography gives up centralised workflow state. When state visibility is needed anyway, three approaches exist (→ [[sources/software-architecture-the-hard-parts]] ch. 11):
 
 **1. Front controller**: designate the first service in the choreography as the state owner. It tracks which downstream events it has received and infers overall workflow state. Simple but creates awkward coupling: the first service must know about all downstream services.
 
@@ -124,9 +133,9 @@ When choreography is chosen but workflow state visibility is needed, three appro
 
 **Stamp coupling** is the preferred pragmatic approach for workflows where the overall state is small and message size is not a constraint.
 
-## Saga Types Taxonomy (SATH)
+## Saga Types: the Eight-Cell Taxonomy
 
-*Software Architecture: The Hard Parts* (→ [[sources/software-architecture-the-hard-parts]] ch. 2, ch. 12) uses "saga" as a broad term for *any* distributed workflow pattern, not just eventually-consistent compensating transactions. The book derives a taxonomy from three interlocking dimensions of dynamic coupling:
+The traditional saga (compensating transactions) is one cell in a broader space. Three interlocking dimensions of dynamic coupling generate 2³ = 8 distinct distributed-workflow patterns (→ [[sources/software-architecture-the-hard-parts]] chs. 2, 12):
 
 1. **Communication**: synchronous vs asynchronous
 2. **Consistency**: atomic vs eventual
@@ -155,9 +164,9 @@ The coupling level is a direct function of position in the 3D space: synchronous
 
 The traditional saga (compensating transactions) maps most closely to the **Epic Saga** or **Parallel Saga** types depending on synchrony.
 
-## Epic Saga: Pitfalls and Compensations
+## Epic Saga Pitfalls
 
-The Epic Saga (sync + atomic + orchestrated) is the most commonly used type, but carries the most operational risk (→ [[sources/software-architecture-the-hard-parts]] ch. 12):
+The Epic Saga (sync + atomic + orchestrated) is the most commonly used type and carries the most operational risk (→ [[sources/software-architecture-the-hard-parts]] ch. 12):
 
 **No transaction isolation**: between each local transaction step, intermediate state is visible to other operations. A saga that reserves inventory (step 1), charges a card (step 2), and confirms the order (step 3) will expose "inventory reserved, payment pending" as observable state. Concurrent requests may see this partial state.
 
@@ -165,18 +174,13 @@ The Epic Saga (sync + atomic + orchestrated) is the most commonly used type, but
 
 **Compensation failures**: compensating transactions can themselves fail. What happens when the compensating transaction for step 2 times out? The system must handle compensation failures idempotently, often by queueing retry attempts.
 
-## Saga State Machines
+## State Machine Implementation
 
-A finite state machine (FSM) approach to saga implementation is preferred over simple compensating transaction chains (→ [[sources/software-architecture-the-hard-parts]] ch. 12):
+A finite state machine (FSM) approach beats simple compensating transaction chains (→ [[sources/software-architecture-the-hard-parts]] ch. 12). Each saga type is modelled as an FSM with explicit states (OrderInitiated, PaymentPending, PaymentFailed, OrderConfirmed, OrderCancelled) and transitions triggered by events or outcomes. The orchestrator checkpoints state to durable storage at each transition. Current state is immediately known without replaying history; compensations become FSM transitions toward terminal failure states rather than a separate rollback chain.
 
-- Each saga type is modelled as an FSM: explicit states (OrderInitiated, PaymentPending, PaymentFailed, OrderConfirmed, OrderCancelled), with transitions triggered by events or outcomes.
-- The orchestrator checkpoints the current state to durable storage at each transition.
-- FSM approach improves responsiveness: the current state is always immediately known without replaying the transaction history.
-- Compensating transactions are modelled as FSM transitions toward terminal failure states, not as a separate compensating chain.
+## Annotation-Based Governance
 
-## Saga Annotation Technique
-
-In Java and C# ecosystems, custom annotations/attributes on service classes can declare which saga types a service participates in (→ [[sources/software-architecture-the-hard-parts]] ch. 12):
+In Java and C# ecosystems, custom annotations on service classes can declare which saga types a service participates in (→ [[sources/software-architecture-the-hard-parts]] ch. 12):
 
 ```java
 @SagaOrchestrator(sagaType = "OrderFulfillment")
@@ -236,27 +240,26 @@ The process manager is implemented as an aggregate — it has an ID, manages its
 
 ## How Different Sources Treat It
 
-| Source | Perspective |
-|--------|-------------|
-| [[sources/understanding-distributed-systems]] | Saga structure, orchestration vs choreography, compensation, isolation problem, semantic locks |
-| [[sources/fundamentals-of-software-architecture]] | Emphasises the "last resort" framing: "Don't do transactions in microservices — fix granularity instead!" The saga pattern is for the exceptional case where two services genuinely need different operational characteristics but still have a transactional relationship. If sagas are the dominant feature, service granularity is wrong. |
-| [[sources/software-architecture-the-hard-parts]] | Expands "saga" to mean any distributed workflow pattern; derives 8 named types from 3 binary dimensions (communication × consistency × coordination); provides full trade-off ratings (coupling, complexity, responsiveness, scale) for each type; introduces semantic vs implementation coupling distinction; workflow state management for choreography; Epic Saga pitfalls; saga FSM approach; annotation technique (ch. 2, 11, 12) |
-| [[sources/building-event-driven-microservices]] | EDM workflow perspective: choreographed sagas suitable only for simple 2–3 service transactions with stable ordering; orchestrated transactions preferred for complex workflows; God orchestrator anti-pattern (granular commands to minion services — breaks bounded contexts); compensation workflows as business-level alternative to technical rollback (ch. 8) |
-| [[sources/learning-domain-driven-design]] | DDD-centric: saga as event-driven coordinator for multi-aggregate long-running processes (stateless or stateful); process manager as the conditional-branching extension; both implemented as aggregates using the outbox pattern; strong warning against using sagas to paper over wrong aggregate boundaries (ch. 9) |
-| [[sources/monolith-to-microservices]] | Migration-focused treatment (ch. 4): saga as the tool of last resort when a database must be split across a transactional boundary. Two recovery strategies: *backward recovery* (compensating/semantic rollbacks — preferred; e.g. "cancel order" not just "delete record") and *forward recovery* (retry — when the operation must eventually succeed). Reorder saga steps to minimise rollback cost: put the most likely-to-fail steps first so fewer compensations are needed if they fail. Team ownership drives coordination choice: one team owns the whole saga → use orchestration (explicit state machine, easier to reason about); multiple teams own different steps → use choreography (event-driven, no single coordinator, each team owns their step). Require correlation IDs for choreographed sagas to track saga instances across services. Newman accepts that 2PC is sometimes the right answer for simple two-service cases — but for anything complex, sagas are the default. |
+| Source | Angle |
+|--------|-------|
+| [[sources/understanding-distributed-systems]] | Foundational treatment: structure, orchestration vs choreography, compensation, isolation problem, semantic locks (ch. 13). |
+| [[sources/fundamentals-of-software-architecture]] | "Last resort" framing — sagas are a signal that service granularity is wrong (ch. 17). |
+| [[sources/software-architecture-the-hard-parts]] | Broadens "saga" to all distributed workflows; eight-cell taxonomy; semantic vs implementation coupling; FSM implementation; annotation governance (chs. 2, 11, 12). |
+| [[sources/building-event-driven-microservices]] | EDM workflow perspective: choreography only for 2–3 service transactions; God orchestrator anti-pattern; compensation workflows as business-level remedy (ch. 8). |
+| [[sources/learning-domain-driven-design]] | DDD distinction between saga (no branching) and process manager (conditional, stateful, command-instantiated); both as aggregates using outbox; warning against sagas papering over wrong aggregate boundaries (ch. 9). |
+| [[sources/monolith-to-microservices]] | Migration-focused: backward vs forward recovery; team-ownership heuristic (one team → orchestrate, many teams → choreograph); step reordering to minimise compensation cost (ch. 4). |
 
-> **Contradiction:** Vitillo presents saga as a standard tool for cross-service transactions in distributed systems; Richards & Ford treat it as a red flag that service boundaries need revisiting. The underlying advice is compatible — both agree saga adds complexity — but FOSA is more emphatic that it should be avoided by design.
+> **Contradiction:** Vitillo treats saga as a standard tool for cross-service transactions; Richards & Ford treat it as a red flag. The underlying advice converges — both agree saga adds complexity — but FOSA is more emphatic that it should be avoided by design.
 
-> **Vocabulary difference:** SATH uses "saga" more broadly than the traditional definition (compensating transactions sequence). The traditional saga is one specific type within SATH's taxonomy; the taxonomy as a whole covers all distributed workflow coordination patterns.
+> **Vocabulary difference:** SATH uses "saga" more broadly than the original 1987 Garcia-Molina/Salem definition (compensating transactions). The traditional saga is one cell in SATH's eight-cell taxonomy; the taxonomy as a whole covers all distributed-workflow coordination patterns.
 
-## Sources
+## Key Takeaways
 
-- (→ [[sources/understanding-distributed-systems]] ch. 13) — saga structure, orchestration, compensation, isolation problem, semantic locks.
-- (→ [[sources/fundamentals-of-software-architecture]] ch. 17) — saga as last resort; fix granularity before reaching for saga.
-- (→ [[sources/software-architecture-the-hard-parts]] ch. 2, 11, 12) — 8 saga types, full ratings, semantic vs implementation coupling, choreography state management, Epic Saga pitfalls, saga FSM, annotation technique.
-- (→ [[sources/building-event-driven-microservices]] ch. 8) — choreography vs orchestration in EDM workflows; compensation workflows; God orchestrator anti-pattern.
-- (→ [[sources/learning-domain-driven-design]] ch. 9) — DDD saga vs process manager distinction; stateless/stateful saga implementations; process manager as aggregate; outbox relay for command execution.
-- (→ [[sources/monolith-to-microservices]] ch. 4) — migration-focused treatment: backward vs forward recovery; semantic rollbacks; step reordering to minimise compensations; team ownership as the coordination selector (one team → orchestrate, multiple teams → choreograph); correlation IDs for choreographed sagas.
+- **Don't reach for saga first.** A cross-service transaction is usually a signal that the service boundary is wrong. Fix granularity first; reach for saga only if the services genuinely need to be separate.
+- **Choose orchestration vs choreography by team ownership.** One team owns the whole workflow → orchestrate (central state, easier to debug). Multiple teams own different steps → choreograph (no single coordinator, decentralised ownership).
+- **Sagas don't provide isolation.** Intermediate state is visible to concurrent operations. Use semantic locks, pivot transactions, or accept the anomaly as a business decision — don't pretend sagas behave like 2PC.
+- **Compensations are not always perfect inverses.** "Refund a charge" leaves both transactions visible. Business-level workarounds (credits, apologies, alternative arrangements) are often cleaner than technical rollback.
+- **Sagas don't fix bad aggregate boundaries.** If two aggregates are so frequently coordinated that a saga seems necessary, they probably should be one aggregate.
 
 ## Related Pages
 

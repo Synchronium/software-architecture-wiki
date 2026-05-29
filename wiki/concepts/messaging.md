@@ -4,12 +4,21 @@ type: concept
 tags: [distributed-systems, messaging, async, decoupling, queues, events, integration]
 sources: [understanding-distributed-systems, enterprise-integration-patterns, release-it, foundations-of-scalable-systems]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Messaging
 
 Messaging is a form of indirect, asynchronous communication in which a **producer** writes a message to a **channel** (message broker), and a **consumer** reads from it. Unlike direct request-response, messaging does not require the producer and consumer to be simultaneously available — the channel acts as a buffer.
+
+## Key Claims
+
+- **Three message types: command, document, event.** Commands are imperative requests; documents transfer data; events are notifications of past facts. The type determines the architectural style of consumer.
+- **Channels create decoupling in space and time.** The producer doesn't need to know the consumer's address; the consumer doesn't need to be available when the producer sends. This is the architectural property that distinguishes messaging from RPC.
+- **At-least-once delivery is the default; exactly-once is an application-level property.** Idempotency, deduplication keys, and end-to-end operation IDs are how systems achieve exactly-once semantics on top of at-least-once transport.
+- **The choice between sync and async messaging is a stability decision.** Synchronous calls propagate cascading failures; async decouples in time. This is Nygard's "Decoupling Middleware" pattern (see [[concepts/stability-patterns]]).
+- **Bounded queues, always.** Unbounded queues mask backlogs and produce unbounded latency (Little's Law). See [[distributed/backpressure]], [[distributed/queueing-theory]].
+- **EIP's 65+ patterns categorise into five concerns:** channels, routing, transformation, endpoints, and management. The catalogue is large but the conceptual structure is small.
 
 Messages have a header (metadata: unique message ID, timestamps, source identifier) and a body (content). A message is either:
 - A **command**: specifies an operation to be performed by the consumer.

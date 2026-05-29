@@ -4,10 +4,19 @@ type: concept
 tags: [data, databases, distributed-systems, decomposition, bounded-contexts]
 sources: [software-architecture-the-hard-parts]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Data Decomposition
+
+## Key Claims
+
+- **Disintegrators and integrators give a structured way to decide.** Six disintegrators (change control, connection management, scalability, fault tolerance, quantum, DB-type optimisation) argue for splitting; two integrators (data relationships, transactions) argue for keeping data together. Score them per data domain.
+- **Data ownership has three modes.** Single ownership (one service writes), common ownership (many services write — usually wrong; back to shared database), joint ownership (a small set co-owns a domain). The decision shapes every other consistency concern.
+- **Eventual consistency has three implementation patterns.** Background sync (least preferred, polling), orchestrated request-based (synchronous coordination, partial-failure-prone), event-based (preferred — async, decoupled, recoverable). Default to event-based unless there's a specific reason.
+- **Distributed data access has four patterns.** Interservice communication (sync calls), column schema replication (CDC-driven local replicas), replicated caching (broadcast immutable lookup data), data domain (move both services into a shared bounded context). Choose by access frequency, latency tolerance, and data volatility.
+- **Database type selection is a quantum decision.** Polyglot persistence — each service picks the database that fits its access pattern — but the operational cost of multiple databases compounds. The "single database for all services" antipattern recreates the shared-DB monolith with extra steps.
+- **Connection management constrains scale-out.** Most relational databases cap concurrent connections in the low hundreds. A microservices fleet sharing one database hits the connection cap before any other limit. Decomposing data is partly a connection-management exercise.
 
 ## Definition
 

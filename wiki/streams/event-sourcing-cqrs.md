@@ -4,12 +4,21 @@ type: stream
 tags: [event-sourcing, cqrs, cdc, immutability, audit, derived-data, streaming, ddd, domain-model]
 sources: [designing-data-intensive-applications, learning-domain-driven-design]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Event Sourcing and CQRS
 
 Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an **append-only log of immutable events** is a more fundamental representation of system state than a mutable database. The mutable database is a *derived view* of the log — reconstructible by replaying events. "The truth is the log. The database is a cache of the log." (→ [[sources/designing-data-intensive-applications]] ch. 11)
+
+## Key Claims
+
+- **The log is the source of truth; the database is a cache.** State is the integral of an event stream; the changelog is its derivative. Given the log, you can reconstruct any historical state.
+- **Event sourcing is application-level; CDC is database-level.** Event sourcing produces domain-meaningful events as primary state; [[streams/change-data-capture]] produces row-change events as derived state. Both bridge the database/streaming gap but at different semantic depths.
+- **CQRS separates the write model from the read models.** The write path validates commands and produces events; multiple read paths derive specialised projections (SQL, search index, analytics store) from the same event log. Each read model is independently optimised; consistency between them is eventual.
+- **Coordination-avoiding correctness is achievable.** End-to-end operation IDs + idempotency + deterministic derivation give *integrity* without distributed transactions. Timeliness is sacrificed but recoverable; integrity is precious and must be preserved.
+- **Immutability has limits.** GDPR right-to-erasure conflicts with truly immutable logs (Datomic excision, Kafka tombstones); long-lived logs accumulate storage; schema evolution must remain backward-compatible forever.
+- **Fowler's four-way taxonomy distinguishes related patterns.** Event Notification, Event-Carried State Transfer, Event Sourcing, CQRS — same vocabulary, different architectural commitments. Confusing them creates expectations the implementation cannot meet.
 
 ## Change Data Capture (CDC)
 

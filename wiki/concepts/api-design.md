@@ -4,10 +4,20 @@ type: concept
 tags: [api, rest, grpc, graphql, oas, versioning]
 sources: [mastering-api-architecture, understanding-distributed-systems, building-event-driven-microservices]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # API Design
+
+## Key Claims
+
+- **The exchange format decision is architectural.** REST for north-south (external, broad interoperability), gRPC for east-west (internal, controlled, polyglot), GraphQL for client-driven aggregation. Default to those mappings; override only with explicit ADR justification.
+- **The implementation is the de facto spec.** Once a service is live, its actual behaviour — including undocumented edge cases and bugs — is the real contract. Postel's Robustness Principle leaves no choice: keep accepting what you previously accepted.
+- **Non-breaking changes are well-defined.** Require a subset of previously required inputs, accept a superset, return a superset. Anything else is breaking and requires a major version bump.
+- **API-first beats implementation-first.** Design and agree the OAS contract before implementing either producer or consumer. Consumer teams use generated mocks; producer teams implement against the spec. Feedback at the contract stage is orders of magnitude cheaper than at implementation.
+- **Never return bare arrays.** Wrap collection responses in an object (`{ "value": [...], "@nextLink": "..." }`) from day one so pagination, metadata, and cursors can be added later without breaking consumers.
+- **Combining REST and gRPC specs from one source is a trap.** Auto-generating `.proto` from OAS assigns field numbers alphabetically — adding a new field reorders existing numbers and breaks binary compatibility. Design the two APIs independently and accept the duplication.
+- **Status codes are the contract too.** 401 ≠ 403; 4xx ≠ 5xx; never wrap an error inside a 200. Wrong status codes cause clients to retry the unretryable and not retry the retryable.
 
 ## Definition
 

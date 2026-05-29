@@ -4,10 +4,20 @@ type: style
 tags: [distributed-systems, events, async, messaging, domain-partitioning, microservices, streaming, ddd, coupling]
 sources: [fundamentals-of-software-architecture, understanding-distributed-systems, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Event-Driven Architecture
+
+## Key Claims
+
+- **Two topologies, very different shapes.** Broker (events flow peer-to-peer through a message bus, maximum decoupling) and mediator (a central orchestrator routes and tracks workflow). Broker scales further; mediator handles complex workflows more cleanly.
+- **Three event types matter.** Notification (something happened, fetch details), Event-Carried State Transfer (event includes the state needed to act), and Domain Event (DDD-flavoured event that captures business meaning). Mixing them carelessly creates contract chaos.
+- **Private vs public events.** A service's internal events should not be its external contract. Publish a curated public event stream as the inter-service contract; keep private events for internal coordination.
+- **Backpressure is built into the substrate.** Pull-based consumption (Kafka-style) means producers continue at their natural rate while slow consumers accumulate observable lag — no thread blocking, no cascade.
+- **Distributed Big Ball of Mud is the dominant anti-pattern.** Event-driven architectures can easily devolve into untraceable spaghetti if event flows aren't designed deliberately. Schema registries, event catalogues, and bounded contexts as event ownership boundaries are the discipline.
+- **EDA is often embedded in other styles.** Pure EDA is rare; event-driven microservices, event-sourced bounded contexts, and pipeline-style data flows are how EDA shows up in production. Adding EDA to any style improves backpressure, load smoothing, and responsiveness.
+
 
 ## Definition
 

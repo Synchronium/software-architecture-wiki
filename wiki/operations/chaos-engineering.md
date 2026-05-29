@@ -4,10 +4,20 @@ type: concept
 tags: [chaos-engineering, resiliency, fault-injection, testing, reliability, availability, complexity, sociotechnical]
 sources: [release-it, chaos-engineering]
 created: 2026-05-19
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Chaos Engineering
+
+## Key Claims
+
+- **Experimentation, not testing.** Tests verify known properties; chaos experiments create new knowledge by trying to falsify hypotheses about system behaviour under turbulence. The two cannot substitute for each other.
+- **Safety is not a composable property.** Components individually safe can be unsafe in combination. Production-scale emergent failures (cascading retries, dogpiles, congestion-induced behaviour change) cannot be reproduced in staging.
+- **Verification beats validation.** "Does the right output come out at the system boundary?" is more useful than "are the internals correct?" — particularly in complex systems where all components can validate while still composing into the wrong output.
+- **Five advanced principles.** Steady-state hypothesis, vary real-world events, run in production, automate continuously, minimise blast radius.
+- **The discipline's deepest value is sociotechnical.** Game Days transfer expert mental models that the experts themselves can't fully articulate (Woods's *Law of Fluency*). The artefacts are secondary; the conversation is primary.
+- **Continuous Verification extends CI/CD.** Automated chaos experiments inside the deployment pipeline — verifying system *output* against business expectations — are the mature end-state.
+- **Three counter-intuitive conclusions** (from the book's closing argument): redundancy increases complexity faster than safety; removing complexity buys more capacity than adding redundancy; efficiency destroys adaptive capacity.
 
 ## Definition
 
@@ -353,6 +363,14 @@ Most security incidents are caused by misconfiguration, human error, and "system
 **"Do Less, Better"** (Nwatu, Netflix): build fewer security controls, but verify empirically that they work. Without feedback loops, security controls that were effective on Day 0 silently drift into ineffectiveness as the system evolves around them.
 
 **Antipattern**: root-cause analysis in security produces the same dysfunction as in availability — blame and isolation rather than systemic learning. "What you call root cause is simply the place where you stop looking any further." (Dekker)
+
+## Key Takeaways
+
+- **Chaos engineering is empirical, not formal.** You run experiments against real systems to discover what they do; you don't model them and prove what they should. Verification beats validation in complex systems.
+- **The five advanced principles distinguish mature practice.** Steady-state hypothesis, real-world variation, production execution, continuous automation, minimal blast radius. A programme missing any of them is incomplete.
+- **The value lives in the conversation, not the experiment.** Hypothesis-forming, steady-state definition, result interpretation — these force engineers to articulate mental models and expose disagreements. Automating the conversation away removes the value even if experiments keep running.
+- **Continuous Verification is the mature end-state.** Automated experiments inside CI/CD verify system output against business expectations. ChAP is the canonical example; the future is more of this.
+- **The discipline's deepest insights are sociotechnical.** Redundancy increases complexity; removing complexity buys more capacity than adding redundancy; efficiency destroys adaptive capacity. Resilience is created by people, not patterns.
 
 ## Related Concepts
 

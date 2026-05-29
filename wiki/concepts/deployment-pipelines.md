@@ -4,10 +4,20 @@ type: concept
 tags: [continuous-delivery, deployment, fitness-functions, automation, ci-cd, devops, testing, evolutionary-architecture]
 sources: [building-evolutionary-architectures, understanding-distributed-systems, mastering-api-architecture, building-event-driven-microservices, release-it, software-architecture-metrics]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Deployment Pipelines
+
+## Key Claims
+
+- **Pipelines are the automation substrate for evolutionary architecture.** Without them, [[concepts/fitness-functions]] cannot run continuously and architectural governance reverts to manual review.
+- **Cycle time is proportional to evolution speed.** `v ∝ c` — the slower the pipeline, the slower the architecture can evolve. A 30-minute pipeline is the practical ceiling; longer pipelines get run less frequently, degrading their protective value.
+- **Deployment ≠ release.** Code reaches production (deployed) without being visible to users (released); the gap is bridged by [[concepts/feature-flags]] and [[patterns/progressive-delivery]]. This decoupling is what makes safe continuous deployment possible.
+- **Schema evolution must survive partial rollout.** Expand/contract, trickle-then-batch, never-rename. The database is the hardest deployment problem because it can't be canaried.
+- **Enterprise pipeline templates injection enterprise-wide concerns** (security scans, license checks, compliance) so individual services inherit them automatically. This is how governance scales across hundreds of services.
+- **The pipeline carries financial weight.** A $50K investment in zero-downtime deployment returns 18× over five years (Nygard). Pipeline investment is among the highest-ROI engineering work.
+
 
 ## Definition
 
@@ -343,3 +353,11 @@ Mutable configuration management produces "layers of stucco" — the machine's s
 - [[patterns/progressive-delivery]] — canonical hub for the staged-rollout pattern family (canary, blue-green, ring, dark launch, parallel run, feature flag)
 - [[concepts/feature-flags]] — application-layer release control with lifecycle discipline
 - [[concepts/cost-as-architectural-force]] — pipeline investment has 18× ROI; downtime cost as the economic justification
+
+## Key Takeaways
+
+- **Pipelines are governance infrastructure, not just automation.** Fitness functions enforce architectural rules; without pipelines those rules degrade silently.
+- **Cycle time has a hard ceiling around 30 minutes.** Slower pipelines get run less, defeating their purpose. Treat slow cycle time as an architectural defect.
+- **Decouple deployment from release.** Code in production but invisible to users is the precondition for safe continuous deployment. Feature flags and progressive delivery are the mechanisms.
+- **Database changes need their own evolution discipline.** Expand/contract, trickle-then-batch, never-rename. Schemas can't be canaried like code.
+- **Enterprise templates carry shared governance.** Security scans, license checks, compliance gates inherited by every service is how architectural concerns scale across hundreds of teams.

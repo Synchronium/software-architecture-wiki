@@ -4,10 +4,20 @@ type: concept
 tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Monitoring
+
+## Key Claims
+
+- **Monitoring tells you something is wrong; [[operations/observability]] tells you why.** Monitoring is metric-driven and detects known failure modes; observability handles the cases you didn't anticipate. They're complementary, not alternatives.
+- **Percentiles over averages.** Response-time distributions are right-skewed; averages obscure tail behaviour. P50/P95/P99/P99.9 with histogram-based aggregation. The mean is for accountants.
+- **Black-box and white-box monitoring serve different purposes.** Black-box (probes from outside) catches what users experience; white-box (internal metrics) explains why. Both are required; neither suffices alone.
+- **SLIs/SLOs replace naive thresholds.** Define what good looks like (ratio of good events / valid events), then derive alerting from burn rate against the SLO error budget. Static threshold alerts page noisily; burn-rate alerts page meaningfully.
+- **Tail latency amplifies in fan-out.** A request that makes N parallel backend calls has its P99 driven by the P99.9 of each call. Design accounting for this — either reduce N (BFF aggregation) or attack the per-call tail.
+- **Pre-aggregation has costs.** Aggregating metrics on the client/agent reduces storage dramatically but destroys the ability to re-aggregate at finer granularity later. Keep raw events where the cost is justified.
+- **Dashboards have types.** SLO dashboards for managers, API dashboards for service owners, service dashboards for on-call. One dashboard for all audiences is one dashboard for none.
 
 ## Definition
 

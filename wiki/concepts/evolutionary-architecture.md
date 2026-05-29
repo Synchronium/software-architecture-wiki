@@ -4,10 +4,21 @@ type: concept
 tags: [evolutionary-architecture, fitness-functions, coupling, strangler-fig, cloud-migration, conways-law, testability, deployability]
 sources: [building-evolutionary-architectures, mastering-api-architecture, fundamentals-of-software-architecture, learning-domain-driven-design, monolith-to-microservices, software-architecture-metrics]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Evolutionary Architecture
+
+## Key Claims
+
+- **Three pillars.** Incremental change ([[concepts/deployment-pipelines]] make small changes safe), [[concepts/fitness-functions|fitness functions]] (objective automated governance), and appropriate coupling (matching coupling tightness to business necessity).
+- **Inappropriate coupling is the root cause of non-evolvability.** Most architectures fail to evolve because their coupling didn't match the change vector. The decoupling lever varies by axis: deployment, runtime, data, schema, organisational.
+- **Evolvability varies by architecture style.** Microservices (highest), event-driven (high), service-based (medium-high), down to Big Ball of Mud (none). The limiting factors are quantum size and the presence of cross-quantum transactions.
+- **Migration follows established patterns.** [[patterns/strangler-fig]] for external seams, [[patterns/branch-by-abstraction]] for embedded capabilities, [[patterns/parallel-run]] for correctness verification. Big-bang rewrites have a high failure rate; the safe path is incremental.
+- **Architecture decisions are reversible at different costs.** Type 1 decisions (irreversible) warrant ADRs and extensive deliberation; Type 2 (reversible) deserve experimentation. Treating Type 2 decisions as Type 1 is the dominant antipattern.
+- **Testability + deployability are the operational drivers.** Farley's framing: an evolvable architecture is one whose individual components can be tested in isolation and deployed independently. TDD acts as real-time architectural feedback — code that's hard to test is poorly modularised.
+- **Form follows failure.** Architectural patterns emerge in response to specific past failures (Sidecar emerged because cross-cutting concerns kept breaking; Circuit Breaker because cascading failures kept recurring). Knowing the failure makes the pattern make sense.
+
 
 ## Definition
 
@@ -251,3 +262,11 @@ Nygard (→ [[sources/release-it]] ch. 16) frames organisational adaptability as
 - [[patterns/progressive-delivery]] — staged rollout patterns (canary, blue-green, ring, dark launch, feature flag) that make evolutionary change safe
 - [[concepts/feature-flags]] — application-layer release control; deployment ≠ release at the code level
 - [[concepts/cost-as-architectural-force]] — change cost as a compounding architectural property
+
+## Key Takeaways
+
+- **Build for evolution, not for the end state.** The three pillars (incremental change, fitness functions, appropriate coupling) make change cheap; designing for an imagined future is usually wasted work.
+- **Coupling decisions are evolvability decisions.** Inappropriate coupling — coupling tighter than the change axis requires — is the dominant cause of non-evolvability. Loosen coupling along the axes that actually change.
+- **Migration is incremental.** Strangler fig for external seams, branch by abstraction for embedded capabilities, parallel run for correctness checks. Big bang rewrites have a high failure rate that doesn't drop with team experience.
+- **Type 1 decisions deserve ADRs; Type 2 deserve experiments.** Treating Type 2 (reversible) decisions as Type 1 (irreversible) is the dominant antipattern; teams over-deliberate on choices they could just try.
+- **Testability and deployability are the operational drivers.** If individual components can't be tested in isolation and deployed independently, the architecture is not evolvable regardless of style.

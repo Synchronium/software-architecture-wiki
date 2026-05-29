@@ -4,12 +4,22 @@ type: concept
 tags: [soft-skills, leadership, negotiation, diagramming, career, teams]
 sources: [fundamentals-of-software-architecture]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career
 
 Richards & Ford assert that approximately **50% of being an effective software architect is soft skills** — negotiation, leadership, facilitation, and communication. This page consolidates the key concepts from Part III of *Fundamentals of Software Architecture* (→ [[sources/fundamentals-of-software-architecture]], Ch 21–24).
+
+## Key Claims
+
+- **Diagrams have two channels: verbal and visual.** Overloading one (Bullet-Riddled Corpse) starves the other. Use incremental builds, the Invisibility pattern (black slide to focus on the speaker), and distinct shape vocabularies. Solid lines = synchronous, dotted = asynchronous.
+- **Three diagram-tool capabilities matter.** Layers (show/hide control), stencils (reusable composite library), magnets (snap-to alignment). Master these in one tool; the choice of tool matters less than fluency.
+- **Architect personality types map to boundary choices.** Control Freak (too tight), Armchair Architect (too loose), Effective Architect (right amount of guidance). The pull from developer to architect tilts toward Control Freak — architects miss low-level work and overcorrect.
+- **Elastic leadership scales control to context.** Five factors (team familiarity, size, experience, complexity, duration) determine how much control to exert. Counterintuitively, short projects need less control, not more.
+- **Negotiate with grammar and data.** Translate "five nines" into "5 min 35 sec per year"; ask whether the entire system or just the critical core needs that level. State cost and time last, not first.
+- **The 4 C's defend against accidental complexity.** Communication, collaboration, clarity, conciseness. The architect's job is to make the problem as simple as it can be, not to prove their worth by making it harder.
+- **The 20-minute rule and personal technology radar build career durability.** Move knowledge from "stuff you don't know you don't know" into "stuff you know you don't know." Treat technology portfolio diversification as risk management.
 
 ---
 

@@ -4,12 +4,21 @@ type: stream
 tags: [streaming, kafka, events, windowing, exactly-once, stateful-processing, distributed-systems, databases, messaging]
 sources: [designing-data-intensive-applications, building-event-driven-microservices, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Stream Processing
 
 Stream processing handles data as an unbounded sequence of events — not a bounded dataset processed offline, but a never-ending flow processed with low latency. The key abstraction is the **event**: a small, immutable, self-contained, timestamped record representing something that happened. Events are grouped into **topics** or **streams**. Stream processing is the online counterpart to batch processing; as Apache Flink's designers put it, "batch is a special case of streaming."
+
+## Key Claims
+
+- **The log is the unifying primitive.** Log-based brokers (Kafka) differ fundamentally from queue-based brokers (RabbitMQ): messages are retained and consumers track offsets, enabling fan-out, replay, and time-travel debugging that queues cannot offer.
+- **Event time, not processing time.** Watermarks bound how long the system waits for late events; windowing over event time is the only correct way to compute time-based aggregates on streams.
+- **State is first-class.** Stateful stream processing requires explicit state stores (RocksDB-backed, changelog-replicated). Stateless topology primitives compose simply; stateful operators introduce the partitioning and fault-tolerance problems that dominate production complexity.
+- **Exactly-once is achievable but expensive.** Idempotent producers + transactional APIs in Kafka, distributed snapshots in Flink, microbatching in Spark Streaming. Pick the framework whose fault-tolerance model matches your latency budget.
+- **Reprocessing is a first-class feature.** Replaying the log through a new processor lets you fix bugs, add views, and rebuild state from scratch — the architectural property that distinguishes the streams paradigm from databases.
+- **Lambda architecture is an anti-pattern.** Unified batch+stream (Flink, Beam) handles both historical replay and live events through one code path. Maintaining two pipelines for the same logic is duplicate work.
 
 ## Lambda and Kappa Architectures
 
@@ -378,3 +387,11 @@ Operator state (e.g., aggregation windows, join buffers) must survive failures. 
 - [[distributed/consistency-models]] — exactly-once semantics relate to linearizability and integrity guarantees
 - [[distributed/backpressure]] — pull-based consumption as the canonical backpressure mechanism; consumer lag as observable signal
 - [[distributed/queueing-theory]] — Little's Law and percentile arithmetic for sizing stream-processing pipelines
+
+## Key Takeaways
+
+- **Choose log-based brokers (Kafka) when you need retention, replay, fan-out, or reprocessing.** Choose queue-based brokers (RabbitMQ) when you need traditional point-to-point semantics with consumption-deletes-message behaviour.
+- **Use event time and watermarks for time-based aggregations.** Processing time is a convenience that gives wrong answers when events arrive late or out of order.
+- **Make state explicit.** Stateful operators need durable state stores (RocksDB + changelog), not in-process memory. Production failure usually traces back to state that was assumed to be ephemeral but actually wasn't.
+- **Match the framework's fault-tolerance model to your latency budget.** Microbatching (Spark Streaming) is high-latency, easy-to-reason-about. Checkpointing (Flink) is low-latency, more complex. Pick deliberately.
+- **Reject the Lambda architecture.** Maintaining batch and stream pipelines for the same logic is duplicate work and inevitable drift. Unified frameworks (Flink, Beam) handle both through one code path.

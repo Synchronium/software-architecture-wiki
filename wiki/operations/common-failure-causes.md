@@ -4,10 +4,21 @@ type: concept
 tags: [distributed-systems, reliability, resiliency, fault-tolerance, operations]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Common Failure Causes
+
+## Key Claims
+
+- **Error handling is the dominant cause of catastrophic failures.** A 2014 study of distributed data stores found the majority of catastrophic outages came from incorrect error handling, not hardware faults. Error paths are written fast, reviewed lightly, almost never tested.
+- **Configuration changes are the leading cause of production incidents.** A code path that runs an unexpected branch hours after a flag is flipped — long after the change window closes — is the canonical failure shape.
+- **Slow responses are worse than failures.** A slow downstream ties up resources at both ends; a failed downstream releases them. Cascading failure follows a chain of slow responses propagating upstream as blocked threads exhaust pools.
+- **Queue management matters under overload.** LIFO and CoDel beat FIFO when requests have timed out at the caller — completing them wastes resources on results that will be discarded. Short queues + load shedding beat long queues + indefinite processing.
+- **Risk = probability × impact, and probability includes detection delay.** A 0.1% failure rate undetected for a week is a higher-risk event than a 5% failure detected immediately.
+- **Building for tests is not building for production.** QA environments use polite traffic (valid sessions, correct cookies, sensible URLs). Production sends bots, scrapers, 404 floods, retry storms, and partial requests. Safety devices must be present from day one, not added after incidents.
+- **The Airline Cascade and Black Friday case studies make the patterns concrete.** Both are blocked-thread cascades triggered by connection-pool exhaustion combined with missing timeouts. The lesson: bound every wait, isolate every pool.
+
 
 A **fault** is a failure of an internal component or external dependency. A **failure** is when the system no longer provides a service meeting its specification. Some faults are tolerated with no user-visible impact; others lead to user-visible failures.
 

@@ -4,10 +4,20 @@ type: concept
 tags: [governance, testing, evolutionary-architecture]
 sources: [building-evolutionary-architectures, fundamentals-of-software-architecture, mastering-api-architecture, software-architecture-the-hard-parts, software-architecture-metrics]
 created: 2026-05-13
-updated: 2026-05-18
+updated: 2026-05-29
 ---
 
 # Architecture Fitness Functions
+
+## Key Claims
+
+- **Fitness functions are objective integrity assessments of architecture characteristics.** Anything that can give a measurable, repeatable signal about a quality attribute qualifies — unit tests, ArchUnit rules, chaos experiments, monitoring alerts, license monitors, manual reviews. The abstraction is the unification, not the mechanism.
+- **Every important architectural decision should have a corresponding fitness function.** Without one, decisions degrade silently as the system evolves. Fitness functions turn architectural rules into living tests that run continuously in [[concepts/deployment-pipelines]].
+- **Five orthogonal classification dimensions.** Atomic/holistic, triggered/continual, static/dynamic, automated/manual, temporal. Combinations matter more than any single dimension — most systems need a broad base of atomic+triggered and a small set of holistic+continual.
+- **The fitness function testing pyramid mirrors the test pyramid.** Cheap atomic+triggered tests at the bottom (cycle checks, complexity caps), holistic+triggered or atomic+continual in the middle (integration tests, production monitors), holistic+continual chaos at the top (rare, expensive, highest signal).
+- **Three priority tiers.** Key fitness functions block promotion; relevant ones are tracked but non-blocking; not-relevant ones are excluded. Priority is per-pipeline, not per-function — a function may be key for a security-critical service and merely relevant for an internal tool.
+- **Enterprise pipeline templates carry enterprise-wide fitness functions.** Security scans, license monitors, compliance gates inherited by every service. Individual teams add service-specific functions on top. This is how architectural governance scales across hundreds of services without manual review.
+- **Cycle time is itself a fitness function.** A slow pipeline gets run less often, degrading every other fitness function's protective value. Treat slow cycle time as an architectural defect.
 
 ## Definition
 
@@ -34,9 +44,9 @@ Individual fitness functions each govern one characteristic; the **system-wide f
 
 Architects will likely never "evaluate" the system-wide fitness function as a single number. It is a mental model and governance framework, not a dashboard metric.
 
-## Classification (evo-arch)
+## Classification: Five Dimensions
 
-*Building Evolutionary Architectures* classifies fitness functions across five independent dimensions (→ [[sources/building-evolutionary-architectures]] Ch 2):
+The originating taxonomy ([[sources/building-evolutionary-architectures]] Ch 2) classifies fitness functions across five independent dimensions. Every fitness function can be placed on each dimension, and the position determines how the function fits into a pipeline.
 
 ### Atomic vs Holistic
 
@@ -117,46 +127,37 @@ Fitness function categories frequently intersect in practice. The most common an
 
 **Fitness Function Review**: a formal meeting with key business and technical stakeholders, held at least annually or triggered by significant events (major user growth, new business capability, regulatory change). The review covers: which existing fitness functions remain relevant; whether thresholds should change in scale or magnitude; whether better measurement approaches exist; and whether new dimensions have emerged that require new fitness functions. The output is an updated priority map (key/relevant/not relevant) (→ [[sources/building-evolutionary-architectures]] Ch 2).
 
-## Classification by Mechanism (FOSA)
+## Two Complementary Lenses on the Same Set
 
-*Fundamentals of Software Architecture* classifies fitness functions by the type of mechanism rather than the type of characteristic (→ [[sources/fundamentals-of-software-architecture]] Ch 6):
+The five-dimension classification above answers "what shape is this fitness function?" Two other lenses answer different questions and overlap rather than compete with it.
 
-**Framing:** fitness functions are "NOT a new framework, a new perspective on existing tools." JDepend, ArchUnit, NetArchTest, and Chaos Monkey all pre-existed the term. The fitness function abstraction unifies them as a single governance mechanism rather than treating them as disparate testing categories.
+### By mechanism: structural / operational / process
 
-**Structural fitness functions** — verify code-level architecture decisions:
-- *Cyclic dependency detection*: JDepend checks that no package cycles exist (atomic + triggered; unit test in the build pipeline)
-- *Layer enforcement*: ArchUnit (Java) or NetArchTest (.NET) verify presentation layer does not call database layer
-- *Connascence limits*: no component exceeds an afferent coupling threshold
-- *Cyclomatic Complexity (CC)*: Thomas McCabe Sr. (1976); CC = E − N + 2 per function (E = edges, N = nodes in the control-flow graph). Industry threshold: CC ≤ 10 is acceptable; authors prefer ≤ 5. CC > 50 is considered impossible to maintain. Crap4J combines CC with test coverage to identify high-risk methods (high CC + low coverage). TDD accidentally produces lower CC because writing tests first forces small, focused methods.
-- *Distance from main sequence*: JDepend calculates package-level abstractness (A) and instability (I); D = |A + I − 1| with a configurable tolerance threshold (e.g., 0.5)
+*Fundamentals of Software Architecture* groups fitness functions by where the check runs (→ [[sources/fundamentals-of-software-architecture]] Ch 6). The framing matters: fitness functions are "NOT a new framework — a new perspective on existing tools." JDepend, ArchUnit, NetArchTest, Chaos Monkey all pre-existed the term; the abstraction unifies them.
 
-**Operational fitness functions** — verify runtime architecture decisions:
-- *Chaos engineering*: Netflix **Chaos Monkey** terminates random production instances; **Simian Army** extends this: **Conformity Monkey** checks services against governance rules, **Security Monkey** identifies security vulnerabilities and misconfigured security groups, **Janitor Monkey** decommissions orphaned services (services with no active callers), **Chaos Kong** simulates failure of an entire AWS availability zone. Origin: Netflix moved to AWS and lost direct hardware control; Chaos Monkey was created to ensure services were resilient by design rather than by assumption.
-- *Latency monitoring*: alert when p99 latency exceeds SLA threshold
-- *Contract testing*: Pact verifies consumer/provider API contracts are not silently broken
+- **Structural** — code-level architecture: cycle detection (JDepend), layer enforcement (ArchUnit/NetArchTest), connascence limits, Cyclomatic Complexity caps (McCabe; industry threshold CC ≤ 10), distance from main sequence (`D = |A + I − 1|`).
+- **Operational** — runtime architecture: chaos engineering (Chaos Monkey terminating instances; Simian Army's Conformity/Security/Janitor/Chaos Kong variants), latency monitoring, contract testing (Pact).
+- **Process** — team practice: coverage thresholds, deployment frequency, deployment success ratio.
 
-**Process fitness functions** — verify team practice decisions:
-- *Test coverage thresholds*: fail the build if coverage drops below a baseline (agility decomposes into testability + deployability + modularity — each is measurable)
-- *Deployment frequency*: alert if release cadence slows past an agreed floor
-- *Deployment success ratio*: percentage of successful deployments; deployment duration; post-deployment issues raised
+The mechanism lens is useful when *deciding which tool to reach for*. The five-dimension lens is useful when *deciding which pipeline stage and priority*.
 
-**Key principle:** "Architects must ensure that developers understand the *purpose* of the fitness function before imposing it on them." Fitness functions imposed without explanation breed resentment and workarounds that defeat the governance intent. Framing fitness functions as engineering checklists (Atul Gawande's *The Checklist Manifesto*) helps: they enforce discipline not because engineers lack knowledge, but because complex systems create too many simultaneous concerns to rely on memory alone.
+**Adoption principle:** "Architects must ensure that developers understand the *purpose* of the fitness function before imposing it on them." Functions imposed without explanation breed workarounds. Framing them as engineering checklists (Gawande) helps — they enforce discipline because complex systems create too many simultaneous concerns to rely on memory.
 
-## API-Specific Categories (api-arch)
+### By concern: the API-architecture categories
 
-*Mastering API Architecture* provides a concrete taxonomy of fitness function categories for API-driven systems (→ [[sources/mastering-api-architecture]] Ch 8):
+For API-driven systems, *Mastering API Architecture* (→ [[sources/mastering-api-architecture]] Ch 8) organises by the concern being protected:
 
-| Category | What It Checks | Example Automation |
+| Category | What it checks | Example automation |
 |----------|---------------|-------------------|
-| **Code quality** | Static analysis, dependency hygiene | SonarQube gates, OWASP dependency-check |
-| **Resiliency** | Service tolerates dependency failures | Chaos engineering; circuit breaker tests |
-| **Observability** | Required telemetry is emitted | All services emit RED metrics; trace sampling active |
-| **Performance** | Response times within SLO | Load test p99 latency below threshold (Gatling, K6) |
-| **Compliance** | Regulatory requirements met | PCI / GDPR data residency; audit logging present |
-| **Security** | Security controls in place | TLS everywhere; no secrets in code; SAST clean |
-| **Operability** | Service can be operated in production | Health endpoints present; runbooks linked; on-call defined |
+| Code quality | Static analysis, dependency hygiene | SonarQube gates, OWASP dependency-check |
+| Resiliency | Service tolerates dependency failures | Chaos engineering; circuit breaker tests |
+| Observability | Required telemetry is emitted | All services emit RED metrics; trace sampling active |
+| Performance | Response times within SLO | Load test p99 latency below threshold |
+| Compliance | Regulatory requirements met | PCI/GDPR data residency; audit logging present |
+| Security | Security controls in place | TLS everywhere; no secrets in code; SAST clean |
+| Operability | Service operable in production | Health endpoints; runbooks; on-call defined |
 
-The FOSA taxonomy (structural/operational/process) categorises by *mechanism*; the api-arch taxonomy categorises by *concern*. Both are compatible and complementary.
+The concern lens is useful when *checking coverage gaps*: each concern should have at least one fitness function. The five-dimension lens then determines how to implement each one.
 
 ## Enterprise Fitness Functions
 
@@ -198,9 +199,9 @@ From Ch 8 — two emerging fitness function approaches:
 
 Richards & Ford recommend adding a Compliance section to each [[concepts/adrs|Architecture Decision Record]] specifying whether the decision can be verified by an automated fitness function, and if so, how. This links decision documentation to active governance: the ADR is not just a record of a decision but a specification of how the decision will be enforced (→ [[sources/fundamentals-of-software-architecture]] Ch 19).
 
-## Decomposition Governance Fitness Functions (SATH)
+## Decomposition Governance Fitness Functions
 
-*Software Architecture: The Hard Parts* (Ch 5) provides a set of holistic fitness functions for governing component-based decomposition during a monolith migration (→ [[sources/software-architecture-the-hard-parts]] ch. 5). These are typically triggered in CI/CD on deployment:
+During monolith decomposition, fitness functions govern the structural shape of the migration in progress (→ [[sources/software-architecture-the-hard-parts]] ch. 5). All are holistic + triggered (run in CI/CD on deployment):
 
 | Fitness function | What it checks | Implementation |
 |-----------------|---------------|----------------|
@@ -214,22 +215,17 @@ Richards & Ford recommend adding a Compliance section to each [[concepts/adrs|Ar
 
 These fitness functions are all *holistic* (structural characteristics of the codebase) and *triggered* (run on deployment in CI/CD). They implement automated governance for the [[concepts/architectural-decomposition|component-based decomposition patterns]].
 
-## The Fitness Function Testing Pyramid (SAM)
+## Balancing Cost and Coverage: The Testing Pyramid
 
-Weiss (→ [[sources/software-architecture-metrics]] ch. 2) adapts the functional testing pyramid to architectural tests, providing a practical framework for balancing cost and confidence across fitness functions.
+The functional testing pyramid has an architectural analogue (Weiss, → [[sources/software-architecture-metrics]] ch. 2). Pyramid placement is driven by the same atomic/holistic and triggered/continuous dimensions introduced earlier.
 
-**Classification drivers:** Two categories primarily determine pyramid placement — breadth of feedback (atomic vs holistic) and execution trigger (triggered vs continuous). Other dimensions (location, metric type, automation) are secondary.
+- **Bottom (triggered atomic):** fast, cheap, easy to maintain. Code coverage, cyclomatic complexity caps, dependency-cycle checks, simple performance thresholds. Build the broadest base here.
+- **Middle (triggered holistic OR continuous atomic):** integration suites across components, or continuous monitoring of single atomic values (P99 per endpoint, transaction latency). Fewer tests; higher cost.
+- **Top (continuous holistic, or triggered holistic in production):** chaos engineering, business KPIs (revenue/minute, checkout rate), or zero-downtime regression suites during rolling deploys. Hardest and costliest — use sparingly.
 
-**Three layers:**
-- **Bottom (triggered atomic)**: fast, cheap, easy to maintain. Code coverage metrics, static code analysis (cyclomatic complexity, dependency checks), simple performance thresholds. Build the broadest base here. Do *not* create tests without a clear quality goal — untargeted metrics waste effort.
-- **Middle (triggered holistic OR continuous atomic)**: integration test suites (triggered across multiple components), or continuous production monitoring of single atomic values (response time per endpoint, transaction latency). Fewer tests; higher cost.
-- **Top (continuous holistic OR triggered holistic in production)**: chaos engineering, business-level KPIs (revenue/minute, checkout rate/minute monitored continuously), or triggered tests against a live production system (e.g., regression suite run during a rolling deployment to verify zero downtime). Hardest and costliest. Use sparingly.
+**Quality-attribute anchoring.** Every fitness function should tie to a named ISO 25010 quality attribute (functional suitability, performance efficiency, reliability, security, maintainability, portability, etc.). This prevents untargeted automation — the failure mode of teams that collect metrics nobody acts on.
 
-**ISO 25010 quality attribute anchoring**: fitness functions should be tied to a named quality attribute from the ISO 25010 taxonomy (functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, portability) — this connects each test to a stakeholder-agreed quality goal, preventing untargeted automation.
-
-**7-step process**: (1) align quality goals with stakeholders → (2) draft fitness functions with tentative categories → (3) prioritise by importance, feasibility, and pyramid coverage gaps → (4) finalize definitions → (5) implement automated tests → (6) visualize and share → (7) iterate (retire, tighten, or loosen as the system evolves).
-
-> **Extension to evo-arch**: Weiss adds two optional dimensions not present in Ford/Parsons/Kua: *target audience* (explicit audience specification for large organisations) and *applicability* (constraining a fitness function to a specific subsystem or technology). The core mandatory categories (atomic/holistic, triggered/continuous, execution location, metric type, automation, quality attribute) align well with the evo-arch taxonomy, making the two frameworks complementary.
+**Practical sequence:** align quality goals with stakeholders → draft fitness functions with tentative categories → prioritise by importance and pyramid-coverage gaps → finalise → implement → visualise → iterate (retire, tighten, loosen as the system evolves).
 
 ## How Different Sources Treat It
 
@@ -240,6 +236,15 @@ Weiss (→ [[sources/software-architecture-metrics]] ch. 2) adapts the functiona
 | [[sources/mastering-api-architecture]] | Applies fitness functions to API-specific concerns; provides seven categories (code quality, resiliency, observability, performance, compliance, security, operability); links each to concrete CI/CD tooling |
 | [[sources/software-architecture-the-hard-parts]] | Applies the fitness function concept to distributed architecture governance; concrete decomposition governance examples (component size, dependency limits, domain namespace enforcement); Equifax breach (2017) as enterprise-scale motivating case; JDepend, ArchUnit, NetArchTest for structural checks |
 | [[sources/software-architecture-metrics]] | Weiss (ch. 2): adapts testing pyramid to fitness functions — three pyramid layers; ISO 25010 anchoring; 7-step development process. Ford (ch. 8): metrics → engineering transformation; automation operationalises governance; ArchUnit cycle checks; zero-day enterprise security pattern; fitness functions as executable checklist (Gawande). Woods (ch. 7): four-quadrant measurement taxonomy (artifact/operational × external/internal); quality-attribute-specific measurement approaches; "measure what matters" principle. |
+
+## Key Takeaways
+
+- **Every important architectural decision should have a corresponding fitness function.** Without one, the decision degrades silently as the system evolves. The fitness function is what makes governance survive.
+- **Use the five-dimension classification to design each function** (atomic/holistic × triggered/continual × static/dynamic × automated/manual × temporal). Use the mechanism and concern lenses to check for coverage gaps.
+- **Build a broad base of cheap atomic+triggered fitness functions** (cycle detection, complexity caps, layer enforcement). Reserve expensive holistic+continual functions (chaos experiments, business KPI monitors) for the few cases that need them.
+- **Assign priority per pipeline.** Key functions block promotion; relevant ones are tracked; not-relevant ones are excluded. The same function may be key in a security service and relevant in an internal tool.
+- **Enterprise pipeline templates inject shared governance.** Security, license, compliance gates inherited by every service is how architectural concerns scale across hundreds of teams.
+- **Cycle time is itself a fitness function.** A pipeline too slow to run frequently degrades every other fitness function's protective value.
 
 ## Related Concepts
 

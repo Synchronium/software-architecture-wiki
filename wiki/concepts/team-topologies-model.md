@@ -4,11 +4,20 @@ type: concept
 tags: [teams, organisational-design, cognitive-load, flow, conways-law]
 sources: [team-topologies]
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # Team Topologies Model
 
+## Key Claims
+
+- **Four team types are sufficient.** Stream-aligned (the primary type, owns a value stream), platform (reduces cognitive load for stream-aligned teams), enabling (raises capability, time-limited), and complicated-subsystem (used sparingly for genuinely specialist concerns). Aim for 6:1 to 9:1 stream-aligned to other types.
+- **Three interaction modes, explicitly chosen.** Collaboration (high bandwidth, time-bounded), X-as-a-Service (low bandwidth, default for platforms), facilitating (enabling team mode). Awkward interactions are a topology problem, not a people problem.
+- **Cognitive load is the sizing constraint.** A team can own only as much software as it can hold in collective working memory. Domain complexity, tooling overhead, and infrastructure ops all consume cognitive capacity.
+- **Stable teams are an organisational sensor.** Stable team-to-team communication pathways are how the organisation detects environmental change. Constantly shifting teams break sensing entirely.
+- **The team API is the primary inter-team interface.** Code, versioning, documentation, practices, and communication channels are all part of a team's public surface. Design the team API for its consumers, the way a service API is designed for clients.
+- **Thinnest Viable Platform.** Platforms must resist over-engineering. Start with a wiki listing shared services; grow only in response to demonstrated need. Strong product management is the antidote to platform-team feature creep.
+- **The DevOps team is an anti-pattern as a permanent structure.** Use it as a temporary enabling team that raises capability and then withdraws; permanent ops teams become silos that defeat the purpose.
 
 ## Definition
 
@@ -287,6 +296,14 @@ Team Topologies is an operationalisation of [[concepts/conways-law]]. The four t
 - Complicated-subsystem teams → encapsulated specialist components behind clean APIs
 - Collaboration mode → temporary coupling during boundary discovery
 - X-as-a-Service mode → the target state: loose coupling between teams mirrored in loose coupling between services
+
+## Key Takeaways
+
+- **Most teams should be stream-aligned.** Aim for 6:1 to 9:1 stream-aligned to other types. If you have many platform/enabling/subsystem teams, ask whether they're doing work the stream-aligned teams should own.
+- **Pick interaction modes deliberately.** Awkward interactions are a topology problem, not a people problem. Excessive communication in X-as-a-Service mode → fix the API. Lack of communication in collaboration mode → wrong teams paired.
+- **Size to cognitive load, not headcount targets.** A team can own only as much software as it can hold in collective working memory. Pull extraneous load out via platforms; keep intrinsic domain load within capacity.
+- **Stable teams are organisational sensors.** Constantly shifting team structures destroy the communication pathways through which operational signals flow back to development. Flow work to teams, not people to projects.
+- **Treat the platform as a product.** Strong product management, real consumers, real SLAs, real DevEx. Start with the Thinnest Viable Platform — even a wiki — and grow only in response to demonstrated need.
 
 ## Related Concepts
 

@@ -4,10 +4,20 @@ type: style
 tags: [distributed-systems, microservices, domain-partitioning, bounded-contexts, devops]
 sources: [fundamentals-of-software-architecture, understanding-distributed-systems, software-architecture-patterns, learning-domain-driven-design, monolith-to-microservices, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Microservices Architecture
+
+## Key Claims
+
+- **"Microservice" is a label, not a description.** The name contrasts with SOA's gigantic services — it doesn't prescribe small size. The right guideline: small API surface area, significant encapsulated functionality. A service too small to do useful work alone is operational overhead without payoff.
+- **One bounded context per service, one data store per service.** Services should not share domain models or databases. When two services need the same data, each keeps its own copy and accepts the synchronisation complexity.
+- **Independent deployability is the load-bearing property** (Newman). Everything else — no shared databases, outside-in interface design, loose coupling — follows from making this real.
+- **DevOps maturity is a prerequisite, not an outcome.** Without containerisation, orchestration, CI/CD, service discovery, distributed tracing, and centralised logging in place first, the operational burden of microservices overwhelms the architectural benefits.
+- **Distributed monolith is the dominant failure mode.** Separately deployed services so tightly coupled they can't be released independently. Detection: deploying one service requires coordinating changes across others. All the cost of distribution, none of the decoupling benefit.
+- **Don't reach for transactions; fix granularity.** A cross-service transaction is a signal the boundary is wrong. The right response is usually to merge the services, not to add saga complexity.
+- **The four conditions where microservices are wrong.** Unclear domain, startups (use modular monolith first), customer-installed software (can't push ops complexity onto customers), no clear reason ("because Netflix"). Most teams reach for microservices too early.
 
 ## Definition
 

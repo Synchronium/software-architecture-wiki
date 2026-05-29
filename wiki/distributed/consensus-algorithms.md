@@ -4,12 +4,22 @@ type: concept
 tags: [distributed-systems, consensus, raft, coordination, fault-tolerance]
 sources: [designing-data-intensive-applications, understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-13
-updated: 2026-05-27
+updated: 2026-05-29
 ---
 
 # Consensus Algorithms
 
-Consensus is the problem of getting a set of nodes to agree on a single value or decision, even when some nodes fail or messages are delayed. It is one of the most fundamental — and most difficult — problems in distributed systems. Its difficulty is formally proven by the **FLP result**. Its solutions underpin leader election, distributed locks, and every strongly consistent distributed database.
+Consensus is the problem of getting a set of nodes to agree on a single value or decision, even when some nodes fail or messages are delayed. It is one of the most fundamental — and most difficult — problems in distributed systems. Its solutions underpin leader election, distributed locks, and every strongly consistent distributed database.
+
+## Key Claims
+
+- **You need consensus for a specific list of properties.** Linearizable compare-and-set, atomic commit, total order broadcast, distributed locks, leader election, and uniqueness constraints are all equivalent — each requires consensus and reduces to the others. The Equivalence Theorem is the reason consensus matters: avoid these properties and you avoid consensus.
+- **Most applications don't need consensus.** Causal consistency is the strongest model compatible with availability + partition tolerance, and many applications can be correct with only causal ordering. Reserve consensus for the small subset of operations that genuinely require it.
+- **Consensus is provably impossible in pure async systems** (FLP). In practice, partial synchrony plus randomised timeouts breaks the impossibility — at the cost of occasionally timing out on a live node.
+- **All practical algorithms use epoch numbers.** Each leader election increments the epoch; nodes reject messages from stale leaders. The two rounds of voting (election + proposal) overlap their quorums to guarantee any new leader sees all committed values.
+- **Raft is the production default for new systems.** Designed to be understandable; used in etcd, CockroachDB, TiKV, Consul. Paxos remains in legacy systems and academic treatments; Zab in ZooKeeper.
+- **2PC is not fault-tolerant consensus.** It cannot satisfy termination when the coordinator crashes — participants block indefinitely. Use a replicated coordinator (Paxos group) if 2PC is unavoidable.
+- **Replica count matters: 3 minimum, 5 best practice.** Fewer than 5 leaves no tolerance for coincident failure during planned maintenance. Topology matters too — a linchpin replica at a network choke point can partition the cluster even with a technically-live quorum.
 
 ## Why Consensus Is Hard: The FLP Result
 
@@ -208,6 +218,14 @@ Key signals to monitor (→ [[sources/site-reliability-engineering]] ch. 23):
 | [[sources/understanding-distributed-systems]] | Covers Raft and consensus at a high level; focuses on practical use (ZooKeeper for leader election, partition assignment) rather than theoretical depth |
 | [[sources/foundations-of-scalable-systems]] | Database practitioner framing. Raft election mechanics (election terms as logical clocks; RequestVote; randomized timers; candidacy requires up-to-date log); Raft implementations: Neo4j, YugabyteDB, Hazelcast (complementing etcd, CockroachDB from other sources). 2PC failure cascade: coordinator failure holds participant locks → concurrent transactions time out → circuit breakers open → cascading failures in loaded systems. VoltDB SPI mechanism: single CPU core per partition, serial single-threaded execution, no locking needed → no 2PC for single-partition transactions; MPI drives 2PC only for multi-partition. Cloud Spanner TrueTime: GPS + atomic clock hardware, ~7ms bounded skew, commit wait period (hold locks for skew duration) to guarantee real-time ordering of linearizable commits. (ch. 12) |
 | [[sources/site-reliability-engineering]] | SRE operations perspective. Three case studies of ad hoc coordination failures (STONITH, human failover, gossip). RSM as the correct foundation. Components built on consensus (datastores, leader election, leases, task queues). Replica count guidance: minimum 3, best practice 5. Multi-Paxos performance: 1 RTT in steady state, batching and pipelining, quorum leases for local reads. Replica placement: failure domains, linchpin replica problem, geo-distribution vs latency. Monitoring: member health, lagging replicas, leader existence and change rate, transaction number monotonicity. (ch. 23) |
+
+## Key Takeaways
+
+- **Ask whether you actually need consensus before reaching for it.** Causal consistency is the strongest model compatible with availability + partition tolerance, and most applications can be correct under causal ordering alone.
+- **If you need any of the equivalent properties (linearizable CAS, atomic commit, total order broadcast, distributed locks, leader election, uniqueness), use a consensus service.** Don't build your own — use etcd or ZooKeeper.
+- **Use 3 nodes minimum, 5 nodes for production.** Fewer than 5 leaves zero tolerance for failure during planned maintenance. Distribute replicas across failure domains; watch for linchpin replica problems.
+- **2PC is not fault-tolerant consensus** — its coordinator can block participants indefinitely. Either use a replicated coordinator (Spanner) or use saga + outbox patterns instead.
+- **Monitor leader changes, lagging replicas, proposal counts, and transaction-number monotonicity.** Consensus systems fail subtly; the symptoms are observable but easy to miss.
 
 ## Related Concepts
 

@@ -2,13 +2,25 @@
 title: "Overview — Software Architecture"
 type: overview
 tags: []
-sources: [understanding-distributed-systems, fundamentals-of-software-architecture, mastering-api-architecture, building-evolutionary-architectures, designing-data-intensive-applications, software-architecture-the-hard-parts, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design, team-topologies, domain-driven-design, monolith-to-microservices, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, release-it, foundations-of-scalable-systems, software-architecture-metrics, accelerate, a-philosophy-of-software-design]
-updated: 2026-05-18
+sources: [understanding-distributed-systems, fundamentals-of-software-architecture, mastering-api-architecture, building-evolutionary-architectures, designing-data-intensive-applications, software-architecture-the-hard-parts, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design, team-topologies, domain-driven-design, monolith-to-microservices, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, release-it, foundations-of-scalable-systems, software-architecture-metrics, accelerate, a-philosophy-of-software-design, site-reliability-engineering, chaos-engineering]
+updated: 2026-05-29
 ---
 
 # Overview — Software Architecture
 
-> This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: **19 sources fully ingested.**
+> This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: **21 sources fully ingested.**
+
+## At a Glance
+
+The wiki's working view of the field, in seven claims:
+
+1. **Architecture is decisions made under uncertainty.** Every choice trades quality attributes against each other; there is no best architecture, only better fits for a context. The architect's job is to identify the *fewest* characteristics that matter most and accept under-optimisation on the rest.
+2. **Failures are a fact, not an edge case.** Design for production, not QA: assume hardware fails, networks partition, clocks drift, configs corrupt. Minimise blast radius and stop propagation — don't try to prevent every failure.
+3. **Coordination is the most expensive primitive in distributed systems.** Consensus, 2PC, and synchronous quorums are last-resort tools. Most "we need strong consistency" requirements turn out to be integrity requirements, achievable with idempotency and end-to-end IDs at a fraction of the cost.
+4. **Architecture is sociotechnical.** Team structure encodes itself in system structure ([[concepts/conways-law]]); cognitive load determines what a team can own; safety is a property of the whole system, not its components. Pure technical reasoning misses half the problem.
+5. **Governance must be automated and continuous, not periodic and manual.** Architectural decisions degrade silently. [[concepts/fitness-functions]] in [[concepts/deployment-pipelines]] are the mechanism that makes governance survive over time.
+6. **Complexity accumulates incrementally and must be deliberately resisted.** Tactical programming defers cost to every future reader; strategic programming invests ~10–15% in design and pays back compoundingly. Information hiding, deep modules, and bounded contexts are the techniques.
+7. **The empirical evidence supports counter-intuitive practices.** Speed and stability correlate positively (not in tension); trunk-based development beats long-lived branches; CABs hurt rather than help; loose architectural coupling matters more than test automation for delivery performance ([[sources/accelerate]]).
 
 ---
 
@@ -255,6 +267,38 @@ SLIs/SLOs with error budgets replace naive alerting — alert on burn rate, not 
 
 FOSA is unusually explicit: negotiation, facilitation, leadership, and communication are co-equal with technical knowledge for architect effectiveness. Key practices: turn architecture decisions into favours (not mandates), demonstrate rather than argue, maintain the right level of team control (elastic leadership), use the 4 C's (communication, collaboration, clarity, conciseness).
 
+### SRE Operationalises Reliability as an Engineering Discipline
+
+Beyer et al. (→ [[sources/site-reliability-engineering]]) establish that running production software is an engineering activity, not a maintenance activity. The central mechanism is the [[operations/error-budgets|error budget]] — defined as `1 − SLO target`, it converts the dev/ops conflict (devs want fast releases, ops want stability) into an aligned incentive: the budget is a shared resource that gets spent by deployments and incidents alike. When exhausted, releases halt until reliability work restores it.
+
+The discipline rests on several enforced principles: **100% is always the wrong target** (over-engineering reliability past user-perceptible thresholds wastes engineering capacity that could go to features); **toil capped at 50%** (manual operational work eats engineering capacity exponentially if uncapped); **MTTR matters more than MTBF** at scale (failure is constant; recovery speed is the lever); **blameless postmortems** (blame destroys the information needed to prevent recurrence). See [[operations/site-reliability-engineering]], [[operations/availability]], [[operations/incident-management]].
+
+### Chaos Engineering Discovers Unknown Failure Modes
+
+Rosenthal & Jones (→ [[sources/chaos-engineering]]) make the case that complex distributed systems have failure modes nobody knows to look for. Traditional testing verifies known properties; chaos engineering creates new knowledge — a disproved hypothesis reveals something previously unknown about the system.
+
+Five principles define the discipline: **steady-state hypothesis** (define normal output, then test whether it holds under turbulence); **vary real-world events** (failure modes that actually occur, not the easy ones); **run in production** (staging differs from production in ways humans cannot fully predict); **automate continuously** (the solution space is unknowable; dependencies change over time); **minimise blast radius** (control vs experimental groups, blast radius progression). The Netflix Chaos Monkey lineage matured into Continuous Verification — a CI/CD/CV progression where automated experiments verify system behaviour as a pipeline stage. See [[operations/chaos-engineering]].
+
+The discipline's deeper insight is sociotechnical: the most valuable Game Days don't find bugs; they distil expert mental models that automation cannot capture (the [[sources/chaos-engineering]] *Law of Fluency*). Game Days, ChAP, and Disasterpiece Theater are as much about transferring tacit knowledge as testing the system.
+
+### Performance Is Queueing Theory in Disguise
+
+The newer pages [[distributed/queueing-theory]] and [[distributed/backpressure]] surface a discipline scattered across multiple sources. Most production performance failures are queueing failures wearing other names: "slow database" is a queue at the connection pool; "cascading failure" is a queue at every blocked thread; "tail latency amplification" is a statistical consequence of queues in series.
+
+Three results dominate: **Little's Law** (`L = λW`) sizes capacity and explains why unbounded queues produce unbounded latency; the **utilisation curve** (`W = S/(1−ρ)`) shows response time bending hyperbolically past 70% utilisation — explaining why "run servers hot for efficiency" is wrong; **percentile arithmetic** shows that averaging averages is mathematically meaningless and that P99 of a fan-out request approaches the P99.9 of a single backend call. Architects who internalise these results set utilisation targets, bound every queue, and account for fan-out tail amplification at design time. See [[distributed/queueing-theory]], [[distributed/backpressure]], [[concepts/stability-patterns]].
+
+### Stability Patterns Form a Composable Set, Not Independent Choices
+
+Nygard's stability patterns ([[concepts/stability-patterns]]) — timeout, circuit breaker, bulkhead, retry, fail fast, shed load, backpressure, handshaking, decoupling middleware, governor, test harnesses — defend against specific antipatterns and compose at different boundaries. A production-grade integration point applies *all* of them at different layers: timeout on the outgoing call, circuit breaker for sustained failure, retry with backoff for transient failure, bulkhead to isolate the dependency's thread pool, fail fast on incoming requests when the breaker is open, handshaking with the load balancer. Applying the patterns at only one layer leaves known failure modes at the others.
+
+### Release Is Progressive, Not Atomic
+
+[[patterns/progressive-delivery]] unifies canary, blue-green, ring deployment, dark launch, parallel run, and feature flags as different points on a single design space. The defining shift is **decoupling deployment from release**: code reaches production without immediately being visible to users; visibility ramps via routing, traffic splitting, or [[concepts/feature-flags]]. SRE's "roll back first, diagnose second" makes rollback a routine, low-status action rather than a defeat. The economic case (from [[sources/release-it]]) is direct: a $50K investment in zero-downtime deployment pays back 18× over five years through avoided downtime alone.
+
+### Cost Is a Quality Attribute
+
+Cost is in trade-off with most other -ilities and is determined far more by architecture than by implementation. A poorly-chosen architecture can be 10× more expensive to run than an apt one, and no code-level optimisation closes the gap. The framing from [[sources/release-it]]: architecture decisions are financial decisions playing out over years. Most engineers optimise development cost (where their incentives point); the organisation's interest demands optimising lifetime cost — dominated by operations, change, and downtime. See [[concepts/cost-as-architectural-force]].
+
 ---
 
 ## Sources in This Wiki
@@ -280,6 +324,8 @@ FOSA is unusually explicit: negotiation, facilitation, leadership, and communica
 | [[sources/software-architecture-metrics]] | Software Architecture Metrics | Ciceri et al. | 2026-05-22 |
 | [[sources/a-philosophy-of-software-design]] | A Philosophy of Software Design | John Ousterhout | 2026-05-18 |
 | [[sources/accelerate]] | Accelerate: The Science of Lean Software and DevOps | Forsgren, Humble & Kim | 2026-05-18 |
+| [[sources/site-reliability-engineering]] | Site Reliability Engineering | Beyer, Jones, Petoff, Murphy (eds.) | 2026-05-27 |
+| [[sources/chaos-engineering]] | Chaos Engineering: System Resiliency in Practice | Rosenthal & Jones (eds.) | 2026-05-28 |
 
 ---
 
@@ -292,6 +338,9 @@ FOSA is unusually explicit: negotiation, facilitation, leadership, and communica
 - The DORA four key metrics are organisational health indicators, not system health indicators. Goodhart's Law applies: once teams know they're measured on deployment frequency, they may deploy smaller batches with less value. What counterbalances?
 - Evans' Large-Scale Structure patterns (Responsibility Layers, System Metaphor) were articulated in 2003. Are they still applicable to cloud-native, event-driven systems, or have bounded contexts and event streams replaced their function?
 - Team Topologies assumes one team per component and one component per team. How does this interact with platform engineering, where a single platform team may be the effective owner of infrastructure used by dozens of stream-aligned teams?
+- SRE's "100% is always the wrong target" argument depends on users having degradation thresholds below 100%. Where does this break down — life-critical systems, financial settlement, regulated environments — and how should SLO targets be set in those contexts?
+- Chaos engineering's "experimentation creates new knowledge" claim sits uneasily with the practical experience that most chaos experiments confirm what was already known. What does a high-value experiment look like in a mature programme, and at what point does running more experiments stop adding value?
+- The eight-page lint pass added [[concepts/feature-flags]] as application-layer release control and [[concepts/cost-as-architectural-force]] as a quality attribute. Both deserve their own ingest source — multi-tenancy, deep security, and ML systems remain genuinely unaddressed by the current corpus.
 
 ---
 
@@ -332,3 +381,7 @@ FOSA is unusually explicit: negotiation, facilitation, leadership, and communica
 - [[authors/nicole-forsgren]] — *Accelerate* (with Humble, Kim); DORA research programme; psychometric rigour in DevOps research
 - [[authors/jez-humble]] — *Accelerate* (with Forsgren, Kim); co-author of *Continuous Delivery*; CI/CD and Lean practitioner
 - [[authors/gene-kim]] — *Accelerate* (with Forsgren, Humble); *The Phoenix Project*; high-performing technology organisations
+- [[authors/betsy-beyer]] — co-editor of *Site Reliability Engineering*; cultural and documentary aspects of reliability at Google
+- [[authors/benjamin-treynor-sloss]] — wrote ch. 1 of *Site Reliability Engineering*; originator of the term SRE; creator of the error budget model
+- [[authors/casey-rosenthal]] — co-editor of *Chaos Engineering*; built Netflix's Chaos Engineering team; co-author of the Principles of Chaos Engineering
+- [[authors/nora-jones]] — co-editor of *Chaos Engineering*; safety science and sociotechnical perspective on resilience
