@@ -4,7 +4,7 @@ type: pattern
 tags: [resiliency, stability, distributed-systems, fault-tolerance, transient-failures, microservices]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-18
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Retry
@@ -129,4 +129,5 @@ Implementing retry without circuit breaker means retries continue indefinitely d
 - [[patterns/outbox-pattern]] — retry via durable queue for async operations
 - [[operations/common-failure-causes]] — retry storms as a failure amplification mechanism
 - [[concepts/stability-patterns]] — retry within Nygard's stability pattern set; composition with timeout/circuit breaker
+- [[comparisons/stability-pattern-selection]] — retry composition rules; how to avoid retry-defeats-backpressure
 - [[distributed/backpressure]] — retries that don't back off defeat backpressure

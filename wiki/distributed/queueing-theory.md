@@ -4,7 +4,7 @@ type: concept
 tags: [queueing-theory, performance, scalability, tail-latency, capacity-planning]
 sources: [foundations-of-scalable-systems, designing-data-intensive-applications, release-it, site-reliability-engineering, understanding-distributed-systems]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Queueing Theory for Architects
@@ -102,6 +102,8 @@ A thread pool is a queueing system: arrivals = incoming requests, service time =
 - [[operations/common-failure-causes]] — cascading failures as queueing collapse
 - [[patterns/timeout]] — bounding W when queue depth is unbounded
 - [[concepts/messaging]] — message-broker semantics as queueing decisions
+- [[comparisons/performance-and-capacity]] — symptom-to-diagnosis playbook using these results
+- [[comparisons/stability-pattern-selection]] — bounded queues and timeouts as queueing-theoretic protections
 
 ## Key Quotes
 

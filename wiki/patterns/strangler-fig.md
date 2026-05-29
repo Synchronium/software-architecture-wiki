@@ -4,7 +4,7 @@ type: pattern
 tags: [migration, decomposition, monolith, microservices, incremental, proxy, ui-composition]
 sources: [monolith-to-microservices]
 created: 2026-05-15
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Strangler Fig Pattern
@@ -83,3 +83,4 @@ When a monolith renders a full-page UI, a pure proxy-level redirect is not alway
 - [[styles/microservices-architecture]] — the target state strangler fig migrations move toward
 - [[concepts/fracture-planes]] — where to split; strangler fig is how to execute the split
 - [[concepts/bounded-contexts]] — the bounded context is the unit of extraction in a strangler fig migration
+- [[comparisons/migration-pattern-selection]] — decision guide: strangler fig vs branch by abstraction vs parallel run vs feature flag

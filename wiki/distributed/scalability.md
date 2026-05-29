@@ -4,7 +4,7 @@ type: concept
 tags: [scalability, distributed-systems, performance, quality-attributes]
 sources: [foundations-of-scalable-systems]
 created: 2026-05-19
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Scalability
@@ -99,5 +99,7 @@ Systems typically scale in a predictable sequence (→ [[sources/foundations-of-
 - [[distributed/consistency-models]] — what replication for scalability costs
 - [[concepts/messaging]] — async queueing as a scalability pattern
 - [[concepts/cost-as-architectural-force]] — scaling decisions as cost decisions
+- [[comparisons/performance-and-capacity]] — capacity planning workflow and diagnosis
+- [[comparisons/cost-vs-availability]] — scale-out investment in the broader availability/cost trade-off
 - [[operations/observability]] — required to identify bottlenecks and guide scaling decisions
 - [[distributed/serverless]] — managed auto-scaling model where the cloud provider handles scale-out

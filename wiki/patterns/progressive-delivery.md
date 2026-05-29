@@ -4,7 +4,7 @@ type: pattern
 tags: [progressive-delivery, deployment, release, canary, feature-flags, risk-management]
 sources: [site-reliability-engineering, release-it, mastering-api-architecture, building-evolutionary-architectures, monolith-to-microservices, accelerate]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Progressive Delivery
@@ -138,6 +138,7 @@ Progressive delivery rests on a stack of preceding capabilities. From [[sources/
 - [[operations/chaos-engineering]] — ChAP as automated canary + experiment combined
 - [[operations/error-budgets]] — budget exhaustion as a release-rate brake
 - [[concepts/four-key-metrics]] — deployment frequency, change failure rate, MTTR all influenced by progressive delivery
+- [[comparisons/migration-pattern-selection]] — progressive delivery as the umbrella for migration-specific rollout patterns
 
 ## Key Quotes
 

@@ -4,7 +4,7 @@ type: concept
 tags: [feature-flags, feature-toggles, deployment, release, progressive-delivery, technical-debt]
 sources: [building-evolutionary-architectures, understanding-distributed-systems, accelerate, monolith-to-microservices, release-it]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Feature Flags
@@ -137,6 +137,7 @@ Expensive features (search, recommendations, personalisation) can be flagged off
 - [[patterns/parallel-run]] — flags for routing between old and new implementations
 - [[patterns/circuit-breaker]] — flags as automatic responses to breaker state
 - [[operations/error-budgets]] — flag-driven feature disable as a budget-preservation tool
+- [[comparisons/migration-pattern-selection]] — feature flags as the per-user routing layer in migrations
 
 ## Key Quotes
 

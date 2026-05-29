@@ -4,7 +4,7 @@ type: concept
 tags: [reliability, sre, slos, availability, operations, risk]
 sources: [site-reliability-engineering, understanding-distributed-systems]
 created: 2026-05-27
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Error Budgets
@@ -111,3 +111,5 @@ The SLO is an internal agreement; the SLA is an external contract. Error budgets
 - [[operations/monitoring]] — burn rate alerting makes error budget consumption visible
 - [[operations/availability]] — error budgets operationalise availability targets
 - [[concepts/deployment-pipelines]] — deployment pipelines implement the progressive rollout strategies that preserve error budget
+- [[comparisons/cost-vs-availability]] — the financial side of the availability target the budget defends
+- [[comparisons/migration-pattern-selection]] — error budget gates the aggressiveness of migration work

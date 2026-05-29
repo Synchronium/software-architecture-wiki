@@ -174,5 +174,7 @@ The Governor does not prevent automation — it prevents automation from acting 
 - [[distributed/control-plane-data-plane]] — constant work as a control plane propagation strategy; static stability
 - [[concepts/messaging]] — load leveling relies on a message channel; backlog risk
 - [[concepts/stability-patterns]] — rate limiting and shed load in the full stability pattern set
+- [[comparisons/stability-pattern-selection]] — rate limiting's role in the layered defence
+- [[comparisons/performance-and-capacity]] — rate limiting as the response to queue depth growth
 - [[concepts/api-gateway]] — rate limiting is typically implemented at the gateway for north–south traffic
 - [[operations/common-failure-causes]] — load pressure and cascading/metastable failures that these patterns prevent

@@ -4,7 +4,7 @@ type: pattern
 tags: [resiliency, distributed-systems, fault-tolerance, downstream-dependencies, microservices, stability]
 sources: [understanding-distributed-systems, release-it, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Circuit Breaker
@@ -125,5 +125,6 @@ Nygard (→ [[sources/release-it]] ch. 4) names the antipatterns that Circuit Br
 - [[patterns/sidecar-service-mesh]]
 - [[distributed/consistency-models]]
 - [[concepts/stability-patterns]] — Nygard's full pattern set; circuit breaker as one of the failure-arresting patterns
+- [[comparisons/stability-pattern-selection]] — when to reach for which stability pattern; circuit breaker's role in the composition order
 - [[distributed/backpressure]] — what to do when the downstream is slow but not failing
 - [[concepts/feature-flags]] — flag-driven graceful degradation when a breaker opens

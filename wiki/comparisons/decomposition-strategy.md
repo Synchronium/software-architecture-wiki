@@ -4,7 +4,7 @@ type: comparison
 tags: [decomposition, microservices, monolith, service-based, modularity, migration]
 sources: [fundamentals-of-software-architecture, monolith-to-microservices, software-architecture-the-hard-parts, building-evolutionary-architectures, team-topologies, learning-domain-driven-design]
 created: 2026-05-18
-updated: 2026-05-18
+updated: 2026-05-29
 ---
 
 # Decomposition Strategy: How Far to Break Up a System
@@ -147,5 +147,6 @@ Once you've committed to microservices, granularity is a second decomposition de
 - [[concepts/architectural-decomposition]] — decomposition patterns and six-pattern taxonomy
 - [[concepts/evolutionary-database-design]] — database decomposition patterns
 - [[concepts/conways-law]] — why team structure determines service boundaries
+- [[comparisons/migration-pattern-selection]] — pattern selection during the decomposition itself (strangler, branch by abstraction, parallel run)
 - [[patterns/strangler-fig]] — primary extraction migration pattern
 - [[distributed/distributed-transactions]] — what you lose when you split databases

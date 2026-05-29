@@ -200,6 +200,8 @@ Nygard's "Trampled" case study (→ [[sources/release-it]] ch. 15) identifies a 
 - [[distributed/backpressure]] — bounded queues to prevent the queue-growth failure mode that drives cascades
 - [[distributed/queueing-theory]] — utilisation curves and Little's Law: why systems degrade well before 100% utilisation
 - [[concepts/stability-patterns]] — Nygard's full pattern set; the antipatterns this page catalogues are duals of those patterns
+- [[comparisons/stability-pattern-selection]] — pattern × antipattern matrix; which defence applies to which failure mode
+- [[comparisons/performance-and-capacity]] — symptom-to-diagnosis decision guide for the queueing-class failures
 
 ## The Airline Cascade: A Real Resource-Exhaustion Incident
 

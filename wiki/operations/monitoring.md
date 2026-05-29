@@ -244,5 +244,7 @@ A healthy on-call rotation requires that developers are responsible for operatin
 - [[operations/common-failure-causes]] — postmortem categories; what burns error budgets
 - [[distributed/rate-limiting]] — upstream resiliency prevents load from burning error budgets
 - [[distributed/queueing-theory]] — percentile arithmetic, tail latency amplification, why P99 is the right SLI
+- [[comparisons/performance-and-capacity]] — symptom-to-diagnosis decision tree using SLI signals
+- [[comparisons/cost-vs-availability]] — SLO-driven engineering and the cost trade-off
 - [[patterns/circuit-breaker]] — downstream resiliency; prevents cascading failure from burning error budgets
 - [[concepts/deployment-pipelines]] — health signals drive bake time gating; deployment events annotate dashboards

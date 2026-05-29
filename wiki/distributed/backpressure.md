@@ -4,7 +4,7 @@ type: concept
 tags: [backpressure, flow-control, stability, queueing, distributed-systems]
 sources: [release-it, foundations-of-scalable-systems, understanding-distributed-systems, designing-data-intensive-applications]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Backpressure
@@ -104,6 +104,8 @@ This is one of several structural reasons why [[styles/event-driven-architecture
 - [[concepts/messaging]] — message-based architectures naturally support backpressure
 - [[streams/stream-processing]] — pull-based consumption as the canonical backpressure pattern
 - [[comparisons/sync-vs-async-communication]] — architectural decision that determines backpressure semantics
+- [[comparisons/stability-pattern-selection]] — backpressure's role in the full stability pattern set
+- [[comparisons/performance-and-capacity]] — backpressure as the answer to "queue depth growing without bound"
 
 ## Key Quotes
 

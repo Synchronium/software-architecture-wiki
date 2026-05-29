@@ -4,7 +4,7 @@ type: pattern
 tags: [migration, testing, verification, deployment, microservices, canary]
 sources: [monolith-to-microservices]
 created: 2026-05-15
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Parallel Run
@@ -81,3 +81,4 @@ The progressive delivery model enables:
 - [[patterns/progressive-delivery]] — the umbrella pattern family of which parallel run is the correctness-comparison member
 - [[concepts/feature-flags]] — the routing mechanism that determines which result is served
 - [[concepts/evolutionary-architecture]] — progressive delivery and parallel run as enabling practices for guided, incremental change
+- [[comparisons/migration-pattern-selection]] — decision guide for when parallel run is the right migration pattern

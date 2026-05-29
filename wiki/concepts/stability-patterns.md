@@ -4,7 +4,7 @@ type: concept
 tags: [stability, resilience, patterns, release-it, failure-modes]
 sources: [release-it, understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Stability Patterns
@@ -135,6 +135,7 @@ See [[operations/common-failure-causes]] for the failure-mode catalogue. The pat
 
 ## Related Concepts
 
+- [[comparisons/stability-pattern-selection]] — decision guide: which pattern when, composition order, anti-pattern combinations
 - [[operations/common-failure-causes]] — the antipatterns side; what these patterns defend against
 - [[operations/chaos-engineering]] — testing whether the patterns actually work under failure
 - [[operations/availability]] — what stability patterns ultimately serve

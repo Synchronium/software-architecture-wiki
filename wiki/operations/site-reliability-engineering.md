@@ -4,7 +4,7 @@ type: concept
 tags: [sre, reliability, operations, devops, toil, on-call]
 sources: [site-reliability-engineering]
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-29
 ---
 
 # Site Reliability Engineering
@@ -112,3 +112,4 @@ Many SRE practices are directly applicable at smaller scale; some are not:
 - [[operations/data-integrity]] — data integrity as an orthogonal requirement to uptime
 - [[operations/chaos-engineering]] — controlled failure injection to validate reliability
 - [[operations/common-failure-causes]] — what burns error budgets
+- [[comparisons/cost-vs-availability]] — the cost framing for SLO target selection

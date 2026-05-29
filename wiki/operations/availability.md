@@ -166,6 +166,7 @@ Availability is the most common SLI. SLOs should be set based on what users actu
 - [[operations/data-integrity]] — data integrity has orthogonal requirements to uptime; a service can be 100% available yet have significant data corruption
 - [[operations/incident-management]] — structured incident response reduces MTTR, the primary lever for improving availability under failure
 - [[operations/automation]] — automated failover and recovery reduce MTTR faster than human-driven processes can
+- [[comparisons/cost-vs-availability]] — decision guide for the availability-vs-cost trade-off; the nines table with money attached
 
 ## Design for Production
 

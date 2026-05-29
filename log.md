@@ -2,6 +2,19 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-29] add | Four new comparison/decision pages
+
+Wrote four new comparison pages that synthesise across the existing wiki to answer specific architectural questions. Each is a decision guide with explicit decision trees, anti-patterns, and composition rules.
+
+- **comparisons/stability-pattern-selection** — which stability pattern when; selection decision tree by boundary type (outgoing call, incoming request, internal pipeline, system edge, automation, resource pooling); pattern × antipattern matrix; composition order (timeout first, then bulkhead, then breaker, then retry, etc.); composition anti-patterns (aggressive retries defeating backpressure, long timeouts defeating breakers, shared-resource bulkheads).
+- **comparisons/performance-and-capacity** — symptom-to-diagnosis playbook for the common performance failures (P99 spiking, average fine but users complain, cascading failure, unbounded queue, thundering herd, "works in QA fails in prod"); three analytical lenses (Little's Law, utilisation curve, percentile arithmetic); capacity planning workflow; when performance tuning doesn't apply.
+- **comparisons/migration-pattern-selection** — decision tree by seam type; composition patterns (service extraction, embedded capability extraction, database split, platform migration); Newman's ~12 database decomposition patterns; prerequisites for safe migration; risk management.
+- **comparisons/cost-vs-availability** — the nines table with money attached; downtime cost as the conversion rate; investment cost per nine; where each nine is earned (high ROI: 90% → 99.9%; medium: → 99.99%; diminishing: → 99.999%); architectural choices that make availability cheap or expensive; per-feature SLO discipline.
+
+Added inbound links from 22 existing pages: stability-patterns, circuit-breaker, timeout, retry, bulkhead, common-failure-causes, backpressure, queueing-theory, scalability, rate-limiting, monitoring, strangler-fig, branch-by-abstraction, parallel-run, feature-flags, progressive-delivery, evolutionary-database-design, decomposition-strategy, availability, cost-as-architectural-force, error-budgets, site-reliability-engineering.
+
+Added all four new pages to `index.md`'s Comparisons section. Bumped `updated:` to 2026-05-29 on all touched files.
+
 ## [2026-05-29] lint | Audit pass: broken links, duplicate headers, casing
 
 Comprehensive audit of the 193-page wiki. Eight checks ran; six came back clean (no orphan pages of concern, no H1/title mismatches, no stale index entries, no missing-but-referenced concepts requiring new pages, no important named principles needing their own pages, author count matches index). Two found concrete issues, both fixed.

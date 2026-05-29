@@ -4,7 +4,7 @@ type: pattern
 tags: [resiliency, stability, distributed-systems, fault-tolerance, integration-points, microservices]
 sources: [release-it, understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-18
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Timeout
@@ -107,5 +107,7 @@ Nygard distinguishes two complementary patterns (→ [[sources/release-it]] ch. 
 - [[distributed/idempotency]] — prerequisite for safely retrying timed-out calls
 - [[distributed/queueing-theory]] — timeout sizing from the P99.9 of the dependency's latency distribution
 - [[concepts/stability-patterns]] — the full Nygard pattern set; timeout as the universal failure-arresting pattern
+- [[comparisons/stability-pattern-selection]] — composition order: timeout first, then everything else
+- [[comparisons/performance-and-capacity]] — sizing timeouts as part of capacity planning
 - [[operations/common-failure-causes]] — blocked threads from missing timeouts; airline case study
 - [[operations/availability]] — timeouts are a direct mechanism for preserving availability under downstream failure

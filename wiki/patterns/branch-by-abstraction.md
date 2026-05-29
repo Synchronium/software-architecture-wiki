@@ -4,7 +4,7 @@ type: pattern
 tags: [migration, decomposition, monolith, microservices, refactoring, incremental]
 sources: [monolith-to-microservices]
 created: 2026-05-15
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Branch by Abstraction
@@ -69,3 +69,4 @@ Branch by Abstraction provides the *mechanism* (the abstraction layer and the tw
 - [[concepts/feature-flags]] — release toggles as the migration switch's runtime control
 - [[concepts/evolutionary-architecture]] — branch by abstraction as an enabling technique for incremental, safe architectural change
 - [[styles/microservices-architecture]] — the target state after the migration is complete
+- [[comparisons/migration-pattern-selection]] — decision guide for when to choose branch by abstraction vs other migration patterns

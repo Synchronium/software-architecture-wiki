@@ -4,7 +4,7 @@ type: concept
 tags: [cost, finops, quality-attributes, economics, total-cost-of-ownership, architecture-trade-offs]
 sources: [release-it, foundations-of-scalable-systems, fundamentals-of-software-architecture, building-evolutionary-architectures, site-reliability-engineering]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Cost as an Architectural Force
@@ -132,6 +132,7 @@ From [[sources/fundamentals-of-software-architecture]]: "Optimising for everythi
 - [[concepts/stability-patterns]] — prevention cost vs incident cost
 - [[styles/architecture-styles]] — style choice as the dominant cost driver
 - [[concepts/deployment-pipelines]] — high-ROI automation investment
+- [[comparisons/cost-vs-availability]] — the explicit availability-vs-cost decision; nines table with money attached
 
 ## Key Quotes
 

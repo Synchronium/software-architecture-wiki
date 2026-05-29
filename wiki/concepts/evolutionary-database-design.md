@@ -185,3 +185,4 @@ Newman's overall advice: physical database separation is a goal, not a prerequis
 - [[streams/change-data-capture]] — CDC as a database-decomposition mechanism; data liberation from shared monolithic stores
 - [[concepts/fitness-functions]] — migration scripts as fitness functions: the pipeline applies and verifies schema migrations on every deploy
 - [[concepts/deployment-pipelines]] — the mechanism that applies schema migrations automatically as part of each release
+- [[comparisons/migration-pattern-selection]] — where the database decomposition patterns fit in the overall migration toolkit
