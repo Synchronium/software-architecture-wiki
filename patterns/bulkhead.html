@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,19 +309,23 @@
       <h1>Bulkhead Pattern</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/fault-isolation.html">fault-isolation</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/availability.html">availability</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/stability.html">stability</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>The Bulkhead pattern limits the blast radius of failures by partitioning resources (instances, threads, connection pools) so that a failure in one partition cannot exhaust resources shared by other tenants or users.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-problem">The Problem</a></li><li><a href="#the-solution-resource-partitioning">The Solution: Resource Partitioning</a></li><li><a href="#variations">Variations</a></li><li class="toc-sub"><a href="#thread-pool-bulkhead">Thread Pool Bulkhead</a></li><li class="toc-sub"><a href="#connection-pool-bulkhead">Connection Pool Bulkhead</a></li><li class="toc-sub"><a href="#instancepod-bulkhead">Instance/Pod Bulkhead</a></li><li><a href="#shuffle-sharding">Shuffle Sharding</a></li><li><a href="#cellular-architecture">Cellular Architecture</a></li><li><a href="#capacity-reservation">Capacity Reservation</a></li><li><a href="#per-endpoint-thread-pool-isolation">Per-Endpoint Thread Pool Isolation</a></li><li><a href="#relationship-to-circuit-breaker">Relationship to Circuit Breaker</a></li><li><a href="#chain-reactions-and-why-bulkheads-matter">Chain Reactions and Why Bulkheads Matter</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>The Bulkhead pattern limits the blast radius of failures by partitioning resources (instances, threads, connection pools) so that a failure in one partition cannot exhaust resources shared by other tenants or users.</p>
 <p>Named after ship bulkheads that partition the hull into watertight compartments — a breach in one compartment doesn&#39;t sink the ship.</p>
-<h2>The Problem</h2>
+<h2 id="the-problem">The Problem</h2>
 <p>In a shared-resource architecture, a single bad actor (noisy tenant, traffic spike, misbehaving client) can exhaust shared resources — thread pools, connection pools, memory — and bring down service for all users.</p>
 <p>Example: service A calls service B. If B becomes slow, A&#39;s thread pool fills with blocked threads waiting for B. A is now effectively down for all callers, not just those hitting the B dependency.</p>
-<h2>The Solution: Resource Partitioning</h2>
+<h2 id="the-solution-resource-partitioning">The Solution: Resource Partitioning</h2>
 <p>Assign separate resource pools to different tenants, users, or subsystems:</p>
 <pre><code>Without bulkhead:       With bulkhead:
 [Thread Pool: 100]      [Pool: 33][Pool: 33][Pool: 34]
@@ -322,14 +333,14 @@
 </code></pre>
 <p>A failure or spike for tenant A exhausts only their pool — tenants B and C continue unaffected.</p>
 <p><strong>Blast radius ∝ 1/number_of_partitions</strong></p>
-<h2>Variations</h2>
-<h3>Thread Pool Bulkhead</h3>
+<h2 id="variations">Variations</h2>
+<h3 id="thread-pool-bulkhead">Thread Pool Bulkhead</h3>
 <p>Separate thread pools per downstream dependency or tenant. When one pool fills, that dependency/tenant gets rejected (fail fast) but others continue.</p>
-<h3>Connection Pool Bulkhead</h3>
+<h3 id="connection-pool-bulkhead">Connection Pool Bulkhead</h3>
 <p>Separate DB/cache connection pools per service or tenant. Most connection pool libraries support per-resource limits.</p>
-<h3>Instance/Pod Bulkhead</h3>
+<h3 id="instancepod-bulkhead">Instance/Pod Bulkhead</h3>
 <p>Route different tenants or traffic classes to entirely separate instances of a service. Requires consistent hashing or tenant-aware routing at the load balancer.</p>
-<h2>Shuffle Sharding</h2>
+<h2 id="shuffle-sharding">Shuffle Sharding</h2>
 <p>An advanced variant that achieves bulkhead-level isolation without a 1:1 mapping of tenants to pools.</p>
 <p>Each tenant is assigned a <strong>random subset</strong> of k nodes out of N total:</p>
 <pre><code>N=8 nodes, k=2 shards per tenant:
@@ -339,7 +350,7 @@
 </code></pre>
 <p>The probability that two tenants share the same virtual partition is C(N,k) possibilities — with N=8, k=2, there are C(8,2)=28 possible shards. The probability two specific tenants are collocated is 1/28, dramatically reducing impact of noisy neighbours compared to plain random assignment.</p>
 <p>A failure or attack affecting one tenant&#39;s shard (e.g., nodes {2,5}) cannot affect tenants whose shard doesn&#39;t overlap. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 26)</p>
-<h2>Cellular Architecture</h2>
+<h2 id="cellular-architecture">Cellular Architecture</h2>
 <p>The most extreme variant: partition the entire stack — compute, database, cache, and external dependencies — into independent cells with a maximum capacity per cell. Each cell serves a subset of users.</p>
 <p>Benefits:</p>
 <ul>
@@ -348,7 +359,7 @@
 <li>Maximum blast radius is one cell&#39;s worth of users.</li>
 </ul>
 <p>Tradeoff: significant operational complexity; cross-cell operations (e.g., global search) require additional coordination.</p>
-<h2>Capacity Reservation</h2>
+<h2 id="capacity-reservation">Capacity Reservation</h2>
 <p>An important application of Bulkheads is <strong>reserving capacity for critical callers</strong>. Partition the thread pool (or connection pool) so that high-priority traffic — monitoring, health checks, admin operations, on-call interventions — has a dedicated allocation that cannot be exhausted by lower-priority bulk requests. (→ <a href="../sources/release-it.html">Release It</a> ch. 5)</p>
 <p>Without this, a flood of low-priority requests can starve the operations that must succeed even under load. Techniques:</p>
 <ul>
@@ -357,7 +368,7 @@
 <li>Cloud <strong>availability zones</strong> are a built-in infrastructure-level bulkhead — deploying across AZs isolates from correlated hardware and network failures. (→ <a href="../operations/availability.html">Availability</a>)</li>
 <li><strong>CPU binding</strong> (pinning processes to cores) is a low-level hardware bulkhead for workloads where CPU contention causes interference.</li>
 </ul>
-<h2>Per-Endpoint Thread Pool Isolation</h2>
+<h2 id="per-endpoint-thread-pool-isolation">Per-Endpoint Thread Pool Isolation</h2>
 <p>An important microservices application: reserve separate thread pools for each <em>endpoint</em> within a single microservice, not just between microservices. (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 9)</p>
 <p><strong>Example:</strong> A service exposes <code>GET /orders/{id}</code> (fast cache read, typical under load) and <code>POST /orders</code> (heavyweight DB insert + queue write). They share one application server thread pool of 200 threads. A new-product release triggers a <code>POST /orders</code> burst; all 200 threads become occupied by heavyweight order creation. Status requests are starved — unacceptable response times despite the underlying service being healthy.</p>
 <p><strong>Bulkhead fix:</strong> Reserve 150 threads for <code>POST /orders</code> via <code>maxConcurrentCalls: 150</code>. The remaining 50 threads guarantee <code>GET /orders/{id}</code> capacity regardless of the order-creation burst. When the 150-thread limit is reached, new order requests wait up to <code>maxWaitDuration: 1000ms</code> before throwing <code>BulkheadFullException</code> (optionally routed to a fallback method).</p>
@@ -371,29 +382,30 @@
 <pre><code class="language-java">@Bulkhead(name = &quot;OrderService&quot;, fallbackMethod = &quot;newOrderBusy&quot;)
 public OrderOutcome newOrder(OrderInfo info) { ... }
 </code></pre>
-<h2>Relationship to Circuit Breaker</h2>
+<h2 id="relationship-to-circuit-breaker">Relationship to Circuit Breaker</h2>
 <p>Bulkheads limit resource exhaustion from a failing downstream. Circuit breakers stop sending requests to a failing downstream. The two patterns are complementary — use both together for full downstream resilience. (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>)</p>
-<h2>Chain Reactions and Why Bulkheads Matter</h2>
+<h2 id="chain-reactions-and-why-bulkheads-matter">Chain Reactions and Why Bulkheads Matter</h2>
 <p>Nygard&#39;s <strong>Chain Reaction antipattern</strong> (→ <a href="../sources/release-it.html">Release It</a> ch. 4) illustrates the core problem Bulkheads address in horizontally scaled systems:</p>
 <p>In a homogeneous layer of N servers, each carrying 1/N of the load, one server fails for a load-related reason (memory leak, race condition under high load). The remaining N-1 servers absorb the dead server&#39;s share, increasing their load by 1/(N-1) — which makes each of them <em>more likely to fail for the same reason</em>. The collapse is self-reinforcing and accelerates. Nygard observed a 12-server farm fail with a classic accelerating pattern: 5-minute gap between the first and second failure, 3-4 minutes between the second and third, then the last two went down within seconds.</p>
 <p><strong>Bulkhead&#39;s role</strong>: splitting the layer into two separate pools produces two independent chain reactions. Even if one pool collapses, the other continues. The callers of the collapsed pool need Circuit Breaker protection; the rest of the system keeps running.</p>
 <p><strong>Unbalanced Capacities</strong>: another Nygard antipattern (→ <a href="../sources/release-it.html">Release It</a> ch. 4) where the front-end can flood the back-end with more requests than it can handle. Bulkheads on the back-end can reserve capacity for high-priority traffic classes while lower-priority callers get rejected (fail fast) under load.</p>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 26) — bulkhead pattern, shuffle sharding (C(N,k) formula), cellular architecture.</li>
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 4) — Chain Reaction antipattern as the primary motivation; Bulkheads partition chain reactions into independent sub-reactions; Unbalanced Capacities requiring capacity reservation.</li>
 <li>(→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 9) — Per-endpoint thread pool isolation within a single microservice; heavyweight endpoints starving lightweight ones during burst; Resilience4j <code>BulkheadConfig</code> and Spring Boot <code>@Bulkhead</code> as Java implementations.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a></li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — Nygard&#39;s full pattern set; bulkhead as the resource-isolation pattern</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — when to reach for bulkheads; the shared-resource antipattern</li>
 <li><a href="../distributed/backpressure.html">Backpressure</a> — bulkheads bound the producer-consumer rate mismatch per partition</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

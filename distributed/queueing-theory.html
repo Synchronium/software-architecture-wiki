@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,18 +309,22 @@
       <h1>Queueing Theory for Architects</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/queueing-theory.html">queueing-theory</a></li><li><a class="tag-chip" href="../tags/performance.html">performance</a></li><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li><li><a class="tag-chip" href="../tags/tail-latency.html">tail-latency</a></li><li><a class="tag-chip" href="../tags/capacity-planning.html">capacity-planning</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#little39s-law">Little&#39;s Law</a></li><li><a href="#the-utilisation-curve">The Utilisation Curve</a></li><li><a href="#tail-latency-and-percentile-arithmetic">Tail Latency and Percentile Arithmetic</a></li><li><a href="#queues-in-series">Queues in Series</a></li><li><a href="#bounded-buffers-and-producer-consumer">Bounded Buffers and Producer-Consumer</a></li><li><a href="#thread-pools-as-queueing-systems">Thread Pools as Queueing Systems</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#practical-takeaways">Practical Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Queueing theory is the mathematical study of waiting lines. For architects, it provides the formal language for understanding why systems become slow before they break, why utilisation has a nonlinear cost, and why averages systematically lie about user experience. A handful of results — Little&#39;s Law, the utilisation-curve relationship, percentile arithmetic — show up under different names across every book on scalable systems in this wiki.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Most production performance failures are queueing failures dressed up as something else. &quot;Slow database&quot; is a queue at the connection pool. &quot;Cascading failure&quot; is a queue at every blocked thread. &quot;Tail latency amplification&quot; is the statistical consequence of multiple queues in series. Without queueing intuition, architects optimise the wrong thing: they reduce mean service time when the user impact lives in the percentile tails, or they push utilisation toward 100% when the response-time cost goes hyperbolic past 70%.</p>
-<h2>Little&#39;s Law</h2>
+<h2 id="little39s-law">Little&#39;s Law</h2>
 <p><strong>L = λW</strong> — the average number of items in a system equals the arrival rate times the average time spent in the system. Holds for any stable queueing system regardless of distribution or service discipline.</p>
 <p>Practical readings:</p>
 <ul>
@@ -321,7 +332,7 @@
 <li><strong>The unbounded-queue problem:</strong> with a bounded arrival rate and unbounded queue, if λ exceeds service rate even briefly, L grows; since L = λW and λ is fixed, W grows without bound. This is why <a href="../sources/release-it.html">Release It</a> insists on bounded queues (→ <a href="../distributed/backpressure.html">Backpressure</a>).</li>
 <li><strong>Listen queue sizing:</strong> Nygard&#39;s heuristic is a direct application: <code>(max_wait_time / mean_processing_time + 1) × thread_count × 1.5</code> (→ <a href="../sources/release-it.html">Release It</a> ch. 8).</li>
 </ul>
-<h2>The Utilisation Curve</h2>
+<h2 id="the-utilisation-curve">The Utilisation Curve</h2>
 <p>Response time as a function of utilisation ρ in an M/M/1 queue:</p>
 <p><strong>W = S / (1 − ρ)</strong></p>
 <p>where S is mean service time and ρ is utilisation (arrival rate × service time). The shape is hyperbolic: at ρ=0.5, response time is 2× service time; at ρ=0.9, it&#39;s 10×; at ρ=0.99, it&#39;s 100×.</p>
@@ -331,24 +342,24 @@
 <li>Autoscaling thresholds (e.g., GAE&#39;s default <code>target_cpu_utilization</code> of 0.6) are direct expressions of where the response-time curve starts to bend (→ <a href="../distributed/serverless.html">Serverless</a>).</li>
 <li>This is the formal counter-argument to &quot;we should run our servers hot for efficiency.&quot; From <a href="../sources/release-it.html">Release It</a> ch. 3: &quot;Beware efficiency: high utilization (everyone 100% busy) is not the same as efficient throughput — keeping all workers fully loaded creates queueing delays that slow the overall system.&quot;</li>
 </ul>
-<h2>Tail Latency and Percentile Arithmetic</h2>
+<h2 id="tail-latency-and-percentile-arithmetic">Tail Latency and Percentile Arithmetic</h2>
 <p>The most consequential queueing result for distributed-system architects, treated thoroughly in <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 1.</p>
 <p><strong>Averages lie.</strong> Response-time distributions are right-skewed; a few slow requests dominate user experience but barely move the mean. Use percentiles: P50 (median), P95, P99, P99.9.</p>
 <p><strong>Latency ≠ response time.</strong> Latency = time a request spends waiting to be handled. Response time = service time + network + queueing delays. The user sees response time; instrumentation often measures only service time.</p>
 <p><strong>Tail amplification.</strong> If an end-user request requires N parallel backend calls, the request&#39;s response time is the maximum of N samples from the response-time distribution. If P99 = 1s for one call, the probability that <em>at least one</em> of N calls hits the P99 tail is approximately 1 − (0.99)^N. For N=100, that&#39;s 63%. The P99 of a fan-out request approaches the P99.9 of a single backend call. This is <strong>tail latency amplification</strong> — a structural property of distributed systems with parallel fan-out (microservices, scatter-gather, search).</p>
 <p><strong>Percentile arithmetic.</strong> Averaging P99 values across time windows is mathematically meaningless. You can&#39;t average percentiles. Use sketch data structures: forward decay, t-digest, HdrHistogram — these store enough of the distribution to recover percentiles after aggregation (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 1).</p>
 <p><strong>P50 still matters.</strong> From <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 4: &quot;Distributions are right-skewed; averages obscure tail behaviour. P99/P99.9 represent realistic worst-case; even P50 matters because high-variance services are preferred less by users than slightly slower but consistent ones.&quot; Consistency is itself a service-quality dimension.</p>
-<h2>Queues in Series</h2>
+<h2 id="queues-in-series">Queues in Series</h2>
 <p>Real systems compose queues: client → LB → web tier → app tier → DB pool → DB. Each stage has its own utilisation and queue. The end-to-end response time is the sum of per-stage response times; the end-to-end tail is bounded above by the sum of per-stage tails.</p>
 <p><strong>Cascading effect:</strong> a slowdown at any stage propagates upstream via blocked threads (→ <a href="../sources/release-it.html">Release It</a> ch. 4, <a href="../operations/common-failure-causes.html">Common Failure Causes</a>). The cascade follows the utilisation curve: stage N starts to queue, which pushes stage N−1 into high utilisation, which starts to queue, etc. Without bounded queues and timeouts, the cascade ends in thread starvation rather than graceful degradation.</p>
 <p><strong>The &quot;lane reduction&quot; problem:</strong> <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5: &quot;Scale limited by downstream services/databases — the &#39;one-lane road&#39; at the end of eight lanes of highway.&quot; Scaling the front tier without scaling downstream just moves the queue.</p>
-<h2>Bounded Buffers and Producer-Consumer</h2>
+<h2 id="bounded-buffers-and-producer-consumer">Bounded Buffers and Producer-Consumer</h2>
 <p>The in-process analogue of distributed queueing: producer threads write to a <code>BlockingQueue</code>; consumer threads drain it. Bounded queue capacity creates <a href="../distributed/backpressure.html">Backpressure</a>; the queue length is the backpressure signal.</p>
 <p>From <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 4: &quot;Blocked threads consume no CPU — more efficient than polling.&quot; Bounded buffers are the architectural primitive for in-process async work. The capacity is a tuning parameter: too small → producers block frequently; too large → memory pressure, masked backlog.</p>
-<h2>Thread Pools as Queueing Systems</h2>
+<h2 id="thread-pools-as-queueing-systems">Thread Pools as Queueing Systems</h2>
 <p>A thread pool is a queueing system: arrivals = incoming requests, service time = request processing time, servers = pool size, queue = the pending-request queue (often the socket accept queue or an explicit work queue).</p>
 <p><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5 documents the Tomcat anatomy: &quot;Listener threads → socket backlog (OS default 100) → HTTP connector → thread pool (default min 25, max 200, idle kill at 60s) → database connection pool (smaller than thread pool; threads block when connections exhausted).&quot; Each stage is a queue. The smallest queue (typically the DB connection pool) is the bottleneck under load. Sizing the upstream stages larger than the bottleneck just moves the queue upward — it doesn&#39;t increase throughput.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -377,7 +388,7 @@
 <td>Vitillo connects queueing to load levelling: durable queues + auto-scaled consumers as the architectural pattern that absorbs producer bursts without overwhelming consumers.</td>
 </tr>
 </tbody></table></div>
-<h2>Practical Takeaways</h2>
+<h2 id="practical-takeaways">Practical Takeaways</h2>
 <ol>
 <li><strong>Measure percentiles, not means.</strong> P50/P95/P99/P99.9 with histogram-based aggregation. The mean is for accountants.</li>
 <li><strong>Set utilisation targets well below 100%.</strong> 60–80% for application servers; lower for shared infra. This is the W = S/(1−ρ) curve, not a safety margin.</li>
@@ -386,7 +397,7 @@
 <li><strong>Account for tail amplification in fan-out designs.</strong> N parallel calls inflate user-visible latency to the P99.9 of a single call. Either reduce N (denormalise, BFF aggregation) or attack the per-call tail directly.</li>
 <li><strong>Size for the bottleneck, not the front door.</strong> Connection pools, downstream services, and shared infra set the real ceiling.</li>
 </ol>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/backpressure.html">Backpressure</a> — the architectural response to queueing</li>
 <li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — load shedding when queues fill at the boundary</li>
@@ -396,8 +407,10 @@
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — cascading failures as queueing collapse</li>
 <li><a href="../patterns/timeout.html">Timeout</a> — bounding W when queue depth is unbounded</li>
 <li><a href="../concepts/messaging.html">Messaging</a> — message-broker semantics as queueing decisions</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — symptom-to-diagnosis playbook using these results</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — bounded queues and timeouts as queueing-theoretic protections</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Tail latency amplification: if an end-user request requires multiple backend calls in parallel, it only takes one slow call to slow the entire request.&quot; — <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 1</p>
 </blockquote>
@@ -412,7 +425,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

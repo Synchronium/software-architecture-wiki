@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,18 +309,32 @@
       <h1>Threat Modeling</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 19<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/security.html">security</a></li><li><a class="tag-chip" href="../tags/threat-modeling.html">threat-modeling</a></li><li><a class="tag-chip" href="../tags/api.html">api</a></li><li><a class="tag-chip" href="../tags/stride.html">stride</a></li><li><a class="tag-chip" href="../tags/dread.html">dread</a></li><li><a class="tag-chip" href="../tags/rate-limiting.html">rate-limiting</a></li><li><a class="tag-chip" href="../tags/owasp.html">owasp</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#owasp-api-security-top-10">OWASP API Security Top 10</a></li><li><a href="#stride-framework">STRIDE Framework</a></li><li><a href="#the-six-step-threat-modeling-process">The Six-Step Threat Modeling Process</a></li><li><a href="#api-specific-threats">API-Specific Threats</a></li><li><a href="#rate-limiting-strategies">Rate Limiting Strategies</a></li><li><a href="#security-hardening-at-the-gateway">Security Hardening at the Gateway</a></li><li><a href="#friendly-fire-dos">Friendly Fire DoS</a></li><li><a href="#dread-and-dread-d">DREAD and DREAD-D</a></li><li><a href="#threat-modeling-and-the-sdlc">Threat Modeling and the SDLC</a></li><li><a href="#owasp-top-10-for-web-applications-nygard">OWASP Top 10 for Web Applications (Nygard)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Threat modeling belongs in design, not in incident response.</strong> Reactive security is far more expensive than proactive analysis. Integrate the model into the SDLC; revisit it on every new endpoint, trust-boundary change, or security incident.</li>
+<li><strong>STRIDE classifies threats; DREAD scores them.</strong> STRIDE (Spoofing, Tampering, Repudiation, Information disclosure, DoS, Elevation of privilege) per element on the Data Flow Diagram; DREAD ranks the surfaced threats. Prefer DREAD-D (drop Discoverability) to avoid rewarding security-through-obscurity.</li>
+<li><strong>The OWASP API Top 10 is the practitioner checklist.</strong> BOLA, Broken Auth, Excessive Data Exposure, Lack of Rate Limiting, Broken Function Auth, Mass Assignment, Misconfiguration, Injection, Improper Assets Mgmt, Insufficient Logging. Cover all ten before claiming an API is secure.</li>
+<li><strong>Mass assignment is more insidious than injection.</strong> Auto-binding request bodies to domain objects (<code>isAdmin: true</code>) lets attackers set fields they shouldn&#39;t control. Explicit allowlisting; never bind directly.</li>
+<li><strong>Rate limiting belongs at the gateway, not the service.</strong> Apply before compute resources are consumed. Token bucket is the standard choice — allows legitimate bursts while capping sustained throughput.</li>
+<li><strong>Pie Crust defence is the enterprise antipattern.</strong> Authenticate at the perimeter but trust everything internal. Internal services must also authenticate callers; encrypt internal traffic too (<a href="../concepts/zero-trust.html">Zero Trust</a>).</li>
+<li><strong>Components with known vulnerabilities are the Equifax lesson.</strong> Automate CVE checking in CI; treat container images as perishable (rebuild from upstream, don&#39;t patch in place).</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Threat modeling is a structured process for identifying, evaluating, and mitigating security threats to a system before they can be exploited. For APIs, it is the practice of systematically analysing the attack surface — the interfaces, data flows, and trust boundaries — and then prioritising defenses based on the severity and likelihood of each threat.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>APIs are externally accessible endpoints that expose internal data and logic. They are among the highest-value attack targets in any system. Reactive security — patching after an incident — is far more costly than proactive modeling. Threat modeling integrates security thinking into the design phase, where changes are cheap, rather than into the incident response phase, where they are not.</p>
-<h2>OWASP API Security Top 10</h2>
+<h2 id="owasp-api-security-top-10">OWASP API Security Top 10</h2>
 <p>The OWASP API Security Top 10 (2019) catalogues the most critical API-specific vulnerabilities (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 6):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -363,7 +384,7 @@
 <td>Insufficient Logging and Monitoring — enabling attacks to persist undetected</td>
 </tr>
 </tbody></table></div>
-<h2>STRIDE Framework</h2>
+<h2 id="stride-framework">STRIDE Framework</h2>
 <p>STRIDE is a threat classification framework developed at Microsoft. Each letter identifies a threat category and a corresponding security property that must be protected (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 6):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -405,7 +426,7 @@
 </tr>
 </tbody></table></div>
 <p>STRIDE is applied per-element: each node and data flow on the Data Flow Diagram is evaluated against all six threat categories.</p>
-<h2>The Six-Step Threat Modeling Process</h2>
+<h2 id="the-six-step-threat-modeling-process">The Six-Step Threat Modeling Process</h2>
 <p>(→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 6)</p>
 <p><strong>Step 1 — Define security objectives</strong>: what must be protected, and why. Align with business risk and regulatory requirements (GDPR, PCI-DSS, etc.).</p>
 <p><strong>Step 2 — Gather information</strong>: map the system&#39;s components, trust zones, external interfaces, and data classification levels.</p>
@@ -457,13 +478,13 @@
 </tbody></table></div>
 <p>Threats scoring above a defined threshold (e.g. 7) are treated as high priority.</p>
 <p><strong>Step 6 — Validate</strong>: verify that mitigations are in place and that the model is reviewed whenever the system changes significantly.</p>
-<h2>API-Specific Threats</h2>
+<h2 id="api-specific-threats">API-Specific Threats</h2>
 <p>Several OWASP categories deserve particular attention in API threat models:</p>
 <p><strong>Payload injection</strong>: API parameters passed to databases, shell commands, or templating engines without sanitisation. Mitigation: parameterised queries, input validation at the API gateway, OAS schema validation.</p>
 <p><strong>Mass assignment</strong>: accepting all fields of a request body and binding them to a domain object — allowing callers to set fields they should not control (e.g. <code>isAdmin: true</code>). Mitigation: explicit allowlisting of writable fields; never bind request bodies directly to domain entities.</p>
 <p><strong>Excessive data exposure</strong>: returning full internal objects and relying on the client to filter. Mitigation: define explicit response schemas; use GraphQL projections or dedicated read-model DTOs to return only needed fields.</p>
 <p><strong>Improper assets management</strong>: undocumented or deprecated API versions that are still live and unmonitored. Mitigation: API lifecycle governance (<a href="../concepts/api-gateway.html">Api Gateway</a>) with enforced deprecation and retirement; single OAS per version.</p>
-<h2>Rate Limiting Strategies</h2>
+<h2 id="rate-limiting-strategies">Rate Limiting Strategies</h2>
 <p>Rate limiting is the primary mitigation for Denial of Service (STRIDE D) and brute-force attacks (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 6):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -496,20 +517,20 @@
 </tbody></table></div>
 <p>Token bucket is the most common for API rate limiting because it allows short legitimate bursts (e.g. a mobile app syncing on wake) while capping sustained throughput.</p>
 <p>Rate limiting should be enforced at the API gateway layer, not inside individual services, so that it applies uniformly before compute resources are consumed.</p>
-<h2>Security Hardening at the Gateway</h2>
+<h2 id="security-hardening-at-the-gateway">Security Hardening at the Gateway</h2>
 <p>Beyond the logical threat mitigations, several gateway-level hardening controls are worth making explicit (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 6):</p>
 <p><strong>TLS version enforcement</strong>: Always require TLS 1.2 or later. Most commercial gateways default to current versions; weaker versions with known vulnerabilities must be explicitly re-enabled if needed (which should require a documented exception).</p>
 <p><strong>CORS configuration</strong>: Cross-Origin Request Sharing (CORS) allows browsers to permit cross-origin HTTP requests. A permissive CORS configuration is a common security misconfiguration — it can allow a malicious site to make authenticated requests on behalf of the user. Configure allowed origins precisely.</p>
 <p><strong>HTTP header allowlisting</strong>: Reject requests with unknown or invalid HTTP headers rather than silently ignoring them. An attacker can include headers like <code>X-Assert-Role: Admin</code> hoping they are forwarded unchecked and used internally to grant elevated privileges.</p>
 <p><strong>Trust-but-verify principle</strong>: Input validation at the API gateway (e.g. via OAS schema validation) is the first line of defence, not the only line. The backend service must still sanitise inputs and use parameterised queries. If the gateway check fails or is bypassed, the service must not be the last-to-fail.</p>
-<h2>Friendly Fire DoS</h2>
+<h2 id="friendly-fire-dos">Friendly Fire DoS</h2>
 <p>Denial of service attacks do not have to come from malicious actors. As systems evolve, it is possible to accidentally introduce circular dependencies between internal services — Service A calls Service B which calls Service A — creating an infinite request loop under certain conditions. This &quot;friendly fire DoS&quot; can overwhelm both services without any external attacker. Mitigations: rate limiting on internal API calls, circuit breakers (<a href="../patterns/circuit-breaker.html">Circuit Breaker</a>), and error monitoring for unexpected internal request spikes.</p>
-<h2>DREAD and DREAD-D</h2>
+<h2 id="dread-and-dread-d">DREAD and DREAD-D</h2>
 <p>The standard DREAD risk calculation includes a Discoverability dimension (how easy is the vulnerability to find?). However, including discoverability can reward security through obscurity — implying that a vulnerability is lower risk simply because it is harder to find. <strong>DREAD-D</strong> (DREAD minus Discoverability) drops this dimension, reducing the formula to:</p>
 <pre><code>DREAD-D score = (Damage + Reproducibility + Exploitability + Affected Users) / 4
 </code></pre>
 <p>DREAD-D is preferred when the team wants to avoid the temptation to lower-rank a threat simply because it is not yet publicly known. The Common Vulnerability Scoring System (CVSS) — used by NIST to evaluate CVEs — provides an alternative standardised scoring approach for tracking against public vulnerability databases.</p>
-<h2>Threat Modeling and the SDLC</h2>
+<h2 id="threat-modeling-and-the-sdlc">Threat Modeling and the SDLC</h2>
 <p>Threat modeling is most valuable when integrated into the development lifecycle at the design phase, not as a one-time audit. The model should be revisited:</p>
 <ul>
 <li>When new API endpoints are added</li>
@@ -517,7 +538,7 @@
 <li>After any security incident</li>
 <li>On a periodic cadence (e.g. annually for low-change systems)</li>
 </ul>
-<h2>OWASP Top 10 for Web Applications (Nygard)</h2>
+<h2 id="owasp-top-10-for-web-applications-nygard">OWASP Top 10 for Web Applications (Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 11) covers the web application OWASP Top 10 (2017 list) with an architectural emphasis. Key points beyond what the API-security list already covers:</p>
 <ul>
 <li><strong>Broken Access Control</strong>: never use sequential database IDs in URLs (enables ID enumeration); return identical 404 for &quot;doesn&#39;t exist&quot; and &quot;not authorized to see&quot; — never confirm whether a resource exists to unauthorized callers.</li>
@@ -525,7 +546,7 @@
 <li><strong>Components with Known Vulnerabilities</strong>: this was the root cause of the Equifax breach (Struts 2 CVE-2017-5638). Automate CVE checking in the CI pipeline; treat container images as perishable (rebuild from upstream base images rather than patching in-place).</li>
 <li><strong>Session Management</strong>: fresh session ID on every successful authentication (prevents session fixation); use cryptographically secure PRNGs for session IDs; accept session IDs only from cookies, never URL parameters.</li>
 </ul>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/zero-trust.html">Zero Trust</a> — zero trust removes implicit trust from the network model; threat modeling identifies what must be explicitly verified</li>
 <li><a href="../concepts/oauth2-and-authn.html">Oauth2 And Authn</a> — OAuth2 and JWT are the primary mitigations for STRIDE S (Spoofing) and E (Elevation of Privilege)</li>

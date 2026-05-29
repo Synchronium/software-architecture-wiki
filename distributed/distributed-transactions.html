@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,8 +316,12 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A distributed transaction spans multiple nodes or services and must satisfy ACID properties across all of them. The fundamental challenge: how to achieve atomicity (all-or-nothing) when each participant is independently fallible and there is no shared clock or memory.</p>
-<h2>Local ACID Recap</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#local-acid-recap">Local ACID Recap</a></li><li><a href="#two-phase-commit-2pc">Two-Phase Commit (2PC)</a></li><li><a href="#spanner">Spanner</a></li><li><a href="#asynchronous-distributed-transactions">Asynchronous Distributed Transactions</a></li><li class="toc-sub"><a href="#outbox-pattern">Outbox Pattern</a></li><li class="toc-sub"><a href="#saga-pattern">Saga Pattern</a></li><li><a href="#trade-offs-summary">Trade-offs Summary</a></li><li><a href="#xa-transactions">XA Transactions</a></li><li><a href="#coordination-avoiding-correctness-ddia-ch-12">Coordination-Avoiding Correctness (DDIA Ch. 12)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A distributed transaction spans multiple nodes or services and must satisfy ACID properties across all of them. The fundamental challenge: how to achieve atomicity (all-or-nothing) when each participant is independently fallible and there is no shared clock or memory.</p>
+<h2 id="local-acid-recap">Local ACID Recap</h2>
 <p>Single-node ACID properties:</p>
 <ul>
 <li><strong>Atomicity</strong>: transaction either commits fully or rolls back entirely (WAL enables this).</li>
@@ -325,14 +336,14 @@
 <li><strong>OCC</strong> (Optimistic Concurrency Control): work in local workspace; validate for conflicts at commit. Better for low-conflict workloads.</li>
 <li><strong>MVCC</strong>: maintain multiple versions per row; readers never block writers. Read-only transactions never abort.</li>
 </ul>
-<h2>Two-Phase Commit (2PC)</h2>
+<h2 id="two-phase-commit-2pc">Two-Phase Commit (2PC)</h2>
 <p>The standard protocol for distributed atomicity:</p>
 <p><strong>Phase 1 — Prepare</strong>: coordinator asks all participants &quot;can you commit?&quot;. Each participant locks its resources and responds yes/no.</p>
 <p><strong>Phase 2 — Commit/Abort</strong>: if all said yes, coordinator broadcasts Commit. If any said no (or timed out), coordinator broadcasts Abort.</p>
 <p><strong>Critical weakness</strong>: if the coordinator crashes after Phase 1 but before Phase 2, participants are stuck holding locks indefinitely — they cannot proceed without the coordinator&#39;s decision. This is called the <strong>blocking problem</strong>.</p>
 <p><strong>2PC is uniform consensus</strong>: atomically committing a distributed transaction is a form of consensus — <em>uniform</em> consensus, where all processes (including faulty ones) must agree. This is strictly harder than standard consensus (where only non-faulty processes must agree). The practical consequence: no simple solution exists, which is why 2PC&#39;s blocking behaviour under failure is not an implementation bug but a fundamental property.</p>
 <p>Mitigation: use a durable, replicated coordinator (e.g., a Paxos group). This is the Spanner approach.</p>
-<h2>Spanner</h2>
+<h2 id="spanner">Spanner</h2>
 <p>Google&#39;s globally distributed ACID database:</p>
 <ul>
 <li><strong>2PC + 2PL</strong> for transaction management within a Paxos group.</li>
@@ -341,9 +352,9 @@
 </ul>
 <p><strong>CockroachDB</strong> takes a different approach: instead of GPS/atomic clocks, it uses <strong>hybrid-logical clocks</strong> composed of a physical timestamp plus a logical counter. This sidesteps the infrastructure requirement of TrueTime while providing similar ordering guarantees.</p>
 <p>Spanner shows that global ACID is achievable with sufficient infrastructure investment; CockroachDB shows it can be approximated without specialised hardware.</p>
-<h2>Asynchronous Distributed Transactions</h2>
+<h2 id="asynchronous-distributed-transactions">Asynchronous Distributed Transactions</h2>
 <p>When synchronous coordination (2PC) is too expensive or unavailable, two patterns provide eventual atomicity:</p>
-<h3>Outbox Pattern</h3>
+<h3 id="outbox-pattern">Outbox Pattern</h3>
 <p>Achieves atomic write + publish without 2PC:</p>
 <ol>
 <li>Write state change AND a message record to the same local DB in one ACID transaction.</li>
@@ -351,13 +362,13 @@
 <li>Idempotency key on the message handles at-least-once delivery.</li>
 </ol>
 <p>The local ACID transaction ensures write and publish are either both committed or both rolled back. (→ <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>)</p>
-<h3>Saga Pattern</h3>
+<h3 id="saga-pattern">Saga Pattern</h3>
 <p>Replaces a distributed ACID transaction with a sequence of local transactions:</p>
 <pre><code>T₁ → T₂ → T₃ → ... → Tₙ
 </code></pre>
 <p>Each Tᵢ has a compensating transaction Cᵢ that undoes its effects. On failure at Tᵢ, the saga runs Cᵢ₋₁ → Cᵢ₋₂ → ... → C₁ to roll back.</p>
 <p><strong>Key limitation</strong>: no isolation. Between T₁ committing and T₂ committing, other transactions can see the intermediate state. Mitigation: semantic locks or designing around the lack of isolation. (→ <a href="../patterns/saga.html">Saga</a>)</p>
-<h2>Trade-offs Summary</h2>
+<h2 id="trade-offs-summary">Trade-offs Summary</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -390,7 +401,7 @@
 <td>Medium</td>
 </tr>
 </tbody></table></div>
-<h2>XA Transactions</h2>
+<h2 id="xa-transactions">XA Transactions</h2>
 <p>XA (eXtended Architecture) is a C standard API for heterogeneous 2PC — coordinating a transaction across different resource managers (PostgreSQL, MySQL, ActiveMQ, IBM MQ, etc.) from a single application-level coordinator.</p>
 <p><strong>Problems with XA</strong> (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9):</p>
 <ul>
@@ -400,7 +411,7 @@
 <li><strong>Incompatible with SSI</strong>: XA requires the coordinator to survive crashes, but SSI (Serializable Snapshot Isolation) depends on transaction ID ordering within a single database.</li>
 </ul>
 <p>XA is used in Java EE application servers (JTA) for coordinating database + JMS operations. It works well when the coordinator is reliable and the performance penalty is acceptable — which is not always the case.</p>
-<h2>Coordination-Avoiding Correctness (DDIA Ch. 12)</h2>
+<h2 id="coordination-avoiding-correctness-ddia-ch-12">Coordination-Avoiding Correctness (DDIA Ch. 12)</h2>
 <p>Kleppmann&#39;s thesis: many applications that seem to require distributed transactions can achieve equivalent correctness without them, using end-to-end operation IDs + idempotency + deterministic derivation.</p>
 <p><strong>The key insight</strong>: separate timeliness from integrity (→ <a href="../distributed/consistency-models.html">Consistency Models</a>). Distributed transactions provide both (linearizability = timeliness; atomicity = integrity). But integrity can be maintained without linearizability.</p>
 <p><strong>Mechanism</strong>:</p>
@@ -414,7 +425,7 @@
 <blockquote>
 <p><strong>Contrast:</strong> <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> recommends managing distributed transactions with a replicated coordinator (Spanner model). Kleppmann recommends avoiding them entirely where possible. Both positions are valid at different scales and contexts.</p>
 </blockquote>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -435,7 +446,7 @@
 <td>Migration-focused: splitting a database means losing ACID guarantees; Newman&#39;s default recommendation is &quot;just say no&quot; to 2PC in a microservice context because distributed locks, latency, and failure modes (blocking problem under coordinator failure) make it more trouble than it is worth. The first question is not &quot;how do we transact across services?&quot; but &quot;do we need to split this data at all?&quot; If the answer is yes, sagas are the default (ch. 4).</td>
 </tr>
 </tbody></table></div>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 12) — ACID, 2PL, OCC, MVCC, 2PC, Spanner.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13) — Outbox pattern, Saga pattern.</li>
@@ -443,7 +454,7 @@
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) — 2PC blocking problem, XA, fault-tolerant consensus as alternative coordinator.</li>
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12) — coordination-avoiding correctness, end-to-end operation IDs, loosely interpreted constraints.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
 <li><a href="../distributed/replication.html">Replication</a></li>
@@ -455,7 +466,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

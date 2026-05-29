@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,41 +316,45 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Separating the <strong>data plane</strong> from the <strong>control plane</strong> is a general architectural pattern for managing systems with different availability, consistency, and scale requirements on the critical path vs. off it.</p>
-<h2>Definitions</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definitions">Definitions</a></li><li><a href="#availability-implications">Availability Implications</a></li><li><a href="#scale-imbalance">Scale Imbalance</a></li><li class="toc-sub"><a href="#1-intermediate-file-store-buffer">1. Intermediate File Store Buffer</a></li><li class="toc-sub"><a href="#2-push-based-deltas">2. Push-Based Deltas</a></li><li class="toc-sub"><a href="#3-hybrid-recommended-for-large-systems">3. Hybrid (Recommended for large systems)</a></li><li><a href="#control-theory-framing">Control Theory Framing</a></li><li><a href="#real-world-examples">Real-World Examples</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Separating the <strong>data plane</strong> from the <strong>control plane</strong> is a general architectural pattern for managing systems with different availability, consistency, and scale requirements on the critical path vs. off it.</p>
+<h2 id="definitions">Definitions</h2>
 <p><strong>Data plane</strong>: everything on the critical path of serving client requests — it must run for each request and therefore must be highly available, fast, and scale with traffic volume. It prefers availability over consistency.</p>
 <p><strong>Control plane</strong>: not on the critical path. Its job is to help the data plane do its work by managing metadata, configuration, and coordinating complex infrequent operations (failures, scaling events, config changes). It prefers consistency over availability, and has lower scale requirements.</p>
 <p>A system can have multiple independent control/data plane pairs. For example: one control plane scales a service up and down; another manages its configuration.</p>
-<h2>Availability Implications</h2>
+<h2 id="availability-implications">Availability Implications</h2>
 <p>When the data plane has a hard dependency on the control plane — meaning it stops serving if the control plane is unavailable — the system&#39;s effective availability is the <strong>product</strong> of the two:</p>
 <pre><code>availability = data_plane_availability × control_plane_availability
 0.9999 × 0.99 = 0.9899  →  &lt;99% despite a 99.99% data plane
 </code></pre>
 <p>A system can only be as available as its least available hard dependency. The key design goal: <strong>the data plane must tolerate control plane failures</strong>. When the control plane is unavailable, the data plane should continue serving with stale configuration rather than stopping — this is the <strong>static stability</strong> principle (→ <a href="../distributed/dns.html">Dns</a>, <a href="../operations/availability.html">Availability</a>).</p>
-<h2>Scale Imbalance</h2>
+<h2 id="scale-imbalance">Scale Imbalance</h2>
 <p>Data planes and control planes naturally have very different scale requirements. This creates a risk: under certain conditions, the data plane can overload the control plane.</p>
 <p><strong>Problem scenario</strong>: if the data plane instances restart simultaneously (after a mass deployment or a cascading failure) and all try to fetch configuration from the control plane at once, they can overload it. A degraded control plane then prevents the data plane from starting, creating a feedback loop.</p>
 <p>Three architectural solutions, ordered from simpler to more capable:</p>
-<h3>1. Intermediate File Store Buffer</h3>
+<h3 id="1-intermediate-file-store-buffer">1. Intermediate File Store Buffer</h3>
 <p>The control plane periodically dumps its entire state to a scalable file store (e.g., S3, Azure Blob). The data plane reads from the file store on startup rather than from the control plane directly.</p>
 <ul>
 <li><strong>Pros</strong>: simple; decouples the planes completely; data plane can start even if control plane is down.</li>
 <li><strong>Cons</strong>: higher propagation latency (state changes take as long as the dump interval to propagate); weaker consistency guarantees.</li>
 </ul>
-<h3>2. Push-Based Deltas</h3>
+<h3 id="2-push-based-deltas">2. Push-Based Deltas</h3>
 <p>The control plane pushes configuration changes to connected data plane instances whenever they occur. The control plane controls the pace of updates, so it naturally slows down rather than being overwhelmed when it can&#39;t keep up.</p>
 <ul>
 <li><strong>Pros</strong>: lower propagation latency than file store polling.</li>
 <li><strong>Cons</strong>: requires persistent connections; data plane instances that restart must still do a full configuration load.</li>
 </ul>
-<h3>3. Hybrid (Recommended for large systems)</h3>
+<h3 id="3-hybrid-recommended-for-large-systems">3. Hybrid (Recommended for large systems)</h3>
 <p>Combine both approaches:</p>
 <ol>
 <li>Data plane reads a full configuration snapshot from the file store at startup (absorbs bulk reads).</li>
 <li>After startup, the data plane subscribes to incremental push-based deltas from the control plane (low propagation latency for ongoing changes).</li>
 </ol>
 <p>This protects the control plane from mass-restart overload while keeping ongoing propagation latency low.</p>
-<h2>Control Theory Framing</h2>
+<h2 id="control-theory-framing">Control Theory Framing</h2>
 <p>Control theory gives a useful mental model: the control plane is a <strong>controller</strong> that monitors the data plane (the dynamic system), compares its current state to the desired state, and applies corrective actions to drive the system toward the desired state.</p>
 <p>A closed-loop control system requires three ingredients:</p>
 <ol>
@@ -353,7 +364,7 @@
 </ol>
 <p>The monitoring component is the most commonly missing ingredient in practice. A control plane that only pushes configuration without verifying the data plane has applied it is an open loop — changes may silently fail or be applied partially. A complete control plane closes the loop: it monitors whether the data plane has applied configuration within a reasonable time, and takes corrective action (e.g., rebooting or excluding non-compliant nodes) if it hasn&#39;t.</p>
 <p><strong>CI/CD as control plane</strong>: a deployment pipeline is a form of control plane for running services. A pipeline that deploys blindly and moves on is an open loop. A pipeline that deploys incrementally, monitors error rates and latency, and automatically rolls back when it detects degradation is a closed-loop controller.</p>
-<h2>Real-World Examples</h2>
+<h2 id="real-world-examples">Real-World Examples</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -388,7 +399,7 @@
 <td>API server + scheduler + controller manager</td>
 </tr>
 </tbody></table></div>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -405,7 +416,7 @@
 <td>Identifies the pattern in the API gateway context; notes that control and data planes can be packaged together (simpler) or deployed separately (better isolation)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/availability.html">Availability</a> — static stability: data plane continues with stale config when control plane is unavailable</li>
 <li><a href="../distributed/replication.html">Replication</a> — chain replication: concrete example of data/control plane split; control plane handles rare failures, data plane handles all requests</li>
@@ -413,7 +424,7 @@
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — service mesh control plane manages sidecar data plane configuration</li>
 <li><a href="../distributed/failure-detection.html">Failure Detection</a> — control planes typically use heartbeats or health checks to monitor data plane health</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 22) — data/control plane split as general pattern; static stability; scale imbalance; three architectural solutions; control theory framing.</li>
 <li>(→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 3) — API gateway as concrete example; packaged vs separated deployment options.</li>

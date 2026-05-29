@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,13 +316,17 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/sam-newman.html">Sam Newman</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-1-just-enough-microservices">Chapter 1 — Just Enough Microservices</a></li><li class="toc-sub"><a href="#chapter-2-planning-a-migration">Chapter 2 — Planning a Migration</a></li><li class="toc-sub"><a href="#chapter-3-splitting-the-monolith">Chapter 3 — Splitting the Monolith</a></li><li class="toc-sub"><a href="#chapter-4-decomposing-the-database">Chapter 4 — Decomposing the Database</a></li><li class="toc-sub"><a href="#chapter-5-growing-pains">Chapter 5 — Growing Pains</a></li><li class="toc-sub"><a href="#chapter-6-closing-words">Chapter 6 — Closing Words</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Author:</strong> <a href="../authors/sam-newman.html">Sam Newman</a>
 <strong>Published:</strong> 2019
 <strong>Slug:</strong> <code>monolith-to-microservices</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>A practitioner&#39;s handbook for decomposing existing monolithic systems into microservices — not a theoretical argument for microservices, but a step-by-step guide to doing it safely. Newman insists throughout that microservices are a means to an end: you must articulate the outcome you want before decomposing anything.</p>
 <p>The book is structured around the migration lifecycle: clarifying goals, prioritising what to extract first, choosing decomposition patterns, splitting databases, and managing the organisational and operational changes that accompany the technical work. It is explicitly a companion and sequel to Newman&#39;s earlier <em>Building Microservices</em>.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Independent deployability is the single most important property of a microservice — if you get only one thing from the book, get that (→ ch. 1)</li>
 <li>Microservices are not the goal; they are a tool for achieving specific outcomes; cargo-culting them is a failure mode (→ ch. 2)</li>
@@ -326,8 +337,8 @@
 <li>The strangler fig pattern is the primary incremental extraction vehicle (→ ch. 3)</li>
 <li>Database decomposition is unavoidable for true independent deployability (→ ch. 4)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Chapter 1 — Just Enough Microservices</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-1-just-enough-microservices">Chapter 1 — Just Enough Microservices</h3>
 <p>Newman defines a microservice as <strong>an independently deployable service modelled around a business domain</strong>. The definition contains three load-bearing words: independently deployable (the operational property), service (the unit), and business domain (the boundary criterion).</p>
 <p><strong>Independent deployability</strong> is the paramount principle: a microservice must be deployable without requiring coordinated changes to other services. This principle cascades into the two other critical rules:</p>
 <ul>
@@ -377,7 +388,7 @@
 <p>&quot;Microservices buy you options.&quot; — James Lewis (→ ch. 1)</p>
 </blockquote>
 <p>The monolith has genuine strengths — it should be the default when team size is small, domain understanding is incomplete, or operational maturity is limited.</p>
-<h3>Chapter 2 — Planning a Migration</h3>
+<h3 id="chapter-2-planning-a-migration">Chapter 2 — Planning a Migration</h3>
 <p><strong>Microservices are not the goal.</strong> The chapter opens with a story about a team told to &quot;do microservices&quot; without knowing why — a failure mode Newman has seen repeatedly. You must articulate the outcome before starting.</p>
 <p><strong>Three key questions for any team considering migration:</strong></p>
 <ol>
@@ -447,7 +458,7 @@
 <p><strong>Organisational change — Kotter&#39;s 8 steps</strong> applied to microservice adoption: establish urgency, build a guiding coalition, develop a vision, communicate it, empower employees, generate short-term wins, consolidate gains, anchor in culture. Key insight: early wins matter disproportionately; if people can&#39;t see progress, faith collapses.</p>
 <p><strong>Measuring progress</strong>: both quantitative (cycle time, deployment frequency, failure rate, performance test results) and qualitative (team happiness, empowerment) measures are required. Metrics can be gamed; qualitative feedback catches what numbers miss.</p>
 <p><strong>Avoiding sunk cost fallacy</strong>: small incremental bets make it easier to change direction. Build regular checkpoints (monthly or retrospective-based) to ask: is this still working? Should we try something else?</p>
-<h3>Chapter 3 — Splitting the Monolith</h3>
+<h3 id="chapter-3-splitting-the-monolith">Chapter 3 — Splitting the Monolith</h3>
 <p>The chapter is a catalogue of migration patterns for moving functionality out of a monolith, organised by the type of coupling being broken.</p>
 <p><strong>Strangler Fig Application</strong> (Martin Fowler): the primary incremental extraction vehicle. Three steps: identify the behaviour to migrate, implement it in the new service without touching the monolith, then redirect traffic via a proxy. HTTP reverse proxy (NGINX) is the most common implementation — the proxy becomes the seam separating the monolith from new services. Applies to FTP transports (Homegate example: intercept FTP drops before they reach the monolith) and message queues (content-based router or selective consumption). Important principle: <strong>deployment ≠ release</strong> — the new service can be deployed to production and tested with zero traffic before any redirect is applied. One caution: freeze new feature development on the capability being migrated while migration is in progress; otherwise the new service is chasing a moving target. (→ <a href="../patterns/strangler-fig.html">Strangler Fig</a>)</p>
 <p><strong>UI Composition</strong>: when the monolith renders UI, the redirect cannot always happen at the request level alone. Three approaches: (1) <em>page composition</em> — entire routes redirect to the new service; (2) <em>widget/component composition</em> (micro frontends) — a page shell assembles components from multiple services, using ESI or JavaScript module federation; (3) <em>mobile</em> — server-side configuration (Spotify approach) lets the server tell native clients what to render, enabling server-side migration without synchronised app releases.</p>
@@ -455,7 +466,7 @@
 <p><strong>Parallel Run</strong>: both implementations receive every production request; results are compared; old implementation is the source of truth until the new is verified. Spies wrap the new implementation without exposing its results to callers. GitHub Scientist library operationalises this. Newman clarifies three related but distinct terms: <em>dark launching</em> (new service receives traffic but results are discarded, used for performance testing); <em>canary releasing</em> (a cohort of real users sees the new implementation&#39;s results); <em>parallel run</em> (both execute every request, old result returned, new result compared — the strongest correctness verification). James Governor&#39;s <em>progressive delivery</em> is the umbrella term for this family of techniques. (→ <a href="../patterns/parallel-run.html">Parallel Run</a>)</p>
 <p><strong>Decorating Collaborator</strong>: a proxy intercepts the inbound request, forwards it to the monolith, then uses the monolith&#39;s response to trigger calls to a new service that adds behaviour (e.g., log a loyalty event after an order is placed). The new service &quot;decorates&quot; the monolith&#39;s response without the monolith knowing it exists. One caution: resist the temptation to add &quot;smart proxy&quot; logic — keep routing and business logic separate.</p>
 <p><strong>Change Data Capture (CDC)</strong>: react to data changes in the monolith&#39;s database rather than calling monolith endpoints. Three implementations, in order of preference: (1) <em>DB triggers</em> — fire on insert/update, populate an outbox table; use sparingly as they are hard to test and couple business logic to the database layer; (2) <em>transaction log pollers</em> — read the database&#39;s write-ahead log (Debezium for PostgreSQL/MySQL, Maxwell for MySQL); the neatest approach because no application code changes are required; (3) <em>batch delta copier</em> — periodic batch job reads new/changed rows; simplest to implement but introduces latency.</p>
-<h3>Chapter 4 — Decomposing the Database</h3>
+<h3 id="chapter-4-decomposing-the-database">Chapter 4 — Decomposing the Database</h3>
 <p>Splitting the database is the hardest part of microservice migration. A shared database between services creates implementation coupling: services depend on each other&#39;s schema internals, making independent deployability impossible.</p>
 <p><strong>The shared database problem</strong>: Newman allows the shared database to persist in exactly two situations — static reference data (read-only, rarely changes) and when deliberately using it as a DB-as-a-Service interface. In all other cases, decompose the database as soon as you decompose the code.</p>
 <p><strong>Coping patterns (when you cannot split yet):</strong></p>
@@ -484,7 +495,7 @@
 <li><em>Two-Phase Commit</em>: Newman says &quot;just say no&quot; for most cases — distributed locks, latency, and failure modes make 2PC more trouble than it&#39;s worth in a microservice context. (→ <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>)</li>
 </ul>
 <p>Saga coordination: <em>orchestrated sagas</em> use a central coordinator that drives the process, holds the explicit state machine, and handles failures explicitly — better when one team owns the whole saga. <em>Choreographed sagas</em> use event-driven coordination — each service reacts to events; no central coordinator — better when multiple teams own different steps. Newman&#39;s preference is shaped by team ownership: one team → orchestrate; multiple teams → choreograph. Require correlation IDs for choreographed sagas to track a distributed saga instance across services.</p>
-<h3>Chapter 5 — Growing Pains</h3>
+<h3 id="chapter-5-growing-pains">Chapter 5 — Growing Pains</h3>
 <p>A chapter of operational patterns keyed to service count. Newman maps problems to approximate service-count thresholds (heuristic, not prescriptive): some emerge at ~5 services, others not until ~100+.</p>
 <p><strong>Service count as the dial</strong>: &quot;Don&#39;t think of adopting microservices as flipping a switch; think about it as turning a dial.&quot; As the dial turns, different classes of problems emerge. The more coupled the architecture, the earlier problems manifest.</p>
 <p><strong>Ownership at Scale</strong>: Martin Fowler&#39;s three ownership models — <em>strong</em> (owners must approve all changes from outsiders; PRs for non-owners), <em>weak</em> (anyone can change, but should speak to owners first), <em>collective</em> (anyone changes anything). Collective ownership works at ~20 colocated developers but becomes &quot;disastrous&quot; at scale (the fintech &quot;colander architecture&quot; anti-pattern: no clear vision, rapid growth to 100+ developers, teams punching new holes wherever they felt like it). Strong ownership is almost universal at 100+ developers in large-scale microservice organisations — each team adopts collective ownership locally, owns a domain area, and embeds product owners.</p>
@@ -503,9 +514,9 @@
 <p><strong>Global vs Local Optimisation</strong>: Teams making individually rational technology decisions (Oracle, MongoDB, PostgreSQL all chosen independently for similar needs) that are collectively irrational. Solutions: use the reversible/irreversible decision framework to determine when local decisions need wider consensus; cross-team technical group (community of practice); Monzo&#39;s &quot;proposals&quot; system (free-form docs shared org-wide via Slack, expectation that proposals are open to change).</p>
 <p><strong>Robustness and Resiliency</strong>: Network packets get lost, timeouts occur, cascading failures happen. Solutions: explicit failure handling per call; asynchronous communication to avoid temporal coupling; sensible timeouts; circuit breakers; multiple instances; desired state management. Document production incidents — the learning is lost if the team moves on too quickly.</p>
 <p><strong>Orphaned Services</strong>: Services running for years with no owner, no known source code location. Solutions: service registries (Financial Times Biz Ops — crawls source repos, merges with service discovery data, calculates a System Operability Score per service); collective ownership reduces risk; bring orphaned services into compliance with current standards.</p>
-<h3>Chapter 6 — Closing Words</h3>
+<h3 id="chapter-6-closing-words">Chapter 6 — Closing Words</h3>
 <p>Brief summation of the book&#39;s two key messages: (1) gather enough information to make rational decisions about whether microservices are right for your context; (2) adopt incrementally, adapting as you learn. No substantial new technical content. The appendix includes a complete pattern index covering all 20+ patterns from the book.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;Microservices are not the goal. You don&#39;t &#39;win&#39; by having microservices.&quot; (ch. 2)</p>
 </blockquote>
@@ -521,7 +532,7 @@
 <blockquote>
 <p>&quot;Copy the questions, not the answers.&quot; — Jessica Kerr (on the Spotify model, cited ch. 2)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a> — the architecture style Newman is guiding migrations toward</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — the primary unit for migration decomposition</li>
@@ -541,7 +552,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../authors/sam-newman.html">Sam Newman</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
+        <ul><li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../authors/sam-newman.html">Sam Newman</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
       </aside>
     </main>
   </div>

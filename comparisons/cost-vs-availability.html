@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nines table with money attached; conversion via downtime cost; investment cost per nine; where each nine is earned; antipatterns (tyranny of the nines,…">
+  <meta property="og:title" content="Cost vs Availability Decision Guide — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Nines table with money attached; conversion via downtime cost; investment cost per nine; where each nine is earned; antipatterns (tyranny of the nines,…">
+  <title>Cost vs Availability Decision Guide — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html" aria-current="page">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Cost vs Availability Decision Guide</nav></div>
+      <h1>Cost vs Availability Decision Guide</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/cost.html">cost</a></li><li><a class="tag-chip" href="../tags/availability.html">availability</a></li><li><a class="tag-chip" href="../tags/slo.html">slo</a></li><li><a class="tag-chip" href="../tags/decision-guide.html">decision-guide</a></li><li><a class="tag-chip" href="../tags/finance.html">finance</a></li><li><a class="tag-chip" href="../tags/error-budget.html">error-budget</a></li><li><a class="tag-chip" href="../tags/redundancy.html">redundancy</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-this-page">Why This Page</a></li><li><a href="#the-nines-table-with-money-attached">The Nines Table (with money attached)</a></li><li><a href="#the-conversion-downtime-cost">The Conversion: Downtime Cost</a></li><li><a href="#the-decision-tree">The Decision Tree</a></li><li class="toc-sub"><a href="#q1-what-does-the-user-actually-need">Q1: What does the user actually need?</a></li><li class="toc-sub"><a href="#q2-what-does-downtime-cost-us">Q2: What does downtime cost us?</a></li><li class="toc-sub"><a href="#q3-what-does-the-investment-cost">Q3: What does the investment cost?</a></li><li class="toc-sub"><a href="#q4-can-you-set-different-slos-for-different-features">Q4: Can you set different SLOs for different features?</a></li><li><a href="#where-each-nine-is-earned">Where Each Nine Is Earned</a></li><li class="toc-sub"><a href="#high-roi-90-99-999">High ROI: 90% → 99% → 99.9%</a></li><li class="toc-sub"><a href="#medium-roi-999-9999">Medium ROI: 99.9% → 99.99%</a></li><li class="toc-sub"><a href="#diminishing-roi-9999-99999">Diminishing ROI: 99.99% → 99.999%</a></li><li class="toc-sub"><a href="#very-diminishing-roi-99999-999999">Very Diminishing ROI: 99.999% → 99.9999%</a></li><li><a href="#when-each-investment-earns-its-cost">When Each Investment Earns Its Cost</a></li><li><a href="#anti-patterns">Anti-Patterns</a></li><li><a href="#the-architectural-implications">The Architectural Implications</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Availability is paid for in money; the bill is non-negotiable.</strong> Each additional nine of availability is roughly 10× the engineering cost. Five nines is not a target you reach with effort; it&#39;s a target you reach with budget.</li>
+<li><strong>100% is always the wrong target</strong> (SRE). Past user-perceptible thresholds, additional nines consume engineering capacity that could buy features. The target is set by user impact, not technical aspiration.</li>
+<li><strong>Downtime cost is the conversion rate</strong> between availability and money. A high-traffic e-commerce site loses $3K/minute at peak. Five minutes of monthly downtime over five years = $900K. A $50K investment that prevents it returns 18×.</li>
+<li><strong>Dependencies multiply availability cost.</strong> Each dependency degrades the upper bound: five services at 99.9% give 99.5% in series. To reach high availability with many dependencies, reduce dependency depth, isolate fault domains, or accept degraded responses.</li>
+<li><strong>MTTR matters more than MTBF at scale.</strong> At hyperscale, failure is constant. Recovery speed is the lever. Allspaw&#39;s argument; SRE operationalises it.</li>
+<li><strong>Tyranny of the nines is the dominant antipattern.</strong> Specifying availability without specifying what for. Negotiate per-feature: does the <em>entire</em> system need five nines, or only the transaction core?</li>
+</ul>
+<h2 id="why-this-page">Why This Page</h2>
+<p><a href="../operations/availability.html">Availability</a> covers the mechanics. <a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> covers the economics. This page is the <em>decision</em> — given a desired availability, what&#39;s the cost? Given a budget, what availability is realistic? When does each technique earn its cost?</p>
+<h2 id="the-nines-table-with-money-attached">The Nines Table (with money attached)</h2>
+<p>The standard nines table, extended with cost framing:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Availability</th>
+<th>Downtime/year</th>
+<th>Downtime/day</th>
+<th>Typical practitioner cost profile</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>90.0% (one nine)</td>
+<td>36 days 12 hr</td>
+<td>2.4 hr</td>
+<td>Hobby project; one server; no on-call</td>
+</tr>
+<tr>
+<td>99.0% (two nines)</td>
+<td>87 hr 46 min</td>
+<td>14 min</td>
+<td>Single-region, managed services; business-hours on-call</td>
+</tr>
+<tr>
+<td>99.9% (three nines)</td>
+<td>8 hr 46 min</td>
+<td>86 sec</td>
+<td>Multi-AZ; 24×7 on-call; automated failover</td>
+</tr>
+<tr>
+<td>99.99% (four nines)</td>
+<td>52 min 33 sec</td>
+<td>7 sec</td>
+<td>Multi-region; chaos engineering; sub-minute MTTR target</td>
+</tr>
+<tr>
+<td>99.999% (five nines)</td>
+<td>5 min 35 sec</td>
+<td>1 sec</td>
+<td>Designed redundancy at every layer; SRE discipline; significant engineering investment</td>
+</tr>
+<tr>
+<td>99.9999% (six nines)</td>
+<td>31.5 sec</td>
+<td>86 ms</td>
+<td>Specialised hardware; deep formal verification; rare outside life-critical systems</td>
+</tr>
+</tbody></table></div>
+<p>Each additional nine is roughly 10× the engineering cost. <strong>The question is never &quot;can we reach five nines?&quot; but &quot;what does five nines cost, and is it worth it?&quot;</strong></p>
+<h2 id="the-conversion-downtime-cost">The Conversion: Downtime Cost</h2>
+<p>Availability becomes financial when you multiply downtime by cost-per-minute-of-downtime.</p>
+<pre><code>Annual downtime cost = (1 − SLO) × hours_in_year × cost_per_hour_of_downtime
+</code></pre>
+<p><strong>Estimating cost-per-hour-of-downtime:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Business type</th>
+<th>Typical cost-per-hour-of-downtime</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>High-traffic e-commerce at peak</td>
+<td>$100K – $1M</td>
+</tr>
+<tr>
+<td>Mid-market SaaS</td>
+<td>$5K – $50K</td>
+</tr>
+<tr>
+<td>Internal tool</td>
+<td>$500 – $5K</td>
+</tr>
+<tr>
+<td>Background processing (no SLO violation)</td>
+<td>~$0</td>
+</tr>
+<tr>
+<td>Life-critical (medical, aviation)</td>
+<td>Effectively unbounded</td>
+</tr>
+</tbody></table></div>
+<p><strong>The investment threshold.</strong> If a one-time investment of $X eliminates Y hours of downtime per year over a 5-year asset life:</p>
+<pre><code>ROI = (Y × hours/year × cost_per_hour × 5 years) / X
+</code></pre>
+<p><a href="../sources/release-it.html">Release It</a> ch. 1&#39;s canonical example: $50K invested in zero-downtime deployment vs $900K downtime cost over 5 years = 18× ROI. The maths makes the case.</p>
+<h2 id="the-decision-tree">The Decision Tree</h2>
+<h3 id="q1-what-does-the-user-actually-need">Q1: What does the user actually need?</h3>
+<p>The first question is almost always under-asked. &quot;Five nines&quot; specified without justification is the dominant antipattern.</p>
+<ul>
+<li>What user activities matter? (login, purchase, view, edit)</li>
+<li>What&#39;s the user&#39;s tolerance threshold? (annoyed at 1s, leaves at 3s, complains at downtime &gt; 5 min, files support ticket at downtime &gt; 1 hr)</li>
+<li>Is the system used continuously, or in bursts? (5 min downtime at 3am vs 5 min downtime during Black Friday)</li>
+<li>Is there a fallback? (cached data, queue, retry-later) — fallback availability adds to the user-visible nines.</li>
+</ul>
+<p>The honest answer is often &quot;99% is fine for this feature; 99.9% for the transaction core.&quot; That&#39;s <em>two</em> SLOs, not one — see Q4.</p>
+<h3 id="q2-what-does-downtime-cost-us">Q2: What does downtime cost us?</h3>
+<p>For each minute of downtime:</p>
+<ul>
+<li><strong>Direct revenue lost</strong> (transactions not completed).</li>
+<li><strong>Customer trust degraded</strong> (churn risk, NPS hit).</li>
+<li><strong>SLA penalties</strong> (contractual credits, refunds).</li>
+<li><strong>Engineering response cost</strong> (incident response, postmortems, remediation work).</li>
+<li><strong>Opportunity cost</strong> (features not built while firefighting).</li>
+</ul>
+<p>Sum these per minute of downtime. Multiply by minutes of downtime per year at each candidate SLO. The differences between SLO levels are real money.</p>
+<h3 id="q3-what-does-the-investment-cost">Q3: What does the <em>investment</em> cost?</h3>
+<p>For each additional nine, what investments are required?</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Going from</th>
+<th>Required investments</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>99% → 99.9%</td>
+<td>Multi-AZ deployment; automated failover; basic monitoring/alerting; 24×7 on-call</td>
+</tr>
+<tr>
+<td>99.9% → 99.99%</td>
+<td>Multi-region; chaos engineering (<a href="../operations/chaos-engineering.html">Chaos Engineering</a>); circuit breakers + bulkheads (<a href="../concepts/stability-patterns.html">Stability Patterns</a>); sub-minute MTTR target</td>
+</tr>
+<tr>
+<td>99.99% → 99.999%</td>
+<td>Cellular architecture; per-cell capacity isolation; automated remediation; SRE org structure (<a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a>); error budget discipline</td>
+</tr>
+<tr>
+<td>99.999% → 99.9999%</td>
+<td>Specialised hardware; formal verification (TLA+); rigorous change management</td>
+</tr>
+</tbody></table></div>
+<p>Each step is a discrete investment. Total cost: engineering time, infrastructure cost, operational overhead, organisational discipline. These compound — the operational overhead of a five-nines system is not 10× a four-nines system; it&#39;s qualitatively different.</p>
+<h3 id="q4-can-you-set-different-slos-for-different-features">Q4: Can you set different SLOs for different features?</h3>
+<p>This is usually the right answer. The same system rarely needs the same availability everywhere.</p>
+<p><strong>Common pattern:</strong></p>
+<ul>
+<li><strong>Transaction core</strong> (checkout, payment, account changes): five nines. High investment justified by direct revenue impact.</li>
+<li><strong>Read paths</strong> (browse, search, view): four nines. Important but degradation possible.</li>
+<li><strong>Discovery / recommendations</strong>: three nines. Falls back to cached or simpler results.</li>
+<li><strong>Analytics, reporting, admin</strong>: two nines or less. Background work; degradation acceptable.</li>
+</ul>
+<p>The architectural implication: feature-level isolation. Bulkheads (<a href="../patterns/bulkhead.html">Bulkhead</a>), cellular architecture, graceful degradation under load. The five-nines core is small enough to be designed for it; the rest of the system trades off cost for the bulk of features.</p>
+<h2 id="where-each-nine-is-earned">Where Each Nine Is Earned</h2>
+<p>The big chunks of availability investment, ordered by typical ROI.</p>
+<h3 id="high-roi-90-99-999">High ROI: 90% → 99% → 99.9%</h3>
+<p><strong>Cheapest investments:</strong></p>
+<ul>
+<li>Multi-AZ deployment (often a flag on a managed service).</li>
+<li>Health checks and automated load-balancer removal of failed instances (<a href="../distributed/load-balancing.html">Load Balancing</a>).</li>
+<li><a href="../patterns/timeout.html">Timeout</a> on every external call.</li>
+<li>Basic <a href="../operations/monitoring.html">Monitoring</a> and alerting on user-visible SLIs.</li>
+<li>Automated deployment pipelines (<a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>) so deploy time doesn&#39;t dominate downtime.</li>
+<li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> to limit blast radius of bad releases.</li>
+</ul>
+<p>Most teams have done these but treat them as one-time setup. Continuous attention (updates, dashboards, runbook freshness) keeps them earning.</p>
+<h3 id="medium-roi-999-9999">Medium ROI: 99.9% → 99.99%</h3>
+<ul>
+<li>Multi-region deployment (active-active or active-passive).</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/bulkhead.html">Bulkhead</a>, <a href="../patterns/retry.html">Retry</a> applied at every integration point (<a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a>).</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> to verify failure modes work as designed.</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> to gate aggressive change against reliability impact.</li>
+<li>Investment in MTTR: better tooling, better runbooks, on-call training.</li>
+<li>Backups + restore drills (<a href="../operations/data-integrity.html">Data Integrity</a>).</li>
+</ul>
+<p>The transition from three nines to four is mostly about <em>reducing MTTR</em> rather than reducing MTBF. The cost is real but bounded.</p>
+<h3 id="diminishing-roi-9999-99999">Diminishing ROI: 99.99% → 99.999%</h3>
+<ul>
+<li>Cellular / cell-based architecture (each cell isolated; failure of one cell affects 1/N of users).</li>
+<li>Per-cell capacity and operational isolation.</li>
+<li>Automated remediation (not just alerts → runbook, but alerts → automated action).</li>
+<li>Dedicated SRE organisation with operational authority.</li>
+<li>Capacity for rapid rollback at every layer (database, code, schema).</li>
+</ul>
+<p>Past this point, the system organisation, not just the architecture, has to be designed for it.</p>
+<h3 id="very-diminishing-roi-99999-999999">Very Diminishing ROI: 99.999% → 99.9999%</h3>
+<ul>
+<li>Specialised hardware (redundant network paths, hot-spare data centres).</li>
+<li>Formal verification of critical components (TLA+ on consensus, migration procedures).</li>
+<li>Rigorous change management; long bake periods; multiple approval gates.</li>
+<li>The organisation becomes risk-averse to features in service of availability.</li>
+</ul>
+<p>Rare outside life-critical systems. For most businesses, the user impact of moving from five nines to six nines is invisible while the cost is large.</p>
+<h2 id="when-each-investment-earns-its-cost">When Each Investment Earns Its Cost</h2>
+<p>A few rules of thumb for evaluating specific availability investments.</p>
+<p><strong>Multi-AZ deployment</strong> almost always justifies itself for any business-critical service. The cost is modest (some additional infrastructure spend, cross-AZ traffic cost); the benefit is taking AZ failures off the table.</p>
+<p><strong>Multi-region</strong> is harder to justify. The cost is high (data replication across regions, cross-region traffic, additional operational complexity). The benefit is taking regional failures off the table. Most businesses don&#39;t experience regional failures often enough for this to clear ROI unless availability requirements are very high.</p>
+<p><strong>Chaos engineering</strong> (<a href="../operations/chaos-engineering.html">Chaos Engineering</a>) earns its cost by surfacing problems before they cause incidents. Its ROI is hard to measure directly (&quot;the incident that didn&#39;t happen&quot;) but Kirkpatrick-Level-2 metrics like &quot;vulnerabilities discovered before user impact&quot; support the case.</p>
+<p><strong>Zero-downtime deployment</strong> (<a href="../sources/release-it.html">Release It</a> ch. 1&#39;s canonical example): 18× ROI over 5 years for typical e-commerce. Almost always justifies itself if you deploy more than monthly.</p>
+<p><strong>Investment in MTTR</strong> (<a href="../operations/incident-management.html">Incident Management</a>) typically out-earns investment in MTBF (preventing failure) at scale. Where MTBF approaches zero anyway, MTTR is the active lever.</p>
+<p><strong>Backups and restore drills</strong> (<a href="../operations/data-integrity.html">Data Integrity</a>) have very high ROI because the failure mode they prevent (data loss) is unbounded. Test the restore; an untested backup is no backup.</p>
+<h2 id="anti-patterns">Anti-Patterns</h2>
+<p><strong>Specifying availability without specifying scope.</strong> &quot;The system needs five nines&quot; without saying <em>which features need five nines</em> is the most expensive failure mode. The default cost is to make the <em>entire</em> system five nines, which is usually overkill and often not feasible.</p>
+<p><strong>Treating availability as a technical decision.</strong> Availability targets are business decisions. The conversion to money (Q2 above) makes the trade-off real. Engineers should not unilaterally accept availability targets without business sign-off on the cost.</p>
+<p><strong>100% as a target.</strong> SRE&#39;s central argument: 100% is always wrong. Users have tolerance thresholds; past those, additional availability is invisible. Push the target to &quot;what users can tell the difference at&quot; and stop.</p>
+<p><strong>Tyranny of the nines.</strong> Targeting four nines because four nines sounds better than three. The right level is the lowest level that meets user need; one nine higher costs 10× more.</p>
+<p><strong>MTBF investment without MTTR investment.</strong> Preventing failure is harder and more expensive than detecting + recovering from it. Both matter; in mature systems, MTTR is usually the dominant lever.</p>
+<p><strong>Redundancy without isolation.</strong> Two database replicas behind a shared load balancer are not redundant from the load-balancer&#39;s perspective. Redundancy must extend to every shared dependency; otherwise the unshared component is the SPOF.</p>
+<p><strong>Adding investment without removing risk.</strong> A new auto-scaler, a new fallback path, a new monitoring system — each one adds complexity, and complexity itself reduces reliability. Counter-intuitively, removing complexity often increases availability more than adding redundancy does (see <a href="../operations/chaos-engineering.html">Chaos Engineering</a>&#39;s &quot;three counter-intuitive rules&quot;).</p>
+<p><strong>SLA penalties as the only motivation.</strong> SLAs are external contracts; SLOs are internal targets. Targeting &quot;just above the SLA&quot; makes the SLA the operating point, which means every minor incident risks breaching it. Set SLOs comfortably above SLAs.</p>
+<h2 id="the-architectural-implications">The Architectural Implications</h2>
+<p>High availability isn&#39;t just operational discipline; it&#39;s an architectural property. Some architectures make high availability cheap; others make it expensive.</p>
+<p><strong>Cheaper to achieve high availability:</strong></p>
+<ul>
+<li>Stateless services (<a href="../distributed/scalability.html">Scalability</a>) — failed instances replaceable without coordination.</li>
+<li>Bulkhead architecture (<a href="../patterns/bulkhead.html">Bulkhead</a>) — partition-level failures don&#39;t propagate.</li>
+<li>Asynchronous communication (<a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a>) — no temporal coupling between availability of services.</li>
+<li>Cellular architecture — cell-level isolation contains failures.</li>
+<li>Read replicas + eventual consistency (<a href="../distributed/consistency-models.html">Consistency Models</a>) — reads survive write-tier failures.</li>
+</ul>
+<p><strong>Expensive to achieve high availability:</strong></p>
+<ul>
+<li>Distributed transactions (2PC) — coordinator failure blocks. See <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>.</li>
+<li>Synchronous service chains — availability multiplies down the chain.</li>
+<li>Shared databases — SPOF; coupling all callers&#39; availability to one component.</li>
+<li>Strong consistency across regions — requires consensus, which has hard latency and availability trade-offs (<a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>).</li>
+</ul>
+<p><strong>The architectural choice precedes the availability investment.</strong> A distributed monolith will never reach five nines cheaply. The investment goes into changing the architecture, not into adding redundancy to a fragile one.</p>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>The canonical &quot;design decisions are financial decisions&quot; framing. ROI calculations for stability investments; &quot;deployment army&quot; opportunity-cost analysis; downtime cost as the link between availability and money.</td>
+</tr>
+<tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>The discipline of error budgets, SLO-driven engineering, MTTR &gt; MTBF at scale, the 100%-is-wrong argument.</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Multi-AZ and multi-region patterns; the nines arithmetic; dependency-chaining effects on composite availability.</td>
+</tr>
+<tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Cost-as-tuneable-property of elastic systems; the parameter studies showing non-intuitive cost/availability/throughput trade-offs.</td>
+</tr>
+<tr>
+<td><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></td>
+<td>Availability measurement framework (MTBF/MTTR/RPO/RTO); quality attribute measurement as a discipline (Woods, ch. 7).</td>
+</tr>
+</tbody></table></div>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../operations/availability.html">Availability</a> — the mechanics of availability</li>
+<li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — cost as a first-class quality attribute</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> — operational mechanism for negotiating reliability vs change</li>
+<li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a> — the discipline behind these decisions</li>
+<li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — the pattern set that earns the nines</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — selecting and composing those patterns</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — performance investment with similar ROI logic</li>
+<li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — limiting blast radius of releases</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — verifying availability investments actually work</li>
+<li><a href="../operations/data-integrity.html">Data Integrity</a> — availability vs data integrity (orthogonal concerns)</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — SLI/SLO definition and burn-rate alerting</li>
+<li><a href="../operations/incident-management.html">Incident Management</a> — MTTR as the active lever</li>
+<li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — availability in the trade-off framework</li>
+<li><a href="../styles/architecture-styles.html">Architecture Styles</a> — style choice as availability ceiling</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

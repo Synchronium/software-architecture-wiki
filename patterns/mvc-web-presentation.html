@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Model View Controller (MVC)</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#model-view-controller-mvc">Model View Controller (MVC)</a></li><li><a href="#input-controller-patterns">Input Controller Patterns</a></li><li><a href="#view-patterns">View Patterns</a></li><li><a href="#application-controller-optional">Application Controller (optional)</a></li><li><a href="#relationship-to-domain-logic-patterns">Relationship to Domain Logic Patterns</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="model-view-controller-mvc">Model View Controller (MVC)</h2>
 <p>The foundational web presentation pattern. Separates three concerns:</p>
 <ul>
 <li><strong>Model</strong>: domain logic and data — the real business processing</li>
@@ -320,7 +331,7 @@
 <p>The primary reason to apply MVC is to <strong>completely separate the model from the presentation</strong>. This enables: swapping presentation channels without touching the domain; independent testing of domain logic; adding new presentation formats later.</p>
 <p>(→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> ch. 4)</p>
 <hr>
-<h2>Input Controller Patterns</h2>
+<h2 id="input-controller-patterns">Input Controller Patterns</h2>
 <p><strong>Page Controller</strong> — one controller object (or server page) per page or user action. Handles the HTTP request, creates model objects to do work, instantiates the appropriate view. Simple and familiar; works well for straightforward sites. Note: actions (buttons, links) correspond more precisely than pages — one Page Controller per action. Can be mixed with Front Controller (some URLs handled each way).</p>
 <p><strong>Front Controller</strong> — a single object handles all HTTP requests. Interprets the URL to determine the request type, then creates a separate handler (command object) to process it. Centralises HTTP handling and URL interpretation. Better for sites with complex URL schemes, shared pre/post-processing (authentication, logging), or where adding new actions should not require web-server reconfiguration. Each request gets new command objects, so no thread-safety concerns. Cross-cutting behaviour (authentication, i18n, encoding) can be added as decorators without changing the core handler.</p>
 <div class="table-wrapper"><table>
@@ -353,22 +364,22 @@
 </tr>
 </tbody></table></div>
 <hr>
-<h2>View Patterns</h2>
+<h2 id="view-patterns">View Patterns</h2>
 <p><strong>Template View</strong> — write the response page in HTML/markup and embed code scriptlets for dynamic content. Examples: JSP, ASP, PHP, Thymeleaf, Jinja2. Natural for developers who think &quot;inside out&quot; (structure-first); easiest for non-programmer designers to work with alongside a programmer helper. Weaknesses: (1) logic easily leaks into templates, producing unmaintainable messes — discipline required to keep templates display-only; (2) most implementations can only be tested inside a web server, making automated testing slow or impossible.</p>
 <p><strong>Transform View</strong> — a program transforms domain data into presentation format. Classic example: XSLT transforming domain XML. Easier to test without a web server; easier to keep rendering logic separate from domain logic; XSLT is portable across J2EE and .NET. Weaknesses: XSLT is hard to learn (functional + XML syntax); tool support weaker than for HTML editors. Good fit when domain data is already in XML, or when Two Step View is needed (easier to implement with XSLT than templates).</p>
 <p><strong>Two Step View</strong> — splits rendering into two phases: (1) convert domain data into a logical presentation structure (screen-independent); (2) convert that logical structure into the final HTML (applying the site&#39;s look). <strong>Key benefit</strong>: a site-wide appearance change requires modifying only the one second-stage module, not every page template. One second-stage renderer for the whole application. Best for sites with consistent look-and-feel requirements, or multi-brand sites where multiple organisations want the same functionality with different looks. Limitation: requires a stable logical screen structure across all pages.</p>
 <hr>
-<h2>Application Controller (optional)</h2>
+<h2 id="application-controller-optional">Application Controller (optional)</h2>
 <p>An intermediate layer between presentation and domain that manages <strong>screen flow and navigation logic</strong> — which screens appear in which order, which pages follow which actions.</p>
 <p>Holds two collections: (1) domain commands to execute; (2) views to display. Input controllers ask it which command to run and which view to show for a given application state. Can be implemented with Command objects, function references, or string-based reflective dispatch.</p>
 <p><strong>Important</strong>: the Application Controller should have no direct dependency on UI machinery (no HTTP session access, no server page forwarding). This enables testing it without a UI and reusing it across multiple presentation channels (web, rich client, mobile).</p>
 <p>Use when the machine controls the flow (wizards, multi-step processes, conditional screen logic). Unnecessary when the user freely controls navigation. Can be implemented as a state machine with metadata-driven control flow.</p>
 <p>Not to be confused with the &quot;input controller&quot; in MVC — this is a separate concern.</p>
 <hr>
-<h2>Relationship to Domain Logic Patterns</h2>
+<h2 id="relationship-to-domain-logic-patterns">Relationship to Domain Logic Patterns</h2>
 <p>MVC enforces the key layering rule from <a href="../styles/layered-architecture.html">Layered Architecture</a>: domain logic never depends on the presentation. In PEAA&#39;s model, the input controller invokes Transaction Scripts or Domain Model methods; the model objects know nothing about HTTP.</p>
 <p>The Service Layer pattern (see <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>) provides a clean API that the input controller can call, keeping web-specific concerns (HTTP request parsing, response serialisation) entirely in the presentation layer.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../styles/layered-architecture.html">Layered Architecture</a> — MVC is the presentation-layer realisation of layered architecture</li>
 <li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — the &quot;Model&quot; in MVC; input controllers delegate to these patterns</li>

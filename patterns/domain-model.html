@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,21 +309,36 @@
       <h1>Domain Model Pattern</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ddd.html">ddd</a></li><li><a class="tag-chip" href="../tags/domain-model.html">domain-model</a></li><li><a class="tag-chip" href="../tags/aggregate.html">aggregate</a></li><li><a class="tag-chip" href="../tags/value-object.html">value-object</a></li><li><a class="tag-chip" href="../tags/domain-events.html">domain-events</a></li><li><a class="tag-chip" href="../tags/domain-services.html">domain-services</a></li><li><a class="tag-chip" href="../tags/tactical-design.html">tactical-design</a></li><li><a class="tag-chip" href="../tags/business-logic.html">business-logic</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#building-blocks">Building Blocks</a></li><li class="toc-sub"><a href="#value-object">Value Object</a></li><li class="toc-sub"><a href="#entity">Entity</a></li><li class="toc-sub"><a href="#aggregate">Aggregate</a></li><li class="toc-sub"><a href="#domain-events">Domain Events</a></li><li class="toc-sub"><a href="#domain-services">Domain Services</a></li><li><a href="#application-layer">Application Layer</a></li><li><a href="#domain-model-vs-transaction-script">Domain Model vs. Transaction Script</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#evans39-elaborations-on-the-building-blocks">Evans&#39; Elaborations on the Building Blocks</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>The aggregate is the consistency boundary.</strong> Only the aggregate&#39;s own business logic may modify its state. One aggregate per transaction; modifying multiple aggregates atomically signals wrong boundaries.</li>
+<li><strong>Value Objects are immutable and identified by value.</strong> No identity, no shared mutable state, safe to copy or share. Used to eliminate primitive obsession — <code>PhoneNumber</code> not <code>string</code>, <code>Money</code> not <code>int</code>.</li>
+<li><strong>Entities have explicit identity through time.</strong> Two entities with the same data but different IDs are different things. Identity is immutable; everything else changes over the lifecycle.</li>
+<li><strong>Aggregate references go by ID only.</strong> Object references across aggregate boundaries hide the transaction boundary and create implicit lock contention. Foreign keys at the aggregate level enforce the boundary.</li>
+<li><strong>Domain Events are past-tense facts.</strong> &quot;Order Placed,&quot; &quot;Payment Confirmed.&quot; Part of the aggregate&#39;s public interface; published after commit; connect choreography and event-sourced flows.</li>
+<li><strong>Domain Services hold logic that fits no single aggregate.</strong> Stateless, named after domain concepts. They coordinate reads across aggregates but don&#39;t violate the one-aggregate-per-transaction rule.</li>
+<li><strong>Plain Old Objects, no infrastructure.</strong> No DB calls, no framework coupling, no transport concerns. The aggregate&#39;s purity makes it testable and durable as infrastructure evolves.</li>
+<li><strong>Use the domain model only for complex business logic.</strong> Supporting subdomains should use transaction script or active record — applying a domain model to CRUD wastes effort.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>The domain model pattern implements business logic as an object model that incorporates both behaviour and data. It is oriented toward complex business logic — entangled rules, state transitions, invariants that must be protected at all times. The code should speak the bounded context&#39;s <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a>.</p>
 <blockquote>
 <p>Use when the business logic involves complex algorithms and business processes orchestrated by complex rules and invariants — not CRUD interfaces. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 6)</p>
 </blockquote>
 <p>Objects in the domain model are <strong>plain old objects</strong> — no infrastructure or technological concerns (no database calls, no framework coupling). This restriction keeps the model clean and testable.</p>
-<h2>Building Blocks</h2>
-<h3>Value Object</h3>
+<h2 id="building-blocks">Building Blocks</h2>
+<h3 id="value-object">Value Object</h3>
 <p>An object identified by the <strong>composition of its values</strong>, not by an ID. Two value objects with identical field values are equal. Implemented as <strong>immutable</strong> — changing any field conceptually creates a new value.</p>
 <p><em>Why value objects</em>: prevents &quot;primitive obsession&quot; — using raw strings and ints to represent domain concepts. Value objects centralise validation, encapsulate business logic, and make the type system speak the domain language.</p>
 <pre><code>// Primitive obsession:
@@ -327,10 +349,10 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 </code></pre>
 <p>Value objects enforce their own invariants (PhoneNumber.Parse validates format), are safe to share (immutable = no side effects, thread-safe), and express domain concepts explicitly. Use them for any domain element that describes a property of another object — IDs, money, measurements, status values.</p>
 <p>Fowler (→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> ch. 18) stresses immutability as non-negotiable: a mutable Value Object that is aliased (referenced from multiple places) causes subtle bugs — changing one apparent copy changes all alias holders. Immutability makes aliasing harmless. For persistence, always use Embedded Value — a Value Object has no identity and should never be stored as its own table row. The canonical example is <code>Money</code>: currency + amount as a pair, with currency-aware arithmetic, allocation methods to distribute sums without losing remainder pennies, and a <code>convert()</code> method backed by a converter object rather than simple multiplication. Naming collision: the J2EE community used &quot;Value Object&quot; to mean DTO; these are entirely different patterns.</p>
-<h3>Entity</h3>
+<h3 id="entity">Entity</h3>
 <p>An object that requires an <strong>explicit identification field</strong> to distinguish instances. Two entities with the same values but different IDs are different entities. Mutable — expected to change over its lifecycle (unlike value objects). The ID must remain immutable throughout the lifecycle.</p>
 <p>Entities are not used as an independent building block — only as components within an aggregate.</p>
-<h3>Aggregate</h3>
+<h3 id="aggregate">Aggregate</h3>
 <p>An aggregate is an entity, but it is much more: it is the <strong>consistency enforcement boundary</strong> of the domain model.</p>
 <p><strong>Core rule</strong>: only the aggregate&#39;s own business logic may modify its state. External processes can only read state and invoke commands (the aggregate&#39;s public interface methods). This strict boundary ensures all business logic is implemented in one place and all invariants are always enforced.</p>
 <p><strong>Transaction boundary</strong>: one aggregate instance per database transaction. A change to an aggregate must be committed as a single atomic operation. The need to modify multiple aggregates in one transaction is a design signal: the aggregate boundaries are wrong.</p>
@@ -339,7 +361,7 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 <p><strong>Concurrency</strong>: aggregates hold a version field incremented on each update. Before committing, the database must confirm the version matches the one read before applying changes — optimistic concurrency control. Multi-process concurrent updates are rejected; the second process retries.</p>
 <p><strong>Referencing other aggregates</strong>: aggregates reference other aggregates only by ID — never by object reference. This makes the transactional boundary explicit and ensures each aggregate&#39;s transactions are independent.</p>
 <p><strong>Sizing</strong>: keep aggregates as small as possible. Only include entities that genuinely require strong consistency with each other. Larger aggregates → worse concurrency (more contention on the same transaction boundary).</p>
-<h3>Domain Events</h3>
+<h3 id="domain-events">Domain Events</h3>
 <p>Domain events are <strong>past-tense messages</strong> describing significant business happenings:</p>
 <ul>
 <li>Ticket Escalated</li>
@@ -349,7 +371,7 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 <p>Events are part of the aggregate&#39;s public interface. The aggregate appends domain events to its internal collection when business logic causes a state change. After the aggregate&#39;s command is committed, domain events are published to interested subscribers (other aggregates, external systems).</p>
 <p>Events describe <em>what happened</em> and supply all necessary data about that happening. They are named in the past tense because they describe facts, not intentions.</p>
 <p>Domain events connect the aggregate to choreographed event-driven flows (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>). In the event-sourced domain model (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>), domain events also become the source of truth for aggregate state.</p>
-<h3>Domain Services</h3>
+<h3 id="domain-services">Domain Services</h3>
 <p>Stateless objects implementing business logic that <strong>doesn&#39;t belong to any single aggregate or value object</strong> — typically logic that coordinates multiple aggregates or requires reading data from multiple sources.</p>
 <p><em>Characteristics</em>:</p>
 <ul>
@@ -358,14 +380,14 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 <li>Not microservices — they are objects within a bounded context</li>
 </ul>
 <p>Domain services do not bypass the one-aggregate-per-transaction rule. They are for <em>reading</em> multiple aggregates and performing calculations; they cannot commit changes to multiple aggregates atomically.</p>
-<h2>Application Layer</h2>
+<h2 id="application-layer">Application Layer</h2>
 <p>The application layer (the layer orchestrating operations on aggregates) is thin: load aggregate → execute command → persist aggregate → return result. The aggregate handles all business logic; the application layer just coordinates infrastructure.</p>
 <pre><code>Load aggregate state
 → Execute command (business logic inside aggregate)
 → Persist (with version check)
 → Publish domain events
 </code></pre>
-<h2>Domain Model vs. Transaction Script</h2>
+<h2 id="domain-model-vs-transaction-script">Domain Model vs. Transaction Script</h2>
 <p>The difference is not lines of code but structural discipline:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -396,9 +418,9 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 <td>Core subdomains (complex)</td>
 </tr>
 </tbody></table></div>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <p>Use when the subdomain contains complex business rules, invariants, and state transitions — the domain model is the natural fit for <strong>core subdomains</strong>. Supporting subdomains with simple CRUD logic should use transaction script or active record instead (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
-<h2>Evans&#39; Elaborations on the Building Blocks</h2>
+<h2 id="evans39-elaborations-on-the-building-blocks">Evans&#39; Elaborations on the Building Blocks</h2>
 <p>Evans&#39; treatment in <a href="../sources/domain-driven-design.html">Domain Driven Design</a> (ch. 5–6) adds several important nuances not in Khononov&#39;s more systematic account:</p>
 <p><strong>Associations</strong>: every bidirectional association is a maintenance burden. Default to unidirectional; add qualifiers to reduce multiplicity; eliminate non-essential associations. Bidirectional associations between value objects make no sense — if neither object has identity, the traversal direction is meaningless.</p>
 <p><strong>Entity identity</strong>: the question is not &quot;does this object have an ID field&quot; but &quot;does it need to be found or tracked over time?&quot; Two customers with the same name are still two different customers. Identity operations (sameness tests, lookups) must be explicit and domain-meaningful. Entities contain the smallest possible set of attributes required for identity and lifecycle continuity — other attributes belong on value objects.</p>
@@ -418,7 +440,7 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 </ol>
 <p>The purchase order example: PO line items cannot be individually locked and modified because the invariant (total ≤ approved limit) spans all items. Individually-locked items allow concurrent modifications that each appear valid but violate the aggregate invariant together.</p>
 <p><strong>Factories vs repositories</strong>: Evans draws a sharp distinction. A factory creates <em>new</em> objects — it handles complex construction and ensures the produced object is complete and valid from birth. A repository finds <em>existing</em> objects — it provides the illusion of an in-memory collection and handles reconstitution from persistent storage. Reconstitution from the database is a factory responsibility invoked <em>by</em> the repository: the repository fetches raw data; a factory (or factory method) assembles the object without assigning a new identity.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -439,7 +461,7 @@ Person(phone: PhoneNumber, email: EmailAddress, country: CountryCode)
 <td>Fowler&#39;s treatment emphasises Value Object immutability as the solution to aliasing bugs; defines Money as the canonical Value Object; introduces Special Case (ch. 18) as the general form of Null Object — return a subclass that handles the exceptional case polymorphically rather than proliferating null checks.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — each aggregate belongs to a single bounded context; the domain model speaks the bounded context&#39;s ubiquitous language</li>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — aggregate names, commands, events must all reflect the ubiquitous language</li>

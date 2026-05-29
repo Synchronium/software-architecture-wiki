@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,8 +316,12 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>The Outbox pattern guarantees that a database write and a message publication are either both committed or both not committed — without using distributed transactions (2PC). It solves the fundamental dual-write problem.</p>
-<h2>The Problem: Dual-Write</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-problem-dual-write">The Problem: Dual-Write</a></li><li><a href="#the-solution-outbox-table">The Solution: Outbox Table</a></li><li><a href="#guarantees">Guarantees</a></li><li><a href="#relay-implementation-options">Relay Implementation Options</a></li><li><a href="#relationship-to-state-machine-replication">Relationship to State Machine Replication</a></li><li><a href="#relationship-to-sagas">Relationship to Sagas</a></li><li><a href="#data-liberation-patterns-bellemare">Data Liberation Patterns (Bellemare)</a></li><li class="toc-sub"><a href="#pattern-1-query-based-liberation">Pattern 1: Query-Based Liberation</a></li><li class="toc-sub"><a href="#pattern-2-log-based-cdc-log">Pattern 2: Log-Based (CDC Log)</a></li><li class="toc-sub"><a href="#pattern-3-outbox-table-recommended">Pattern 3: Outbox Table (Recommended)</a></li><li class="toc-sub"><a href="#cdc-frameworks-vs-team-owned-outbox">CDC Frameworks vs Team-Owned Outbox</a></li><li><a href="#outbox-pattern-in-the-ddd-context-khononov">Outbox Pattern in the DDD Context (Khononov)</a></li><li class="toc-sub"><a href="#two-wrong-approaches">Two Wrong Approaches</a></li><li class="toc-sub"><a href="#the-correct-approach">The Correct Approach</a></li><li class="toc-sub"><a href="#nosql-embedding">NoSQL Embedding</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>The Outbox pattern guarantees that a database write and a message publication are either both committed or both not committed — without using distributed transactions (2PC). It solves the fundamental dual-write problem.</p>
+<h2 id="the-problem-dual-write">The Problem: Dual-Write</h2>
 <p>A service that both writes to its database and publishes to a message broker faces a race condition:</p>
 <pre><code>1. Write to DB   ✓
 2. Publish to broker  ✗ (crash, network failure)
@@ -322,7 +333,7 @@
 → Message sent for an event that never actually happened.
 </code></pre>
 <p>There is no safe ordering — one can always fail after the other.</p>
-<h2>The Solution: Outbox Table</h2>
+<h2 id="the-solution-outbox-table">The Solution: Outbox Table</h2>
 <p>Instead of publishing directly to the broker, write the message to an <strong>outbox table</strong> in the same local database, within the same ACID transaction as the state change:</p>
 <pre><code class="language-sql">BEGIN;
   UPDATE orders SET status = &#39;confirmed&#39; WHERE id = ?;
@@ -335,31 +346,31 @@ COMMIT;
         → publish to broker
         → mark as processed (or delete)
 </code></pre>
-<h2>Guarantees</h2>
+<h2 id="guarantees">Guarantees</h2>
 <ul>
 <li><strong>Atomicity</strong>: the state change and the outbox entry are written in one ACID transaction — both succeed or both fail.</li>
 <li><strong>At-least-once delivery</strong>: the relay may publish a message more than once (if it crashes after publishing but before marking as processed). Consumers must be idempotent. (→ <a href="../distributed/idempotency.html">Idempotency</a>)</li>
 <li><strong>No exactly-once delivery</strong>: exactly-once is provably impossible in distributed systems; the outbox provides exactly-once <em>semantics</em> through idempotent consumers.</li>
 </ul>
-<h2>Relay Implementation Options</h2>
+<h2 id="relay-implementation-options">Relay Implementation Options</h2>
 <p><strong>Polling</strong>: relay queries the outbox table on a schedule (simple, adds DB load, latency proportional to poll interval).</p>
 <p><strong>Change Data Capture (CDC)</strong>: relay subscribes to the database&#39;s replication log (e.g., Postgres WAL, MySQL binlog via Debezium). Lower latency, no extra DB queries, but requires CDC infrastructure. See <a href="../streams/change-data-capture.html">Change Data Capture</a> for the full treatment of log-based vs trigger-based vs query-based mechanisms and the schema-coupling trade-offs.</p>
-<h2>Relationship to State Machine Replication</h2>
+<h2 id="relationship-to-state-machine-replication">Relationship to State Machine Replication</h2>
 <p>Vitillo notes this is conceptually equivalent to state machine replication: the outbox table is the log; the relay is the replication mechanism; the broker is the downstream state machine. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13)</p>
-<h2>Relationship to Sagas</h2>
+<h2 id="relationship-to-sagas">Relationship to Sagas</h2>
 <p>In a <a href="../patterns/saga.html">Saga</a>, each local transaction step needs to reliably trigger the next step. The outbox pattern is the standard way to implement this: each Tᵢ writes its next command/event to the outbox alongside its local state change.</p>
-<h2>Data Liberation Patterns (Bellemare)</h2>
+<h2 id="data-liberation-patterns-bellemare">Data Liberation Patterns (Bellemare)</h2>
 <p>In EDM architectures, existing systems must publish their domain data to event streams as part of migration — a process called <strong>data liberation</strong> (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 4). The outbox table is the recommended approach, but three patterns exist:</p>
-<h3>Pattern 1: Query-Based Liberation</h3>
+<h3 id="pattern-1-query-based-liberation">Pattern 1: Query-Based Liberation</h3>
 <p>Queries the data store directly and publishes results to an event stream. Variants: bulk load (full table each poll), incremental timestamp (records with <code>updated_at &gt; last_processed</code>), autoincrementing ID (records with <code>id &gt; last_processed_id</code>), custom query (joins/views to isolate internal model).</p>
 <p><strong>Advantages</strong>: works on any data store; SQL views can isolate internal data models from published events; configurable polling frequency per stream.</p>
 <p><strong>Drawbacks</strong>: requires <code>updated_at</code> column or equivalent; hard deletes are invisible (must use soft-delete flags); polling load on source system (mitigate with read replica); batch-nature means intermediate updates between polls are lost.</p>
-<h3>Pattern 2: Log-Based (CDC Log)</h3>
+<h3 id="pattern-2-log-based-cdc-log">Pattern 2: Log-Based (CDC Log)</h3>
 <p>Reads the database&#39;s write-ahead log or binary log (MySQL binlog, PostgreSQL WAL). Primary tools: <strong>Debezium</strong> (MySQL, PostgreSQL, MongoDB, and others; targets Kafka and Pulsar), <strong>Maxwell</strong> (MySQL only, Kafka only).</p>
 <p><strong>Advantages</strong>: very low latency; minimal performance impact on source; hard deletes tracked directly in the changelog.</p>
 <p><strong>Drawbacks</strong>: <strong>exposes the internal data model</strong> — all table columns appear in the log; denormalization must happen downstream; schema changes to the source table may break downstream event schemas without warning; limited tool support for DDL changes (Debezium supports MySQL DDL only).</p>
 <p>Bootstrapping is required: a full snapshot of existing data must be taken before CDC logging starts, with overlap ensured to avoid gaps.</p>
-<h3>Pattern 3: Outbox Table (Recommended)</h3>
+<h3 id="pattern-3-outbox-table-recommended">Pattern 3: Outbox Table (Recommended)</h3>
 <p>Described in the core Outbox Pattern section above. Application writes to internal tables and the outbox in a single transaction; relay publishes from the outbox.</p>
 <p><strong>Serialisation timing</strong>: the key design decision.</p>
 <ul>
@@ -367,25 +378,25 @@ COMMIT;
 <li><strong>After-the-fact</strong>: event written to outbox first; publisher serialises it before producing to the stream. If serialisation fails after commit, the transaction cannot be safely rolled back; the failure must be handled manually. Simpler to implement, but leaves incompatible events stranded in the outbox.</li>
 </ul>
 <p><strong>Eventification</strong>: a downstream event processor that joins multiple internal (private) event streams and denormalises them into public-facing entity events. For example, a <code>User</code> entity that references <code>Location</code> and <code>Employer</code> as foreign keys can be denormalised into a single <code>User</code> entity event by a dedicated eventification service — the internal streams remain private, and only the clean public event is exposed.</p>
-<h3>CDC Frameworks vs Team-Owned Outbox</h3>
+<h3 id="cdc-frameworks-vs-team-owned-outbox">CDC Frameworks vs Team-Owned Outbox</h3>
 <p>Centralised CDC frameworks (Kafka Connect, Apache Gobblin, Apache NiFi) reduce up-front work but create a shared dependency between the framework team and each source team. Any schema change in the source can break the connector, but only the framework team detects this. This creates linearly scaling cross-team dependencies.</p>
 <blockquote>
 <p>&quot;CDC tools are not the final destination in moving to an event-driven architecture, but instead are primarily meant to help bootstrap the process.&quot; (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 4)</p>
 </blockquote>
 <p>Teams that adopt the outbox pattern directly become sole owners of their event production, eliminating the framework team dependency and encouraging &quot;event-first&quot; thinking. Teams that rely on the CDC framework indefinitely fail to make the cultural shift to treating their event streams as a first-class product.</p>
 <p><strong>Data sinking</strong>: the inverse operation — consuming events from the broker and inserting into a legacy data store. Enables non-event-driven systems to receive event data without code changes, via a standalone sink microservice or a connector.</p>
-<h2>Outbox Pattern in the DDD Context (Khononov)</h2>
+<h2 id="outbox-pattern-in-the-ddd-context-khononov">Outbox Pattern in the DDD Context (Khononov)</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 9) frames the outbox pattern specifically in relation to the <strong>domain model</strong> pattern and the <strong>transaction script</strong> failure modes introduced in ch. 5.</p>
-<h3>Two Wrong Approaches</h3>
+<h3 id="two-wrong-approaches">Two Wrong Approaches</h3>
 <p><strong>Wrong approach 1 — publish inside the aggregate before commit</strong>: the aggregate generates domain events and attempts to publish them to a message bus before the DB transaction commits. If the transaction then fails, the events have already been published for an aggregate state change that never happened.</p>
 <p><strong>Wrong approach 2 — publish in application layer after commit but before crash</strong>: the application layer commits the aggregate state, then publishes domain events. If the process crashes after commit but before publish, the events are lost — the aggregate changed state but no one was notified.</p>
-<h3>The Correct Approach</h3>
+<h3 id="the-correct-approach">The Correct Approach</h3>
 <p>The aggregate commits its updated state and its domain events atomically as an outbox: state + events written in one DB transaction. A separate relay process (running continuously) reads unpublished outbox entries and publishes them to the message bus, then marks them as published. This guarantees at-least-once delivery.</p>
 <p><strong>Relay implementation</strong>: pull (polling the outbox table) or push (transaction log tailing / CDC). Pull is simpler; push has lower latency and less DB load.</p>
-<h3>NoSQL Embedding</h3>
+<h3 id="nosql-embedding">NoSQL Embedding</h3>
 <p>For document databases that don&#39;t support multi-collection transactions in the same way as relational DBs, embed the outbox messages array directly in the aggregate document. Both the aggregate state and its pending outbox messages are updated atomically in a single document write.</p>
 <hr>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -406,12 +417,12 @@ COMMIT;
 <td>DDD context — two wrong approaches (publish before commit; publish after commit but before crash); the correct atomically-committed outbox; NoSQL embedding; pull vs push relay (ch. 9)</td>
 </tr>
 </tbody></table></div>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13) — outbox pattern, relay process, idempotency requirement, state machine replication equivalence</li>
 <li>(→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 4) — data liberation patterns; query-based, CDC log, outbox comparison; eventification; CDC framework anti-pattern</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/saga.html">Saga</a></li>
 <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
@@ -422,7 +433,7 @@ COMMIT;
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

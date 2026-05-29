@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>The Problem</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-problem">The Problem</a></li><li><a href="#architectural-patterns-data-source-layer">Architectural Patterns (Data Source Layer)</a></li><li><a href="#behavioural-patterns">Behavioural Patterns</a></li><li class="toc-sub"><a href="#unit-of-work">Unit of Work</a></li><li class="toc-sub"><a href="#identity-map">Identity Map</a></li><li class="toc-sub"><a href="#lazy-load">Lazy Load</a></li><li><a href="#structural-mapping-patterns">Structural Mapping Patterns</a></li><li><a href="#inheritance-mapping">Inheritance Mapping</a></li><li><a href="#metadata-mapping-and-repository">Metadata Mapping and Repository</a></li><li><a href="#connection-management">Connection Management</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="the-problem">The Problem</h2>
 <p>Objects and relational tables are structurally different: objects use references and collections; tables use foreign keys and joins. Objects can inherit; tables cannot. Fowler calls this the <strong>impedance mismatch</strong>. Bridging this gap consumes roughly a third of enterprise application development effort (PEAA ch. 3).</p>
 <p>(→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a>)</p>
 <hr>
-<h2>Architectural Patterns (Data Source Layer)</h2>
+<h2 id="architectural-patterns-data-source-layer">Architectural Patterns (Data Source Layer)</h2>
 <p>These determine how domain objects interact with the database. Pick one as the primary persistence mechanism — mixing them gets messy.</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -357,9 +368,9 @@
 <p><strong>Data Mapper: Separated Interface for finders</strong>: domain code that needs to invoke find methods should not see the mapper layer. Use a Separated Interface (finder interface declared in the domain package, implemented by the mapper) to avoid the dependency. A Registry in the domain layer holds the active mapper instances.</p>
 <p><strong>Data Mapper: buy, don&#39;t build</strong>: a full-featured mapping layer is expensive to build. Fowler&#39;s advice: use a commercial ORM tool (Hibernate, etc.) rather than building your own unless the mapping requirements are unusually simple or unusual.</p>
 <hr>
-<h2>Behavioural Patterns</h2>
+<h2 id="behavioural-patterns">Behavioural Patterns</h2>
 <p>These solve the &quot;keep it consistent&quot; problems that arise when multiple objects are loaded and modified.</p>
-<h3>Unit of Work</h3>
+<h3 id="unit-of-work">Unit of Work</h3>
 <p>Registers all objects read from the database; tracks which were modified (new, dirty, removed); on commit, sequences all INSERT/UPDATE/DELETE in the right order. The developer calls <code>commit()</code> rather than explicit <code>save()</code> on each object.</p>
 <p><strong>Three registration approaches</strong>:</p>
 <ol>
@@ -371,13 +382,13 @@
 <p><strong>Commit ordering for referential integrity</strong>: the Unit of Work is the natural place to sort writes so that FK-dependent tables are written in the correct order. For small schemas, hardcode the order; for large ones, use a topological sort over the FK graph.</p>
 <p><strong>Deadlock reduction</strong>: if every transaction writes tables in the same sequence, the risk of deadlocks is significantly reduced. The Unit of Work enforces this consistently.</p>
 <p><strong>Batch updates</strong>: batching multiple SQL statements in a single call reduces network round-trips. JDBC&#39;s batching facility or a multi-statement string approach both work; check that batching doesn&#39;t interfere with prepared statement precompilation.</p>
-<h3>Identity Map</h3>
+<h3 id="identity-map">Identity Map</h3>
 <p>Keeps a record of every database row loaded in the current session (keyed by primary key). Before loading a row, check here first. Ensures that the same database row is never represented by two different in-memory objects — two in-memory objects for the same row means conflicting updates are possible. Primary purpose: <strong>correctness</strong>; caching is a side effect.</p>
 <p><strong>Explicit vs generic</strong>: an explicit Identity Map has type-specific methods (<code>findPerson(id)</code>) — better for compile-time type checking and discoverability. A generic map uses a single method with a type discriminator — simpler to maintain but loses type safety. Prefer explicit; only use generic if all domain objects share the same key type.</p>
 <p><strong>Per-class vs per-session</strong>: use one map per class when class and table schemas match well. Use a single session-scoped map only when all keys are globally unique across all classes (surrogate keys make this feasible).</p>
 <p><strong>Session-scoped vs process-scoped</strong>: updatable objects must use session-scoped maps (never share a writable object across sessions). Truly read-only objects can safely use process-scoped maps, avoiding repeated DB loads for reference data.</p>
 <p><strong>Placement</strong>: put Identity Maps inside the Unit of Work if one exists. Otherwise, a session-scoped Registry.</p>
-<h3>Lazy Load</h3>
+<h3 id="lazy-load">Lazy Load</h3>
 <p>A placeholder stands in for a linked object. The real object is fetched only when actually used. Prevents loading entire object graphs when only a subset is needed.</p>
 <p><strong>Four implementations</strong>:</p>
 <ol>
@@ -388,7 +399,7 @@
 </ol>
 <p><strong>Ripple loading</strong> (N+1 problem): loading a collection lazily and then iterating causes one DB call per element instead of one for the whole collection. Mitigation: make the <em>collection itself</em> a single lazy load — when triggered, load all elements at once. In practice, only two degrees of laziness are needed: full load (everything) and identification load (ID + display fields for list views).</p>
 <hr>
-<h2>Structural Mapping Patterns</h2>
+<h2 id="structural-mapping-patterns">Structural Mapping Patterns</h2>
 <p>Used by Data Mapper (and sometimes Row Data Gateway) to translate between object structure and table structure.</p>
 <p><strong>Identity Field</strong> — stores the database primary key in the domain object. Used to convert between in-memory object references and relational foreign keys.</p>
 <p><strong>Foreign Key Mapping</strong> — maps a single-valued object reference to a foreign key in a table. When saving, write the target object&#39;s ID; when loading, look up via Identity Map or lazy-load.</p>
@@ -397,7 +408,7 @@
 <p><strong>Dependent Mapping</strong> — the owner class performs database mapping for a child class that is never accessed outside the owner&#39;s context. No separate mapper, no Identity Map entry for the child. Use when children are loaded/saved exclusively through the parent (e.g., album tracks). Simplifies the mapping layer at the cost of independent addressability.</p>
 <p><strong>Serialised LOB</strong> — stores an entire cluster of objects as a single BLOB/CLOB in one column (commonly XML). Best for hierarchical structures (org charts, bills of materials) accessed as a unit. Avoid if objects outside the LOB reference objects inside it. Downside: SQL cannot query inside the serialised structure; prefer Embedded Value when SQL queries against the dependent values are needed.</p>
 <hr>
-<h2>Inheritance Mapping</h2>
+<h2 id="inheritance-mapping">Inheritance Mapping</h2>
 <p>SQL has no inheritance. Three strategies, each a trade-off between simplicity and performance:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -429,11 +440,11 @@
 </tbody></table></div>
 <p>Fowler&#39;s default: <strong>Single Table Inheritance</strong> first. Move to others when null columns become a problem or query performance demands it. Strategies can be mixed within a hierarchy — a common split is Single Table for the upper hierarchy (shared fields, easy to refactor) and Concrete Table for leaf subclasses with heavy type-specific data.</p>
 <hr>
-<h2>Metadata Mapping and Repository</h2>
+<h2 id="metadata-mapping-and-repository">Metadata Mapping and Repository</h2>
 <p>Once you have a complete Data Mapper, you can eliminate repetitive mapping code by describing the mapping in metadata (a config file or annotations). A <strong>Query Object</strong> then lets you express queries in terms of domain objects rather than SQL. Stack them and you get a <strong>Repository</strong> that hides the database entirely: callers query the Repository using domain terms; the Repository uses the Query Object and Metadata Mapping to generate SQL.</p>
 <p>See: <a href="../patterns/repository.html">Repository</a></p>
 <hr>
-<h2>Connection Management</h2>
+<h2 id="connection-management">Connection Management</h2>
 <ul>
 <li>Tie connections to transactions: open when a transaction begins, close on commit/rollback.</li>
 <li>Use connection pools; treat pool acquisition as &quot;open&quot; and pool return as &quot;close.&quot;</li>
@@ -441,7 +452,7 @@
 <li>Never rely on garbage collection to close connections.</li>
 </ul>
 <hr>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — Active Record is one of the four business logic patterns; choice of business logic pattern drives choice of O/R mapping strategy</li>
 <li><a href="../patterns/repository.html">Repository</a> — built on Metadata Mapping + Query Object; hides the database from the domain</li>

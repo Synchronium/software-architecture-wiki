@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,18 +316,22 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A CDN is an overlay network of geographically distributed caching servers (reverse proxies) that reduces response time for clients and load on origin servers. Its primary benefit is <strong>the network itself</strong>, not just the cache. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
-<h2>The Underlying Problem: BGP&#39;s Limitations</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-underlying-problem-bgp39s-limitations">The Underlying Problem: BGP&#39;s Limitations</a></li><li><a href="#the-cdn-solution-overlay-network">The CDN Solution: Overlay Network</a></li><li><a href="#client-routing-global-dns-load-balancing">Client Routing: Global DNS Load Balancing</a></li><li><a href="#caching-architecture">Caching Architecture</a></li><li><a href="#dynamic-content-and-ddos-shielding">Dynamic Content and DDoS Shielding</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#well-known-cdns">Well-Known CDNs</a></li><li><a href="#related-pages">Related Pages</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A CDN is an overlay network of geographically distributed caching servers (reverse proxies) that reduces response time for clients and load on origin servers. Its primary benefit is <strong>the network itself</strong>, not just the cache. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
+<h2 id="the-underlying-problem-bgp39s-limitations">The Underlying Problem: BGP&#39;s Limitations</h2>
 <p>The internet&#39;s core routing protocol, BGP, was designed for <strong>correctness</strong> (reliable path discovery), not <strong>performance</strong>. BGP routes primarily on <strong>hop count</strong>, ignoring latency and congestion. This means the path BGP selects between two endpoints is often not the lowest-latency or highest-bandwidth path. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
 <p>Additionally, physical network latency is bounded below by the speed of light: a client on one side of the world talking to an origin on the other will see &gt;100 ms of latency no matter how fast the machines are. This is irreducible without moving computation closer to the client.</p>
-<h2>The CDN Solution: Overlay Network</h2>
+<h2 id="the-cdn-solution-overlay-network">The CDN Solution: Overlay Network</h2>
 <p>A CDN builds an <strong>overlay network</strong> on top of the internet — its own routing layer with different path-selection algorithms:</p>
 <ul>
 <li><strong>Latency/congestion-aware routing</strong>: CDN backbone links are monitored continuously; traffic is routed around congestion and high-latency paths.</li>
 <li><strong>TCP optimizations</strong>: persistent connection pools between CDN servers eliminate per-connection setup overhead; TCP window sizes are tuned for maximum bandwidth.</li>
 <li><strong>Internet Exchange Point (IXP) placement</strong>: CDN servers are co-located at IXPs, where ISPs interconnect. Traffic from origin to client flows almost entirely over CDN-controlled links; only the last mile uses the public internet.</li>
 </ul>
-<h2>Client Routing: Global DNS Load Balancing</h2>
+<h2 id="client-routing-global-dns-load-balancing">Client Routing: Global DNS Load Balancing</h2>
 <p>When a client resolves a CDN URL, the DNS response returns the address of the <strong>closest CDN cluster</strong>, taking into account:</p>
 <ul>
 <li>Client IP geolocation</li>
@@ -328,7 +339,7 @@
 <li>Network congestion toward each cluster</li>
 </ul>
 <p>This is called <strong>global DNS load balancing</strong> — an extension to standard DNS that makes routing decisions based on real-time network state.</p>
-<h2>Caching Architecture</h2>
+<h2 id="caching-architecture">Caching Architecture</h2>
 <p>CDN caching is typically hierarchical:</p>
 <pre><code>Client → Edge cluster (geographically near client)
               ↓ (on miss)
@@ -340,10 +351,10 @@
 <p><strong>Intermediary clusters</strong> exist at fewer locations and cache more of the total content. They absorb misses from multiple edge clusters, reducing origin load significantly.</p>
 <p><strong>Within a cluster</strong>: content is partitioned (sharded) across multiple servers — no single server can hold all content.</p>
 <p>Cache expiry follows the same HTTP semantics as client-side caching: <code>Cache-Control</code>, <code>ETag</code>, <code>If-None-Match</code> (→ <a href="../distributed/caching.html">Caching</a>).</p>
-<h2>Dynamic Content and DDoS Shielding</h2>
+<h2 id="dynamic-content-and-ddos-shielding">Dynamic Content and DDoS Shielding</h2>
 <p>CDNs are not limited to static content. Even for <strong>dynamic content that cannot be cached</strong>, the CDN overlay network reduces latency by routing requests efficiently to the origin.</p>
 <p>In this mode, the CDN acts as a <strong>DDoS shield</strong>: volumetric attack traffic hits the CDN&#39;s distributed edge capacity (spread across hundreds of PoPs) rather than the origin. The CDN absorbs or filters the traffic before it reaches the backend.</p>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -368,21 +379,21 @@
 <td>CDN edge caches may serve stale content up to TTL; combine with URL versioning for correctness</td>
 </tr>
 </tbody></table></div>
-<h2>Well-Known CDNs</h2>
+<h2 id="well-known-cdns">Well-Known CDNs</h2>
 <ul>
 <li><strong>AWS CloudFront</strong> — tightly integrated with AWS origin services</li>
 <li><strong>Akamai</strong> — oldest and most widely deployed; historically dominant for media delivery</li>
 <li><strong>Cloudflare</strong> — strong DDoS mitigation and DNS integration; also functions as a reverse proxy</li>
 </ul>
 <p>(→ <a href="../reference/technology-glossary.html">Technology Glossary</a> for brief entries on each)</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/caching.html">Caching</a> — HTTP caching mechanics that CDN edge servers implement</li>
 <li><a href="../distributed/dns.html">Dns</a> — global DNS load balancing routes clients to the nearest CDN cluster</li>
 <li><a href="../distributed/http.html">Http</a> — CDN benefits from HTTP/2 multiplexing and persistent connections</li>
 <li><a href="../operations/availability.html">Availability</a> — CDN improves availability via geographic redundancy and DDoS absorption</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 15) — overlay network, BGP limitations, global DNS load balancing, IXP placement, caching layers, dynamic content/DDoS shield, cache hit ratio vs. coverage trade-off.</li>
 </ul>

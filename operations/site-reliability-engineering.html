@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,17 +309,21 @@
       <h1>Site Reliability Engineering</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/sre.html">sre</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/devops.html">devops</a></li><li><a class="tag-chip" href="../tags/toil.html">toil</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-devops-conflict">The Dev/Ops Conflict</a></li><li><a href="#sre-vs-devops">SRE vs DevOps</a></li><li><a href="#reliability-as-risk-management">Reliability as Risk Management</a></li><li><a href="#core-tenets">Core Tenets</a></li><li class="toc-sub"><a href="#engineering-focus-toil-cap">Engineering focus (toil cap)</a></li><li class="toc-sub"><a href="#error-budgets">Error budgets</a></li><li class="toc-sub"><a href="#slo-driven-monitoring-and-alerting">SLO-driven monitoring and alerting</a></li><li class="toc-sub"><a href="#blameless-postmortems">Blameless postmortems</a></li><li class="toc-sub"><a href="#capacity-planning">Capacity planning</a></li><li><a href="#responsibilities-of-an-sre-team">Responsibilities of an SRE Team</a></li><li><a href="#applicability-outside-google">Applicability Outside Google</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Site Reliability Engineering (SRE) is the discipline of applying software engineering practices to operations problems. Originating at Google, it is defined by its creator Ben Treynor Sloss as &quot;what happens when you ask a software engineer to design an operations team.&quot; (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1)</p>
 <p>SREs are engineers first: they write the software that makes systems run themselves, rather than manually operating those systems. The goal is automation that eliminates the need for operations, not automation that makes operations faster.</p>
-<h2>The Dev/Ops Conflict</h2>
+<h2 id="the-devops-conflict">The Dev/Ops Conflict</h2>
 <p>Traditional organisations split software engineers (who want to ship features) from operations teams (who want stability). This split creates a structural conflict:</p>
 <ul>
 <li>Dev teams are incentivised to deploy frequently; ops teams are incentivised to prevent change.</li>
@@ -320,14 +331,14 @@
 <li>Conflict manifests as launch gates, friction, &quot;flag flips&quot; to dodge process, and mutual distrust.</li>
 </ul>
 <p>SRE resolves this by replacing the conflict with a shared metric: the <a href="../operations/error-budgets.html">error budget</a>. Both teams aim to spend the error budget on feature velocity; both teams lose when it is exhausted. The structural conflict of incentives disappears because the incentive is now aligned.</p>
-<h2>SRE vs DevOps</h2>
+<h2 id="sre-vs-devops">SRE vs DevOps</h2>
 <p>DevOps (emerged ~2008) and SRE share core principles: close collaboration between development and operations, automation over manual work, treating infrastructure as code. The SRE book describes the relationship as:</p>
 <ul>
 <li>DevOps is a <strong>generalisation</strong> of SRE principles to any organisation and management structure.</li>
 <li>SRE is a <strong>specific implementation</strong> of DevOps with Google&#39;s particular extensions (error budgets, toil cap, SLO-based alerting).</li>
 </ul>
 <p>The critical distinction is that SRE places <strong>reliability as the primary focus</strong>, whereas DevOps is more broadly concerned with delivery speed and collaboration. An organisation can adopt DevOps culture without the specific SRE mechanisms; Google&#39;s SRE practices are not universally transferable.</p>
-<h2>Reliability as Risk Management</h2>
+<h2 id="reliability-as-risk-management">Reliability as Risk Management</h2>
 <p>A central SRE insight is that reliability is not a property to maximise but a point on a risk continuum to choose deliberately. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3)</p>
 <p>Every increment of reliability beyond &quot;reliable enough&quot; has two costs:</p>
 <ol>
@@ -336,8 +347,8 @@
 </ol>
 <p>The right reliability target is the point where users cannot notice further improvement (their experience is dominated by less reliable components — ISP, device, network) and where the business risk is fully mitigated. Exceeding that target is a waste: it stifles feature velocity and increases cost without improving the user experience.</p>
 <p>This framing makes the SLO both a floor (minimum acceptable reliability) and a ceiling (maximum investment-justified reliability): running significantly above the SLO is as problematic as running below it.</p>
-<h2>Core Tenets</h2>
-<h3>Engineering focus (toil cap)</h3>
+<h2 id="core-tenets">Core Tenets</h2>
+<h3 id="engineering-focus-toil-cap">Engineering focus (toil cap)</h3>
 <p>SREs cap operational work at 50% of their time. The rest must be spent on engineering — writing software that eliminates the manual work. If the ops load exceeds 50%, work is redirected back to product development teams. This creates a feedback loop: product teams that build systems requiring excessive operational support absorb the cost of that support.</p>
 <p><strong>Toil defined</strong> (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 5): toil is work tied to running a production service that is manual, repetitive, automatable, tactical, devoid of enduring value, and scales O(n) with service growth. Not all grungy work is toil — a one-time cleanup that permanently improves the service is engineering. Overhead (meetings, goal-setting, HR) is also not toil.</p>
 <p><strong>SRE work taxonomy</strong>:</p>
@@ -349,17 +360,17 @@
 </ul>
 <p><strong>On-call creates a structural toil floor</strong>: a 6-person rotation commits ~33% of time to on-call; an 8-person rotation ~25%. This sets the practical minimum for how low toil can go regardless of automation.</p>
 <p>The ideal state is a service that &quot;basically runs and repairs itself&quot; — automatic, not just automated. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1, 5)</p>
-<h3>Error budgets</h3>
+<h3 id="error-budgets">Error budgets</h3>
 <p>Setting availability targets below 100% creates an explicit budget for risk. Development and SRE teams jointly manage this budget; exhausting it halts feature releases until reliability is restored. (→ <a href="../operations/error-budgets.html">Error Budgets</a>)</p>
-<h3>SLO-driven monitoring and alerting</h3>
+<h3 id="slo-driven-monitoring-and-alerting">SLO-driven monitoring and alerting</h3>
 <p>Monitoring should only alert when user experience is impacted — that is, when an SLO is at risk. Alerts that require human interpretation of whether they matter are flawed by design. (→ <a href="../operations/monitoring.html">Monitoring</a>)</p>
-<h3>Blameless postmortems</h3>
+<h3 id="blameless-postmortems">Blameless postmortems</h3>
 <p>When things go wrong, the goal is to understand systemic causes and improve the system — not to assign personal blame. Blame-based cultures suppress reporting, reduce learning, and leave root causes unaddressed. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 15)</p>
-<h3>Capacity planning</h3>
+<h3 id="capacity-planning">Capacity planning</h3>
 <p>SRE teams own provisioning because availability depends on capacity. Capacity planning accounts for both organic growth (natural adoption) and inorganic growth (feature launches, campaigns). Regular load testing validates that raw resource numbers translate to actual service capacity.</p>
-<h2>Responsibilities of an SRE Team</h2>
+<h2 id="responsibilities-of-an-sre-team">Responsibilities of an SRE Team</h2>
 <p>Per the SRE book, an SRE team is responsible for: availability, latency, performance, efficiency, change management, monitoring, emergency response, and capacity planning.</p>
-<h2>Applicability Outside Google</h2>
+<h2 id="applicability-outside-google">Applicability Outside Google</h2>
 <p>Many SRE practices are directly applicable at smaller scale; some are not:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -400,7 +411,7 @@
 <blockquote>
 <p><strong>Open question:</strong> The SRE model requires strong management support and a culture willing to halt feature releases when error budgets are exhausted. In organisations where shipping velocity is the overriding priority, the error budget mechanism may be adopted in name only. How much of SRE&#39;s value depends on the enforcement of consequences?</p>
 </blockquote>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/error-budgets.html">Error Budgets</a> — the central mechanism aligning dev and ops incentives</li>
 <li><a href="../operations/monitoring.html">Monitoring</a> — SLO-based alerting and burn rate alerting</li>
@@ -411,10 +422,11 @@
 <li><a href="../operations/data-integrity.html">Data Integrity</a> — data integrity as an orthogonal requirement to uptime</li>
 <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — controlled failure injection to validate reliability</li>
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — what burns error budgets</li>
+<li><a href="../comparisons/cost-vs-availability.html">Cost Vs Availability</a> — the cost framing for SLO target selection</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
+        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
       </aside>
     </main>
   </div>

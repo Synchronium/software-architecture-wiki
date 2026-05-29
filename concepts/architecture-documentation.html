@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,13 +316,17 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#what-to-document">What to Document</a></li><li><a href="#notational-conventions">Notational Conventions</a></li><li class="toc-sub"><a href="#c4-model">C4 Model</a></li><li class="toc-sub"><a href="#uml">UML</a></li><li class="toc-sub"><a href="#archimate">ArchiMate</a></li><li class="toc-sub"><a href="#informal-box-and-line-diagrams">Informal box-and-line diagrams</a></li><li class="toc-sub"><a href="#diagrams-as-code">Diagrams-as-code</a></li><li><a href="#adrs-the-documentation-that-stays-current">ADRs (the documentation that stays current)</a></li><li><a href="#documentation-practices">Documentation Practices</a></li><li class="toc-sub"><a href="#documentation-as-code">Documentation as code</a></li><li class="toc-sub"><a href="#just-sufficient">Just sufficient</a></li><li class="toc-sub"><a href="#tracking-decision-context">Tracking decision context</a></li><li class="toc-sub"><a href="#stakeholder-appropriate">Stakeholder-appropriate</a></li><li class="toc-sub"><a href="#diagrams-that-survive">Diagrams that survive</a></li><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Architecture documentation is the set of artefacts — written, diagrammatic, and presentational — that capture an architecture&#39;s <em>intent</em>, <em>structure</em>, and <em>decisions</em> in a form that can be understood by readers who weren&#39;t in the room when the architecture was decided. The defining purpose: enabling future engineers (including the architects&#39; future selves) to maintain, evolve, and govern the system without having to re-derive context from the code.</p>
 <p>Documentation differs from comments and code: comments explain local choices to readers of the code; documentation explains system-level structure to readers of the architecture.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Architecture lives in three places: the code, the architects&#39; heads, and the documentation. The first is authoritative but illegible at scale; the second is fast but mortal; the third is the only one that survives team turnover and scales to multiple readers. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: ADRs serve as documentation that captures &quot;intent, not just structure&quot; — the <em>why</em> that cannot be reconstructed from reading the code (→ <a href="../concepts/adrs.html">Adrs</a>).</p>
 <p>Documentation has known failure modes: it&#39;s expensive to write, it goes stale quickly, and engineers under-invest in it because the readers are future people who don&#39;t yet have a voice in priority discussions. Most architecture documentation traditions are pragmatic compromises against these failure modes — making documentation <em>just sufficient</em>, <em>lightweight</em>, and <em>automatable</em> where possible.</p>
-<h2>What to Document</h2>
+<h2 id="what-to-document">What to Document</h2>
 <p>Documentation purposes differ; one set of artefacts cannot serve all of them.</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -364,8 +375,8 @@
 </tr>
 </tbody></table></div>
 <p>Treating these as the same artefact (the dreaded &quot;architecture document&quot;) is the most common documentation failure. Each has different update cadence, audience, and lifespan.</p>
-<h2>Notational Conventions</h2>
-<h3>C4 Model</h3>
+<h2 id="notational-conventions">Notational Conventions</h2>
+<h3 id="c4-model">C4 Model</h3>
 <p>Simon Brown&#39;s C4 model (Context, Container, Component, Class) is the most widely adopted lightweight architecture notation. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 19: &quot;C4 (Context/Container/Component/Class; Simon Brown; better suited to monolithic than distributed architectures).&quot;</p>
 <p>The four hierarchical levels:</p>
 <ul>
@@ -375,16 +386,16 @@
 <li><strong>Class</strong> — implementation-level (rarely drawn; usually skipped in favour of code)</li>
 </ul>
 <p>C4&#39;s value is its progressive zoom — each diagram answers questions at its level without trying to be comprehensive. Notation is deliberately informal: boxes and arrows with labels. Notable limitation flagged by <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: better suited to monolithic than distributed architectures, because container relationships in heavily-distributed systems become cluttered.</p>
-<h3>UML</h3>
+<h3 id="uml">UML</h3>
 <p>The Unified Modeling Language remains useful for specific diagram types but has fallen into general disuse. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;Class and sequence diagrams still useful; most other types fell into disuse.&quot; Sequence diagrams in particular remain valuable for documenting runtime interactions; class diagrams for non-trivial inheritance hierarchies.</p>
 <p>UML&#39;s failure mode is its complexity: the full standard is too large to learn casually, and most teams use a small idiosyncratic subset. The C4 model is in part a response to UML over-engineering.</p>
-<h3>ArchiMate</h3>
+<h3 id="archimate">ArchiMate</h3>
 <p>The Open Group&#39;s enterprise modelling language. From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;Open-source enterprise modelling language; Open Group standard; deliberately &#39;as small as possible&#39;.&quot; Most useful at the enterprise architecture layer rather than for single-system documentation. Tooling is heavier (Archi, BizzDesign); adoption is concentrated in large enterprises with formal EA functions.</p>
-<h3>Informal box-and-line diagrams</h3>
+<h3 id="informal-box-and-line-diagrams">Informal box-and-line diagrams</h3>
 <p>What most teams actually use. The lack of standard notation is a feature for casual diagrams (low cost to produce, no learning curve) and a bug for diagrams that need to survive (no shared interpretation). Mitigate by adding a brief legend; reserve formal notation for diagrams that will be referenced over months.</p>
-<h3>Diagrams-as-code</h3>
+<h3 id="diagrams-as-code">Diagrams-as-code</h3>
 <p>Mermaid, PlantUML, Structurizr DSL — tools that generate diagrams from text. Trade-off: lower diagram fidelity, but diagrams version-control with the code, render automatically in PR reviews, and avoid the &quot;diagram drifts from the system&quot; failure mode. Increasingly the default for technical-audience documentation.</p>
-<h2>ADRs (the documentation that stays current)</h2>
+<h2 id="adrs-the-documentation-that-stays-current">ADRs (the documentation that stays current)</h2>
 <p>Architecture Decision Records are the single documentation practice that consistently survives in living codebases. See <a href="../concepts/adrs.html">Adrs</a> for the full pattern. Why ADRs work where other documentation fails:</p>
 <ul>
 <li><strong>Append-only.</strong> Decisions are recorded once, superseded but not edited. No staleness because no updates.</li>
@@ -394,18 +405,18 @@
 <li><strong>Searchable history.</strong> Reading the ADRs in order tells the story of how the architecture got to where it is.</li>
 </ul>
 <p>From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>: &quot;The Context section describes the architecture; the Decision section documents the reasoning; the Consequences section covers trade-offs. Together they form architecture documentation that captures the intent, not just the structure.&quot;</p>
-<h2>Documentation Practices</h2>
-<h3>Documentation as code</h3>
+<h2 id="documentation-practices">Documentation Practices</h2>
+<h3 id="documentation-as-code">Documentation as code</h3>
 <p>Store documentation in the repository, treat it like code: PR review, linting, automatic publication, version with the system. From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: the fitness-function approach extends to documentation — automated checks ensure ADRs are present for major changes, diagrams are renderable, links don&#39;t rot.</p>
-<h3>Just sufficient</h3>
+<h3 id="just-sufficient">Just sufficient</h3>
 <p>The &quot;least worst documentation&quot; principle: document what readers genuinely need; don&#39;t document what the code already shows. Code is the authoritative source for <em>what the system does</em>; documentation should focus on <em>why</em> and <em>how to navigate</em>. From <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> on bounded contexts and context maps: high-level strategic documentation is far more durable and useful than low-level structural documentation that the IDE can derive from code.</p>
-<h3>Tracking decision context</h3>
+<h3 id="tracking-decision-context">Tracking decision context</h3>
 <p>The most important documentation property is captured context: which forces were in play, which alternatives were considered, what would invalidate the decision. ADRs nail this; running prose tends not to.</p>
-<h3>Stakeholder-appropriate</h3>
+<h3 id="stakeholder-appropriate">Stakeholder-appropriate</h3>
 <p>From <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 22 on presentations: &quot;Presenters have verbal and visual channels. Bullet-Riddled Corpse anti-pattern overloads one channel.&quot; Documentation for a presentation differs from documentation for archival reading; <strong>infodecks</strong> (slide decks emailed as standalone documents) need comprehensive content, while <strong>presentations</strong> deliberately need only half — the other half is the speaker.</p>
-<h3>Diagrams that survive</h3>
+<h3 id="diagrams-that-survive">Diagrams that survive</h3>
 <p>The diagrams that survive over multiple years tend to share properties: they are at the <em>context</em> or <em>container</em> level (not the component or class level, which churn); they include a legend; they are checked into the repository; they have an owner whose name is on them. Most low-level diagrams are write-once, read-once.</p>
-<h2>Anti-patterns</h2>
+<h2 id="anti-patterns">Anti-patterns</h2>
 <p><strong>The Big Up-Front Architecture Document.</strong> A 50-page document produced before development starts. By month three of development, the document is out of date; by month six, no one references it. Replace with progressive ADRs.</p>
 <p><strong>Comprehensive UML coverage.</strong> Diagrams for every interaction, every class, every state. The maintenance cost grows with the system; staleness sets in within months. Diagram only what readers need to navigate.</p>
 <p><strong>Documentation as bureaucratic compliance.</strong> Architecture documents produced because process requires them, read by no one. The forcing function (audit, gate review) does not produce useful documentation; it produces documents.</p>
@@ -413,7 +424,7 @@
 <p><strong>Cookie-Cutter padding.</strong> Don&#39;t pad slides to fill space — ideas don&#39;t have a fixed word count. Padding obscures the signal.</p>
 <p><strong>Drift between code and diagrams.</strong> A diagram that contradicts the code is worse than no diagram — it actively misleads. Either keep the diagram automated (diagrams-as-code from system state) or accept the staleness and add a &quot;last validated on&quot; note.</p>
 <p><strong>Single-format documentation.</strong> Treating &quot;architecture documentation&quot; as one artefact rather than a portfolio. Different audiences need different artefacts; one document satisfying all of them satisfies none.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -438,7 +449,7 @@
 <td>OpenAPI specifications as a documentation form that doubles as machine-readable contract; documentation that drives tooling (mock servers, client generators, gateway config).</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/adrs.html">Adrs</a> — the most durable documentation practice</li>
 <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills</a> — presentation craft, stakeholder communication</li>
@@ -448,7 +459,7 @@
 <li><a href="../patterns/context-map.html">Context Map</a> — DDD&#39;s most durable strategic documentation artefact</li>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — automated documentation checks</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;ADRs form architecture documentation that captures the intent, not just the structure.&quot; — <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 19</p>
 </blockquote>

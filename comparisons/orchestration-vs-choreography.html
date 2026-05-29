@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html" aria-current="page">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Both patterns coordinate work across multiple services. The choice is one of the most consequential in distributed system design — it affects coupling, debuggability, scalability, and which team owns the workflow.</p>
-<h2>The Core Distinction</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-core-distinction">The Core Distinction</a></li><li><a href="#decision-summary">Decision Summary</a></li><li><a href="#trade-off-analysis">Trade-off Analysis</a></li><li class="toc-sub"><a href="#orchestration">Orchestration</a></li><li class="toc-sub"><a href="#choreography">Choreography</a></li><li><a href="#what-the-sources-disagree-on">What the Sources Disagree On</a></li><li><a href="#workflow-state-in-choreography">Workflow State in Choreography</a></li><li><a href="#the-ddd-refinement-khononov">The DDD Refinement (Khononov)</a></li><li><a href="#summary-recommendation">Summary Recommendation</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Both patterns coordinate work across multiple services. The choice is one of the most consequential in distributed system design — it affects coupling, debuggability, scalability, and which team owns the workflow.</p>
+<h2 id="the-core-distinction">The Core Distinction</h2>
 <p><strong>Orchestration</strong>: a central coordinator (the orchestrator) drives the workflow. It issues commands to participants, receives results, tracks state, and triggers compensations on failure. Participants are passive — they do what they&#39;re told.</p>
 <p><strong>Choreography</strong>: there is no central coordinator. Each service reacts to events from other services and publishes its own events when its local work is done. The workflow emerges from the interactions.</p>
-<h2>Decision Summary</h2>
+<h2 id="decision-summary">Decision Summary</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -342,8 +353,8 @@
 <td>Low coupling between services matters more than debuggability</td>
 </tr>
 </tbody></table></div>
-<h2>Trade-off Analysis</h2>
-<h3>Orchestration</h3>
+<h2 id="trade-off-analysis">Trade-off Analysis</h2>
+<h3 id="orchestration">Orchestration</h3>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>Workflow state is explicit and in one place — easy to answer &quot;where is order #12345 right now?&quot;</li>
@@ -358,7 +369,7 @@
 <li>Every step passes through the orchestrator, adding latency</li>
 </ul>
 <p><strong>God Orchestrator anti-pattern</strong> (Bellemare): the orchestrator sends granular commands to minion services rather than coordinating between bounded contexts. A true orchestrator coordinates between domain services; it doesn&#39;t micromanage their internal operations (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 8).</p>
-<h3>Choreography</h3>
+<h3 id="choreography">Choreography</h3>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>No central bottleneck — each service reacts to events and scales independently</li>
@@ -372,7 +383,7 @@
 <li>Harder to debug — the workflow is implicit in the event interactions, not visible in one place</li>
 <li>Complexity does not decrease with choreography: it increases (→ SATH saga type table)</li>
 </ul>
-<h2>What the Sources Disagree On</h2>
+<h2 id="what-the-sources-disagree-on">What the Sources Disagree On</h2>
 <p><strong>Newman&#39;s team-ownership heuristic</strong> (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 4) is the most actionable single rule: if one team owns the entire workflow, use orchestration — they can reason about the state machine and change it. If multiple teams each own a step, use choreography — no team has full visibility anyway, and each team should own their event handling independently.</p>
 <p><strong>Bellemare</strong> (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 8) leans toward orchestration for complex multi-step workflows and limits choreography to simple 2–3 service transactions with stable event ordering. His reasoning: choreographed compensation is practically unworkable for complex failures.</p>
 <p><strong>SATH&#39;s 8-type taxonomy</strong> (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11–12) reframes the question. Rather than a binary choice, coordination is one of three independent dimensions (communication × consistency × coordination). Choreography consistently adds complexity regardless of the other choices — in the 8-type table, choreographed variants always score higher complexity than their orchestrated equivalents. The recommended patterns (Fairy Tale Saga and Parallel Saga) are both orchestrated.</p>
@@ -380,7 +391,7 @@
 <p><strong>Verdict from SATH</strong>: choreography&#39;s coupling advantages are real, but they come at a complexity cost that is underestimated in most teams&#39; intuitions.</p>
 </blockquote>
 <p><strong>Vitillo</strong> (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13) presents both as straightforward options but notes that orchestrated sagas are easier to implement correctly because state is durable and checkpointed — an orchestrator that crashes and restarts can resume from the last checkpoint. Choreography has no equivalent durability mechanism without additional infrastructure (e.g., the outbox pattern on every participant).</p>
-<h2>Workflow State in Choreography</h2>
+<h2 id="workflow-state-in-choreography">Workflow State in Choreography</h2>
 <p>When choreography is chosen but workflow state visibility is still needed, three approaches exist (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11):</p>
 <ol>
 <li><p><strong>Front controller</strong>: the first service in the choreography owns and tracks overall workflow state. Simple but creates awkward coupling — the first service must know about all downstream participants.</p>
@@ -390,21 +401,21 @@
 <li><p><strong>Stamp coupling</strong>: include the full workflow state in every message. Each service reads it, updates its portion, and passes the updated state forward. Pragmatic when the state is small. Preferred approach when the trade-off is acceptable.</p>
 </li>
 </ol>
-<h2>The DDD Refinement (Khononov)</h2>
+<h2 id="the-ddd-refinement-khononov">The DDD Refinement (Khononov)</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 9) distinguishes two patterns that are often conflated with &quot;orchestration&quot;:</p>
 <p><strong>Saga</strong> (event-driven coordinator): listens to domain events, issues commands to aggregates. No branching logic. Can be stateless (simple event → command mapping) or stateful (event-sourced aggregate with outbox relay). Does <em>not</em> handle compensation — the happy path only.</p>
 <p><strong>Process Manager</strong> (conditional coordinator): a saga with <code>if-else</code> logic. Always stateful, always implemented as an aggregate. Required when the workflow branches based on intermediate results (e.g., &quot;if hotel booking fails, cancel the flight that already succeeded&quot;).</p>
 <blockquote>
 <p>Warning: if you feel compelled to use a saga to coordinate two aggregates that always interact, this usually signals that the aggregate boundary is wrong — they should be one aggregate (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>).</p>
 </blockquote>
-<h2>Summary Recommendation</h2>
+<h2 id="summary-recommendation">Summary Recommendation</h2>
 <p>Default to <strong>orchestration</strong> unless:</p>
 <ul>
 <li>Multiple independent teams own different steps in the workflow, or</li>
 <li>The services are already event-driven and the workflow is simple with no error-path branching</li>
 </ul>
 <p>When using choreography, plan explicitly for how you will answer &quot;what is the current state of this workflow?&quot; before you build — not after.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/saga.html">Saga</a> — full coverage of saga types, trade-offs, and implementation approaches</li>
 <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a> — why 2PC is not the alternative</li>

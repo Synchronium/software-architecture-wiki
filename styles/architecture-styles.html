@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,9 +316,13 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>The eight architecture styles covered in this wiki represent the major structural approaches to organising a software system. Each is a distinct set of trade-offs across the <a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> that matter most for a given problem. Style selection is driven by which characteristics the system needs — not by fashion or familiarity. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-eight-styles">The Eight Styles</a></li><li><a href="#monolith-vs-distributed">Monolith vs Distributed</a></li><li><a href="#technical-vs-domain-partitioning">Technical vs Domain Partitioning</a></li><li><a href="#primary-decision-rule">Primary Decision Rule</a></li><li><a href="#style-evolution-paths">Style Evolution Paths</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>The eight architecture styles covered in this wiki represent the major structural approaches to organising a software system. Each is a distinct set of trade-offs across the <a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> that matter most for a given problem. Style selection is driven by which characteristics the system needs — not by fashion or familiarity. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</p>
 <p>For full ratings across 11 characteristics and a detailed decision guide, see <a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a>.</p>
-<h2>The Eight Styles</h2>
+<h2 id="the-eight-styles">The Eight Styles</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -379,7 +390,7 @@
 <td>Large teams; maximum agility; mature DevOps</td>
 </tr>
 </tbody></table></div>
-<h2>Monolith vs Distributed</h2>
+<h2 id="monolith-vs-distributed">Monolith vs Distributed</h2>
 <p><strong>Monolithic styles</strong> — single deployment unit, single <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>:</p>
 <ul>
 <li><a href="../styles/layered-architecture.html">Layered Architecture</a> — simplest; technical partitioning</li>
@@ -395,17 +406,17 @@
 <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a> — fine-grained; maximum modularity</li>
 </ul>
 <p>Every distributed style pays the <a href="comparisons/architecture-styles-comparison.md">8 Fallacies of Distributed Computing</a> tax — design explicitly for unreliable networks, latency, and partial failures.</p>
-<h2>Technical vs Domain Partitioning</h2>
+<h2 id="technical-vs-domain-partitioning">Technical vs Domain Partitioning</h2>
 <p>The <a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> decision is the most important early structural choice:</p>
 <p><strong>Technical partitioning</strong> groups components by role (presentation, business, persistence). Shared changes cross layers. Examples: layered, pipeline, SOA.</p>
 <p><strong>Domain partitioning</strong> groups components by business capability. Changes are localised to a domain. Examples: microkernel, service-based, event-driven, space-based, microservices.</p>
 <p>Domain partitioning has better agility; technical partitioning has lower initial complexity.</p>
-<h2>Primary Decision Rule</h2>
+<h2 id="primary-decision-rule">Primary Decision Rule</h2>
 <blockquote>
 <p>Ask first: does the system require multiple sets of <a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> for different parts? If yes, a distributed style is required. If no, a monolith is viable and usually preferable.</p>
 </blockquote>
 <p>See the full decision guide in <a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a>.</p>
-<h2>Style Evolution Paths</h2>
+<h2 id="style-evolution-paths">Style Evolution Paths</h2>
 <p>Most systems start simpler and migrate toward higher agility as team and operational maturity grows:</p>
 <ul>
 <li>Layered → Service-Based: split into 4–12 domain services; keep shared DB initially</li>
@@ -415,7 +426,7 @@
 <p>The <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> and strangler fig pattern provide the migration mechanics.</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../styles/layered-architecture.html">Layered Architecture</a></li><li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li><li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li></ul>
+        <ul><li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../styles/layered-architecture.html">Layered Architecture</a></li><li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li><li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li><li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li></ul>
       </aside>
     </main>
   </div>

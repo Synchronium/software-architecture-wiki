@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,17 +309,21 @@
       <h1>Parallel Run</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/migration.html">migration</a></li><li><a class="tag-chip" href="../tags/testing.html">testing</a></li><li><a class="tag-chip" href="../tags/verification.html">verification</a></li><li><a class="tag-chip" href="../tags/deployment.html">deployment</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/canary.html">canary</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#structure">Structure</a></li><li><a href="#key-concepts">Key Concepts</a></li><li><a href="#deployment-terminology">Deployment Terminology</a></li><li><a href="#progressive-delivery-james-governor">Progressive Delivery (James Governor)</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#limitations">Limitations</a></li><li><a href="#related-patterns">Related Patterns</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p><strong>Parallel Run</strong> is a verification technique where both an existing implementation and a new replacement implementation are called simultaneously for the same request. Their results are compared. The old implementation remains the source of truth until the new one is proven; only then is the switchover completed. (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>)</p>
 <p>The pattern is distinct from <a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> (which provides the structural mechanism for coexistence) — parallel run is the <em>verification strategy</em> applied during the coexistence phase.</p>
-<h2>Structure</h2>
+<h2 id="structure">Structure</h2>
 <pre><code>Request →  ┌────────────────────┐
            │  Parallel Router   │
            └──────┬──────┬──────┘
@@ -326,11 +337,11 @@
                   Return OLD result to caller
 </code></pre>
 <p>The old implementation&#39;s result is always returned to the caller — the new implementation&#39;s result is used only for comparison, not served to the user. This makes the pattern safe: bugs in the new implementation cannot affect user experience.</p>
-<h2>Key Concepts</h2>
+<h2 id="key-concepts">Key Concepts</h2>
 <p><strong>Spies</strong>: test-double style wrappers around the new implementation that record its responses without exposing them to callers. The spy allows the comparison logic to inspect the new implementation&#39;s output independently of the control flow that returns the old result.</p>
 <p><strong>GitHub Scientist library</strong>: a library (originally from GitHub&#39;s Ruby codebase, ported to many languages) that operationalises the parallel run pattern (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>). It handles: running both implementations, measuring latency, catching exceptions from the new implementation, comparing results, and publishing mismatch metrics — with the experiment result always determined by the old (&quot;control&quot;) implementation.</p>
 <p><strong>Mismatch rate as the rollout signal</strong>: the percentage of requests where old and new disagree is the primary rollout metric. When the mismatch rate reaches zero across a representative sample, confidence is sufficient to complete the switchover.</p>
-<h2>Deployment Terminology</h2>
+<h2 id="deployment-terminology">Deployment Terminology</h2>
 <p>Newman draws explicit distinctions between deployment, dark launching, canary releasing, and parallel run — terms often conflated in practice (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -353,7 +364,7 @@
 </tr>
 </tbody></table></div>
 <p>A parallel run provides the strongest correctness verification because every request exercises both implementations and the results are compared. A canary release provides the strongest real-world validation because real users see the new implementation&#39;s results.</p>
-<h2>Progressive Delivery (James Governor)</h2>
+<h2 id="progressive-delivery-james-governor">Progressive Delivery (James Governor)</h2>
 <p>Progressive delivery is the umbrella term (coined by James Governor) for the family of techniques — canary releases, feature flags, A/B tests, dark launching — that allow software to be released gradually rather than all-at-once. Parallel run sits within this family as the verification-focused member. See <a href="../patterns/progressive-delivery.html">Progressive Delivery</a> for the full pattern taxonomy and decision guide.</p>
 <p>The progressive delivery model enables:</p>
 <ul>
@@ -361,29 +372,30 @@
 <li>Metrics-gated advancement: only expand to the next cohort when quality metrics are met</li>
 <li>Instant rollback: redirect all traffic back to the old implementation without a code change or deployment</li>
 </ul>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <ul>
 <li>The new implementation&#39;s correctness is difficult to verify with pre-production tests alone (complex business logic, large edge-case space)</li>
 <li>The team needs high confidence before directing production traffic to a new service</li>
 <li>The switchover is irreversible once done (e.g., a database migration that cannot be rolled back), making pre-switchover verification especially valuable</li>
 </ul>
-<h2>Limitations</h2>
+<h2 id="limitations">Limitations</h2>
 <ul>
 <li>Performance overhead: both implementations run for every request</li>
 <li>Not appropriate for write operations with side effects (both implementations would execute the write) — or, if used with writes, the new implementation&#39;s writes must be carefully isolated or idempotent</li>
 <li>Adds operational complexity: the comparison logic and mismatch tracking need to be monitored</li>
 </ul>
-<h2>Related Patterns</h2>
+<h2 id="related-patterns">Related Patterns</h2>
 <ul>
 <li><a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> — provides the structural mechanism for running two implementations side by side</li>
 <li><a href="../patterns/strangler-fig.html">Strangler Fig</a> — the broader extraction pattern; parallel run is a verification tool during the redirect phase</li>
 <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — the umbrella pattern family of which parallel run is the correctness-comparison member</li>
 <li><a href="../concepts/feature-flags.html">Feature Flags</a> — the routing mechanism that determines which result is served</li>
 <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — progressive delivery and parallel run as enabling practices for guided, incremental change</li>
+<li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a> — decision guide for when parallel run is the right migration pattern</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
+        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
       </aside>
     </main>
   </div>

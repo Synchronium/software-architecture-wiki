@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,9 +316,13 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#modularity-drivers">Modularity Drivers</a></li><li><a href="#assessing-decomposability">Assessing Decomposability</a></li><li><a href="#decomposition-approaches">Decomposition Approaches</a></li><li class="toc-sub"><a href="#component-based-decomposition">Component-Based Decomposition</a></li><li class="toc-sub"><a href="#tactical-forking">Tactical Forking</a></li><li><a href="#component-based-decomposition-patterns">Component-Based Decomposition Patterns</a></li><li class="toc-sub"><a href="#1-identify-and-size-components">1. Identify and Size Components</a></li><li class="toc-sub"><a href="#2-gather-common-domain-components">2. Gather Common Domain Components</a></li><li class="toc-sub"><a href="#3-flatten-components">3. Flatten Components</a></li><li class="toc-sub"><a href="#4-determine-component-dependencies">4. Determine Component Dependencies</a></li><li class="toc-sub"><a href="#5-create-component-domains">5. Create Component Domains</a></li><li class="toc-sub"><a href="#6-create-domain-services">6. Create Domain Services</a></li><li><a href="#architecture-stories">Architecture Stories</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Architectural decomposition is the process of breaking apart a monolithic application into separately deployed services. It addresses the <em>how</em> of migration, following the <em>why</em> of <a href="../concepts/architectural-decomposition.html#modularity-drivers">modularity drivers</a>. The key challenge is that decomposition must be done in a controlled, incremental way that minimises risk.</p>
-<h2>Modularity Drivers</h2>
+<h2 id="modularity-drivers">Modularity Drivers</h2>
 <p>Before breaking apart any system, architects need a business justification. SATH identifies five architectural characteristics that translate directly to business drivers (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 3):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -357,7 +368,7 @@
 </blockquote>
 <p>Modularity does not always require a distributed architecture. Maintainability, testability, and deployability can also be improved through monolithic approaches such as the <a href="../styles/modular-monolith.html">Modular Monolith</a> or microkernel — these partition without distributing.</p>
 <p><strong>Important caveat</strong>: as services become finer-grained and communicate more with each other to complete a single business transaction, testability, deployability, scalability, and fault tolerance all <em>degrade</em> — the &quot;big ball of distributed mud&quot; anti-pattern. The benefits of decomposition are only realised when services are genuinely independent.</p>
-<h2>Assessing Decomposability</h2>
+<h2 id="assessing-decomposability">Assessing Decomposability</h2>
 <p>Before choosing a decomposition approach, assess whether the codebase can be decomposed at all. The primary tools are Robert Martin&#39;s coupling metrics (→ <a href="../concepts/modularity.html">Modularity</a>):</p>
 <ul>
 <li><strong>Abstractness (A)</strong>: ratio of abstract types to total types</li>
@@ -367,12 +378,12 @@
 <p>A codebase where many components fall into the <strong>Zone of Pain</strong> (D high, over-concrete and rigid) or <strong>Zone of Uselessness</strong> (D high, over-abstract and irrelevant) signals poor internal structure. If the structure is too degraded to repair incrementally, decomposition may require a rewrite rather than a refactoring.</p>
 <p><strong>Big Ball of Mud Anti-Pattern</strong> (Brian Foote, 1999): a codebase with no internal structure — event handlers wired directly to database calls, no component boundaries. These systems cannot be decomposed using component-based patterns; they require a different approach.</p>
 <p><strong>Elephant Migration Anti-Pattern</strong>: extracting services opportunistically &quot;one bite at a time&quot; without a holistic plan, resulting in an unstructured collection of tightly coupled services — a distributed monolith.</p>
-<h2>Decomposition Approaches</h2>
+<h2 id="decomposition-approaches">Decomposition Approaches</h2>
 <p>Two approaches depending on how structured the existing codebase is (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 4):</p>
-<h3>Component-Based Decomposition</h3>
+<h3 id="component-based-decomposition">Component-Based Decomposition</h3>
 <p>Suited to codebases with observable component structure (namespaces/directories that reflect functional groupings). Applies a sequence of refactoring patterns to prepare components for extraction, then extracts them into domain services.</p>
 <p><strong>Key principle</strong>: build services from components, not individual classes. The stepping-stone strategy: target service-based architecture first (coarse-grained domain services, shared DB), then decide which domains require further granularity into microservices.</p>
-<h3>Tactical Forking</h3>
+<h3 id="tactical-forking">Tactical Forking</h3>
 <p>Named by Fausto De La Torre. Suited to codebases that are big balls of mud with little discernible structure.</p>
 <p><strong>Process</strong>: clone the entire monolith; give each team a copy of the full codebase; teams delete code they don&#39;t need (rather than extracting code they do need). Deletion is easier than extraction in a highly coupled codebase because compilation/testing immediately validates what is safe to remove.</p>
 <p><strong>Trade-offs:</strong></p>
@@ -395,22 +406,22 @@
 <td>Slower; requires significant up-front analysis; codebase must have some observable structure</td>
 </tr>
 </tbody></table></div>
-<h2>Component-Based Decomposition Patterns</h2>
+<h2 id="component-based-decomposition-patterns">Component-Based Decomposition Patterns</h2>
 <p>Six patterns applied sequentially (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 5):</p>
-<h3>1. Identify and Size Components</h3>
+<h3 id="1-identify-and-size-components">1. Identify and Size Components</h3>
 <p>Catalogue all components (leaf-node namespaces containing source files). Calculate total statements per component. Components should fall within 1–2 standard deviations of the mean; statistical outliers are resizing candidates.</p>
 <p><strong>Sizing metric</strong>: total statements (not lines of code or file count — developers write classes and methods differently; statements provide a more objective measure of what a component is doing).</p>
 <p><strong>Fitness function</strong>: trigger in CI/CD to alert when any component exceeds a configured percentage of the total codebase (e.g., &gt;10%) or exceeds N standard deviations from the mean.</p>
-<h3>2. Gather Common Domain Components</h3>
+<h3 id="2-gather-common-domain-components">2. Gather Common Domain Components</h3>
 <p>Identify domain logic (business processing — notification, formatting, validation) that is duplicated across components. Consolidate into a single shared component.</p>
 <p>Distinguish from infrastructure functionality (logging, metrics, security) which is shared by all components and is not a consolidation candidate.</p>
 <p><strong>Important check</strong>: after consolidating, calculate the new afferent coupling level of the consolidated component. If consolidation would dramatically increase coupling (e.g., 12 components now depend on one shared service), reconsider.</p>
 <p><strong>Fitness function</strong>: detect common leaf-node names across namespaces (e.g., multiple <code>.audit</code> namespaces); detect shared source files used across components.</p>
-<h3>3. Flatten Components</h3>
+<h3 id="3-flatten-components">3. Flatten Components</h3>
 <p>Source code must reside only in leaf-node namespaces. A namespace that has been extended (e.g., <code>ss.survey</code> extended by <code>ss.survey.templates</code>) is a <em>root namespace</em> (subdomain), not a component. Source files in root namespaces are <em>orphaned classes</em> — they have no definable component.</p>
 <p><strong>Resolution</strong>: either collapse the sub-namespace into the root (flatten down), or move orphaned classes to new leaf nodes (flatten up). Shared code within a domain can be moved to a <code>.shared</code> or <code>.sharedcode</code> leaf node.</p>
 <p><strong>Fitness function</strong>: alert when source code exists in a non-leaf namespace node.</p>
-<h3>4. Determine Component Dependencies</h3>
+<h3 id="4-determine-component-dependencies">4. Determine Component Dependencies</h3>
 <p>Visualise afferent (CA) and efferent (CE) coupling between components using IDE plugins or JDepend. Answers three feasibility questions:</p>
 <ol>
 <li>Is decomposition feasible at all?</li>
@@ -420,14 +431,14 @@
 <p><strong>Effort sizing analogy</strong>: golf ball → minimal dependencies, straightforward; basketball → high coupling, difficult; airliner → dependency matrix is a web, total rewrite required.</p>
 <p>When a component has very high afferent coupling, consider splitting it: A₁ (the small, widely-needed part) and A₂ (the bulk). This may reduce coupling significantly.</p>
 <p><strong>Fitness function (ArchUnit example)</strong>: restrict specific component-to-component dependencies to prevent re-coupling during migration.</p>
-<h3>5. Create Component Domains</h3>
+<h3 id="5-create-component-domains">5. Create Component Domains</h3>
 <p>Group components into logical domains (e.g., Ticketing, Customer, Reporting, Admin, Shared). Domains are manifested through namespace prefixes. Collaborate with product owners to validate groupings.</p>
 <p>After refactoring, every component&#39;s namespace should start with its domain prefix. This becomes the structural basis for the services that will be extracted.</p>
 <p><strong>Fitness function (ArchUnit example)</strong>: restrict namespaces within a domain service to those matching the domain prefix.</p>
-<h3>6. Create Domain Services</h3>
+<h3 id="6-create-domain-services">6. Create Domain Services</h3>
 <p>Extract domain component groups into separately deployed services — the result is a service-based architecture. This is the migration target (a stepping-stone; further granularity to microservices is addressed in Ch 7 via <a href="../concepts/service-granularity.html">Service Granularity</a>).</p>
 <p><strong>Timing advice</strong>: do not begin extracting services until all domains have been identified and refactored. Premature extraction leads to components needing to be moved between already-deployed services.</p>
-<h2>Architecture Stories</h2>
+<h2 id="architecture-stories">Architecture Stories</h2>
 <p>An <em>architecture story</em> is distinct from a user story and a technical debt story:</p>
 <ul>
 <li><strong>User story</strong>: a feature to be implemented for an end user</li>
@@ -435,7 +446,7 @@
 <li><strong>Architecture story</strong>: code refactoring that impacts the structural aspect of the application and satisfies a business driver (e.g., &quot;As an architect, I need to decouple the payment service to support better extensibility for adding additional payment types&quot;)</li>
 </ul>
 <p>Architecture stories are used throughout the decomposition process to assign structural refactoring to developers without conflating it with feature work or cleanup.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -456,7 +467,7 @@
 <td>Covers the strangler fig pattern and evolutionary migration; see <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/modularity.html">Modularity</a> — coupling metrics used to assess decomposition feasibility</li>
 <li><a href="../concepts/service-granularity.html">Service Granularity</a> — what happens after decomposition: how fine-grained should services be?</li>

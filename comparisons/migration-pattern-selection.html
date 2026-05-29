@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Decision tree: where's the seam, is correctness the dominant risk, granularity, duration, parallel-run cost; pattern composition (service extraction,…">
+  <meta property="og:title" content="Migration Pattern Selection — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Decision tree: where's the seam, is correctness the dominant risk, granularity, duration, parallel-run cost; pattern composition (service extraction,…">
+  <title>Migration Pattern Selection — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html" aria-current="page">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Migration Pattern Selection</nav></div>
+      <h1>Migration Pattern Selection</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/migration.html">migration</a></li><li><a class="tag-chip" href="../tags/refactoring.html">refactoring</a></li><li><a class="tag-chip" href="../tags/decision-guide.html">decision-guide</a></li><li><a class="tag-chip" href="../tags/strangler-fig.html">strangler-fig</a></li><li><a class="tag-chip" href="../tags/branch-by-abstraction.html">branch-by-abstraction</a></li><li><a class="tag-chip" href="../tags/parallel-run.html">parallel-run</a></li><li><a class="tag-chip" href="../tags/feature-flags.html">feature-flags</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-this-page">Why This Page</a></li><li><a href="#the-selection-decision-tree">The Selection Decision Tree</a></li><li class="toc-sub"><a href="#q1-where-is-the-seam">Q1: Where is the seam?</a></li><li class="toc-sub"><a href="#q2-is-correctness-the-dominant-risk">Q2: Is correctness the dominant risk?</a></li><li class="toc-sub"><a href="#q3-how-fine-grained-does-the-rollout-need-to-be">Q3: How fine-grained does the rollout need to be?</a></li><li class="toc-sub"><a href="#q4-how-long-will-old-and-new-coexist">Q4: How long will old and new coexist?</a></li><li class="toc-sub"><a href="#q5-can-you-afford-to-run-both-implementations">Q5: Can you afford to run both implementations?</a></li><li><a href="#database-decomposition-decision">Database Decomposition Decision</a></li><li><a href="#composition-how-patterns-combine">Composition: How Patterns Combine</a></li><li class="toc-sub"><a href="#service-extraction">Service extraction</a></li><li class="toc-sub"><a href="#embedded-capability-extraction">Embedded capability extraction</a></li><li class="toc-sub"><a href="#database-split">Database split</a></li><li class="toc-sub"><a href="#platform-framework-migration-eg-framework-upgrade-runtime-change">Platform / framework migration (e.g., framework upgrade, runtime change)</a></li><li><a href="#anti-patterns">Anti-Patterns</a></li><li><a href="#prerequisites-for-safe-migration">Prerequisites for Safe Migration</a></li><li><a href="#risk-management-during-migration">Risk Management During Migration</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Five primary migration patterns.</strong> Strangler Fig (external seam), Branch by Abstraction (embedded capability with no seam), Parallel Run (correctness verification), Feature Flag (application-layer routing), Progressive Delivery (staged rollout). Each fits a different combination of seam availability, risk tolerance, and verification need.</li>
+<li><strong>Big-bang rewrites have a high failure rate.</strong> The characteristic outcome is two systems in production simultaneously, both half-maintained. Migration must be incremental, with each step independently deployable and reversible.</li>
+<li><strong>Pattern selection follows a decision tree.</strong> Can you intercept at an external seam? → Strangler. Is the capability deeply embedded? → Branch by Abstraction. Is correctness the dominant risk? → Parallel Run. Need per-user control of rollout? → Feature Flag. All of the above usually compose.</li>
+<li><strong>Database decomposition is the hard part.</strong> Service migration patterns are well-understood; data migration is where most projects get stuck. Newman&#39;s ~12 decomposition patterns (database view, wrapping service, tracer write, synchronise-in-application) are the toolkit.</li>
+<li><strong>Deployment ≠ release is the load-bearing principle.</strong> Code reaches production before users see it. Feature flags and routing make this real; without it, every deployment is a release and every release is binary.</li>
+<li><strong>Rollback is a feature, not a defeat.</strong> SRE&#39;s &quot;roll back first, diagnose second&quot; applies to migrations as much as releases. A migration without a rollback path is a one-way door — usually wrong.</li>
+</ul>
+<h2 id="why-this-page">Why This Page</h2>
+<p>The individual patterns (<a href="../patterns/strangler-fig.html">Strangler Fig</a>, <a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a>, <a href="../patterns/parallel-run.html">Parallel Run</a>, <a href="../concepts/feature-flags.html">Feature Flags</a>, <a href="../patterns/progressive-delivery.html">Progressive Delivery</a>) each have deep treatment. This page is the <em>selection</em> question: given a specific migration, which patterns apply, how do they compose, and what does the sequence look like?</p>
+<h2 id="the-selection-decision-tree">The Selection Decision Tree</h2>
+<h3 id="q1-where-is-the-seam">Q1: Where is the seam?</h3>
+<p>A seam is a place where you can intercept calls without modifying the called code. Seams determine which patterns are available.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Seam type</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP, message queue, file transfer</td>
+<td><a href="../patterns/strangler-fig.html">Strangler Fig</a> — intercept and redirect at the seam</td>
+</tr>
+<tr>
+<td>Function call within a process</td>
+<td><a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> — introduce an abstraction at the call site</td>
+</tr>
+<tr>
+<td>Database read</td>
+<td>Read replica, CQRS, CDC-driven projection (<a href="../streams/change-data-capture.html">Change Data Capture</a>)</td>
+</tr>
+<tr>
+<td>Database write</td>
+<td>Dual-write via app code, outbox + CDC, or tracer-write (Newman)</td>
+</tr>
+<tr>
+<td>UI route</td>
+<td>UI composition (page, widget, micro-frontend)</td>
+</tr>
+<tr>
+<td>Configuration / feature decision</td>
+<td><a href="../concepts/feature-flags.html">Feature Flags</a></td>
+</tr>
+</tbody></table></div>
+<p><strong>If no seam exists</strong>, create one first. Often this means introducing an abstraction layer (Branch by Abstraction&#39;s first step) or routing layer (a proxy, gateway, or service mesh). Migrating without a seam means modifying every caller atomically — the antipattern.</p>
+<h3 id="q2-is-correctness-the-dominant-risk">Q2: Is correctness the dominant risk?</h3>
+<p>If you can deploy the new implementation but aren&#39;t sure it produces the right answers:</p>
+<ul>
+<li><a href="../patterns/parallel-run.html">Parallel Run</a> — run both implementations on every request; return the old result; compare the new result out-of-band. GitHub Scientist is the canonical implementation.</li>
+<li>Best for: refactors of complex business logic, platform migrations (libgit2 replacing shell-script git), algorithm changes.</li>
+<li>Not appropriate for: write operations with side effects (both implementations would execute the write). Either isolate the new path&#39;s writes or skip parallel run for that path.</li>
+</ul>
+<h3 id="q3-how-fine-grained-does-the-rollout-need-to-be">Q3: How fine-grained does the rollout need to be?</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Granularity</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All-or-nothing instant cutover</td>
+<td>Blue-green deployment</td>
+</tr>
+<tr>
+<td>Fraction of traffic</td>
+<td>Canary release</td>
+</tr>
+<tr>
+<td>Per-user / per-cohort</td>
+<td><a href="../concepts/feature-flags.html">Feature Flags</a></td>
+</tr>
+<tr>
+<td>Per-region</td>
+<td>Ring deployment (Microsoft model)</td>
+</tr>
+<tr>
+<td>Compare both versions per request</td>
+<td><a href="../patterns/parallel-run.html">Parallel Run</a></td>
+</tr>
+<tr>
+<td>Send traffic to new, discard result</td>
+<td>Dark launch / shadow traffic</td>
+</tr>
+</tbody></table></div>
+<p>These are all variants of <a href="../patterns/progressive-delivery.html">Progressive Delivery</a>. Combine them when needed: deploy via canary (infrastructure-level), gate by feature flag (application-layer), verify correctness with parallel run.</p>
+<h3 id="q4-how-long-will-old-and-new-coexist">Q4: How long will old and new coexist?</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Duration</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hours (release of one feature)</td>
+<td>Feature flag, removed after rollout</td>
+</tr>
+<tr>
+<td>Days (canary period)</td>
+<td>Canary + feature flag</td>
+</tr>
+<tr>
+<td>Weeks (correctness verification)</td>
+<td><a href="../patterns/parallel-run.html">Parallel Run</a></td>
+</tr>
+<tr>
+<td>Months (gradual extraction)</td>
+<td><a href="../patterns/strangler-fig.html">Strangler Fig</a></td>
+</tr>
+<tr>
+<td>Years (long-lived migration)</td>
+<td><a href="../patterns/strangler-fig.html">Strangler Fig</a> + <a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> + organised technical debt</td>
+</tr>
+</tbody></table></div>
+<p>Long-lived coexistence is where most projects accumulate debt. Be explicit about the end state and the deprecation date; treat the migration as a finite project, not an ongoing condition.</p>
+<h3 id="q5-can-you-afford-to-run-both-implementations">Q5: Can you afford to run both implementations?</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Cost / risk</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cheap (both implementations are stateless, idempotent reads)</td>
+<td><a href="../patterns/parallel-run.html">Parallel Run</a></td>
+</tr>
+<tr>
+<td>Expensive (write operations with real side effects)</td>
+<td>Canary, not parallel run</td>
+</tr>
+<tr>
+<td>Free at infrastructure level (mesh-based traffic mirroring)</td>
+<td>Dark launch</td>
+</tr>
+<tr>
+<td>Per-user toggle is the only feasible split</td>
+<td><a href="../concepts/feature-flags.html">Feature Flags</a></td>
+</tr>
+<tr>
+<td>Performance overhead matters</td>
+<td>Avoid parallel run; use canary with metric comparison</td>
+</tr>
+</tbody></table></div>
+<h2 id="database-decomposition-decision">Database Decomposition Decision</h2>
+<p>The hardest migrations involve splitting a shared database. Newman&#39;s taxonomy of ~12 database decomposition patterns (→ <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Database view</strong></td>
+<td>Read-only access pattern; expose a view as an interim API. Cheap to start.</td>
+</tr>
+<tr>
+<td><strong>Wrapping service</strong></td>
+<td>A service in front of the legacy DB owns the access pattern; other services call it.</td>
+</tr>
+<tr>
+<td><strong>Tracer write</strong></td>
+<td>Dual-write to both old and new schema; gradually migrate readers; eventually drop the old.</td>
+</tr>
+<tr>
+<td><strong>Synchronise in application</strong></td>
+<td>Application code keeps two stores in sync during transition. Risky; use briefly.</td>
+</tr>
+<tr>
+<td><strong>Split the database</strong></td>
+<td>Hard cutover for tables clearly owned by one service. Use schema migrations.</td>
+</tr>
+<tr>
+<td><strong>Move the foreign key relationship into code</strong></td>
+<td>Drop DB-level FK; enforce in application. Often a prerequisite to extracting a service.</td>
+</tr>
+<tr>
+<td><strong>Static reference data</strong></td>
+<td>Replicate to each consuming service; it doesn&#39;t change.</td>
+</tr>
+<tr>
+<td><strong>Repository per bounded context</strong></td>
+<td>One service per BC; multiple repos in one DB before extraction.</td>
+</tr>
+<tr>
+<td><strong>Change Data Capture</strong></td>
+<td>Stream changes from the source of truth to derived stores. <a href="../streams/change-data-capture.html">Change Data Capture</a>.</td>
+</tr>
+<tr>
+<td><strong>Outbox pattern</strong></td>
+<td>Application writes business state + outbox event atomically; CDC propagates events. <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Avoid 2PC and distributed transactions.</strong> Newman: &quot;just say no&quot; to 2PC during migration. It creates blocking failure modes that turn migration setbacks into outages. Use <a href="../patterns/saga.html">Saga</a> or eventual consistency instead.</p>
+<h2 id="composition-how-patterns-combine">Composition: How Patterns Combine</h2>
+<p>Real migrations rarely use just one pattern. The common compositions:</p>
+<h3 id="service-extraction">Service extraction</h3>
+<ol>
+<li>Identify external seam (API call, message receiver).</li>
+<li>Build new service with the same interface (interim parity).</li>
+<li><a href="../patterns/strangler-fig.html">Strangler Fig</a>: route through a proxy; start with 1% of traffic.</li>
+<li><a href="../concepts/feature-flags.html">Feature Flags</a> gate the routing for emergency rollback.</li>
+<li>Increment traffic share; monitor with <a href="../operations/monitoring.html">Monitoring</a>.</li>
+<li>When at 100%, decommission the old path. Remove the proxy. Remove the flag.</li>
+</ol>
+<h3 id="embedded-capability-extraction">Embedded capability extraction</h3>
+<ol>
+<li>Identify the embedded capability (e.g., billing logic inside a monolithic service).</li>
+<li><a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a>: introduce an interface; original implementation behind it.</li>
+<li>Build new implementation behind the same interface.</li>
+<li>Toggle via <a href="../concepts/feature-flags.html">Feature Flags</a>; route fraction of requests to new implementation.</li>
+<li>(Optional) <a href="../patterns/parallel-run.html">Parallel Run</a> to verify correctness if business-critical.</li>
+<li>When confident, remove old implementation. Optionally extract to its own service.</li>
+</ol>
+<h3 id="database-split">Database split</h3>
+<ol>
+<li>Identify clear data ownership boundaries (per <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>).</li>
+<li>Add <a href="../streams/change-data-capture.html">Change Data Capture</a> from the source of truth.</li>
+<li>New services build their own read models from CDC stream.</li>
+<li>Switch reads to new services (gradual, <a href="../patterns/progressive-delivery.html">Progressive Delivery</a>).</li>
+<li>Migrate writes: tracer write to both old and new; verify both stay in sync.</li>
+<li>Switch writes to new; old becomes read-only.</li>
+<li>Remove old code paths; eventually drop old tables.</li>
+</ol>
+<h3 id="platform-framework-migration-eg-framework-upgrade-runtime-change">Platform / framework migration (e.g., framework upgrade, runtime change)</h3>
+<ol>
+<li>New code runs in parallel runtime/framework.</li>
+<li><a href="../patterns/parallel-run.html">Parallel Run</a> every request through both; compare outputs out-of-band (GitHub Scientist).</li>
+<li>After N days with zero mismatches, switch traffic to new path.</li>
+<li>Old path becomes the comparator for new bugs; eventually remove.</li>
+</ol>
+<h2 id="anti-patterns">Anti-Patterns</h2>
+<p><strong>Big-bang rewrite.</strong> Months of development; new system replaces old in one event. Almost always produces two systems in production both half-maintained. The default failure mode of ambitious migrations.</p>
+<p><strong>No rollback path.</strong> Migration steps that can&#39;t be reversed turn every setback into an outage. Always design rollback before designing the migration step.</p>
+<p><strong>Lock-step deploys of consumer and producer.</strong> &quot;We&#39;ll deploy both at the same time&quot; defeats independent deployability. The whole point of these patterns is <em>not</em> to coordinate the deploy.</p>
+<p><strong>Schema changes that break old code.</strong> A breaking migration can&#39;t be canaried — old code can&#39;t read new schema. Use expand/contract (<a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>) so both versions work during the rollout window.</p>
+<p><strong>Permanent feature flags.</strong> A &quot;temporary&quot; flag added for a 2-week rollout, still in the code three years later, with no owner. See <a href="../concepts/feature-flags.html">Feature Flags</a> for lifecycle discipline. Every flag has an owner and a removal date.</p>
+<p><strong>Parallel run for write operations without isolation.</strong> Both implementations execute the write; user sees the action twice or in conflicting forms. Either isolate the new path&#39;s writes (separate DB, dry-run mode) or skip parallel run for writes.</p>
+<p><strong>Strangler with no end date.</strong> The proxy and routing layer become permanent infrastructure. The migration is &quot;in progress&quot; forever. Set an explicit end date; treat residual old paths as bugs to fix.</p>
+<p><strong>Dual writes without atomicity.</strong> Application-level dual write to two stores without transaction guarantee. One write succeeds, other fails, divergence. Use <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> + <a href="../streams/change-data-capture.html">Change Data Capture</a> instead.</p>
+<p><strong>Feature flag as kill switch only.</strong> Flag exists for rollback but never used during normal operations. Defeats progressive rollout. Use the flag during the rollout, not just at the cliff.</p>
+<h2 id="prerequisites-for-safe-migration">Prerequisites for Safe Migration</h2>
+<p>Migration patterns assume capabilities that must exist before the migration starts.</p>
+<ul>
+<li><strong><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></strong> — automated deploys, fitness functions as gates. Manual deploys make incremental migration prohibitively expensive.</li>
+<li><strong><a href="../operations/monitoring.html">Monitoring</a></strong> — percentile-based SLIs to detect when the new path is worse than the old. Without comparable observability, canary decisions are guesswork.</li>
+<li><strong><a href="../operations/observability.html">Observability</a></strong> — distributed tracing to verify requests are going where they should and finishing correctly. Especially during dual-write or parallel run.</li>
+<li><strong><a href="../concepts/feature-flags.html">Feature Flags</a></strong> — application-layer routing for instant rollback without redeployment.</li>
+<li><strong><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></strong> — expand/contract discipline so schema changes survive partial rollout.</li>
+<li><strong><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> understanding</strong> — knowing which components are independently deployable. Coupled components can&#39;t be migrated independently.</li>
+</ul>
+<p>If these aren&#39;t in place, the migration&#39;s first sprint is building them.</p>
+<h2 id="risk-management-during-migration">Risk Management During Migration</h2>
+<p>Migrations are inherently risky — two systems in transition, possible inconsistencies, possible regressions. The discipline:</p>
+<p><strong><a href="../operations/error-budgets.html">Error Budgets</a></strong> — migrations spend the error budget. If the budget is near exhaustion, pause migration work until reliability recovers. Aggressive migration during budget exhaustion is how migrations cause outages.</p>
+<p><strong><a href="../operations/chaos-engineering.html">Chaos Engineering</a></strong> — verify the migration doesn&#39;t introduce new failure modes. Inject failures during the migration period; the dual-running phase often surfaces new bugs.</p>
+<p><strong><a href="../concepts/adrs.html">Adrs</a></strong> — document the migration decision and the rollback plan. Reviewers ask &quot;how do we undo this?&quot; — and the answer should be in the ADR, not lost in Slack.</p>
+<p><strong>Migration as a fitness function</strong> — automated checks that the migration is making progress. Tracer-write divergence rate, traffic split percentage, deprecated-path call count. Surface these as dashboards.</p>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
+<td>Canonical treatment of migration patterns. Strangler fig (HTTP, FTP, message variants), branch by abstraction, parallel run, verify variant, ~12 database decomposition patterns, dual-write taxonomy. The discipline of incremental change.</td>
+</tr>
+<tr>
+<td><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></td>
+<td>Feature toggles as the decoupling mechanism that makes evolutionary change safe; deployment pipelines as the substrate; toggles as technical debt with a use-by date.</td>
+</tr>
+<tr>
+<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
+<td>API-level migration: traffic splitting at the gateway, versioned routing, parallel run for API migration, lifecycle management.</td>
+</tr>
+<tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>Stability patterns during migration; the economic case for zero-downtime deployment; &quot;design for production&quot; applied to migrations.</td>
+</tr>
+</tbody></table></div>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../patterns/strangler-fig.html">Strangler Fig</a> — external-seam migration</li>
+<li><a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> — internal-seam migration</li>
+<li><a href="../patterns/parallel-run.html">Parallel Run</a> — correctness verification during migration</li>
+<li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — staged rollout patterns</li>
+<li><a href="../concepts/feature-flags.html">Feature Flags</a> — application-layer routing</li>
+<li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — the discipline migration patterns serve</li>
+<li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — expand/contract and the database decomposition patterns</li>
+<li><a href="../streams/change-data-capture.html">Change Data Capture</a> — data-tier migration mechanism</li>
+<li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — atomic write + event publish during dual-write phases</li>
+<li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the automation substrate</li>
+<li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — what can be migrated independently</li>
+<li><a href="../operations/error-budgets.html">Error Budgets</a> — gating migration aggressiveness on reliability</li>
+<li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy</a> — how far to decompose (related, broader decision)</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

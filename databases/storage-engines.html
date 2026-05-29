@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,8 +316,12 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A storage engine determines how a database stores data on disk and how it retrieves it. The design choices are driven by fundamental physical constraints: sequential disk I/O is orders of magnitude faster than random I/O; memory is orders of magnitude faster than disk; SSDs close the gap for reads but not for writes. Understanding these constraints explains why different engines make different trade-offs.</p>
-<h2>Hash Indexes</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#hash-indexes">Hash Indexes</a></li><li><a href="#sstables-and-lsm-trees">SSTables and LSM-Trees</a></li><li><a href="#b-trees">B-Trees</a></li><li><a href="#in-memory-databases">In-Memory Databases</a></li><li><a href="#lsm-tree-vs-b-tree-comparison">LSM-Tree vs B-Tree Comparison</a></li><li><a href="#oltp-vs-olap">OLTP vs OLAP</a></li><li><a href="#column-oriented-storage">Column-Oriented Storage</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A storage engine determines how a database stores data on disk and how it retrieves it. The design choices are driven by fundamental physical constraints: sequential disk I/O is orders of magnitude faster than random I/O; memory is orders of magnitude faster than disk; SSDs close the gap for reads but not for writes. Understanding these constraints explains why different engines make different trade-offs.</p>
+<h2 id="hash-indexes">Hash Indexes</h2>
 <p>The simplest possible index: an in-memory hash map from key to byte offset in an append-only log file.</p>
 <p><strong>Writes</strong>: append the new key-value pair to the end of the file; update the in-memory map.
 <strong>Reads</strong>: look up the byte offset in the hash map, then seek to that position in the file.</p>
@@ -322,7 +333,7 @@
 </ul>
 <p><strong>Crash recovery</strong>: snapshot hash maps periodically to disk; replay the log to reconstruct since last snapshot. <strong>Tombstones</strong>: deleted keys are appended as a special deletion record; compaction skips tombstoned keys.</p>
 <p>Used in: Bitcask (Riak&#39;s default storage engine).</p>
-<h2>SSTables and LSM-Trees</h2>
+<h2 id="sstables-and-lsm-trees">SSTables and LSM-Trees</h2>
 <p><strong>SSTables</strong> (Sorted String Tables) impose a key constraint on log segments: keys within each segment must be sorted. This one change unlocks significant improvements.</p>
 <p><strong>LSM-Trees</strong> (Log-Structured Merge-Trees) build on SSTables with a write-optimised architecture:</p>
 <ol>
@@ -343,7 +354,7 @@
 <li>Write amplification: a single logical write may result in multiple physical writes (original + compaction rewrites).</li>
 </ul>
 <p><strong>Used in</strong>: LevelDB, RocksDB, Cassandra, HBase, Lucene (for term dictionaries).</p>
-<h2>B-Trees</h2>
+<h2 id="b-trees">B-Trees</h2>
 <p>B-Trees are the dominant structure in relational databases. They store data in <strong>fixed-size pages</strong> (typically 4KB), organised as a balanced tree:</p>
 <ul>
 <li><strong>Leaf pages</strong> hold key-value pairs directly (or pointers to values).</li>
@@ -362,7 +373,7 @@
 <li>More fragmentation and wasted space than LSM-Trees.</li>
 </ul>
 <p><strong>Used in</strong>: PostgreSQL, MySQL (InnoDB), Oracle, SQL Server — essentially all relational databases.</p>
-<h2>In-Memory Databases</h2>
+<h2 id="in-memory-databases">In-Memory Databases</h2>
 <p>Disk&#39;s awkwardness is not just speed — it&#39;s the overhead of encoding in-memory data structures into a disk-compatible form. As RAM becomes cheaper and datasets remain small enough to fit in memory, in-memory databases become viable.</p>
 <p><strong>Durability strategies</strong> for in-memory databases:</p>
 <ul>
@@ -382,7 +393,7 @@
 </ul>
 <p><strong>Additional capability</strong>: in-memory databases can support data models impossible with disk-based engines. Redis offers priority queues, sets, sorted sets — simple to implement because all data is in RAM and there are no disk layout constraints.</p>
 <p><strong>Anti-caching</strong>: extends in-memory databases beyond available memory by evicting LRU records to disk and reloading on access. Works at record granularity (unlike OS virtual memory which evicts whole pages). Requires indexes to still fit entirely in memory.</p>
-<h2>LSM-Tree vs B-Tree Comparison</h2>
+<h2 id="lsm-tree-vs-b-tree-comparison">LSM-Tree vs B-Tree Comparison</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -428,7 +439,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Rule of thumb</strong>: LSM-Trees are better for write-heavy workloads; B-Trees are better for read-heavy workloads with mixed operations. High write amplification in LSM-Trees can exceed B-Tree costs under some compaction strategies — benchmarking under realistic workloads is essential.</p>
-<h2>OLTP vs OLAP</h2>
+<h2 id="oltp-vs-olap">OLTP vs OLAP</h2>
 <p>Storage engine design diverges sharply based on the access pattern:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -465,7 +476,7 @@
 </tr>
 </tbody></table></div>
 <p>OLAP workloads are typically served from a <strong>data warehouse</strong>: a separate read-optimised copy of operational data, loaded via ETL. Star schema (fact table + dimension tables) or snowflake schema are common data warehouse layouts.</p>
-<h2>Column-Oriented Storage</h2>
+<h2 id="column-oriented-storage">Column-Oriented Storage</h2>
 <p>Row-oriented storage stores all values for a row together — good for OLTP (retrieve one row at a time). Column-oriented storage stores all values for a column together — good for OLAP (aggregate over a few columns across many rows).</p>
 <p><strong>Benefits</strong>:</p>
 <ul>
@@ -476,7 +487,7 @@
 <p><strong>Sort order</strong>: rows in a column store can be sorted by a chosen key column. The first sort column compresses best (long runs of repeated values). Multiple sort orders can be maintained as separate <strong>column families</strong> or <strong>projections</strong> — different queries use the most beneficial sort order.</p>
 <p><strong>Materialized aggregates</strong>: precompute common aggregations (COUNT, SUM, AVG) and cache as a <strong>data cube</strong> (OLAP cube). Extremely fast for queries that fit the cube dimensions; inflexible for other queries.</p>
 <p><strong>Used in</strong>: Redshift, BigQuery, Snowflake, Vertica, Parquet (file format), ORC.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -493,7 +504,7 @@
 <td>Treats storage as background context; focuses on replication and consistency properties rather than engine internals</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../databases/transactions.html">Transactions</a> — isolation and crash recovery are implemented by the storage engine</li>
 <li><a href="../databases/data-models.html">Data Models</a> — data model determines what the storage engine must store</li>

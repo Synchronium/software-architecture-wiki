@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,16 +316,20 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>The four key metrics (from <em>Accelerate</em>, Forsgren, Humble &amp; Kim; validated by DORA — DevOps Research and Assessment) are the standard framework for measuring software delivery performance. They are process fitness functions (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>) that assess an architecture&#39;s deployability, testability, and overall health as a delivery system.</p>
-<h2>Origin and Empirical Basis</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#origin-and-empirical-basis">Origin and Empirical Basis</a></li><li><a href="#the-four-metrics">The Four Metrics</a></li><li class="toc-sub"><a href="#throughput-metrics">Throughput Metrics</a></li><li class="toc-sub"><a href="#stability-metrics">Stability Metrics</a></li><li><a href="#why-track-all-four-together">Why Track All Four Together</a></li><li><a href="#instrumentation">Instrumentation</a></li><li><a href="#minimal-viable-dashboard-mvd">Minimal Viable Dashboard (MVD)</a></li><li><a href="#how-metrics-drive-architectural-change">How Metrics Drive Architectural Change</a></li><li><a href="#relationship-to-fitness-functions">Relationship to Fitness Functions</a></li><li><a href="#complementary-metrics-rosa-sam-ch-6">Complementary Metrics (Rosa, SAM ch. 6)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>The four key metrics (from <em>Accelerate</em>, Forsgren, Humble &amp; Kim; validated by DORA — DevOps Research and Assessment) are the standard framework for measuring software delivery performance. They are process fitness functions (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>) that assess an architecture&#39;s deployability, testability, and overall health as a delivery system.</p>
+<h2 id="origin-and-empirical-basis">Origin and Empirical Basis</h2>
 <p>Defined and validated by Forsgren, Humble, and Kim over four years of research (2014–2017) in the State of DevOps Report programme (→ <a href="../sources/accelerate.html">Accelerate</a>). 23,000+ survey responses; 2,000+ organisations across industries (regulated and unregulated), sizes (startup to enterprise), and technology stacks (mainframe to greenfield). Cluster analysis across all four years consistently found three distinct performance clusters (high, medium, low) — statistically significantly different across all four dimensions. This is not anecdote; it is one of the most rigorously constructed empirical studies in the field.</p>
 <p><strong>The foundational finding:</strong> high performers are better on <em>all four metrics simultaneously</em>. Speed and stability are positively correlated, not in tension. This directly refutes the bimodal IT hypothesis and much industry dogma. (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 2)</p>
 <p><strong>Lean conceptual basis:</strong> the metrics were chosen from Lean manufacturing theory. Lead time is a key element of Lean (time from customer request to fulfilment). Deployment frequency is a proxy for batch size — smaller batches reduce cycle time, variability, risk, and overhead (Reinertsen 2009). The metrics thus represent the Lean ideal applied to the software delivery value stream.</p>
 <p><strong>CABs finding:</strong> Change Approval Boards are negatively correlated with both tempo and stability. Heavyweight approval processes do not improve safety; they degrade performance without compensating gains. (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 2)</p>
 <p><strong>Culture warning (Deming):</strong> &quot;Whenever there is fear, you get the wrong numbers.&quot; In organisations with pathological or bureaucratic cultures, these metrics will be gamed or hidden. The metrics require a generative culture (→ <a href="../concepts/westrum-culture.html">Westrum model</a>, <a href="../sources/accelerate.html">Accelerate</a> ch. 3) to function as designed. Deploying measurement without cultural readiness produces bad data and worse outcomes.</p>
-<h2>The Four Metrics</h2>
+<h2 id="the-four-metrics">The Four Metrics</h2>
 <p>Two pairs, each measuring a different dimension of delivery performance:</p>
-<h3>Throughput Metrics</h3>
+<h3 id="throughput-metrics">Throughput Metrics</h3>
 <p><strong>Deployment frequency</strong>: how often changes successfully reach production.</p>
 <ul>
 <li>Calculation: count of successful deployments per day; report as 31-day rolling mean of daily totals</li>
@@ -331,7 +342,7 @@
 <li>Elite level (DORA): less than one hour</li>
 <li>Commitment semantics: Accelerate recommends starting the clock at any commit, not just merge to main (branching strategies inflate lead time)</li>
 </ul>
-<h3>Stability Metrics</h3>
+<h3 id="stability-metrics">Stability Metrics</h3>
 <p><strong>Change failure rate</strong>: what proportion of deployments cause a production failure.</p>
 <ul>
 <li>Calculation: (failures resolved in period) / (total deployments in same period); 31-day rolling window; only resolved failures counted</li>
@@ -344,14 +355,14 @@
 <li>Elite level (DORA): less than one hour</li>
 <li>Clock stops when service is restored to users — not when root cause is fully addressed</li>
 </ul>
-<h2>Why Track All Four Together</h2>
+<h2 id="why-track-all-four-together">Why Track All Four Together</h2>
 <p>The metrics are designed to be tracked as a set. Improving one at the expense of another indicates an unbalanced transformation:</p>
 <ul>
 <li>Deploying more often without improving stability = chaos</li>
 <li>Improving stability by deploying less often = stagnation</li>
 </ul>
 <p>The combination makes the metrics resistant to gaming: a team cannot appear to perform well by manipulating deployment frequency while failures mount, because both stability metrics will degrade visibly.</p>
-<h2>Instrumentation</h2>
+<h2 id="instrumentation">Instrumentation</h2>
 <p>Four raw data points feed all calculations:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -385,7 +396,7 @@
 <li><strong>Fan-in model</strong> (multiple repos → shared pipeline → production): trace each commit through to its final deployment; most complex to instrument</li>
 </ol>
 <p>Only count successful builds that result in a production (or highest-environment) deployment. Failed builds that never deployed should not contribute to lead time calculations.</p>
-<h2>Minimal Viable Dashboard (MVD)</h2>
+<h2 id="minimal-viable-dashboard-mvd">Minimal Viable Dashboard (MVD)</h2>
 <p>The recommended starting point is a simple wiki page containing:</p>
 <ul>
 <li>Current calculated values for all four metrics</li>
@@ -394,7 +405,7 @@
 <li>Links to raw data sources</li>
 </ul>
 <p>Automation (Google Four Keys, Thoughtworks Metrik, Azure DevOps extensions) can be added once the manual baseline is established. Primary audience is the development teams themselves — not management. Read-only rollup views for senior stakeholders are acceptable but secondary.</p>
-<h2>How Metrics Drive Architectural Change</h2>
+<h2 id="how-metrics-drive-architectural-change">How Metrics Drive Architectural Change</h2>
 <p>The most valuable outcome of the four key metrics is not the numbers — it is the weekly team conversations they catalyse. Teams that understand the mental model and see their own data:</p>
 <ol>
 <li>First request process improvements: release cadence, branching strategy</li>
@@ -406,13 +417,13 @@
 <blockquote>
 <p>&quot;That&#39;s what places the four key metrics among the most valuable architectural metrics out there.&quot; — Andrew Harmel-Law (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 1)</p>
 </blockquote>
-<h2>Relationship to Fitness Functions</h2>
+<h2 id="relationship-to-fitness-functions">Relationship to Fitness Functions</h2>
 <p>The four key metrics are process fitness functions (in the classification from <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>): they measure team practice (deployment practices, incident response) rather than code structure or runtime behaviour. They sit naturally in the bottom-to-middle layer of the fitness function testing pyramid (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>):</p>
 <ul>
 <li>Deployment frequency and lead time for changes → triggered, continuous measurement of pipeline data</li>
 <li>Change failure rate and time to restore → triggered, derived from incident ticket data</li>
 </ul>
-<h2>Complementary Metrics (Rosa, SAM ch. 6)</h2>
+<h2 id="complementary-metrics-rosa-sam-ch-6">Complementary Metrics (Rosa, SAM ch. 6)</h2>
 <p>The four key metrics are leading indicators at the technical level. Rosa (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 6) recommends supplementing them with:</p>
 <ul>
 <li><strong>Throughput</strong> (Lean): baseline of a team&#39;s capacity to deliver batches of work; root concept from Toyota Production System</li>
@@ -422,7 +433,7 @@
 <p><strong>Metric trend diagnosis:</strong> Rising MTTD combined with rising change failure rate is a signal that architectural complexity is increasing faster than the system&#39;s ability to detect its own failures.</p>
 <p><strong>Goodhart&#39;s Law warning:</strong> &quot;When a measure becomes a target, it ceases to be a good measure.&quot; Using DORA metrics to rank or compare teams is counterproductive — teams operate in radically different contexts (mainframes vs serverless, different regulatory environments). The metrics are guides for team self-improvement, not performance benchmarks.</p>
 <p><strong>Context dependency example:</strong> Deployment frequency conventionally &quot;should be increased,&quot; but mobile apps that trigger update notifications with every deploy can decrease customer Net Promoter Score. One team solved this with deployment rings (alpha/beta/production) — deploying to alpha on every commit, without forcing user-facing updates. Appropriate metrics depend on context.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — the four key metrics are process fitness functions</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the delivery mechanism whose health the metrics reflect</li>

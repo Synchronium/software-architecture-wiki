@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,18 +316,22 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#safety-and-liveness">Safety and Liveness</a></li><li><a href="#raft-leader-election">Raft Leader Election</a></li><li><a href="#practical-implementation-cas-lease">Practical Implementation: CAS + Lease</a></li><li><a href="#the-mutual-exclusion-problem-leases-are-not-sufficient">The Mutual Exclusion Problem: Leases Are Not Sufficient</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#relationship-to-replication-and-consensus">Relationship to Replication and Consensus</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Leader election is the process by which a group of distributed processes designates one of their number as the <strong>leader</strong> — the single process with special authority (e.g., accepting writes, assigning work, holding a lock). When the leader fails, the remaining processes elect a new one. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 9)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>A single leader simplifies concurrency in distributed systems: instead of coordinating concurrent writes across many replicas, all writes go through one point. This is the basis of state machine replication (→ <a href="../distributed/replication.html">Replication</a>). But a leader also introduces a single point of failure and a scalability bottleneck — trade-offs that must be managed carefully.</p>
-<h2>Safety and Liveness</h2>
+<h2 id="safety-and-liveness">Safety and Liveness</h2>
 <p>Any correct leader election algorithm must guarantee two properties:</p>
 <ul>
 <li><strong>Safety</strong>: at most one leader exists at any given time (no split-brain).</li>
 <li><strong>Liveness</strong>: an election eventually completes, even in the presence of failures.</li>
 </ul>
 <p>These are instances of the general properties of distributed algorithms: safety (nothing bad ever happens) and liveness (something good eventually does happen).</p>
-<h2>Raft Leader Election</h2>
+<h2 id="raft-leader-election">Raft Leader Election</h2>
 <p>Raft&#39;s leader election algorithm models each process as a state machine with three states:</p>
 <pre><code>Follower  →  Candidate  →  Leader
     ↑___________________________↓ (heartbeat timeout)
@@ -339,7 +350,7 @@
 <li><strong>Another process wins</strong>: receives a heartbeat with a term ≥ its own → returns to follower.</li>
 <li><strong>Split vote</strong> (multiple candidates, no majority): election timeout fires; starts a new election with a <strong>random timeout</strong> to reduce the chance of another split vote.</li>
 </ul>
-<h2>Practical Implementation: CAS + Lease</h2>
+<h2 id="practical-implementation-cas-lease">Practical Implementation: CAS + Lease</h2>
 <p>In practice, leader election rarely needs to be implemented from scratch. The standard approach:</p>
 <ol>
 <li>Use a <strong>linearizable key-value store</strong> (e.g., etcd, ZooKeeper) that supports compare-and-swap (CAS) with TTL.</li>
@@ -348,7 +359,7 @@
 </ol>
 <p><strong>CAS semantics</strong>: <code>CAS(key, expected_value, new_value)</code> — atomically updates the key only if its current value matches <code>expected_value</code>. This guarantees only one process succeeds.</p>
 <p>etcd and ZooKeeper expose exactly this interface and replicate their state using consensus (Raft/ZAB), making them fault-tolerant coordination services.</p>
-<h2>The Mutual Exclusion Problem: Leases Are Not Sufficient</h2>
+<h2 id="the-mutual-exclusion-problem-leases-are-not-sufficient">The Mutual Exclusion Problem: Leases Are Not Sufficient</h2>
 <p>A critical subtlety: <strong>holding a lease does not guarantee exclusive access to shared resources</strong>. The issue:</p>
 <ol>
 <li>Process P acquires lease; TTL = 30s.</li>
@@ -366,7 +377,7 @@
 </ol>
 <p>This is implemented as a <strong>conditional write (CAS)</strong> on the resource itself — read the resource, compute the update, write back conditioned on the version not having changed.</p>
 <p><strong>If the resource doesn&#39;t support conditional writes</strong>: design around the possibility of occasional split-brain. If the two leaders perform the same idempotent operation, no harm is done.</p>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -396,10 +407,10 @@
 <blockquote>
 <p>&quot;As a rule of thumb, if we must have a leader, we have to minimise the work it performs and be prepared to occasionally have more than one.&quot; (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 9)</p>
 </blockquote>
-<h2>Relationship to Replication and Consensus</h2>
+<h2 id="relationship-to-replication-and-consensus">Relationship to Replication and Consensus</h2>
 <p>Leader election is a prerequisite for state machine replication (→ <a href="../distributed/replication.html">Replication</a>): the Raft replication protocol begins by electing a leader and uses heartbeats from the same election algorithm to detect leader failure.</p>
 <p>Leader election also requires consensus: only one candidate can win each term, and that agreement is itself a consensus decision. The fault-tolerant KV stores used for leases (etcd, ZooKeeper) implement consensus internally (→ <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>).</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/replication.html">Replication</a> — state machine replication uses leader election; chain replication separates data plane from control plane</li>
 <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a> — leader election is an application of consensus; ZooKeeper/etcd implement it</li>

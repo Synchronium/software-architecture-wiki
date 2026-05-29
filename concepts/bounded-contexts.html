@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,20 +309,34 @@
       <h1>Bounded Contexts and Domain-Driven Design</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ddd.html">ddd</a></li><li><a class="tag-chip" href="../tags/bounded-contexts.html">bounded-contexts</a></li><li><a class="tag-chip" href="../tags/domain.html">domain</a></li><li><a class="tag-chip" href="../tags/subdomains.html">subdomains</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li><li><a class="tag-chip" href="../tags/conways-law.html">conways-law</a></li><li><a class="tag-chip" href="../tags/ubiquitous-language.html">ubiquitous-language</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>DDD Foundations</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#ddd-foundations">DDD Foundations</a></li><li><a href="#subdomain-taxonomy">Subdomain Taxonomy</a></li><li><a href="#what-is-a-bounded-context">What Is a Bounded Context?</a></li><li><a href="#subdomains-vs-bounded-contexts">Subdomains vs Bounded Contexts</a></li><li><a href="#physical-and-ownership-boundaries">Physical and Ownership Boundaries</a></li><li><a href="#bounded-context-sizing-heuristic">Bounded Context Sizing Heuristic</a></li><li><a href="#subdomain-type-evolution">Subdomain Type Evolution</a></li><li><a href="#growth-management">Growth Management</a></li><li><a href="#properties-of-well-designed-bounded-contexts">Properties of Well-Designed Bounded Contexts</a></li><li><a href="#three-communication-structures">Three Communication Structures</a></li><li><a href="#conway39s-law-implications">Conway&#39;s Law Implications</a></li><li><a href="#relationship-to-microservice-sizing">Relationship to Microservice Sizing</a></li><li><a href="#evans39-originating-treatment">Evans&#39; Originating Treatment</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>A bounded context is the consistency boundary of a ubiquitous language.</strong> Within it, every term has one precise meaning. The same word can mean something different in a different context — this is intentional, not a problem to be eliminated.</li>
+<li><strong>Subdomains are discovered; bounded contexts are designed.</strong> Subdomains exist in the business; bounded contexts are the architect&#39;s choice of how to draw implementation boundaries around them. Common is 1:1, but several BCs per subdomain or one BC spanning subdomains is valid.</li>
+<li><strong>Three subdomain types drive implementation strategy.</strong> Core (competitive advantage, in-house, best engineers, domain model), generic (already-solved, buy/adopt), supporting (simple CRUD, outsource or junior teams). Get the type wrong and you over-invest in commodity or under-invest in differentiator.</li>
+<li><strong>Start wide, split on knowledge.</strong> Refactoring logical boundaries within a context is cheap; refactoring physical boundaries between services is expensive. For volatile core subdomains, start with a wide context and split as domain understanding stabilises.</li>
+<li><strong>One team per bounded context — strictly.</strong> Multiple teams sharing one context recreates the implicit assumptions BCs are designed to eliminate. One team can own multiple contexts; the constraint is unidirectional.</li>
+<li><strong>Subdomain types evolve.</strong> All six transitions happen (core ↔ generic ↔ supporting). The signal is usually pain in the existing implementation pattern — a supporting subdomain accumulating complex rules has become core; reassess.</li>
+<li><strong>The data communication structure is the missing piece</strong> (Bellemare). Business and implementation communication structures are well-understood; how data flows across context boundaries isn&#39;t. Event streams are the modern answer.</li>
+</ul>
+<h2 id="ddd-foundations">DDD Foundations</h2>
 <p>Domain-driven design (Eric Evans, 2003) provides the conceptual vocabulary for aligning software boundaries with business boundaries. The key terms:</p>
 <p><strong>Domain</strong>: the problem space a business occupies and provides solutions to. Exists independently of any specific implementation — it&#39;s the business reality, not the software.</p>
 <p><strong>Subdomain</strong>: a fine-grained area of business activity. All subdomains together form the business domain. Subdomains are themselves domains — the decomposition can recurse as granularity requires.</p>
 <p><strong>Domain (or subdomain) model</strong>: an abstraction of the domain useful for business purposes. Models belong to the solution space; they are constructs built to solve problems in the domain.</p>
 <p><strong>Bounded context</strong>: the logical boundary — including inputs, outputs, events, processes, requirements, and data models — relevant to a subdomain. A bounded context is the unit of implementation ownership in microservice architectures. While ideally a bounded context aligns perfectly with its subdomain, legacy systems and technical debt create exceptions (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1).</p>
-<h2>Subdomain Taxonomy</h2>
+<h2 id="subdomain-taxonomy">Subdomain Taxonomy</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 1) provides the definitive taxonomy of subdomain types. The type determines implementation strategy:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -363,7 +384,7 @@
 <li>&quot;Is it simpler to hack a quick implementation than to integrate an external solution?&quot; → supporting (not generic)</li>
 <li>&quot;Does this logic resemble complex algorithms and business rules, or CRUD interfaces?&quot; → former is core; latter is supporting</li>
 </ul>
-<h2>What Is a Bounded Context?</h2>
+<h2 id="what-is-a-bounded-context">What Is a Bounded Context?</h2>
 <p>A bounded context is the consistency boundary of a ubiquitous language. Within a bounded context, a model is consistent, precise, and unambiguous. The same term can mean something entirely different in a different bounded context — this is intentional, not a problem (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3).</p>
 <p><strong>The motivating problem</strong>: different domain experts hold inconsistent models of the same entity. In a telemarketing company, &quot;lead&quot; means a contact event in the marketing department but a full lifecycle process in the sales department. A single enterprise-wide model produces an enormous ERD that is the &quot;jack of all trades, master of none&quot; — overcomplicated everywhere, useful nowhere.</p>
 <p>The solution: divide the <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> into multiple fine-grained languages, each with an explicit applicability context.</p>
@@ -371,7 +392,7 @@
 <p>&quot;A model cannot exist without a boundary; it will expand to become a copy of the real world.&quot; (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
 </blockquote>
 <p><strong>Scope</strong>: bounded context size is not dictated by a rule — it depends on the problem domain. Too wide: hard to keep the language consistent. Too narrow: excessive integration overhead. Reasons to split a context further include: constituting new engineering teams, needing different scaling characteristics, or needing independent deployment lifecycles. Avoid splitting coherent use cases (same actors, same data) — that forces simultaneous deployment and defeats the purpose.</p>
-<h2>Subdomains vs Bounded Contexts</h2>
+<h2 id="subdomains-vs-bounded-contexts">Subdomains vs Bounded Contexts</h2>
 <p>This is the most important distinction in strategic DDD:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -403,10 +424,10 @@
 </tr>
 </tbody></table></div>
 <p>The design decision of how many bounded contexts to create, and where their boundaries fall, is the architect&#39;s choice. One bounded context per subdomain is common and reasonable. Using multiple bounded contexts for one subdomain is valid when different parts need different models. A single bounded context spanning multiple subdomains is valid for small systems. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
-<h2>Physical and Ownership Boundaries</h2>
+<h2 id="physical-and-ownership-boundaries">Physical and Ownership Boundaries</h2>
 <p><strong>Physical boundaries</strong>: each bounded context should be implemented as an independent service or project — independently developed, versioned, and deployed. This allows each bounded context to use the technology stack that best fits its needs. When a bounded context contains multiple subdomains, the bounded context is the physical boundary and each subdomain is a logical boundary (namespace, module, package).</p>
 <p><strong>Ownership boundaries</strong>: exactly one team owns each bounded context. Two teams cannot work on the same bounded context — that would recreate the implicit assumptions that bounded contexts are designed to eliminate. One team can own multiple bounded contexts; the constraint is unidirectional. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 3)</p>
-<h2>Bounded Context Sizing Heuristic</h2>
+<h2 id="bounded-context-sizing-heuristic">Bounded Context Sizing Heuristic</h2>
 <blockquote>
 <p>&quot;Treat the bounded context&#39;s size as a function of the model it encompasses.&quot; — Nick Tune (cited in → <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 10)</p>
 </blockquote>
@@ -414,7 +435,7 @@
 <p><strong>When to start wide</strong>: cross-context changes require inter-team coordination and are expensive. If bounded context boundaries turn out to be wrong (especially likely during early implementation of a core subdomain), refactoring <em>logical</em> boundaries (within a wide context) is much cheaper than refactoring <em>physical</em> boundaries (separate services, separate deployments). For core subdomains — which are volatile and uncertain by definition — start with a wide bounded context. Include other subdomains that the core interacts with most heavily.</p>
 <p><strong>When to split</strong>: decompose only when you have enough domain knowledge to do it correctly. Triggers: gaining domain expertise that reveals distinct models; adding new engineering teams that need ownership boundaries; requiring different scaling or deployment lifecycles per module. Avoid splitting use cases that are coherent (same actors, same data) — forced coordination defeats the purpose.</p>
 <p><strong>Implication</strong>: microservices are bounded contexts at their natural granularity, but starting with a monolith or a wide bounded context is the safer default during the uncertain early phases of a core subdomain. Decompose as knowledge stabilises. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 10, ch. 14)</p>
-<h2>Subdomain Type Evolution</h2>
+<h2 id="subdomain-type-evolution">Subdomain Type Evolution</h2>
 <p>Subdomain types are not fixed — they evolve as business strategy and competitive landscape change. All six transitions are possible (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -455,31 +476,31 @@
 <li>Duplication (separate ways) is only appropriate for generic and supporting subdomains; if a subdomain turns core, the separated implementations must be integrated</li>
 </ul>
 <p><strong>Tactical design signal</strong>: the primary indicator of a subdomain type change is when the existing technical design can no longer support business needs. A supporting subdomain using transaction script that accumulates complex rules and invariants is a sign of core subdomain emergence. Use the &quot;pain&quot; of maintaining the existing design as a trigger to reassess subdomain classification.</p>
-<h2>Growth Management</h2>
+<h2 id="growth-management">Growth Management</h2>
 <p>As a project grows, design boundaries accumulate accidental complexity. Three levels to monitor (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
 <p><strong>Subdomains</strong>: revisit boundaries using the coherent-use-cases heuristic. If a subdomain has grown to contain distinct sets of use cases with different actors and data, split it. Especially important for core subdomains — distil out generic and supporting concerns so that engineering investment focuses where it matters.</p>
 <p><strong>Bounded contexts</strong>: bounded contexts that lose focus and accumulate unrelated logic are accumulating accidental complexity. Signs: a bounded context becomes &quot;chatty&quot; and cannot complete operations without calling multiple other contexts — redesign boundaries for greater autonomy. Always look to extract laser-focused bounded contexts.</p>
 <p><strong>Aggregates</strong>: aggregates that grow beyond their original consistency boundary are accumulating accidental complexity. When an aggregate includes data not required to be strongly consistent with its core logic, extract it. Extracted aggregates often reveal hidden models that warrant their own bounded contexts.</p>
 <p>The guiding principle: <strong>eliminate accidental complexity; manage essential complexity</strong> using DDD tools.</p>
-<h2>Properties of Well-Designed Bounded Contexts</h2>
+<h2 id="properties-of-well-designed-bounded-contexts">Properties of Well-Designed Bounded Contexts</h2>
 <p><strong>High cohesion</strong>: internal operations should be intensive and closely related. Most communication should happen <em>within</em> the context, not across its boundaries. High cohesion reduces design scope and simplifies implementation.</p>
 <p><strong>Loose coupling</strong>: changes made within one bounded context should minimise or eliminate impact on neighbouring contexts. Loose coupling prevents requirement changes in one context from cascading through the system.</p>
 <p><strong>Business-requirement alignment</strong>: bounded contexts should be designed around business requirements, not technical requirements. Business requirements change; implementation technology changes more rarely and independently. Aligning on business requirements allows teams to make changes in a loosely coupled, highly cohesive way with minimal inter-team dependencies.</p>
 <p><strong>Anti-pattern — technical alignment</strong>: organising bounded contexts by technical layer (frontend team, backend team, DBA team) distributes business responsibility across multiple contexts. A single business requirement change requires coordination across all teams touching that technical layer. No single team can deliver a feature end-to-end. This pattern is frequently seen in decomposed monoliths that retained their technical layering.</p>
-<h2>Three Communication Structures</h2>
+<h2 id="three-communication-structures">Three Communication Structures</h2>
 <p>Bellemare identifies three communication structures in any organisation (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1). Understanding their interaction explains why data access is hard in traditional architectures:</p>
 <p><strong>Business communication structure</strong>: how teams and departments communicate with one another to fulfil goals. Dictates ownership and responsibility assignment. Changes over time as organisations grow and restructure.</p>
 <p><strong>Implementation communication structure</strong>: the data and logic pertaining to subdomain models. Formalises business processes and data structures. The quintessential example is the monolithic database application — data and logic are held together and accessed internally. Implementation structures excel at serving their own bounded context but are poor at sharing data across context boundaries.</p>
 <p><strong>Data communication structure</strong>: the mechanism by which data flows across business contexts and between implementations. Historically absent or ad hoc in most organisations. When missing, the implementation communication structure plays double duty — leaking internal data models, creating point-to-point couplings, and accumulating tribal knowledge. This is the structural root cause of most distributed systems complexity.</p>
 <p><strong>EDM&#39;s contribution</strong>: event-driven microservices formalise the data communication structure. Event streams become the canonical mechanism by which any team can access domain data from any other team, without coupling to that team&#39;s implementation. Producers publish to event streams; consumers read independently. The event broker is the data communication layer (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>).</p>
-<h2>Conway&#39;s Law Implications</h2>
+<h2 id="conway39s-law-implications">Conway&#39;s Law Implications</h2>
 <p>Conway&#39;s Law (→ <a href="../concepts/conways-law.html">Conways Law</a>) predicts that software structure mirrors team communication structure. This applies directly to bounded contexts:</p>
 <ul>
 <li>Teams organised around technical layers → technically partitioned architectures → implementation communication structure plays double duty → data silos</li>
 <li>Teams organised around bounded contexts → domain-partitioned architectures → independent ownership of data and logic → event streams enable decoupled data sharing</li>
 </ul>
 <p>The Inverse Conway Maneuver (restructuring teams to produce the desired architecture) requires aligning team boundaries with bounded context boundaries first. The event stream then provides the data communication layer that previously required point-to-point couplings or shared databases.</p>
-<h2>Relationship to Microservice Sizing</h2>
+<h2 id="relationship-to-microservice-sizing">Relationship to Microservice Sizing</h2>
 <p>A bounded context is the natural unit of microservice granularity — one team, one bounded context, one (or a small set of) microservices. A &quot;small&quot; microservice is typically scoped to something that:</p>
 <ul>
 <li>Can be mentally modeled by one person</li>
@@ -487,13 +508,13 @@
 <li>Maps cleanly to a single business responsibility within a bounded context</li>
 </ul>
 <p>Service granularity below the bounded context level introduces excessive inter-service coordination for what would otherwise be internal calls (→ <a href="../concepts/service-granularity.html">Service Granularity</a>).</p>
-<h2>Evans&#39; Originating Treatment</h2>
+<h2 id="evans39-originating-treatment">Evans&#39; Originating Treatment</h2>
 <p>Evans introduced BOUNDED CONTEXT in ch. 14 (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a>) as the primary tool for maintaining model integrity in systems that necessarily contain multiple models.</p>
 <p><strong>The core motivation</strong>: large systems inevitably contain more than one model. Without explicit boundaries, models blur — terms that seem the same actually mean different things (false cognates), or the same concept is tracked in duplicate and diverges over time (duplicate concepts). The BOUNDED CONTEXT makes the boundary explicit so each model can be kept internally consistent.</p>
 <p><strong>Continuous Integration within a context</strong>: Evans pairs BOUNDED CONTEXT with CONTINUOUS INTEGRATION as the mechanism that keeps a context unified: frequent code merges prevent divergence; exercises of the UBIQUITOUS LANGUAGE in conversation prevent conceptual drift. Together they are the maintenance practice for a healthy context.</p>
 <p><strong>The CONTEXT MAP</strong>: Evans&#39; term for the high-level diagram of all contexts and their integration relationships. The map names enter the UBIQUITOUS LANGUAGE; it must reflect current reality, not aspirational structure. Evans describes specific integration patterns (SHARED KERNEL, CUSTOMER/SUPPLIER, CONFORMIST, ANTICORRUPTION LAYER, SEPARATE WAYS, OPEN HOST SERVICE, PUBLISHED LANGUAGE) as the vocabulary for annotating the map.</p>
 <p><strong>Context sizing</strong>: Evans frames the tension as a trade-off between larger contexts (smoother flow, shared language, simpler model) and smaller contexts (smaller teams, easier CI, specialised vocabularies). His rule of thumb: one team per context; one team can own multiple contexts but multiple teams cannot share one effectively.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -526,7 +547,7 @@
 <td>Migration-focused treatment: bounded contexts are the <em>primary unit of decomposition</em> in a microservice migration. Start by mapping BCs from domain modelling (EventStorming); each BC is a candidate service. Use inbound/outbound dependency counts between BCs to prioritise extraction order — low inbound dependencies = easier to extract without touching the monolith. Split on aggregate boundaries only when team size or loose aggregate coupling justifies it.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — each bounded context has its own ubiquitous language; the two concepts are mutually defining</li>
 <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — bounded context alignment predicts architectural partitioning style</li>
@@ -541,7 +562,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../patterns/repository.html">Repository Pattern</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li></ul>
+        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li><li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li><li><a href="../patterns/repository.html">Repository Pattern</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li></ul>
       </aside>
     </main>
   </div>

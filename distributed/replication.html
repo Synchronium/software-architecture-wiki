@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,28 @@
       <h1>Replication</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/replication.html">replication</a></li><li><a class="tag-chip" href="../tags/consistency.html">consistency</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Replication stores copies of data on multiple nodes to achieve fault tolerance, read scalability, and geographic distribution. The core challenge is keeping replicas consistent when writes happen.</p>
-<h2>State Machine Replication (Raft)</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#state-machine-replication-raft">State Machine Replication (Raft)</a></li><li><a href="#chain-replication">Chain Replication</a></li><li><a href="#leader-follower-database-replication">Leader-Follower (Database Replication)</a></li><li class="toc-sub"><a href="#replication-log-formats">Replication Log Formats</a></li><li class="toc-sub"><a href="#failover-problems">Failover Problems</a></li><li><a href="#dynamo-style-leaderless-replication">Dynamo-Style (Leaderless) Replication</a></li><li class="toc-sub"><a href="#sloppy-quorums-and-hinted-handoff">Sloppy Quorums and Hinted Handoff</a></li><li class="toc-sub"><a href="#version-vectors">Version Vectors</a></li><li><a href="#consistency-and-replication">Consistency and Replication</a></li><li><a href="#replication-lag-and-its-consequences">Replication Lag and Its Consequences</a></li><li><a href="#multi-leader-replication">Multi-Leader Replication</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Replication stores copies of data on multiple nodes to achieve fault tolerance, read scalability, and geographic distribution. The core challenge is keeping replicas consistent when writes happen.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Four replication topologies, distinct trade-offs.</strong> State machine (Raft, strong consistency), chain (head-tail, splits read/write throughput), leader-follower (the relational DB default), Dynamo-style leaderless (write-anywhere, quorum reads). Pick by the consistency-vs-availability trade-off the application can absorb.</li>
+<li><strong>Synchronous replication is slow but safe; async replication is fast but lossy.</strong> Sync waits for quorum; async commits locally and propagates after. Failover on an async system loses recent writes; failover on a sync system pays the latency tax on every write.</li>
+<li><strong>Replication lag is observable and breaks intuitions.</strong> Read-your-writes, monotonic reads, and consistent-prefix reads can all be violated by an async follower. Application must either route reads to the leader for sensitive cases or use session-pinned tokens.</li>
+<li><strong>Multi-leader replication trades coordination for availability and ergonomics</strong> (multi-region active-active, offline-first clients). Conflict resolution is unavoidable: LWW silently discards concurrent writes; version vectors detect concurrency; CRDTs automate convergence.</li>
+<li><strong>Logical (row-based) replication is the foundation for CDC.</strong> MySQL binlog and PostgreSQL logical decoding produce a stream of changes consumable by downstream systems — search indexes, caches, data warehouses — without coupling to the source storage engine.</li>
+<li><strong>Replicas don&#39;t substitute for backups.</strong> A delete propagates to every replica. Backups protect against software bugs and operator error; replication protects against hardware failure. They&#39;re solving different problems.</li>
+</ul>
+<h2 id="state-machine-replication-raft">State Machine Replication (Raft)</h2>
 <p>The standard model for strong consistency replication:</p>
 <ol>
 <li>Leader receives write → appends to its log.</li>
@@ -321,7 +341,7 @@
 </ol>
 <p>Only committed entries survive a leader failure. Raft guarantees linearizability for reads if they go through the leader and are confirmed by a quorum.</p>
 <p><strong>Leader election</strong> (→ <a href="../distributed/leader-election.html">Leader Election</a>): Raft uses randomized election timeouts to avoid split votes. A candidate wins by collecting a majority. The leader broadcasts heartbeats to suppress new elections.</p>
-<h2>Chain Replication</h2>
+<h2 id="chain-replication">Chain Replication</h2>
 <p>An alternative to leader-based replication with cleanly separated read/write roles. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10)</p>
 <p><strong>Normal operation:</strong></p>
 <ul>
@@ -391,7 +411,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Real-world application — Azure Storage</strong>: Azure&#39;s blob store uses chain replication in its stream layer. The stream layer implements a distributed append-only filesystem; the unit of replication is an <strong>extent</strong> (a chunk of a stream), replicated synchronously across a chain of storage servers. A separate stream manager (control plane, itself fault-tolerant) assigns extents to chains and reconfigures them on failure. This sits underneath a partition layer (range-partitioned file index, split/merge on load) and a stateless front-end layer (reverse proxy for auth + routing) — a concrete data/control plane separation. Azure Storage was built with strong consistency from the start; AWS S3 only added strong consistency in 2021. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 17)</p>
-<h2>Leader-Follower (Database Replication)</h2>
+<h2 id="leader-follower-database-replication">Leader-Follower (Database Replication)</h2>
 <p>Common in relational databases:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -418,7 +438,7 @@
 </tr>
 </tbody></table></div>
 <p>Managed databases (RDS, Azure SQL) automate failover. Async followers can serve stale reads — useful for read scaling, not for linearizability.</p>
-<h3>Replication Log Formats</h3>
+<h3 id="replication-log-formats">Replication Log Formats</h3>
 <p>How writes are communicated to followers differs by format (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -455,7 +475,7 @@
 </tr>
 </tbody></table></div>
 <p>Logical replication (MySQL binlog, PostgreSQL logical decoding) is the basis for Change Data Capture (CDC), enabling derived systems (search indexes, caches, data warehouses) to follow the primary database.</p>
-<h3>Failover Problems</h3>
+<h3 id="failover-problems">Failover Problems</h3>
 <p>Automated failover has failure modes that are worse than the failure they try to prevent:</p>
 <ul>
 <li><strong>Unreplicated writes</strong>: if an async follower is promoted to leader, writes the old leader received but didn&#39;t replicate are lost. If the new leader then receives writes for those same keys, the discarded writes may conflict with what clients already received — a consistency violation the client cannot detect.</li>
@@ -463,7 +483,7 @@
 <li><strong>The GitHub incident</strong>: MySQL follower promoted to leader had an auto-increment counter at a lower value than what Redis had cached. New writes reused old IDs → private data from other users became accessible.</li>
 <li><strong>Timeout tuning</strong>: too short → unnecessary failovers under load spike; too long → extended downtime after a genuine failure.</li>
 </ul>
-<h2>Dynamo-Style (Leaderless) Replication</h2>
+<h2 id="dynamo-style-leaderless-replication">Dynamo-Style (Leaderless) Replication</h2>
 <p>Any replica accepts reads and writes. Consistency is enforced by quorum intersection:</p>
 <ul>
 <li><strong>W</strong> write replicas must acknowledge a write.</li>
@@ -478,7 +498,7 @@
 <li><strong>Anti-entropy process</strong>: background process continually compares replicas and copies missing data. Voldemort lacks anti-entropy → missing data may not appear until next read repair.</li>
 </ul>
 <p>Used in: Cassandra, Riak, DynamoDB (default reads).</p>
-<h3>Sloppy Quorums and Hinted Handoff</h3>
+<h3 id="sloppy-quorums-and-hinted-handoff">Sloppy Quorums and Hinted Handoff</h3>
 <p>During a network partition, fewer than W home nodes for a key may be reachable. A <strong>sloppy quorum</strong> allows the write to proceed by using any W available nodes, even if they are not the &quot;home&quot; nodes for that key. The substitute nodes accept the write with a hint indicating the intended home node.</p>
 <p>When the home nodes recover, the substitute nodes perform <strong>hinted handoff</strong>: they forward the write to the appropriate home node.</p>
 <ul>
@@ -486,7 +506,7 @@
 <li>They do <strong>not</strong> provide linearizability — the home nodes may be completely unaware of the write until handoff. A strict quorum of home nodes (W+R&gt;N using only home nodes) is required for linearizability.</li>
 <li>Cassandra, Riak, and the original Dynamo paper use sloppy quorums. DynamoDB does not.</li>
 </ul>
-<h3>Version Vectors</h3>
+<h3 id="version-vectors">Version Vectors</h3>
 <p>In leaderless (and multi-leader) replication, version vectors track the write history to distinguish overwrites from concurrent writes:</p>
 <ul>
 <li>Each replica maintains a per-key version number (or per-replica version number).</li>
@@ -498,14 +518,14 @@
 <blockquote>
 <p><strong>Version vectors ≠ vector clocks</strong>: vector clocks track causality between events in a distributed computation; version vectors compare state of replicas of a single key. The distinction is subtle but important — using the term &quot;vector clock&quot; for replica state comparison is technically imprecise. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5)</p>
 </blockquote>
-<h2>Consistency and Replication</h2>
+<h2 id="consistency-and-replication">Consistency and Replication</h2>
 <p>The replication strategy directly determines the achievable consistency model (→ <a href="../distributed/consistency-models.html">Consistency Models</a>):</p>
 <ul>
 <li>State machine replication with quorum reads → linearizability.</li>
 <li>Async leader-follower with follower reads → eventual consistency.</li>
 <li>Leaderless with W+R&gt;N → tunable (strong quorum reads or eventual reads).</li>
 </ul>
-<h2>Replication Lag and Its Consequences</h2>
+<h2 id="replication-lag-and-its-consequences">Replication Lag and Its Consequences</h2>
 <p>When followers are asynchronous, they can lag behind the leader. Kleppmann identifies three important anomalies that arise from replication lag (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5):</p>
 <ul>
 <li><strong>Read-your-writes (read-after-write consistency)</strong>: a user writes something, then reads it back — but the read goes to a lagging follower and the write is not yet visible. Solution: route a user&#39;s own reads to the leader, or track the user&#39;s last write timestamp and wait for followers to catch up.</li>
@@ -513,7 +533,7 @@
 <li><strong>Consistent prefix reads</strong>: if writes happen in causal order (B causes A) but a follower applies them out of order, a reader may see B before A — a causality violation. Solution: causally related writes must go to the same partition.</li>
 </ul>
 <p>These anomalies are forms of eventual consistency in practice. They do not occur with synchronous replication or with single-leader reads.</p>
-<h2>Multi-Leader Replication</h2>
+<h2 id="multi-leader-replication">Multi-Leader Replication</h2>
 <p>Multi-leader replication (active-active, master-master) allows multiple nodes to accept writes. Use cases: multi-datacenter deployments, offline-capable clients, real-time collaborative editing.</p>
 <p><strong>Conflict resolution is unavoidable</strong> because two leaders can independently modify the same data. Strategies:</p>
 <ul>
@@ -553,7 +573,7 @@
 <td>Causality violations: writes can arrive out of order if one network path is faster than another; version vectors help but don&#39;t fully solve</td>
 </tr>
 </tbody></table></div>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -577,7 +597,7 @@
 <blockquote>
 <p><strong>Agreement</strong>: both sources treat Raft as the reference protocol for strongly consistent single-leader replication. Vitillo proves properties more formally; Kleppmann gives more operational detail.</p>
 </blockquote>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10) — state machine replication (Raft), chain replication, consistency models, CAP/PACELC.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11) — leaderless (Dynamo-style), anti-entropy, CRDTs.</li>
@@ -585,7 +605,7 @@
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 19) — database replication (leader-follower, NoSQL/NewSQL).</li>
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 5) — single-leader, multi-leader, leaderless; replication lag anomalies; conflict resolution in depth.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
 <li><a href="../distributed/cap-theorem.html">Cap Theorem</a></li>

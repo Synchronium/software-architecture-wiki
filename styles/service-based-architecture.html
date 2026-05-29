@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,9 +316,13 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#topology">Topology</a></li><li><a href="#acid-vs-base-the-central-service-based-trade-off">ACID vs BASE: The Central Service-Based Trade-off</a></li><li><a href="#orchestration-vs-choreography">Orchestration vs Choreography</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#architecture-characteristics-ratings">Architecture Characteristics Ratings</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#quanta">Quanta</a></li><li><a href="#partitioning">Partitioning</a></li><li><a href="#quanta-in-practice">Quanta in Practice</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Service-based architecture is a distributed style that decomposes a system into a small number of coarse-grained domain services (typically 4–12, average 7) — &quot;portions of an application&quot; — that share one or more databases and are accessed through a user interface layer. It is described as a <em>hybrid of microservices</em>: pragmatically gaining deployment independence and domain isolation without the operational overhead of fine-grained services. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>) Services deploy like traditional monolithic applications (EAR/WAR/assembly); containerization is possible but not required.</p>
-<h2>Topology</h2>
+<h2 id="topology">Topology</h2>
 <pre><code>┌──────────────────────────────────────────────┐
 │              User Interface                  │
 └───────────────────────┬──────────────────────┘
@@ -336,18 +347,18 @@
 <p><strong>User interface</strong>: a single monolithic UI or federated UI domains matching each service. Can include an optional API gateway.</p>
 <p><strong>Optional API layer</strong>: a reverse proxy or API gateway between UI and services — useful for externalising cross-cutting concerns (metrics, security, auditing, service discovery) without embedding them in the UI.</p>
 <p><strong>Service design internally</strong>: each domain service can be designed as a layered architecture (API facade + business + persistence) or domain partitioned (sub-domains within the service, similar to a modular monolith). This is a per-service design decision.</p>
-<h2>ACID vs BASE: The Central Service-Based Trade-off</h2>
+<h2 id="acid-vs-base-the-central-service-based-trade-off">ACID vs BASE: The Central Service-Based Trade-off</h2>
 <p>Because domain services are coarse-grained and share a database, ACID transactions (commit/rollback) work within a single service. In microservices with fine-grained services, ACID is local-only — cross-service operations require BASE (Basic availability, Soft state, Eventual consistency) and saga patterns. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</p>
 <p>Catalogue checkout example: if a credit card is expired in service-based architecture, the entire atomic operation rolls back cleanly. In microservices, the order has already been inserted into the order table before the payment service is invoked — producing inconsistent state that requires compensating sagas.</p>
 <p>Trade-off: coarser-grained services preserve ACID but increase the testing scope of any change (a change to order placement requires testing the entire OrderService including payment processing).</p>
-<h2>Orchestration vs Choreography</h2>
+<h2 id="orchestration-vs-choreography">Orchestration vs Choreography</h2>
 <p>These coordination patterns become important as services become more fine-grained:</p>
 <ul>
 <li><strong>Orchestration</strong>: a separate mediator service controls and manages the workflow (conductor model — central coordinator).</li>
 <li><strong>Choreography</strong>: services communicate directly without a central mediator (dancer model — each service reacts to events from others).</li>
 </ul>
 <p>Service-based architecture largely avoids the need for either because coarse-grained services handle multi-step operations internally. At the UI or API gateway level, occasional two-service orchestration may still require sagas/BASE.</p>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <ul>
 <li>Teams that want significantly more agility and deployability than a monolith but lack the DevOps maturity or organisational structure for microservices.</li>
 <li>Systems that need ACID transactions across domain operations — shared databases enable transactions without saga patterns.</li>
@@ -356,7 +367,7 @@
 <li>Domain-driven design contexts: coarse-grained services map naturally to DDD bounded contexts.</li>
 <li>When microservices or event-driven architecture would be overkill — the Ferrari analogy: using the most powerful distributed style for a system that doesn&#39;t need it wastes resources and adds complexity.</li>
 </ul>
-<h2>Architecture Characteristics Ratings</h2>
+<h2 id="architecture-characteristics-ratings">Architecture Characteristics Ratings</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -421,7 +432,7 @@
 <td>Services can be tested independently</td>
 </tr>
 </tbody></table></div>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>Supports ACID transactions via shared database — no saga pattern required for most operations.</li>
@@ -436,13 +447,13 @@
 <li>Cannot independently scale sub-domain workflows within a service.</li>
 <li>Service-to-service communication via shared database is a coupling anti-pattern that must be avoided.</li>
 </ul>
-<h2>Quanta</h2>
+<h2 id="quanta">Quanta</h2>
 <p>Multiple quanta possible: each coarse-grained service can be an independent quantum if it has distinct operational characteristics. In practice, many deployments operate as a small number of quanta (the services sharing a database may form a single logical quantum).</p>
-<h2>Partitioning</h2>
+<h2 id="partitioning">Partitioning</h2>
 <p>Domain (each service corresponds to a business capability).</p>
-<h2>Quanta in Practice</h2>
+<h2 id="quanta-in-practice">Quanta in Practice</h2>
 <p>Even though there may be 4–12 separately deployed services, if they all share a database and a UI, the entire system is <strong>one quantum</strong>. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>) As the database and UI are federated, the quantum count rises. Electronics recycling example: two quanta — (1) customer-facing (Quoting + ItemStatus services with their own UI and DB) and (2) internal operations (Receiving + Assessment + Accounting + Recycling + Reporting with a shared internal DB, even though these are separately deployed services).</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -455,7 +466,7 @@
 <td>Positions as the pragmatic sweet spot for many organisations; emphasises its suitability for teams wanting agility without full microservices complexity</td>
 </tr>
 </tbody></table></div>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a> — the next step: fine-grained services, no shared database, maximum quanta</li>
 <li><a href="../styles/layered-architecture.html">Layered Architecture</a> — the typical starting point before migrating to service-based</li>

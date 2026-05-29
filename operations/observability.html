@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#three-telemetry-sources">Three Telemetry Sources</a></li><li><a href="#event-logs">Event Logs</a></li><li class="toc-sub"><a href="#best-practices">Best Practices</a></li><li class="toc-sub"><a href="#cost-management">Cost Management</a></li><li><a href="#distributed-traces">Distributed Traces</a></li><li class="toc-sub"><a href="#use-cases-for-traces">Use Cases for Traces</a></li><li class="toc-sub"><a href="#retrofitting-tracing">Retrofitting Tracing</a></li><li><a href="#transparency-nygard39s-framing">Transparency (Nygard&#39;s Framing)</a></li><li><a href="#logging-best-practices-nygard">Logging Best Practices (Nygard)</a></li><li><a href="#health-check-design">Health Check Design</a></li><li><a href="#observability-vs-monitoring">Observability vs Monitoring</a></li><li><a href="#observability-in-microservice-migration-newman">Observability in Microservice Migration (Newman)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Observability is a set of tools that provide granular insights into a distributed system in production, enabling operators to understand emergent behaviours and validate hypotheses about root causes. Monitoring detects that something is wrong; observability explains why. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 32)</p>
 <p>Observability is a superset of monitoring: monitoring focuses on tracking health via aggregated metrics; observability adds event logs and distributed traces for diagnosis and debugging.</p>
-<h2>Three Telemetry Sources</h2>
+<h2 id="three-telemetry-sources">Three Telemetry Sources</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -338,7 +349,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Relationship</strong>: metrics and traces are derived views built from event logs — a metric is event log counters aggregated over time into summary statistics; a trace is spans (individual log events) stitched together by trace ID. Some observability backends derive all three from a single structured event stream.</p>
-<h2>Event Logs</h2>
+<h2 id="event-logs">Event Logs</h2>
 <p>A log is an immutable, time-stamped sequence of events. Events can be free-form text or structured (JSON, Protobuf). Structured events are represented as key-value bags:</p>
 <pre><code class="language-json">{
   &quot;requestId&quot;: &quot;abc-123&quot;,
@@ -349,12 +360,12 @@
 }
 </code></pre>
 <p>Logs provide the richest context for debugging but have a low signal-to-noise ratio and are expensive to ingest and store at scale.</p>
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 <p><strong>One event per work unit</strong>: collate all data for a single request (or message) into one event rather than emitting many small events. This minimises the need for joins during debugging. Implement by passing a context object through the call chain, accumulating fields as the request progresses.</p>
 <p><strong>Include a request ID</strong>: every event must include the unique identifier of the work unit. Cross-service debugging requires joining the caller&#39;s event log with the callee&#39;s — the request ID is the join key.</p>
 <p><strong>Instrument every network call</strong>: log response time, status code, and error type for every outbound call. This is critical for diagnosing latency and failure in downstream dependencies.</p>
 <p><strong>Sanitize sensitive data</strong>: strip PII and credentials from events before emission. Logs are accessible to a broader set of engineers than user data access controls typically allow.</p>
-<h3>Cost Management</h3>
+<h3 id="cost-management">Cost Management</h3>
 <ul>
 <li><strong>Log levels</strong> (debug, info, warning, error): controlled by a dynamic knob; increase verbosity for investigation, reduce under normal load.</li>
 <li><strong>Sampling</strong>: log every nth event. Failed requests should have a higher sampling frequency than successful ones (higher signal-to-noise).</li>
@@ -362,7 +373,7 @@
 <li><strong>Trade-off</strong>: aggregating in-memory into metrics reduces cost but loses the ability to drill down into individual events.</li>
 </ul>
 <p><strong>Infrastructure risks</strong>: logging libraries that write synchronously to disk block the calling thread. A full disk causes log loss at best, service failure at worst. Use asynchronous logging libraries.</p>
-<h2>Distributed Traces</h2>
+<h2 id="distributed-traces">Distributed Traces</h2>
 <p>Tracing captures the complete lifecycle of a request as it flows through multiple services in a distributed system. A trace is a list of causally-related spans.</p>
 <p><strong>Span</strong>: a time interval representing a logical operation or work unit. Contains a bag of key-value attributes: operation name, service name, start/end timestamps, status code, and arbitrary labels.</p>
 <p><strong>Trace propagation</strong>:</p>
@@ -374,7 +385,7 @@
 <li>The collector assembles all spans sharing a trace ID into a complete trace.</li>
 </ol>
 <p>Popular collectors: OpenZipkin, AWS X-Ray. See also OpenTelemetry in <a href="../reference/technology-glossary.html">Technology Glossary</a>.</p>
-<h3>Use Cases for Traces</h3>
+<h3 id="use-cases-for-traces">Use Cases for Traces</h3>
 <ul>
 <li>Debug failures or latency for a <strong>specific user request</strong> (e.g., a customer support ticket).</li>
 <li>Debug <strong>rare issues</strong> affecting a tiny fraction of requests — surfaced by filtering traces on error status.</li>
@@ -382,19 +393,19 @@
 <li><strong>Identify bottlenecks</strong> in the end-to-end request path — the flame graph view shows where time is spent.</li>
 <li><strong>Resource attribution</strong>: trace which users drive load to which downstream services — useful for billing and fine-grained rate limiting.</li>
 </ul>
-<h3>Retrofitting Tracing</h3>
+<h3 id="retrofitting-tracing">Retrofitting Tracing</h3>
 <p>Tracing is harder to add to an existing system than metrics or logs because it requires every component in the request path — including third-party frameworks, libraries, and external services — to propagate the trace context. A <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> can handle trace context propagation transparently at the network layer, reducing the amount of application code that must be modified.</p>
-<h2>Transparency (Nygard&#39;s Framing)</h2>
+<h2 id="transparency-nygard39s-framing">Transparency (Nygard&#39;s Framing)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 8) uses &quot;transparency&quot; as a broader term than observability: &quot;the qualities that allow operators, developers, and business sponsors to gain understanding of the system&#39;s historical trends, present conditions, instantaneous state, and future projections.&quot;</p>
 <p><strong>Transparency must be designed in, not added later.</strong> Adding it late is as effective as &quot;adding quality&quot; — possible, but only at much greater cost. A transparent system matures faster because problems become visible and diagnosable; an opaque system drifts into decay.</p>
 <p><strong>System-level visibility &gt; per-instance visibility.</strong> Local visibility only produces local optimisation. Example 1: a retailer optimised a batch pipeline to finish two hours earlier, yet items still appeared on the site at the same time — a parallel process not visible in per-batch metrics was the actual bottleneck. Example 2: cache flushes looked normal on individual servers, but no single server could see that each display event was causing a cross-server cache invalidation — every server was knocking items out of all other servers&#39; caches. Only a system-wide view revealed the pattern.</p>
 <p><strong>Monitoring as exoskeleton, not woven in.</strong> Alert thresholds, rollup policies, and health status decisions change at a different rate than application code. Keep them in the control plane outside the instance. Tightly coupling monitoring to application internals creates maintenance burden and slows both systems.</p>
-<h2>Logging Best Practices (Nygard)</h2>
+<h2 id="logging-best-practices-nygard">Logging Best Practices (Nygard)</h2>
 <p><strong>Log level discipline</strong>: ERROR should mean &quot;operator action required.&quot; Not every exception is an error. A user entering a bad credit card number is a WARNING at most. A circuit breaker tripping to OPEN is an ERROR — it should not happen under normal conditions and means action is required on the other end of the connection. Database connection failure is an ERROR. NullPointerException is not automatically an ERROR. (→ <a href="../sources/release-it.html">Release It</a> ch. 8)</p>
 <p><strong>No debug logs in production.</strong> Debug-level output creates noise that buries real signals. Add a CI build step that automatically strips configs enabling debug or trace levels.</p>
 <p><strong>Voodoo operations</strong>: ambiguous log messages create false temporal correlations that become operational folklore and cause incorrect remediation. Nygard&#39;s example: a debug message reading &quot;Data channel lifetime limit reached. Reset required&quot; — meaning the application was about to rotate its own encryption key — coincidentally preceded a database crash. For six months, operators performed weekly database failovers in response to that message. Root causes: (1) the message said &quot;reset required&quot; without specifying the actor; (2) debug logs were left on in production. Unclear log messages create superstitious operations. Write log messages as a human interface under stress, not as developer notes to self.</p>
 <p><strong>Include request/trace IDs in every log message.</strong> When reading thousands of lines post-incident, a grep key saves hours. (Aligned with the &quot;correlation ID&quot; recommendation from <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>.)</p>
-<h2>Health Check Design</h2>
+<h2 id="health-check-design">Health Check Design</h2>
 <p>A health check is more than &quot;is the process running?&quot; It should expose (→ <a href="../sources/release-it.html">Release It</a> ch. 8):</p>
 <ul>
 <li>Host IP address(es)</li>
@@ -405,7 +416,7 @@
 </ul>
 <p><strong>Go-live transition</strong>: load balancers use health checks not just for crash detection but for startup readiness. When the health check transitions from failing to passing, the instance signals it is ready for traffic. This is safer than a fixed startup delay.</p>
 <p>This connects to Nygard&#39;s Handshaking stability pattern (→ <a href="../sources/release-it.html">Release It</a> ch. 5): when a service is overloaded, it should fail its health check (return 503) so the load balancer stops routing to it — a server-initiated signal rather than waiting for the caller to time out.</p>
-<h2>Observability vs Monitoring</h2>
+<h2 id="observability-vs-monitoring">Observability vs Monitoring</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -435,7 +446,7 @@
 <td>Log search, trace flame graphs, hypothesis testing</td>
 </tr>
 </tbody></table></div>
-<h2>Observability in Microservice Migration (Newman)</h2>
+<h2 id="observability-in-microservice-migration-newman">Observability in Microservice Migration (Newman)</h2>
 <p>Newman provides a practitioner hierarchy of observability investments for microservice architectures, ordered by implementation priority (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 5):</p>
 <p><strong>Log aggregation first</strong>: implement a log aggregation system before going to microservices — it is useful from day one and is a litmus test for organisational readiness. &quot;If your organisation struggles to implement a suitable log aggregation system, you might want to reconsider whether you&#39;re ready for microservices.&quot; Tools: ELK stack (Elasticsearch, Logstash/Fluentd, Kibana), Humio.</p>
 <p><strong>Correlation IDs as the foundation</strong>: generate a correlation ID for every inbound request at the API gateway or service mesh. Propagate it through all downstream calls (HTTP header, message payload field, or other mechanism). Use it as the join key in log aggregation queries, and also for tracking choreographed saga instances across services. This is the prerequisite for distributed tracing.</p>
@@ -445,7 +456,7 @@
 <blockquote>
 <p><strong>Contradiction (perspective difference):</strong> Vitillo (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>) provides the theoretical grounding — structured events, one event per work unit, sampling — from a distributed systems researcher&#39;s perspective. Newman provides the practitioner priority order (log aggregation → correlation IDs → tracing → production testing → observability) from a migration consultant&#39;s perspective. Both are compatible; Newman&#39;s is more actionable for teams getting started.</p>
 </blockquote>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/monitoring.html">Monitoring</a> — monitoring (SLIs, SLOs, alerts, dashboards) is the first-layer tool; observability extends it</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — deployment events are annotated in dashboards; distributed traces are a key debugging tool after a rollout</li>
@@ -455,7 +466,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+        <ul><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
       </aside>
     </main>
   </div>

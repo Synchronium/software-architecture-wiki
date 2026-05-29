@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/john-ousterhout.html">John Ousterhout</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#preface">Preface</a></li><li class="toc-sub"><a href="#chapter-1-introduction-it39s-all-about-complexity">Chapter 1 — Introduction (It&#39;s All About Complexity)</a></li><li class="toc-sub"><a href="#chapter-2-the-nature-of-complexity">Chapter 2 — The Nature of Complexity</a></li><li class="toc-sub"><a href="#chapter-3-working-code-isn39t-enough-strategic-vs-tactical">Chapter 3 — Working Code Isn&#39;t Enough (Strategic vs. Tactical)</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li class="toc-sub"><a href="#chapter-4-modules-should-be-deep">Chapter 4 — Modules Should Be Deep</a></li><li class="toc-sub"><a href="#chapter-5-information-hiding-and-leakage">Chapter 5 — Information Hiding (and Leakage)</a></li><li class="toc-sub"><a href="#chapter-6-general-purpose-modules-are-deeper">Chapter 6 — General-Purpose Modules are Deeper</a></li><li class="toc-sub"><a href="#chapter-7-different-layer-different-abstraction">Chapter 7 — Different Layer, Different Abstraction</a></li><li class="toc-sub"><a href="#chapter-8-pull-complexity-downwards">Chapter 8 — Pull Complexity Downwards</a></li><li class="toc-sub"><a href="#chapter-9-better-together-or-better-apart">Chapter 9 — Better Together or Better Apart?</a></li><li class="toc-sub"><a href="#chapter-10-define-errors-out-of-existence">Chapter 10 — Define Errors Out Of Existence</a></li><li class="toc-sub"><a href="#chapter-11-design-it-twice">Chapter 11 — Design It Twice</a></li><li class="toc-sub"><a href="#chapter-12-why-write-comments-the-four-excuses">Chapter 12 — Why Write Comments? The Four Excuses</a></li><li class="toc-sub"><a href="#chapter-13-comments-should-describe-things-that-aren39t-obvious-from-the-code">Chapter 13 — Comments Should Describe Things That Aren&#39;t Obvious From the Code</a></li><li class="toc-sub"><a href="#chapter-14-choosing-names">Chapter 14 — Choosing Names</a></li><li class="toc-sub"><a href="#chapter-15-write-the-comments-first">Chapter 15 — Write The Comments First</a></li><li class="toc-sub"><a href="#chapter-16-modifying-existing-code">Chapter 16 — Modifying Existing Code</a></li><li class="toc-sub"><a href="#chapter-17-consistency">Chapter 17 — Consistency</a></li><li class="toc-sub"><a href="#chapter-18-code-should-be-obvious">Chapter 18 — Code Should Be Obvious</a></li><li class="toc-sub"><a href="#chapter-19-software-trends">Chapter 19 — Software Trends</a></li><li class="toc-sub"><a href="#chapter-20-designing-for-performance">Chapter 20 — Designing for Performance</a></li><li class="toc-sub"><a href="#chapter-21-decide-what-matters">Chapter 21 — Decide What Matters</a></li><li class="toc-sub"><a href="#chapter-22-conclusion">Chapter 22 — Conclusion</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/john-ousterhout.html">John Ousterhout</a>
 <strong>Published:</strong> 2018 (2nd ed. 2021)
 <strong>Slug:</strong> <code>a-philosophy-of-software-design</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>Ousterhout&#39;s book addresses a gap he identifies in software education: we teach programming languages, algorithms, and processes, but not software design — specifically, how to manage complexity. The central thesis is that <strong>complexity is the root cause of nearly all difficulty in software development</strong>, and all good design decisions are best understood as ways to reduce or contain it.</p>
 <p>The book operates at a lower level than typical architecture texts. Where works like <em>Fundamentals of Software Architecture</em> concern themselves with service boundaries and deployment topologies, Ousterhout works at the level of classes, methods, and modules within a single codebase. His audience is developers, not architects — though the principles extend to module/subsystem/service boundaries.</p>
 <p>The book grew out of CS 190 at Stanford, where Ousterhout tested these ideas empirically with students writing real code. The principles are taught through code review — students write, get feedback, and rewrite, analogous to English composition. This grounds the book in practice rather than theory.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Complexity is the root cause of slow development, bugs, and high cost — not inadequate tools or processes (→ ch. 1)</li>
 <li>The most fundamental problem in computer science is problem decomposition (→ Preface)</li>
@@ -335,11 +346,11 @@
 <li>Consistency in coding conventions reduces cognitive load significantly (→ ch. 17)</li>
 <li>Obvious code costs nothing to understand; non-obvious code is a complexity tax (→ ch. 18)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Preface</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="preface">Preface</h3>
 <p>Ousterhout&#39;s motivation: the most fundamental problem in computer science is problem decomposition, but no university class addresses it directly. He hypothesises that design skill is what separates great programmers from average ones — and that it can be taught. CS 190 at Stanford is the result. The book is explicitly an opinion piece; Ousterhout invites disagreement and experimentation.</p>
 <p>Key framing: the goal is <em>reducing complexity</em>, which takes priority over any individual principle. If a principle doesn&#39;t reduce complexity in a given case, don&#39;t apply it.</p>
-<h3>Chapter 1 — Introduction (It&#39;s All About Complexity)</h3>
+<h3 id="chapter-1-introduction-it39s-all-about-complexity">Chapter 1 — Introduction (It&#39;s All About Complexity)</h3>
 <p>The greatest limitation in writing software is human ability to understand the systems being created. Complexity accumulates inevitably over the life of a program — the larger the program and the more people working on it, the more difficult it becomes.</p>
 <p><strong>Two approaches to fighting complexity:</strong></p>
 <ol>
@@ -356,7 +367,7 @@
 <blockquote>
 <p><strong>Open question:</strong> Ousterhout&#39;s &quot;eliminate complexity&quot; vs &quot;encapsulate complexity&quot; framing is at the code level. How does this map to architectural decisions where we cannot fully encapsulate — e.g., distributed transactions, shared databases? The architectural equivalents may be: eliminate coupling (service decomposition) vs encapsulate it (abstraction layers like API gateways, service meshes).</p>
 </blockquote>
-<h3>Chapter 2 — The Nature of Complexity</h3>
+<h3 id="chapter-2-the-nature-of-complexity">Chapter 2 — The Nature of Complexity</h3>
 <p><strong>Definition:</strong> complexity = anything making a system hard to understand and modify. Weighted by developer time spent: <code>C = Σ(cp × tp)</code>. Complexity concentrated in rarely-touched code is nearly harmless — isolate it there if you can&#39;t eliminate it.</p>
 <p><strong>Three symptoms:</strong></p>
 <ul>
@@ -370,13 +381,13 @@
 <li><strong>Obscurity</strong> — important information not obvious (generic names, undocumented units, inconsistency, hidden dependencies); extensive documentation is a red flag the design needs improvement</li>
 </ul>
 <p><strong>Complexity is incremental:</strong> not one catastrophic error — accumulation of hundreds of small dependencies and obscurities. Requires zero-tolerance philosophy.</p>
-<h3>Chapter 3 — Working Code Isn&#39;t Enough (Strategic vs. Tactical)</h3>
+<h3 id="chapter-3-working-code-isn39t-enough-strategic-vs-tactical">Chapter 3 — Working Code Isn&#39;t Enough (Strategic vs. Tactical)</h3>
 <p><strong>Tactical programming:</strong> focus on working code as fast as possible; adds small complexities that accumulate; the <em>tactical tornado</em> ships fast but leaves structural destruction behind.</p>
 <p><strong>Strategic programming:</strong> primary goal is a great design that also happens to work; investment mindset; fix design problems when discovered, don&#39;t patch around them.</p>
 <p><strong>Investment level:</strong> 10–20% of total development time recommended. Estimated payback: 6–18 months (Ousterhout&#39;s opinion; no controlled data). After payback, future investment is funded by the time saved.</p>
 <p><strong>Technical debt reframing:</strong> tactical programming borrows time from the future; unlike financial debt, most technical debt is never fully repaid.</p>
 <p><strong>Case studies:</strong> Facebook (&quot;Move fast and break things&quot;) → tactical; code degraded; eventually forced to shift culture. Google/VMware → strategic from the start; strong technical culture attracted top engineers.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;The most fundamental problem in computer science is problem decomposition: how to take a complex problem and divide it up into pieces that can be solved independently.&quot; (Preface)</p>
 </blockquote>
@@ -389,7 +400,7 @@
 <blockquote>
 <p>&quot;The overall goal is to reduce complexity; this is more important than any particular principle or idea you read here.&quot; (Preface)</p>
 </blockquote>
-<h3>Chapter 4 — Modules Should Be Deep</h3>
+<h3 id="chapter-4-modules-should-be-deep">Chapter 4 — Modules Should Be Deep</h3>
 <p><strong>Modular design</strong> decomposes a system into relatively independent modules, each with an interface and an implementation. Developers must know the interfaces of modules they call, but not their implementations. The goal: minimise dependencies between modules.</p>
 <p><strong>Abstractions</strong> are simplified views of entities that omit unimportant details. Two failure modes: (1) including unimportant details — increases cognitive load unnecessarily; (2) omitting important details — creates a <em>false abstraction</em> that looks simple but isn&#39;t. The key skill is identifying what is genuinely important.</p>
 <p><strong>Deep modules</strong> have simple interfaces hiding substantial implementation complexity. The Unix I/O interface (5 system calls — <code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, <code>close</code>) hides hundreds of thousands of lines of code. A garbage collector has no interface at all. Cost/benefit framing: <em>benefit</em> = functionality provided; <em>cost</em> = interface complexity imposed on the rest of the system.</p>
@@ -399,7 +410,7 @@
 <blockquote>
 <p><strong>Open question:</strong> Ousterhout&#39;s classitis critique targets a specific Java cultural norm. Does it apply equally to functional programming styles where functions are the unit? The deep/shallow distinction translates directly — a function with a complex signature hiding little logic is shallow — but the cultural context differs.</p>
 </blockquote>
-<h3>Chapter 5 — Information Hiding (and Leakage)</h3>
+<h3 id="chapter-5-information-hiding-and-leakage">Chapter 5 — Information Hiding (and Leakage)</h3>
 <p>Information hiding (Parnas, 1972) is the key technique for creating deep modules. Each module encapsulates design decisions in its implementation that are invisible to its interface. Hidden information includes: data structures and algorithms, physical storage layouts, network protocol implementations, scheduling policies, encoding formats.</p>
 <p>Information hiding reduces complexity two ways: (1) simpler interface → lower cognitive load; (2) no external dependencies on hidden information → design changes affect only the enclosing module.</p>
 <p><strong>Important distinction:</strong> private fields ≠ information hiding. Getter/setter methods expose private fields just as effectively as public access. True information hiding means the information is irrelevant to external callers.</p>
@@ -412,7 +423,7 @@
 <li>Defaults are a form of partial information hiding: common case is simple; rare overrides are accessible through explicit calls</li>
 </ul>
 <p><strong>Red Flags introduced:</strong> Information Leakage, Temporal Decomposition, Overexposure.</p>
-<h3>Chapter 6 — General-Purpose Modules are Deeper</h3>
+<h3 id="chapter-6-general-purpose-modules-are-deeper">Chapter 6 — General-Purpose Modules are Deeper</h3>
 <p>Over-specialization is identified as the single greatest cause of complexity. Specialisation forces abstractions related to one layer&#39;s concerns to leak into lower layers, producing information leakage and shallow modules.</p>
 <p><strong>Sweet spot:</strong> &quot;somewhat general-purpose&quot; — functionality reflects current needs, but the interface should be general enough to support multiple uses. The <em>implementation</em> is built for today; the <em>interface</em> is not tied to today&#39;s use cases.</p>
 <p><strong>Worked example — text editor text class:</strong></p>
@@ -435,7 +446,7 @@
 <li>In how many situations will this method be used? (single-use = red flag)</li>
 <li>Is this API easy to use for current needs? (too general = wrong)</li>
 </ol>
-<h3>Chapter 7 — Different Layer, Different Abstraction</h3>
+<h3 id="chapter-7-different-layer-different-abstraction">Chapter 7 — Different Layer, Different Abstraction</h3>
 <p>Each layer in a well-designed system provides a <em>different abstraction</em> from the layers above and below it. Adjacent layers with similar abstractions are a red flag indicating class decomposition problems.</p>
 <p><strong>Pass-through methods</strong>: methods that do nothing except invoke another method with the same or similar signature. They make classes shallower (add interface cost, contribute no functionality) and create dependencies between layers. Red flag: Pass-Through Method. Fix options: expose lower-level class directly to callers, redistribute responsibilities between classes, or merge the classes.</p>
 <p>Exception: methods with the same signature are legitimate when each provides distinct and useful functionality — dispatchers (choosing which method to invoke), and multiple implementations of the same interface (e.g., disk drivers). These are the same layer, not pass-through between layers.</p>
@@ -443,7 +454,7 @@
 <p><strong>Interface vs. implementation</strong>: a class whose interface closely mirrors its implementation is probably shallow. Text class example: internal representation is lines; good interface is character-oriented (<code>insert(position, string)</code>, <code>delete(start, end)</code>); the interface encapsulates the complexity of line splitting and joining.</p>
 <p><strong>Pass-through variables</strong>: variables passed down a long chain of methods even though intermediate methods don&#39;t use them. They force all intermediaries to know about the variable&#39;s existence. Solutions: (1) store in an existing shared object; (2) global variable (avoid — breaks multiple-instance testing); (3) <strong>context object</strong> — stores all application-global state in one object per system instance; passed to constructors, held as instance variable; enables multiple instances; simplifies testing. Downside: can become a grab-bag if undisciplined; best when variables are immutable.</p>
 <p><strong>Core principle:</strong> Every design element added to a system must eliminate more complexity than it introduces. Pass-through methods and pass-through variables add complexity without contributing functionality.</p>
-<h3>Chapter 8 — Pull Complexity Downwards</h3>
+<h3 id="chapter-8-pull-complexity-downwards">Chapter 8 — Pull Complexity Downwards</h3>
 <p>When a module encounters unavoidable complexity, it should absorb it internally rather than pushing it up to callers. Rationale: a module has far more callers than developers; a simple interface is more important than a simple implementation.</p>
 <p><strong>Anti-patterns that push complexity upward:</strong></p>
 <ul>
@@ -452,7 +463,7 @@
 </ul>
 <p><strong>Configuration parameters:</strong> legitimate when different deployments genuinely have different needs, or when users know their workload better than the system can. But overused — in many cases the module can determine a better value automatically (e.g. a network protocol computing retry interval from observed latency rather than requiring explicit configuration). Rule: before exporting a parameter, ask &quot;can the user determine a better value than we can?&quot; Provide sensible defaults; each module should solve its problem completely.</p>
 <p><strong>When to pull down:</strong> (a) the complexity is closely related to the module&#39;s existing functionality, (b) pulling down simplifies elsewhere, (c) pulling down simplifies the interface. Don&#39;t pull down UI concerns into a text class just because it moves code somewhere — it creates information leakage without reducing overall complexity.</p>
-<h3>Chapter 9 — Better Together or Better Apart?</h3>
+<h3 id="chapter-9-better-together-or-better-apart">Chapter 9 — Better Together or Better Apart?</h3>
 <p>The fundamental decomposition question at every level. The goal: reduce overall system complexity, not reduce the size of individual components.</p>
 <p><strong>Subdivision creates its own complexity:</strong> more interfaces to learn; more management code; separation makes it harder to see related things together; potential duplication.</p>
 <p><strong>Indications code belongs together:</strong> shares information; used together bidirectionally; overlapping conceptual category; can&#39;t understand one without the other.</p>
@@ -471,7 +482,7 @@
 <p><strong>Splitting methods:</strong> length alone is rarely a good reason to split. Developers split too much. A long method containing sequential independent blocks may be fine; readers can read it block by block. Depth matters more than length. Two legitimate splits: (a) extracting a general-purpose subtask (the child can stand alone without knowledge of the parent); (b) splitting into two distinct public methods when the original had too complex an interface. Red Flag: Conjoined Methods — if you must read two methods together to understand either one, the split was wrong.</p>
 <p><strong>Explicit disagreement with Clean Code (Robert Martin):</strong> Martin argues functions should be extremely short (&lt; 10 lines, indent ≤ 2). Ousterhout disagrees: &quot;Depth is more important than length: first make functions deep, then try to make them short enough to be easily read. Don&#39;t sacrifice depth for length.&quot; More functions = more interfaces = more cognitive load; excessively small functions produce conjoined functions that must be read together.</p>
 <p><strong>Decision rule:</strong> &quot;Pick the structure that results in the best information hiding, the fewest dependencies, and the deepest interfaces.&quot;</p>
-<h3>Chapter 10 — Define Errors Out Of Existence</h3>
+<h3 id="chapter-10-define-errors-out-of-existence">Chapter 10 — Define Errors Out Of Existence</h3>
 <p>Exceptions are one of the worst sources of complexity. Exception handling code is harder to write than normal-case code, harder to test (exceptions rarely fire; &quot;code that hasn&#39;t been executed doesn&#39;t work&quot;), verbose, and exception-handling code generates its own secondary exceptions. Empirical finding: &gt;90% of catastrophic failures in distributed data-intensive systems were caused by incorrect error handling (Yuan et al., 2014 USENIX OSDI).</p>
 <p>Exceptions thrown by a class are part of its interface; classes with many exceptions are shallower.</p>
 <p><strong>Four techniques for reducing exception handlers:</strong></p>
@@ -486,12 +497,12 @@
 </li>
 </ol>
 <p>Limit: information that callers genuinely need must be exposed. Exception hiding that denies callers essential information is a violation of information hiding in the wrong direction.</p>
-<h3>Chapter 11 — Design It Twice</h3>
+<h3 id="chapter-11-design-it-twice">Chapter 11 — Design It Twice</h3>
 <p>Software design is hard; first ideas are rarely best. &quot;Design it twice&quot;: consider multiple alternatives for every major design decision before committing. Pick radically different alternatives — even if you&#39;re sure about one, sketch a second option. Evaluating two bad alternatives teaches you what makes designs good or bad.</p>
 <p>Evaluation criteria: ease of use for higher-level software; interface simplicity; generality; implementation efficiency. Best choice may be one alternative or a synthesis of features from several.</p>
 <p>Apply at all levels: interface, implementation, module decomposition. Time investment is small relative to implementation time. Design-it-twice also improves design skills over time — it is deliberate practice in design judgment.</p>
 <p><strong>Smart people&#39;s trap:</strong> habituated to &quot;first quick idea is sufficient&quot; from academic environments where problems are easy. This breaks down for genuinely hard problems. &quot;It isn&#39;t that you aren&#39;t smart; it&#39;s that the problems are really hard.&quot;</p>
-<h3>Chapter 12 — Why Write Comments? The Four Excuses</h3>
+<h3 id="chapter-12-why-write-comments-the-four-excuses">Chapter 12 — Why Write Comments? The Four Excuses</h3>
 <p>Comments are essential for abstractions. Without comments, the only abstraction of a method is its declaration — which is missing most of the essential information a caller needs. If users must read the code to use a module, there is no abstraction: all the complexity is exposed.</p>
 <p><strong>Four excuses debunked:</strong></p>
 <ol>
@@ -502,7 +513,7 @@
 </ol>
 <p><strong>Benefits:</strong> capture design information that can&#39;t be represented in code; reduce cognitive load; eliminate unknown unknowns; clarify dependencies; fill gaps to reduce obscurity.</p>
 <p><strong>Explicit disagreement with Clean Code (Martin):</strong> Martin argues comments are &quot;always failures&quot; and advocates replacing comments with extracted methods named to replace the comment. Ousterhout: this produces shallow code (methods broken into tiny pieces for readability) and long cryptic names like <code>isLeastRelevantMultipleOfNextLargerPrimeFactor</code>. Comments represent a fundamentally different kind of information than code; even if comments could be captured in code, it&#39;s unclear that would be better.</p>
-<h3>Chapter 13 — Comments Should Describe Things That Aren&#39;t Obvious From the Code</h3>
+<h3 id="chapter-13-comments-should-describe-things-that-aren39t-obvious-from-the-code">Chapter 13 — Comments Should Describe Things That Aren&#39;t Obvious From the Code</h3>
 <p><strong>Guiding principle:</strong> comments should describe things not obvious from the code — to someone reading the code for the first time.</p>
 <p><strong>Comment categories:</strong> interface (class/method abstraction), data structure member, implementation, cross-module. Interface and data structure member comments are most important; every class, variable, and method should have one.</p>
 <p><strong>Don&#39;t repeat the code:</strong> comments at the same level of detail as the code are worthless. A comment that could be written by looking at the code without understanding it adds no value. Red Flag: Comment Repeats Code.</p>
@@ -512,7 +523,7 @@
 <p>Red Flag: Implementation Documentation Contaminates Interface — interface comment describes implementation details not needed to use the module.</p>
 <p><strong>Implementation comments (what and why, not how):</strong> most short methods don&#39;t need implementation comments. For longer methods, add a comment before each major block describing what it does at a high level. Explain <em>why</em> for tricky code (hidden constraints, bug fix context). Focus on what variables <em>represent</em>, not how they&#39;re manipulated.</p>
 <p><strong>Cross-module design decisions:</strong> difficult because there&#39;s no obvious central place. Best option: a <code>designNotes</code> file with clearly labeled sections and short cross-reference comments at each relevant code location (&quot;See &#39;Zombies&#39; in designNotes&quot;).</p>
-<h3>Chapter 14 — Choosing Names</h3>
+<h3 id="chapter-14-choosing-names">Chapter 14 — Choosing Names</h3>
 <p>Names are a form of abstraction and a form of documentation. Poor name choices create obscurity — one of the two causes of complexity. The Sprite OS distributed file system bug: the variable <code>block</code> used for both physical disk blocks and logical file blocks caused data corruption that took six months to track down.</p>
 <p><strong>Good names have two properties: precision and consistency.</strong></p>
 <p><strong>Precision:</strong> choose names that allow readers to correctly guess the entity&#39;s meaning without seeing its declaration, documentation, or usage. Red Flag: Vague Name — if the name is broad enough to refer to many things, it conveys little information. Red Flag: Hard to Pick Name — if it&#39;s hard to find a precise name, the underlying entity may not have a clear design (use this as a signal to reconsider the design).</p>
@@ -520,7 +531,7 @@
 <p><strong>Avoid extra words:</strong> no generic nouns (<code>fileObject</code> — <code>Object</code> adds nothing); no Hungarian Notation (type information in names); no class name repetition in instance variable names.</p>
 <p><strong>Distance rule:</strong> the greater the distance between a name&#39;s declaration and its use, the longer the name should be. Loop variables <code>i</code> and <code>j</code> are fine at short scope; at longer scope, use descriptive names.</p>
 <p><strong>Disagreement with Go style:</strong> Go advocates extremely short names (<code>b</code>, <code>i</code>, <code>n</code>); Ousterhout argues these create ambiguity and should be judged by readers, not writers. The more important Go insight: consistent usage is what makes short names workable, not the brevity itself.</p>
-<h3>Chapter 15 — Write The Comments First</h3>
+<h3 id="chapter-15-write-the-comments-first">Chapter 15 — Write The Comments First</h3>
 <p>Write comments at the beginning of the design process, not at the end. Delayed comments are rarely written; when they are, the design rationale is forgotten and the comments just repeat the code.</p>
 <p><strong>Ousterhout&#39;s comments-first approach:</strong></p>
 <ol>
@@ -540,7 +551,7 @@
 <p><strong>Comments are a design tool:</strong> writing an interface comment forces you to identify the essence of a method — what callers need to know. This is design work, not documentation work. Comments are the only way to fully capture abstractions.</p>
 <p><strong>Canary in the coal mine of complexity:</strong> if a method&#39;s interface comment is long and complicated, the method has a complex interface (shallow module). Simple comment = good abstraction. If the interface comment must describe all the major features of the implementation, the method is shallow. Red Flag: Hard to Describe.</p>
 <p><strong>Cost argument:</strong> comments are only ~5% of total development time. Writing comments first doesn&#39;t meaningfully increase cost; it likely saves time by stabilising abstractions earlier and reducing code rework.</p>
-<h3>Chapter 16 — Modifying Existing Code</h3>
+<h3 id="chapter-16-modifying-existing-code">Chapter 16 — Modifying Existing Code</h3>
 <p>A system&#39;s design is determined more by changes made during its evolution than by any initial conception. The &quot;minimal change to fix the bug&quot; mindset is tactical programming applied to modifications — each minimal change introduces a small complexity, and they accumulate.</p>
 <p><strong>Stay strategic when modifying code.</strong> Ideal standard: when a change is finished, the system should have the structure it would have had if it had been designed from scratch with that change in mind. If not, refactor. &quot;If you&#39;re not making the design better, you are probably making it worse.&quot;</p>
 <p><strong>Maintaining comments during code changes:</strong></p>
@@ -552,7 +563,7 @@
 <li><strong>Pre-commit diff scan</strong> — review all changes before committing; ensure each change is reflected in documentation</li>
 <li><strong>Higher-level comments are easier to maintain</strong> — abstract comments aren&#39;t affected by minor code changes; only changes in overall behaviour require updating them</li>
 </ul>
-<h3>Chapter 17 — Consistency</h3>
+<h3 id="chapter-17-consistency">Chapter 17 — Consistency</h3>
 <p>Consistency creates cognitive leverage: learn something once, apply that knowledge everywhere it appears. Consistent patterns are safe to rely on; inconsistent patterns force developers to learn each situation separately and create risk that similar-looking things behave differently.</p>
 <p><strong>Applies at many levels:</strong> naming (ch. 14), coding style, interfaces with multiple implementations, design patterns, invariants (properties always true of a variable or structure — reduce special cases).</p>
 <p><strong>Ensuring consistency:</strong></p>
@@ -563,7 +574,7 @@
 <li><strong>Don&#39;t change existing conventions</strong> unless (1) there is significant new information and (2) the improvement is large enough to justify updating all existing uses completely; incomplete transitions are worse than a suboptimal but consistent convention</li>
 </ul>
 <p><strong>Limit:</strong> don&#39;t force dissimilar things to appear similar. Consistency only provides benefit if developers can trust that &quot;if it looks like an x, it really is an x.&quot;</p>
-<h3>Chapter 18 — Code Should Be Obvious</h3>
+<h3 id="chapter-18-code-should-be-obvious">Chapter 18 — Code Should Be Obvious</h3>
 <p>Obscurity (one of the two causes of complexity) occurs when important information is not obvious to new developers. Obviousness is reader-perceived, not writer-perceived — code reviews are the best way to determine whether code is obvious.</p>
 <p><strong>Things that make code more obvious:</strong> precise names (ch. 14), consistency (ch. 17), judicious whitespace (blank lines between major phases; whitespace within statements), comments when unavoidable non-obvious code appears.</p>
 <p><strong>Things that make code less obvious:</strong></p>
@@ -575,20 +586,20 @@
 </ul>
 <p>Red Flag: Nonobvious Code.</p>
 <p><strong>Three ways to make information available to readers:</strong> (1) reduce needed information through abstraction and eliminating special cases; (2) exploit knowledge readers already have (conventions, familiar patterns); (3) present information directly in names and comments.</p>
-<h3>Chapter 19 — Software Trends</h3>
+<h3 id="chapter-19-software-trends">Chapter 19 — Software Trends</h3>
 <p><strong>OOP and inheritance:</strong> Private methods and variables support information hiding. Interface inheritance is good — reuses the same interface for multiple implementations; more implementations = deeper interface. Implementation inheritance creates dependencies: parent instance variables are accessed by both parent and child; information leaks across the hierarchy; changes require examining all subclasses. Prefer composition over implementation inheritance. If you must use implementation inheritance, separate parent-managed state from subclass-managed state using information hiding within the hierarchy.</p>
 <p><strong>Agile development:</strong> Incremental development is right — good design can&#39;t be fully envisioned upfront. Risk: agile&#39;s feature focus encourages tactical programming and deferring design decisions. The increment should be an <em>abstraction</em>, not a <em>feature</em>. Once you need an abstraction, design it cleanly and completely.</p>
 <p><strong>Unit tests:</strong> Facilitate refactoring — without a test suite, developers avoid structural changes, complexity accumulates. Unit tests provide higher code coverage than system tests.</p>
 <p><strong>TDD:</strong> Ousterhout is a strong advocate for unit tests but not TDD. TDD is &quot;tactical programming pure and simple&quot; — focuses on making tests pass rather than finding the best design; creates abstractions in pieces rather than designing them completely. Exception: write the test first when fixing bugs (the failing test proves the bug existed and the passing test proves it&#39;s fixed).</p>
 <p><strong>Design patterns:</strong> Good when they fit; risk is over-application. Not every problem fits an existing pattern; forcing a pattern onto a problem that doesn&#39;t fit creates complexity.</p>
 <p><strong>Getters and setters:</strong> Expose instance variables, violating information hiding; are shallow methods; add interface clutter. Better to avoid exposing implementation data entirely. If exposure is necessary, getter/setter at least provides extensibility without changing the interface. The Java cultural norm of universal getter/setter usage is an example of a pattern taken too far.</p>
-<h3>Chapter 20 — Designing for Performance</h3>
+<h3 id="chapter-20-designing-for-performance">Chapter 20 — Designing for Performance</h3>
 <p>Clean design and high performance are compatible — the chapter demonstrates a refactoring of the RAMCloud Buffer class that achieved 2× speedup while reducing code by 20%.</p>
 <p><strong>Strategy:</strong> Develop awareness of fundamentally expensive operations (network round-trip: 10–50µs; disk I/O: 5–10ms; dynamic memory allocation; cache misses from DRAM). Choose designs that avoid these by default. Simpler code tends to run faster: no code for eliminated special cases; deep modules reduce layer crossings.</p>
 <p><strong>Two anti-patterns to avoid:</strong> premature micro-optimisation (slows development, adds complexity, rarely helps); completely ignoring performance (&quot;death by a thousand cuts&quot; — 5–10× slowdown with no single fix).</p>
 <p><strong>When performance matters:</strong> measure first (programmer intuitions are unreliable); identify the specific slow paths, not just overall performance; measure after changes to verify improvement — revert if no measurable gain.</p>
 <p><strong>Design around the critical path:</strong> identify the minimum code that must execute in the common case; eliminate special-case checks from the critical path (combine multiple conditions into a single test at the start); aim for fundamental fixes (caches, algorithms) before micro-optimisation. The ideal: single test at the start, then the critical path executes without further branching.</p>
-<h3>Chapter 21 — Decide What Matters</h3>
+<h3 id="chapter-21-decide-what-matters">Chapter 21 — Decide What Matters</h3>
 <p>The unifying principle behind everything in the book: structure software systems around the things that matter; hide and minimise things that don&#39;t.</p>
 <p><strong>This is what abstractions do:</strong> interface exposes what matters to callers; implementation hides what doesn&#39;t. Naming: choose words that convey the most information. Performance: design structure around the critical path.</p>
 <p><strong>How to identify what matters:</strong> look for leverage — one solution that solves many problems, one piece of information that makes many other things easy to understand. General-purpose interfaces provide more leverage than special-purpose ones.</p>
@@ -596,7 +607,7 @@
 <p><strong>Emphasise what matters:</strong> prominence (interface documentation, names, method parameters); repetition (key ideas appear repeatedly); centrality (the things that matter most determine the structure of everything around them).</p>
 <p><strong>Two mistakes:</strong> (1) treating too many things as important — adds complexity and cognitive load; shallow classes result from over-exposure; (2) failing to recognise something important — hidden information that should be visible; unknown unknowns.</p>
 <p>&quot;Good taste&quot; = the ability to distinguish what matters from what doesn&#39;t.</p>
-<h3>Chapter 22 — Conclusion</h3>
+<h3 id="chapter-22-conclusion">Chapter 22 — Conclusion</h3>
 <blockquote>
 <p>&quot;This book is about one thing: complexity. Dealing with complexity is the most important challenge in software design.&quot;</p>
 </blockquote>
@@ -620,7 +631,7 @@
 <li>Separate what matters from what doesn&#39;t matter and emphasise the things that matter</li>
 </ol>
 <p>The book&#39;s Red Flags (from the end matter): Shallow Module, Information Leakage, Temporal Decomposition, Overexposure, Pass-Through Method, Repetition, Special-General Mixture, Conjoined Methods, Comment Repeats Code, Implementation Documentation Contaminates Interface, Vague Name, Hard to Pick Name, Hard to Describe, Nonobvious Code.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/software-complexity.html">Software Complexity</a> — Ousterhout&#39;s full complexity definition, symptoms, and causes (ch. 2)</li>
 <li><a href="../concepts/modularity.html">Modularity</a> — deep vs shallow modules, information hiding at the module level (ch. 4–5)</li>

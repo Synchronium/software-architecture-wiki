@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#automation-vs-autonomy">Automation vs Autonomy</a></li><li><a href="#the-automation-hierarchy">The Automation Hierarchy</a></li><li><a href="#benefits-of-automation">Benefits of Automation</a></li><li><a href="#safety-properties-of-automation">Safety Properties of Automation</a></li><li><a href="#organisational-incentives">Organisational Incentives</a></li><li><a href="#case-study-mysql-on-borg">Case Study: MySQL on Borg</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Automation is meta-software — software that acts on software or infrastructure to replace manual operational procedures. In SRE, it is the primary mechanism for reducing <a href="../operations/site-reliability-engineering.html">toil</a> and achieving sublinear scaling of operational work relative to service growth. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 7)</p>
-<h2>Automation vs Autonomy</h2>
+<h2 id="automation-vs-autonomy">Automation vs Autonomy</h2>
 <p>Automation replaces a manual procedure with a script or tool that a human triggers. Autonomy goes further: the system detects its own problems and resolves them without human initiation. SRE&#39;s goal is not automation but autonomy — a system that requires neither manual operation nor external automation because it has been designed to handle failures internally.</p>
 <blockquote>
 <p>&quot;Reliability is the fundamental feature, and autonomous, resilient behaviour is one useful way to get that.&quot; (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 7)</p>
 </blockquote>
-<h2>The Automation Hierarchy</h2>
+<h2 id="the-automation-hierarchy">The Automation Hierarchy</h2>
 <p>Five levels of maturity, from least to most autonomous (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 7):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -353,7 +364,7 @@
 </tr>
 </tbody></table></div>
 <p>Level 5 — autonomy — is the target. Levels 2 and 3 suffer from bit rot: externally maintained automation drifts away from the systems it manages because it is maintained by a different team with different incentives and tested infrequently.</p>
-<h2>Benefits of Automation</h2>
+<h2 id="benefits-of-automation">Benefits of Automation</h2>
 <ul>
 <li><strong>Consistency</strong>: humans performing the same procedure many times will inevitably diverge; automation does not.</li>
 <li><strong>Platform extensibility</strong>: a bug fixed in automation is fixed everywhere; new use cases can be added without retraining humans.</li>
@@ -361,7 +372,7 @@
 <li><strong>Faster action</strong>: in time-critical scenarios (failover, traffic switching), automation reacts faster than humans.</li>
 <li><strong>Time savings that compound</strong>: once encapsulated, any engineer can execute the task; the saving applies to everyone.</li>
 </ul>
-<h2>Safety Properties of Automation</h2>
+<h2 id="safety-properties-of-automation">Safety Properties of Automation</h2>
 <p>Automation operating at scale can amplify mistakes catastrophically. The Diskerase incident at Google — where decommission automation interpreted an empty machine set as &quot;all machines&quot; and wiped the disks of every CDN machine in every colo — illustrates the failure mode. Required safety properties:</p>
 <ul>
 <li><strong>Rate limiting</strong>: automation should refuse to act on more than N resources at once, regardless of what the input set says.</li>
@@ -369,7 +380,7 @@
 <li><strong>Sanity checks</strong>: validate that the scope of the operation makes sense before executing (e.g., &quot;this set of machines to erase is unexpectedly large — confirm?&quot;).</li>
 <li><strong>Audit trails</strong>: all automated actions should be logged with the initiator, parameters, and outcome.</li>
 </ul>
-<h2>Organisational Incentives</h2>
+<h2 id="organisational-incentives">Organisational Incentives</h2>
 <p>The most functional automation is written by those who use it. When a specialist &quot;turnup team&quot; is responsible for automation that service teams depend on:</p>
 <ul>
 <li>The turnup team has no incentive to reduce technical debt for the services they support.</li>
@@ -377,7 +388,7 @@
 <li>Product managers have no incentive to prioritise simplicity over features, because they don&#39;t bear the cost of complex automation.</li>
 </ul>
 <p>The SRE model corrects this: service teams own their automation. The same argument motivates product developers retaining operational awareness — they bear the cost of systems that are hard to operate automatically.</p>
-<h2>Case Study: MySQL on Borg</h2>
+<h2 id="case-study-mysql-on-borg">Case Study: MySQL on Borg</h2>
 <p>Google&#39;s Ads database ran on MySQL. When migrated to Borg, tasks moved frequently — requiring failovers more than once per week per shard. Manual failover took 30–90 minutes; meeting error budgets required sub-30-second failover. The only solution was to automate failover entirely (the &quot;Decider&quot; daemon). Outcomes:</p>
 <ul>
 <li>Toil reduced by ~95%</li>
@@ -385,7 +396,7 @@
 <li>Error budgets achievable; on-call load dramatically reduced</li>
 </ul>
 <p>This is the canonical example of automation making the error budget possible, rather than just making existing operations faster.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a> — the engineering discipline in which automation is a first-class obligation</li>
 <li><a href="../operations/error-budgets.html">Error Budgets</a> — automation is often the only path to meeting error budgets at scale</li>

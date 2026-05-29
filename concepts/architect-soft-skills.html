@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,29 +309,43 @@
       <h1>Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/soft-skills.html">soft-skills</a></li><li><a class="tag-chip" href="../tags/leadership.html">leadership</a></li><li><a class="tag-chip" href="../tags/negotiation.html">negotiation</a></li><li><a class="tag-chip" href="../tags/diagramming.html">diagramming</a></li><li><a class="tag-chip" href="../tags/career.html">career</a></li><li><a class="tag-chip" href="../tags/teams.html">teams</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Richards &amp; Ford assert that approximately <strong>50% of being an effective software architect is soft skills</strong> — negotiation, leadership, facilitation, and communication. This page consolidates the key concepts from Part III of <em>Fundamentals of Software Architecture</em> (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 21–24).</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#diagramming-architecture">Diagramming Architecture</a></li><li class="toc-sub"><a href="#representational-consistency">Representational Consistency</a></li><li class="toc-sub"><a href="#irrational-artifact-attachment">Irrational Artifact Attachment</a></li><li class="toc-sub"><a href="#diagramming-tool-capabilities">Diagramming Tool Capabilities</a></li><li class="toc-sub"><a href="#formal-diagramming-standards">Formal Diagramming Standards</a></li><li class="toc-sub"><a href="#diagram-construction-guidelines">Diagram Construction Guidelines</a></li><li><a href="#presenting-architecture">Presenting Architecture</a></li><li class="toc-sub"><a href="#two-information-channels">Two Information Channels</a></li><li class="toc-sub"><a href="#incremental-builds">Incremental Builds</a></li><li class="toc-sub"><a href="#infodecks-vs-presentations">Infodecks vs Presentations</a></li><li class="toc-sub"><a href="#invisibility-pattern">Invisibility Pattern</a></li><li><a href="#making-teams-effective">Making Teams Effective</a></li><li class="toc-sub"><a href="#architect-personality-types">Architect Personality Types</a></li><li class="toc-sub"><a href="#elastic-leadership-five-factors">Elastic Leadership — Five Factors</a></li><li class="toc-sub"><a href="#three-team-warning-signs">Three Team Warning Signs</a></li><li class="toc-sub"><a href="#checklists">Checklists</a></li><li class="toc-sub"><a href="#providing-guidance-via-design-principles">Providing Guidance via Design Principles</a></li><li><a href="#negotiation-and-leadership">Negotiation and Leadership</a></li><li class="toc-sub"><a href="#negotiating-with-business-stakeholders">Negotiating with Business Stakeholders</a></li><li class="toc-sub"><a href="#negotiating-with-other-architects">Negotiating with Other Architects</a></li><li class="toc-sub"><a href="#negotiating-with-developers">Negotiating with Developers</a></li><li class="toc-sub"><a href="#the-4-c39s-of-architecture">The 4 C&#39;s of Architecture</a></li><li class="toc-sub"><a href="#essential-vs-accidental-complexity">Essential vs Accidental Complexity</a></li><li class="toc-sub"><a href="#pragmatic-yet-visionary">Pragmatic Yet Visionary</a></li><li class="toc-sub"><a href="#leading-teams-by-example">Leading Teams by Example</a></li><li class="toc-sub"><a href="#meeting-management">Meeting Management</a></li><li><a href="#career-development">Career Development</a></li><li class="toc-sub"><a href="#the-20-minute-rule">The 20-Minute Rule</a></li><li class="toc-sub"><a href="#personal-technology-radar">Personal Technology Radar</a></li><li class="toc-sub"><a href="#technology-portfolio-diversification">Technology Portfolio Diversification</a></li><li class="toc-sub"><a href="#social-networks-for-learning">Social Networks for Learning</a></li><li class="toc-sub"><a href="#architecture-katas">Architecture Katas</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Richards &amp; Ford assert that approximately <strong>50% of being an effective software architect is soft skills</strong> — negotiation, leadership, facilitation, and communication. This page consolidates the key concepts from Part III of <em>Fundamentals of Software Architecture</em> (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 21–24).</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Diagrams have two channels: verbal and visual.</strong> Overloading one (Bullet-Riddled Corpse) starves the other. Use incremental builds, the Invisibility pattern (black slide to focus on the speaker), and distinct shape vocabularies. Solid lines = synchronous, dotted = asynchronous.</li>
+<li><strong>Three diagram-tool capabilities matter.</strong> Layers (show/hide control), stencils (reusable composite library), magnets (snap-to alignment). Master these in one tool; the choice of tool matters less than fluency.</li>
+<li><strong>Architect personality types map to boundary choices.</strong> Control Freak (too tight), Armchair Architect (too loose), Effective Architect (right amount of guidance). The pull from developer to architect tilts toward Control Freak — architects miss low-level work and overcorrect.</li>
+<li><strong>Elastic leadership scales control to context.</strong> Five factors (team familiarity, size, experience, complexity, duration) determine how much control to exert. Counterintuitively, short projects need less control, not more.</li>
+<li><strong>Negotiate with grammar and data.</strong> Translate &quot;five nines&quot; into &quot;5 min 35 sec per year&quot;; ask whether the entire system or just the critical core needs that level. State cost and time last, not first.</li>
+<li><strong>The 4 C&#39;s defend against accidental complexity.</strong> Communication, collaboration, clarity, conciseness. The architect&#39;s job is to make the problem as simple as it can be, not to prove their worth by making it harder.</li>
+<li><strong>The 20-minute rule and personal technology radar build career durability.</strong> Move knowledge from &quot;stuff you don&#39;t know you don&#39;t know&quot; into &quot;stuff you know you don&#39;t know.&quot; Treat technology portfolio diversification as risk management.</li>
+</ul>
 <hr>
-<h2>Diagramming Architecture</h2>
-<h3>Representational Consistency</h3>
+<h2 id="diagramming-architecture">Diagramming Architecture</h2>
+<h3 id="representational-consistency">Representational Consistency</h3>
 <p>When drilling into a portion of an architecture, always first show the full topology and indicate where the detail fits within it. Prevents viewers from losing context about the scope of what is being described. One of the few near-universal conventions in technical diagramming.</p>
-<h3>Irrational Artifact Attachment</h3>
+<h3 id="irrational-artifact-attachment">Irrational Artifact Attachment</h3>
 <p>Attachment to an artifact is proportional to the time invested in producing it. If an architect spends two hours on a polished diagram, they are twice as reluctant to discard it as they would be if they had spent one hour. This creates resistance to necessary redesign.</p>
 <p><strong>Fix:</strong> use low-fidelity artifacts early — whiteboard, tablet sketch, sticky notes. Iterate quickly and discard freely. Only invest in polished diagramming tools once the design has stabilised through iteration. This is the Agile low-ceremony philosophy applied to architecture artifacts.</p>
-<h3>Diagramming Tool Capabilities</h3>
+<h3 id="diagramming-tool-capabilities">Diagramming Tool Capabilities</h3>
 <p>Three features architects should master in their tool of choice:</p>
 <ul>
 <li><strong>Layers:</strong> link elements logically for show/hide control. Enables hiding overwhelming detail and incrementally building diagrams during presentations.</li>
 <li><strong>Stencils/templates:</strong> reusable composite component library. Builds consistency across the organisation; new diagrams are faster to create.</li>
 <li><strong>Magnets:</strong> snap-to connection points on shapes. Provides automatic alignment and clean connection lines.</li>
 </ul>
-<h3>Formal Diagramming Standards</h3>
+<h3 id="formal-diagramming-standards">Formal Diagramming Standards</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -353,7 +374,7 @@
 <td>Enterprise-focused; less used for single-service design</td>
 </tr>
 </tbody></table></div>
-<h3>Diagram Construction Guidelines</h3>
+<h3 id="diagram-construction-guidelines">Diagram Construction Guidelines</h3>
 <ul>
 <li><strong>Titles:</strong> label all elements; use rotation and placement to make titles &quot;sticky&quot; to their shapes.</li>
 <li><strong>Lines:</strong> thick enough to read; arrows for directional flow. <strong>Solid lines = synchronous</strong> communication; <strong>dotted lines = asynchronous</strong> — one of the few near-universal conventions.</li>
@@ -363,15 +384,15 @@
 <li><strong>Key:</strong> include a key whenever shapes could be ambiguous. A misinterpreted diagram is worse than no diagram.</li>
 </ul>
 <hr>
-<h2>Presenting Architecture</h2>
-<h3>Two Information Channels</h3>
+<h2 id="presenting-architecture">Presenting Architecture</h2>
+<h3 id="two-information-channels">Two Information Channels</h3>
 <p>Presenters have two simultaneous information channels: <strong>verbal</strong> (what they say) and <strong>visual</strong> (what the slide shows). Overloading one channel starves the other.</p>
 <p><strong>Bullet-Riddled Corpse anti-pattern:</strong> slides full of text that the presenter then reads aloud. Audience reads everything instantly, then waits. Both channels say the same thing. No synergy.</p>
-<h3>Incremental Builds</h3>
+<h3 id="incremental-builds">Incremental Builds</h3>
 <p>Reveal graphical information progressively as you narrate, rather than showing everything at once. Maintains suspense; keeps the audience engaged.</p>
 <p><strong>Cookie-Cutter anti-pattern:</strong> ideas don&#39;t have a predetermined word count. Don&#39;t pad slides with content to fill space; equally, don&#39;t artificially compress a multi-slide idea onto one slide.</p>
 <p><strong>Manipulating time:</strong> use <em>transitions</em> (slide to slide) and <em>animations</em> (within a slide: build in, build out, actions) to control the pace of information revelation. Subtle dissolve transitions hide individual slide boundaries to tell a single unified story; a distinct transition (door, cube) signals the end of one topic and the beginning of another.</p>
-<h3>Infodecks vs Presentations</h3>
+<h3 id="infodecks-vs-presentations">Infodecks vs Presentations</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -396,11 +417,11 @@
 <td>Intentionally ~50% — the speaker provides the other 50%</td>
 </tr>
 </tbody></table></div>
-<h3>Invisibility Pattern</h3>
+<h3 id="invisibility-pattern">Invisibility Pattern</h3>
 <p>Insert a blank black slide to redirect all audience attention to the speaker. When the visual channel goes dark, the speaker becomes the only interesting thing in the room. Highly effective when making a critical point.</p>
 <hr>
-<h2>Making Teams Effective</h2>
-<h3>Architect Personality Types</h3>
+<h2 id="making-teams-effective">Making Teams Effective</h2>
+<h3 id="architect-personality-types">Architect Personality Types</h3>
 <p>Three archetypes, corresponding to the three team boundary types:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -431,7 +452,7 @@
 </tr>
 </tbody></table></div>
 <p>The transition from developer to architect creates a strong pull toward the Control Freak personality — architects miss doing the low-level work they used to do. The armchair personality emerges when architects are spread too thin across projects.</p>
-<h3>Elastic Leadership — Five Factors</h3>
+<h3 id="elastic-leadership-five-factors">Elastic Leadership — Five Factors</h3>
 <p>The amount of control to exert is determined by five factors (each scored −20 to +20; accumulated score indicates the appropriate personality):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -468,11 +489,11 @@
 </tr>
 </tbody></table></div>
 <p><strong>Counterintuitive point:</strong> short projects need <em>less</em> architectural control, not more. The tight deadline creates its own urgency. A control freak architect on a 2-month project just gets in the way. Long projects need more control — developers are relaxed and not thinking in terms of urgency. Re-evaluate all five factors throughout the project lifecycle.</p>
-<h3>Three Team Warning Signs</h3>
+<h3 id="three-team-warning-signs">Three Team Warning Signs</h3>
 <p><strong>1. Process loss (Brook&#39;s Law):</strong> the more people added to a project, the more time it takes (Fred Brooks, <em>The Mythical Man Month</em>). Actual productivity = group potential − process loss. Indicator: frequent merge conflicts (team members stepping on each other&#39;s code). Remedy: identify parallelism opportunities; question why a new person is being added.</p>
 <p><strong>2. Pluralistic ignorance:</strong> everyone publicly agrees to a norm while privately rejecting it, because each person assumes they are missing something obvious (&quot;The Emperor&#39;s New Clothes&quot;). Observable in meeting body language — people who look uncertain but don&#39;t speak up. Effective architects act as facilitators: proactively invite the hesitant person to share their perspective and support them when they do.</p>
 <p><strong>3. Diffusion of responsibility:</strong> as team size grows, individuals assume someone else will handle problems (the busy highway vs country road dynamic). Indicators: things being dropped, confusion about ownership. Smaller teams create stronger individual accountability.</p>
-<h3>Checklists</h3>
+<h3 id="checklists">Checklists</h3>
 <p>Checklists work only for processes without a strict sequential dependency between steps. Good candidates: multi-step processes that tend to have items skipped or forgotten. Not good candidates: sequential procedures with dependent steps (not a checklist — a procedure).</p>
 <p><strong>Hawthorne effect for enforcement:</strong> inform the team that all checklist items will be verified; in practice, only spot-check occasionally. People behave correctly when they believe they are observed.</p>
 <p><strong>Law of diminishing returns:</strong> more checklists → less likely developers use any of them. Keep checklists small. Automate any item that can be automated, then remove it from the checklist.</p>
@@ -482,7 +503,7 @@
 <li><strong>Unit and functional testing</strong> — edge cases, boundary values, special characters, unusual inputs. Add items whenever QA finds something new.</li>
 <li><strong>Software release</strong> — config changes, third-party libraries added, database migrations. Add items whenever a deployment fails.</li>
 </ol>
-<h3>Providing Guidance via Design Principles</h3>
+<h3 id="providing-guidance-via-design-principles">Providing Guidance via Design Principles</h3>
 <p>An effective architect creates a <em>box</em> — the constraints within which developers can make their own decisions. Use graphical representations of the box rather than lists of rules.</p>
 <p><strong>Library governance example (three categories):</strong></p>
 <ul>
@@ -495,8 +516,8 @@
 <p><strong>Story:</strong> A Scala enthusiast on a Java project was told he could use Scala if he could provide a business justification. The next day he returned — unable to find one — and transformed from a disruptive force into one of the best and most collaborative team members. (Mark Richards, Ch 22)</p>
 </blockquote>
 <hr>
-<h2>Negotiation and Leadership</h2>
-<h3>Negotiating with Business Stakeholders</h3>
+<h2 id="negotiation-and-leadership">Negotiation and Leadership</h2>
+<h3 id="negotiating-with-business-stakeholders">Negotiating with Business Stakeholders</h3>
 <p>Almost every architectural decision will be challenged. Three techniques:</p>
 <ol>
 <li><p><strong>Leverage grammar and buzzwords:</strong> &quot;zero downtime&quot; = availability; &quot;lightning fast&quot; = performance; &quot;I needed it yesterday&quot; = time to market. Use these clues to anchor the negotiation to what the stakeholder actually cares about.</p>
@@ -548,17 +569,17 @@
 <td>86 ms</td>
 </tr>
 </tbody></table></div>
-<h3>Negotiating with Other Architects</h3>
+<h3 id="negotiating-with-other-architects">Negotiating with Other Architects</h3>
 <p><strong>Demonstration defeats discussion:</strong> rather than arguing about REST vs messaging, run a performance comparison in a production-like environment and show the data. &quot;Every environment is different, which is why simply Googling it will never yield the correct answer.&quot;</p>
 <p><strong>Calm leadership always wins:</strong> when negotiations become personal or argumentative, pause and re-engage later. The architect who remains calm forces the other party to de-escalate.</p>
-<h3>Negotiating with Developers</h3>
+<h3 id="negotiating-with-developers">Negotiating with Developers</h3>
 <p>Avoid commanding voice (&quot;you must,&quot; &quot;you need to&quot;). Instead:</p>
 <ul>
 <li>State the justification first, then the constraint: &quot;Since change control is most important to us, we use a closed-layered architecture, which means all database calls must come from the business layer.&quot; The developer hears the reason before they hear the restriction — they&#39;re more likely to keep listening.</li>
 <li><strong>Have the developer arrive at the solution themselves:</strong> offer to use their preferred option if they can demonstrate it satisfies the constraints. Both outcomes are wins: either they discover the problem with their choice (and now own the decision to use the alternative) or they find a solution the architect missed.</li>
 </ul>
 <p><strong>Ivory Tower anti-pattern:</strong> architects who dictate from above without regard for developer concerns. Developers lose respect and team dynamics break down.</p>
-<h3>The 4 C&#39;s of Architecture</h3>
+<h3 id="the-4-c39s-of-architecture">The 4 C&#39;s of Architecture</h3>
 <p>The antidote to accidental complexity — a framework for effective architect communication:</p>
 <ul>
 <li><strong>Communication</strong> — clear, precise information exchange</li>
@@ -569,16 +590,16 @@
 <blockquote>
 <p>&quot;Developers are drawn to complexity like moths to a flame—frequently with the same result.&quot; — Neal Ford (Ch 23)</p>
 </blockquote>
-<h3>Essential vs Accidental Complexity</h3>
+<h3 id="essential-vs-accidental-complexity">Essential vs Accidental Complexity</h3>
 <ul>
 <li><strong>Essential complexity:</strong> the problem is genuinely hard (six nines availability = 31.5 seconds downtime/year).</li>
 <li><strong>Accidental complexity:</strong> the architect made the problem hard — to prove their worth, ensure they are included in discussions, or guarantee job security. The 4 C&#39;s guards against accidental complexity.</li>
 </ul>
-<h3>Pragmatic Yet Visionary</h3>
+<h3 id="pragmatic-yet-visionary">Pragmatic Yet Visionary</h3>
 <p><strong>Visionary:</strong> strategic thinking, planning for the future, architectural vitality. Risk: designs too theoretical to understand or implement.</p>
 <p><strong>Pragmatic:</strong> considering budget, time, team skill level, trade-offs, and technical limitations. Risk: solutions too timid to deliver long-term value.</p>
 <p>Effective architects balance both: solutions that fit real-world constraints while applying imagination and forward-thinking design.</p>
-<h3>Leading Teams by Example</h3>
+<h3 id="leading-teams-by-example">Leading Teams by Example</h3>
 <p><strong>Lead by example, not by title.</strong> Gerald Weinberg: <em>&quot;No matter what they tell you, it&#39;s always a people problem.&quot;</em></p>
 <p>Practical techniques:</p>
 <ul>
@@ -588,17 +609,17 @@
 <li>Host periodic <strong>brown-bag lunches</strong> on specific techniques or technologies. Builds reputation as a leader and mentor, not just an authority.</li>
 <li><strong>Sit with the development team</strong> where possible. Physical proximity signals availability and partnership. When co-location is impossible, block time to walk around and be visible.</li>
 </ul>
-<h3>Meeting Management</h3>
+<h3 id="meeting-management">Meeting Management</h3>
 <p><strong>Developer flow state:</strong> a state of 100% cognitive engagement where hours pass like minutes. Calling a meeting during flow state destroys an entire work session. Schedule meetings early morning, after lunch, or late in the day.</p>
 <p><strong>Imposed-upon meetings (you&#39;re invited):</strong> always ask why you&#39;re needed. Review the agenda beforehand. Attend only the relevant portion. Attend in a developer&#39;s place when both are invited — shields the team&#39;s productive time.</p>
 <p><strong>Imposed-by meetings (you call it):</strong> minimise these. Ask whether email would suffice. Set an agenda and stick to it; digressions waste everyone&#39;s time.</p>
 <hr>
-<h2>Career Development</h2>
-<h3>The 20-Minute Rule</h3>
+<h2 id="career-development">Career Development</h2>
+<h3 id="the-20-minute-rule">The 20-Minute Rule</h3>
 <p>Devote at least 20 minutes per day to technical breadth — reading articles, watching presentations, exploring unfamiliar buzzwords.</p>
 <p><strong>When:</strong> first thing in the morning, before email. Email causes irreversible diversion — once you check it, the morning is over. Resources: InfoQ, DZone Refcardz, ThoughtWorks Technology Radar, conference recordings.</p>
 <p><strong>Goal:</strong> continuously move knowledge from &quot;stuff you don&#39;t know you don&#39;t know&quot; into &quot;stuff you know you don&#39;t know&quot; (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 2, knowledge pyramid).</p>
-<h3>Personal Technology Radar</h3>
+<h3 id="personal-technology-radar">Personal Technology Radar</h3>
 <p>Adapted from the <strong>ThoughtWorks Technology Radar</strong> (ThoughtWorks Technology Advisory Board under CTO Rebecca Parsons; published biannually since the early 2010s).</p>
 <p>Four rings, from outer to inner:</p>
 <div class="table-wrapper"><table>
@@ -630,14 +651,14 @@
 <blockquote>
 <p>ThoughtWorks released a &quot;Build Your Own Radar&quot; tool in November 2016 — uses a Google Spreadsheet as input and generates the radar as an HTML5 canvas.</p>
 </blockquote>
-<h3>Technology Portfolio Diversification</h3>
+<h3 id="technology-portfolio-diversification">Technology Portfolio Diversification</h3>
 <p>Treat a technology portfolio like a financial portfolio: <strong>diversify</strong>. Include:</p>
 <ul>
 <li>Some high-demand, stable skills (strong job market, predictable demand)</li>
 <li>Some technology gambits (open source, mobile, emerging areas — higher risk, potentially higher career reward)</li>
 </ul>
 <p>Avoid &quot;bubble living&quot; — when deeply invested in one technology, you live in an echo chamber that prevents honest assessment. Bubbles collapse faster than people inside them notice.</p>
-<h3>Social Networks for Learning</h3>
+<h3 id="social-networks-for-learning">Social Networks for Learning</h3>
 <p>Three link types (Andrew McAfee, <em>Enterprise 2.0</em>):</p>
 <ul>
 <li><strong>Strong links:</strong> family, daily coworkers. You can tell what they had for lunch last Tuesday.</li>
@@ -646,13 +667,13 @@
 </ul>
 <p>McAfee&#39;s observation: <strong>next job is more likely to come from a weak link than a strong one.</strong> Strong links know everything you know. Weak links offer perspective and opportunities from outside your normal experience.</p>
 <p>Application for architects: use social media (e.g., Twitter/X) to build weak links with respected technologists. This surfaces new technologies for the Assess ring of the personal radar.</p>
-<h3>Architecture Katas</h3>
+<h3 id="architecture-katas">Architecture Katas</h3>
 <p>Practice is the only way to build architecture skills (Ted Neward). There is no answer key for architecture katas — only trade-offs. The topology solution without its ADRs is only half the story; the <em>why</em> is the half that matters.</p>
 <blockquote>
 <p>&quot;There are no right or wrong answers in architecture—only trade-offs.&quot; — Neal Ford (Ch 24)</p>
 </blockquote>
 <hr>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/risk-storming.html">Risk Storming</a> — risk identification and mitigation technique</li>
 <li><a href="../concepts/adrs.html">Adrs</a> — capturing architectural decisions and their justifications</li>

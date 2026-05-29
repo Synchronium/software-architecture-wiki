@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,18 +316,22 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#encryption">Encryption</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#integrity">Integrity</a></li><li><a href="#handshake">Handshake</a></li><li><a href="#operational-risk-certificate-expiry">Operational Risk: Certificate Expiry</a></li><li><a href="#mtls">mTLS</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>TLS is a protocol that runs on top of TCP and provides three guarantees for network communication: <strong>encryption</strong> (data is unreadable to third parties), <strong>authentication</strong> (parties verify each other&#39;s identity), and <strong>integrity</strong> (data has not been tampered with or corrupted in transit). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 3)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>The network is not a trusted medium. Without TLS, any intermediary on the path between client and server can read or modify traffic. TLS is the baseline security layer for all networked communication — not just public internet traffic, but any internal east–west traffic as well. The CPU penalty of encryption is negligible on modern hardware with dedicated cryptographic instructions.</p>
-<h2>Encryption</h2>
+<h2 id="encryption">Encryption</h2>
 <p>TLS uses a hybrid scheme:</p>
 <ol>
 <li><strong>Asymmetric encryption</strong> (slow, expensive) is used only for the initial key exchange. Each party generates a key pair (public + private). Through mathematical properties of the key pair (Diffie-Hellman-style), they can derive a shared secret without ever transmitting it over the wire.</li>
 <li><strong>Symmetric encryption</strong> (fast, cheap) is then used for all application data, using the shared secret established above.</li>
 </ol>
 <p>The shared key is periodically renegotiated to limit the amount of data exposed if a key is compromised.</p>
-<h2>Authentication</h2>
+<h2 id="authentication">Authentication</h2>
 <p>Authentication uses <strong>digital signatures</strong> based on asymmetric cryptography:</p>
 <ul>
 <li>The server has a key pair. When it sends data, it signs it with its private key.</li>
@@ -333,10 +344,10 @@
 <li>A client trusts a certificate if it, or one of its ancestors, appears in the client&#39;s trusted store. Root CAs (e.g., Let&#39;s Encrypt) are typically pre-installed by the OS vendor.</li>
 </ul>
 <p>When a TLS connection opens, the server sends its full certificate chain. The client scans the chain upward until it finds a trusted anchor, then verifies back down, checking signatures and expiration at each step. If all checks pass, the server is authenticated.</p>
-<h2>Integrity</h2>
+<h2 id="integrity">Integrity</h2>
 <p>Even encrypted data can be tampered with (bit-flipping). TLS uses a <strong>message authentication code (HMAC)</strong> — a secure hash of the message — included with each message. The recipient recomputes the hash and rejects the message if it doesn&#39;t match, protecting against both tampering and corruption.</p>
 <p>This also addresses a gap in TCP&#39;s own checksum: TCP&#39;s checksum fails to detect errors in roughly 1 in 16 million to 10 billion packets. With 1 KB packets, this is expected once per 16 GB–10 TB transmitted. TLS HMAC catches these.</p>
-<h2>Handshake</h2>
+<h2 id="handshake">Handshake</h2>
 <p>When a TLS connection is established, a handshake occurs:</p>
 <ol>
 <li><strong>Cipher suite negotiation</strong> — client and server agree on: key exchange algorithm, signature algorithm, symmetric encryption algorithm, HMAC algorithm.</li>
@@ -349,11 +360,11 @@
 <li>TLS 1.3: 1 round trip (significant improvement for high-latency connections).</li>
 </ul>
 <p>Creating a new TLS connection is not free — this is yet another reason to keep servers geographically close to clients and reuse connections via connection pools.</p>
-<h2>Operational Risk: Certificate Expiry</h2>
+<h2 id="operational-risk-certificate-expiry">Operational Risk: Certificate Expiry</h2>
 <p>One of the most common TLS-related outages is a lapsed certificate. When a certificate expires, clients cannot verify the server&#39;s identity and refuse to connect — bringing the application down entirely. Automation for monitoring and auto-renewing certificates approaching expiry (e.g., Let&#39;s Encrypt + certbot, or managed certificates from cloud providers) is well worth the investment.</p>
-<h2>mTLS</h2>
+<h2 id="mtls">mTLS</h2>
 <p>Standard TLS authenticates only the server. <strong>Mutual TLS (mTLS)</strong> authenticates both sides — the server also verifies the client&#39;s certificate. mTLS is used in service meshes for east–west service-to-service authentication (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>).</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/zero-trust.html">Zero Trust</a> — TLS/mTLS is the transport layer of a zero-trust architecture</li>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — service meshes automate mTLS for east–west traffic</li>
@@ -361,7 +372,7 @@
 <li><a href="../distributed/dns.html">Dns</a> — DNS over TLS replaces plaintext UDP for secure hostname resolution</li>
 <li><a href="../concepts/oauth2-and-authn.html">Oauth2 And Authn</a> — TLS is the transport prerequisite for OAuth2 flows</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;TLS should be used for all communications, even those not going through the public internet.&quot; (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 3)</p>
 </blockquote>

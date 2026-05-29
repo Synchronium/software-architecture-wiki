@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,8 +316,12 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A CRDT is a data structure that can be replicated across multiple nodes and updated independently, with the guarantee that all replicas will <strong>converge</strong> to the same state — without requiring coordination (consensus).</p>
-<h2>Formal Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#formal-definition">Formal Definition</a></li><li><a href="#why-merge-properties-matter">Why Merge Properties Matter</a></li><li><a href="#common-crdt-types">Common CRDT Types</a></li><li class="toc-sub"><a href="#lww-register-last-write-wins">LWW Register (Last-Write-Wins)</a></li><li class="toc-sub"><a href="#mv-register-multi-value-register">MV Register (Multi-Value Register)</a></li><li class="toc-sub"><a href="#other-common-crdts">Other Common CRDTs</a></li><li><a href="#the-calm-theorem">The CALM Theorem</a></li><li><a href="#when-to-use-crdts">When to Use CRDTs</a></li><li><a href="#dynamo-style-stores-and-crdts">Dynamo-Style Stores and CRDTs</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A CRDT is a data structure that can be replicated across multiple nodes and updated independently, with the guarantee that all replicas will <strong>converge</strong> to the same state — without requiring coordination (consensus).</p>
+<h2 id="formal-definition">Formal Definition</h2>
 <p>A data type qualifies as a CRDT if:</p>
 <ol>
 <li>Its possible states form a <strong>semilattice</strong> — a set whose elements can be partially ordered.</li>
@@ -322,7 +333,7 @@
 <li><strong>Strong convergence</strong>: replicas that have applied the same set of updates are in the same state — <em>immediately</em>, not after additional coordination.</li>
 </ul>
 <p>Plain eventual consistency only guarantees convergence <em>eventually</em>. Strong convergence means any replica that has processed the same updates is already in the same state — no further reconciliation needed.</p>
-<h2>Why Merge Properties Matter</h2>
+<h2 id="why-merge-properties-matter">Why Merge Properties Matter</h2>
 <p>If a merge operation is:</p>
 <ul>
 <li><strong>Idempotent</strong>: merging the same update twice produces the same result as merging it once.</li>
@@ -330,22 +341,22 @@
 <li><strong>Associative</strong>: merge(merge(A, B), C) = merge(A, merge(B, C)) — grouping doesn&#39;t matter.</li>
 </ul>
 <p>…then replicas can exchange updates in any order, at any time, and will eventually converge. This is why CRDTs work over unreliable broadcast — even gossip + periodic anti-entropy is sufficient, since every update eventually reaches every replica and the merge produces the same result regardless of order.</p>
-<h2>Common CRDT Types</h2>
-<h3>LWW Register (Last-Write-Wins)</h3>
+<h2 id="common-crdt-types">Common CRDT Types</h2>
+<h3 id="lww-register-last-write-wins">LWW Register (Last-Write-Wins)</h3>
 <ul>
 <li>Each write is tagged with a timestamp.</li>
 <li>On merge: keep the value with the greatest timestamp.</li>
 <li>Concurrent writes: one wins deterministically (the one with the higher timestamp).</li>
 <li>Risk: if clocks are skewed, the &quot;wrong&quot; write can win. Mitigated by using logical clocks.</li>
 </ul>
-<h3>MV Register (Multi-Value Register)</h3>
+<h3 id="mv-register-multi-value-register">MV Register (Multi-Value Register)</h3>
 <ul>
 <li>On concurrent writes: retain <strong>all</strong> values.</li>
 <li>Merge produces a set of all concurrent versions.</li>
 <li>Application or user must resolve the set (e.g., Amazon shopping cart &quot;add&quot; is an MV register).</li>
 <li>Requires vector clocks to detect concurrency vs. causality.</li>
 </ul>
-<h3>Other Common CRDTs</h3>
+<h3 id="other-common-crdts">Other Common CRDTs</h3>
 <ul>
 <li><strong>G-Counter</strong>: grow-only counter per node; total = sum of all node counters.</li>
 <li><strong>PN-Counter</strong>: pair of G-Counters (increments + decrements).</li>
@@ -353,7 +364,7 @@
 <li><strong>2P-Set</strong>: two G-Sets (add + remove); once removed, cannot re-add.</li>
 <li><strong>OR-Set</strong> (Observed-Remove Set): allows add after remove using unique tags.</li>
 </ul>
-<h2>The CALM Theorem</h2>
+<h2 id="the-calm-theorem">The CALM Theorem</h2>
 <p><strong>C</strong>onsistency <strong>A</strong>s <strong>L</strong>ogical <strong>M</strong>onotonicity (Hellerstein &amp; Alvaro) provides the theoretical foundation for when coordination can be avoided:</p>
 <blockquote>
 <p>A program has a consistent, coordination-free distributed implementation <strong>if and only if</strong> it is <strong>monotonic</strong>.</p>
@@ -370,7 +381,7 @@
 <li>Non-monotonic programs (delete, reset, aggregation that must be complete before emitting) fundamentally require coordination.</li>
 <li>Use coordination-free CRDTs where the semantics permit; otherwise, coordinate precisely at the non-monotonic point.</li>
 </ul>
-<h2>When to Use CRDTs</h2>
+<h2 id="when-to-use-crdts">When to Use CRDTs</h2>
 <p>CRDTs are appropriate when:</p>
 <ul>
 <li>You need high availability and low latency (mobile clients, geo-distributed systems).</li>
@@ -383,13 +394,13 @@
 <li>Strong invariants must hold globally (e.g., &quot;balance must not go negative&quot;).</li>
 <li>All operations require coordination anyway (non-monotonic programs).</li>
 </ul>
-<h2>Dynamo-Style Stores and CRDTs</h2>
+<h2 id="dynamo-style-stores-and-crdts">Dynamo-Style Stores and CRDTs</h2>
 <p>Dynamo-style stores (Cassandra, Riak) use leaderless replication with quorums. CRDTs complement this: instead of resolving conflicts with last-write-wins (losing data), the data structure itself merges correctly. Riak supports native CRDTs. Cassandra uses LWW by default but can be extended.</p>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11) — LWW register, MV register, CALM theorem, Dynamo-style stores, anti-entropy.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a> — CRDTs work over reliable or gossip broadcast; don&#39;t require total order</li>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — strong eventual consistency sits between eventual and causal consistency</li>

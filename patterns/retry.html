@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,16 +309,20 @@
       <h1>Retry</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/stability.html">stability</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/transient-failures.html">transient-failures</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Retry is the practice of re-issuing a failed request after a brief delay, on the expectation that the failure is transient and the next attempt is likely to succeed.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#when-to-retry">When to Retry</a></li><li><a href="#idempotency-is-a-prerequisite">Idempotency Is a Prerequisite</a></li><li><a href="#exponential-backoff-with-jitter">Exponential Backoff with Jitter</a></li><li><a href="#retry-amplification-in-service-chains">Retry Amplification in Service Chains</a></li><li><a href="#maximum-retry-budget">Maximum Retry Budget</a></li><li><a href="#retry-queues">Retry Queues</a></li><li><a href="#relationship-to-other-patterns">Relationship to Other Patterns</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Retry is the practice of re-issuing a failed request after a brief delay, on the expectation that the failure is transient and the next attempt is likely to succeed.</p>
 <p>Retry is one half of a pair: <strong>retry</strong> handles short-lived faults; <strong><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></strong> handles sustained ones. Used alone and without care, retry can amplify load and transform a partial outage into a full one.</p>
-<h2>When to Retry</h2>
+<h2 id="when-to-retry">When to Retry</h2>
 <p><strong>Retry transient failures only.</strong> The key distinction:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -358,7 +369,7 @@
 </tr>
 </tbody></table></div>
 <p>The safe default: retry on network-level failures and 5xx errors where you have evidence or reason to believe the next attempt will succeed. Fail fast on all 4xx errors and on 5xx errors that indicate a non-transient condition.</p>
-<h2>Idempotency Is a Prerequisite</h2>
+<h2 id="idempotency-is-a-prerequisite">Idempotency Is a Prerequisite</h2>
 <p><strong>Only retry idempotent operations.</strong> A retry of a non-idempotent call (e.g., POST to create a resource) can cause duplicated side effects — two orders placed, two charges, two emails sent.</p>
 <p>Before retrying, confirm one of:</p>
 <ul>
@@ -367,7 +378,7 @@
 <li>The business consequence of a duplicate is acceptable (rare)</li>
 </ul>
 <p>If neither holds, don&#39;t retry — fail fast and return an error to the caller.</p>
-<h2>Exponential Backoff with Jitter</h2>
+<h2 id="exponential-backoff-with-jitter">Exponential Backoff with Jitter</h2>
 <p>Never retry immediately or on a fixed interval. Both cause retry storms: multiple clients whose requests all failed at the same instant all retry at the same instant, creating a synchronised burst that amplifies load on an already-struggling downstream.</p>
 <p><strong>Exponential backoff with full jitter</strong> (recommended):</p>
 <pre><code>delay = random(0, min(cap, base × 2^attempt))
@@ -377,20 +388,20 @@
 <pre><code>delay = random(base, min(cap, previous_delay × 3))
 </code></pre>
 <p>The cap prevents delays from growing unboundedly; without it, long-running retry loops can produce delays of hours after many failed attempts.</p>
-<h2>Retry Amplification in Service Chains</h2>
+<h2 id="retry-amplification-in-service-chains">Retry Amplification in Service Chains</h2>
 <p>In a chain A → B → C, if both A and B retry independently, the total number of requests reaching C multiplies:</p>
 <pre><code>A ──(3 retries)──► B ──(3 retries)──► C
                                        = 9 requests at C per 1 request at A
 </code></pre>
 <p>As the chain deepens, amplification compounds exponentially. This can turn a partial failure at C into a full overload — the retry behaviour intended to help causes more harm than the original failure.</p>
 <p><strong>Mitigation</strong>: retry at one level of the chain only — the layer immediately above the one that is rejecting. All other layers should propagate the error without retrying. When a backend determines a request cannot be served and retrying is futile, it should return an explicit &quot;overloaded; don&#39;t retry&quot; signal rather than a generic error, preventing higher layers from unnecessarily retrying. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27; → <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 21)</p>
-<h2>Maximum Retry Budget</h2>
+<h2 id="maximum-retry-budget">Maximum Retry Budget</h2>
 <p>Set an explicit maximum retry count. Unlimited retries are not a strategy — they guarantee that a sustained failure becomes a resource leak (threads, connections, memory) accumulating retry work.</p>
 <p>Typical values: 2–4 attempts total (1 original + 1–3 retries). Beyond 3 retries, you are usually better served by a circuit breaker opening than by continuing to hammer a struggling downstream.</p>
 <p><strong>Per-client retry budget</strong>: in addition to a per-request budget, maintain a ratio limit across all requests. Google&#39;s RPC framework limits retries to 10% of total attempts per client. Combined with a per-request budget of 3 attempts, this caps total request amplification at ~1.1× in the general case, rather than ~3× from the per-request limit alone. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 21)</p>
 <p><strong>Retry metadata</strong>: include a retry counter in request metadata. Backends accumulate histograms of retry counts in recent traffic. When the histogram shows significant retries (indicating datacenter-wide overload rather than single-task overload), the backend returns &quot;overloaded; don&#39;t retry&quot; to suppress further retries higher in the stack.</p>
 <p>When the retry budget is exhausted, the circuit breaker&#39;s fault accumulation should trip — stopping further calls entirely until the downstream recovers (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>).</p>
-<h2>Retry Queues</h2>
+<h2 id="retry-queues">Retry Queues</h2>
 <p>For operations where prompt response is not required (batch jobs, async notifications, background sync), decouple the retry from the request lifecycle by writing failed requests to a <strong>retry queue</strong>. A separate worker processes the queue with its own backoff strategy.</p>
 <p>Advantages:</p>
 <ul>
@@ -410,7 +421,7 @@
 <li>Operations where latency of the retry matters to the user</li>
 </ul>
 <p>The <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> implements a reliable variant of this: the operation and its outbox message are written atomically; the relay process handles delivery with retries.</p>
-<h2>Relationship to Other Patterns</h2>
+<h2 id="relationship-to-other-patterns">Relationship to Other Patterns</h2>
 <pre><code>Timeout         → bounds a single call; triggers the retry decision point
 Retry           → re-issues the call after transient failure
 Circuit Breaker → tracks fault density; opens to stop calls during sustained failure
@@ -423,7 +434,7 @@ Circuit Breaker → tracks fault density; opens to stop calls during sustained f
 <li>When the circuit breaker opens, stops retrying entirely until it closes</li>
 </ol>
 <p>Implementing retry without circuit breaker means retries continue indefinitely during a sustained outage. Implementing circuit breaker without retry means every transient failure surfaces immediately as an error to the caller.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — handles sustained failures after retry budget is exhausted</li>
 <li><a href="../patterns/timeout.html">Timeout</a> — what triggers the retry; must be set before retrying is meaningful</li>
@@ -431,11 +442,12 @@ Circuit Breaker → tracks fault density; opens to stop calls during sustained f
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — retry via durable queue for async operations</li>
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — retry storms as a failure amplification mechanism</li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — retry within Nygard&#39;s stability pattern set; composition with timeout/circuit breaker</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — retry composition rules; how to avoid retry-defeats-backpressure</li>
 <li><a href="../distributed/backpressure.html">Backpressure</a> — retries that don&#39;t back off defeat backpressure</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

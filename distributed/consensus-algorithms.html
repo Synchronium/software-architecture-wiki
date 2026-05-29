@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,20 +309,34 @@
       <h1>Consensus Algorithms</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/consensus.html">consensus</a></li><li><a class="tag-chip" href="../tags/raft.html">raft</a></li><li><a class="tag-chip" href="../tags/coordination.html">coordination</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Consensus is the problem of getting a set of nodes to agree on a single value or decision, even when some nodes fail or messages are delayed. It is one of the most fundamental — and most difficult — problems in distributed systems. Its difficulty is formally proven by the <strong>FLP result</strong>. Its solutions underpin leader election, distributed locks, and every strongly consistent distributed database.</p>
-<h2>Why Consensus Is Hard: The FLP Result</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-consensus-is-hard-the-flp-result">Why Consensus Is Hard: The FLP Result</a></li><li><a href="#properties-of-correct-consensus-algorithms">Properties of Correct Consensus Algorithms</a></li><li><a href="#epoch-numbers-and-leader-uniqueness">Epoch Numbers and Leader Uniqueness</a></li><li><a href="#raft">Raft</a></li><li><a href="#paxos">Paxos</a></li><li><a href="#zab-zookeeper-atomic-broadcast">Zab (ZooKeeper Atomic Broadcast)</a></li><li><a href="#viewstamped-replication-vsr">Viewstamped Replication (VSR)</a></li><li><a href="#limitations-of-consensus">Limitations of Consensus</a></li><li><a href="#zookeeper-and-etcd-as-consensus-primitives">ZooKeeper and etcd as Consensus Primitives</a></li><li><a href="#the-equivalence-theorem">The Equivalence Theorem</a></li><li><a href="#2pc-atomic-commit-not-fault-tolerant-consensus">2PC: Atomic Commit (Not Fault-Tolerant Consensus)</a></li><li><a href="#ad-hoc-coordination-failure-patterns">Ad Hoc Coordination Failure Patterns</a></li><li><a href="#replicated-state-machine-rsm">Replicated State Machine (RSM)</a></li><li><a href="#replica-count-and-placement">Replica Count and Placement</a></li><li><a href="#multi-paxos-performance">Multi-Paxos Performance</a></li><li><a href="#monitoring-consensus-systems">Monitoring Consensus Systems</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Consensus is the problem of getting a set of nodes to agree on a single value or decision, even when some nodes fail or messages are delayed. It is one of the most fundamental — and most difficult — problems in distributed systems. Its solutions underpin leader election, distributed locks, and every strongly consistent distributed database.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>You need consensus for a specific list of properties.</strong> Linearizable compare-and-set, atomic commit, total order broadcast, distributed locks, leader election, and uniqueness constraints are all equivalent — each requires consensus and reduces to the others. The Equivalence Theorem is the reason consensus matters: avoid these properties and you avoid consensus.</li>
+<li><strong>Most applications don&#39;t need consensus.</strong> Causal consistency is the strongest model compatible with availability + partition tolerance, and many applications can be correct with only causal ordering. Reserve consensus for the small subset of operations that genuinely require it.</li>
+<li><strong>Consensus is provably impossible in pure async systems</strong> (FLP). In practice, partial synchrony plus randomised timeouts breaks the impossibility — at the cost of occasionally timing out on a live node.</li>
+<li><strong>All practical algorithms use epoch numbers.</strong> Each leader election increments the epoch; nodes reject messages from stale leaders. The two rounds of voting (election + proposal) overlap their quorums to guarantee any new leader sees all committed values.</li>
+<li><strong>Raft is the production default for new systems.</strong> Designed to be understandable; used in etcd, CockroachDB, TiKV, Consul. Paxos remains in legacy systems and academic treatments; Zab in ZooKeeper.</li>
+<li><strong>2PC is not fault-tolerant consensus.</strong> It cannot satisfy termination when the coordinator crashes — participants block indefinitely. Use a replicated coordinator (Paxos group) if 2PC is unavoidable.</li>
+<li><strong>Replica count matters: 3 minimum, 5 best practice.</strong> Fewer than 5 leaves no tolerance for coincident failure during planned maintenance. Topology matters too — a linchpin replica at a network choke point can partition the cluster even with a technically-live quorum.</li>
+</ul>
+<h2 id="why-consensus-is-hard-the-flp-result">Why Consensus Is Hard: The FLP Result</h2>
 <p>Fischer, Lynch, and Paterson (1985) proved that in a <strong>purely asynchronous</strong> distributed system where any single process may fail (crash), no deterministic algorithm can guarantee consensus in finite time.</p>
 <p>The intuition: if a message is delayed, there is no way to distinguish between a delayed message and a crashed node. A correct node cannot know whether to wait or proceed.</p>
 <p><strong>The Two Generals&#39; Problem</strong> is a useful concrete illustration: two army generals on opposite sides of a city need to coordinate an attack, but messengers may be captured. The first general cannot be certain a message arrived unless they get an acknowledgment — but the acknowledgment may also be captured. No matter how many acknowledgments are exchanged, neither general can achieve certainty. The problem maps directly to distributed systems: &quot;message captured&quot; = message lost or node crashed; &quot;certainty&quot; = consensus. It demonstrates why consensus on an asynchronous network in the presence of crash faults is impossible to guarantee within bounded time (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 3).</p>
 <p><strong>In practice</strong>, consensus is achievable because real systems are <strong>partially synchronous</strong> (usually bounded delays, occasionally not) or use <strong>randomization</strong> (random election timeouts). Timeouts break the FLP impossibility by allowing progress when delays exceed a threshold, at the cost of occasionally timing out on a live node.</p>
-<h2>Properties of Correct Consensus Algorithms</h2>
+<h2 id="properties-of-correct-consensus-algorithms">Properties of Correct Consensus Algorithms</h2>
 <p>A consensus algorithm must satisfy:</p>
 <ol>
 <li><strong>Uniform agreement</strong>: no two nodes decide differently.</li>
@@ -323,7 +344,7 @@
 <li><strong>Validity</strong>: nodes cannot decide an arbitrary value — the decided value was actually proposed.</li>
 <li><strong>Termination</strong>: all non-crashed nodes eventually decide (liveness property — requires partial synchrony).</li>
 </ol>
-<h2>Epoch Numbers and Leader Uniqueness</h2>
+<h2 id="epoch-numbers-and-leader-uniqueness">Epoch Numbers and Leader Uniqueness</h2>
 <p>All practical fault-tolerant consensus algorithms use <strong>epoch/term/ballot numbers</strong> to prevent split-brain:</p>
 <ul>
 <li>Each time a new leader is elected, the epoch number is incremented.</li>
@@ -337,7 +358,7 @@
 <li><strong>Proposal</strong>: the leader collects acknowledgments from a quorum before considering a value committed.</li>
 </ol>
 <p>The quorums for these two rounds must <strong>overlap</strong> — this guarantees that any new leader sees all previously committed values.</p>
-<h2>Raft</h2>
+<h2 id="raft">Raft</h2>
 <p>Raft (Ongaro &amp; Ousterhout, 2014) was designed to be understandable. Used in: etcd, CockroachDB, TiKV, Consul.</p>
 <p><strong>Leader election</strong>:</p>
 <ul>
@@ -354,15 +375,15 @@
 </ul>
 <p><strong>Log compaction</strong>: periodic snapshots of application state; discard log entries before the snapshot point. The snapshot is stored and the log is truncated.</p>
 <p><strong>Edge case</strong>: Raft has known performance issues when network links are consistently slow — a node whose heartbeats consistently arrive late may trigger repeated false elections. Adding pre-vote (check if you&#39;d win before starting an election) and leader stickiness (don&#39;t vote against an apparently live leader) mitigates this.</p>
-<h2>Paxos</h2>
+<h2 id="paxos">Paxos</h2>
 <p>Paxos (Lamport, 1989/1998) is the original consensus algorithm. Multi-Paxos (for a sequence of values, as in a replicated log) is the practical version. More complex to understand and implement correctly than Raft; various industrial variants exist.</p>
 <p>Used conceptually in: Chubby (Google), Spanner (multi-master coordination), various academic systems.</p>
-<h2>Zab (ZooKeeper Atomic Broadcast)</h2>
+<h2 id="zab-zookeeper-atomic-broadcast">Zab (ZooKeeper Atomic Broadcast)</h2>
 <p>Zab is the consensus protocol underlying Apache ZooKeeper. Designed for the ZooKeeper use case: replicate a sequence of state machine transactions.</p>
 <p>Primary-backup model with explicit leader. Uses the same quorum + epoch approach. Guarantees that all ZooKeeper servers process leader proposals in the same order.</p>
-<h2>Viewstamped Replication (VSR)</h2>
+<h2 id="viewstamped-replication-vsr">Viewstamped Replication (VSR)</h2>
 <p>VSR (Liskov &amp; Cowling, 2012) is equivalent to Paxos in power, developed independently. Used in some production systems but less common than Raft/Paxos.</p>
-<h2>Limitations of Consensus</h2>
+<h2 id="limitations-of-consensus">Limitations of Consensus</h2>
 <p>Understanding the costs prevents over-application:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -392,7 +413,7 @@
 <td>Most consensus algorithms are designed for LAN latency. Global consensus (Spanner&#39;s TrueTime approach) requires significant infrastructure</td>
 </tr>
 </tbody></table></div>
-<h2>ZooKeeper and etcd as Consensus Primitives</h2>
+<h2 id="zookeeper-and-etcd-as-consensus-primitives">ZooKeeper and etcd as Consensus Primitives</h2>
 <p>ZooKeeper (Zab-based) and etcd (Raft-based) are the primary production consensus services. They provide:</p>
 <ul>
 <li><strong>Linearizable atomic operations</strong>: compare-and-set (CAS), create-if-not-exists. Used for implementing distributed locks and leader election.</li>
@@ -401,7 +422,7 @@
 <li><strong>Change notifications</strong>: clients subscribe to znodes and receive notifications when they change. Used for configuration management and leader election (watch the ephemeral lock znode).</li>
 </ul>
 <p><strong>Typical cluster size</strong>: 3 or 5 nodes (quorum of 2 or 3). This small cluster serves potentially thousands of application nodes that use it for coordination — the consensus service is not in the data path.</p>
-<h2>The Equivalence Theorem</h2>
+<h2 id="the-equivalence-theorem">The Equivalence Theorem</h2>
 <p>All of the following problems are equivalent — each can be reduced to the others, and all require consensus:</p>
 <ul>
 <li>Linearizable compare-and-set (CAS)</li>
@@ -415,7 +436,7 @@
 <blockquote>
 <p><strong>Key insight</strong>: you often don&#39;t need consensus. Causal consistency (→ <a href="../distributed/consistency-models.html">Consistency Models</a>) is the strongest model compatible with availability + partition tolerance, and many applications can be correct with only causal ordering. Reserve consensus for the small subset of operations that genuinely require it.</p>
 </blockquote>
-<h2>2PC: Atomic Commit (Not Fault-Tolerant Consensus)</h2>
+<h2 id="2pc-atomic-commit-not-fault-tolerant-consensus">2PC: Atomic Commit (Not Fault-Tolerant Consensus)</h2>
 <p>Two-Phase Commit (2PC) solves a related but different problem: atomic commit across multiple participants (databases, message brokers). It is <strong>not</strong> a fault-tolerant consensus algorithm — it cannot satisfy the termination property when the coordinator crashes.</p>
 <p><strong>The protocol</strong> (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9):</p>
 <ol>
@@ -438,7 +459,7 @@
 <li>Amplifies failures: all participants must respond to commit, so any failure causes the whole transaction to fail.</li>
 </ul>
 <p><strong>3PC</strong>: theoretically non-blocking but requires bounded network delays and process response times — unrealistic in partial synchrony. Not used in production systems.</p>
-<h2>Ad Hoc Coordination Failure Patterns</h2>
+<h2 id="ad-hoc-coordination-failure-patterns">Ad Hoc Coordination Failure Patterns</h2>
 <p>Before consensus services existed, teams assembled ad hoc coordination mechanisms. Three recurring failures illustrate why ad hoc approaches cannot provide consensus guarantees. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 23)</p>
 <ol>
 <li><p><strong>STONITH + heartbeat timeout</strong>: primary and replica used a heartbeat to detect failure and a STONITH mechanism to fence the other node. On a network partition, each node concluded the other was dead. Depending on timing, either both shut down (nothing serving) or both became primary (conflicting writes and data corruption). The underlying problem: heartbeat timeouts cannot distinguish a failed node from a partitioned one.</p>
@@ -448,7 +469,7 @@
 <li><p><strong>Gossip-based cluster membership</strong>: gossip protocols detect failures by exchanging member state, but they cannot reach agreement on <em>who</em> is the authoritative leader — they provide eventual consistency, not consensus. On a network partition, each half elected its own master, causing split-brain writes.</p>
 </li>
 </ol>
-<h2>Replicated State Machine (RSM)</h2>
+<h2 id="replicated-state-machine-rsm">Replicated State Machine (RSM)</h2>
 <p>The RSM is the fundamental building block of reliable coordination. A consensus algorithm (Paxos, Raft, Zab) provides a totally ordered log; the RSM executes operations in that order. The result: any deterministic state machine — a key-value store, a distributed lock, a task queue, a configuration service — can be made highly available across f failures with 2f+1 replicas. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 23)</p>
 <p><strong>Components correctly built on RSM</strong>:</p>
 <ul>
@@ -458,12 +479,12 @@
 <li><strong>Task queues</strong> — claim tasks with leases, not deletions. If a worker crashes mid-task, the lease expires and the task becomes reclaimable</li>
 <li><strong>Pub/sub systems</strong> — atomic broadcast (which requires consensus) ensures all subscribers see events in the same order</li>
 </ul>
-<h2>Replica Count and Placement</h2>
+<h2 id="replica-count-and-placement">Replica Count and Placement</h2>
 <p><strong>Minimum viable</strong>: 3 nodes tolerates 1 failure (2f+1 where f=1). <strong>Best practice</strong>: 5 nodes tolerates 2 simultaneous failures — one planned maintenance and one concurrent hardware failure. Running fewer than 5 means any planned maintenance leaves no tolerance for coincident failure.</p>
 <p><strong>Placement — failure domains</strong>: replicas should span different racks, switches, and power domains. Losing two replicas in the same rack on a switch failure must be survivable.</p>
 <p><strong>Placement — network topology</strong>: naive placement by count can create a <strong>linchpin replica</strong> problem. In a 5-replica deployment, if one replica sits at a network topology choke point, losing it may effectively partition the cluster even though a quorum still technically exists. Topology must be accounted for, not just replica count.</p>
 <p><strong>Geo-distributed replicas</strong>: increase fault tolerance at the cost of increased consensus latency (speed of light over wide-area links). Hierarchical quorums (e.g., 9-replica cross-region) can reduce latency vs flat quorums by optimising for intra-region rounds. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 23)</p>
-<h2>Multi-Paxos Performance</h2>
+<h2 id="multi-paxos-performance">Multi-Paxos Performance</h2>
 <p>In steady state with a stable leader, Multi-Paxos requires <strong>1 round-trip</strong> per consensus operation (the leader sends accepts; followers respond; the leader commits). The two-phase election only happens when the leader changes.</p>
 <p><strong>Duelling proposers</strong> (two nodes simultaneously trying to be leader) cause livelock — each aborts the other&#39;s proposal. Mitigated by randomised backoff before re-proposing.</p>
 <p><strong>Disk write latency</strong> (~1–10ms) limits throughput to ~100 ops/s in serial operation. Two techniques break this limit:</p>
@@ -472,7 +493,7 @@
 <li><strong>Pipelining</strong>: have multiple consensus rounds in flight simultaneously; don&#39;t wait for round N to complete before starting round N+1</li>
 </ul>
 <p><strong>Quorum leases</strong>: grant read leases to quorum members, allowing them to serve strongly consistent reads locally without a consensus round. The master withholds lease renewal when it needs to make a change, preventing stale reads during the lease window.</p>
-<h2>Monitoring Consensus Systems</h2>
+<h2 id="monitoring-consensus-systems">Monitoring Consensus Systems</h2>
 <p>Key signals to monitor (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 23):</p>
 <ul>
 <li><strong>Member count and health</strong> — alert if any member is unreachable or lagging</li>
@@ -483,7 +504,7 @@
 <li><strong>Proposal counts</strong> — unexpected spikes indicate contention or repeated leader elections</li>
 <li><strong>Throughput and latency</strong> — end-to-end consensus operation time, not just disk write time</li>
 </ul>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -508,7 +529,15 @@
 <td>SRE operations perspective. Three case studies of ad hoc coordination failures (STONITH, human failover, gossip). RSM as the correct foundation. Components built on consensus (datastores, leader election, leases, task queues). Replica count guidance: minimum 3, best practice 5. Multi-Paxos performance: 1 RTT in steady state, batching and pipelining, quorum leases for local reads. Replica placement: failure domains, linchpin replica problem, geo-distribution vs latency. Monitoring: member health, lagging replicas, leader existence and change rate, transaction number monotonicity. (ch. 23)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Ask whether you actually need consensus before reaching for it.</strong> Causal consistency is the strongest model compatible with availability + partition tolerance, and most applications can be correct under causal ordering alone.</li>
+<li><strong>If you need any of the equivalent properties (linearizable CAS, atomic commit, total order broadcast, distributed locks, leader election, uniqueness), use a consensus service.</strong> Don&#39;t build your own — use etcd or ZooKeeper.</li>
+<li><strong>Use 3 nodes minimum, 5 nodes for production.</strong> Fewer than 5 leaves zero tolerance for failure during planned maintenance. Distribute replicas across failure domains; watch for linchpin replica problems.</li>
+<li><strong>2PC is not fault-tolerant consensus</strong> — its coordinator can block participants indefinitely. Either use a replicated coordinator (Spanner) or use saga + outbox patterns instead.</li>
+<li><strong>Monitor leader changes, lagging replicas, proposal counts, and transaction-number monotonicity.</strong> Consensus systems fail subtly; the symptoms are observable but easy to miss.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — linearizability is the consistency property that requires consensus</li>
 <li><a href="../distributed/replication.html">Replication</a> — leader election in replication uses consensus; Raft is both a consensus algorithm and a replication protocol</li>
@@ -519,7 +548,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/leader-election.html">Leader Election</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../distributed/system-models.html">System Models</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+        <ul><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/leader-election.html">Leader Election</a></li><li><a href="../distributed/partitioning.html">Partitioning</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../distributed/system-models.html">System Models</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,23 +309,36 @@
       <h1>Evolutionary Database Design</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/databases.html">databases</a></li><li><a class="tag-chip" href="../tags/schema-evolution.html">schema-evolution</a></li><li><a class="tag-chip" href="../tags/data.html">data</a></li><li><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a></li><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#inappropriate-data-coupling">Inappropriate Data Coupling</a></li><li><a href="#the-expandcontract-pattern">The Expand/Contract Pattern</a></li><li><a href="#migration-tools">Migration Tools</a></li><li><a href="#shared-database-decomposition">Shared Database Decomposition</a></li><li><a href="#schema-as-code">Schema as Code</a></li><li><a href="#the-reporting-antipattern">The Reporting Antipattern</a></li><li><a href="#database-decomposition-patterns-newman">Database Decomposition Patterns (Newman)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Schemas evolve incrementally and safely</strong> through version-controlled migration scripts run by the deployment pipeline. The database is no different from the code: it changes continuously, governed by automated tools.</li>
+<li><strong>Expand/contract is the workhorse pattern.</strong> Add new structures alongside old (expand), migrate consumers, remove old structures (contract). Zero downtime, no coordinated deployment of consumers.</li>
+<li><strong>Inappropriate data coupling kills evolvability.</strong> Shared schemas across services, vendor lock-in via proprietary SQL, and legacy quirks encoded in nulls and odd formats all calcify the database. Per-service schema ownership is the antidote.</li>
+<li><strong>Newman&#39;s twelve database decomposition patterns</strong> offer concrete techniques for splitting a shared database: database views, wrapping services, tracer writes, synchronise-in-application, expand/contract for split brain, repository per service. Each fits a different combination of read/write patterns and migration constraints.</li>
+<li><strong>Flyway and Liquibase are the practical mechanism.</strong> Versioned SQL files, schema-history tracking, no manual DDL. Migrations are reviewed like code, run in the pipeline like tests, and the database state is reproducible from history.</li>
+<li><strong>Reporting-tier coupling is its own anti-pattern.</strong> Direct reads from operational databases for reports create implicit schema coupling that prevents change. Move analytics to a separate read model (CDC, replica, OLAP store) so the operational schema can evolve.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Evolutionary database design treats schemas as evolvable artifacts — changed incrementally and safely over time using version-controlled migration scripts, without requiring downtime or coordinated consumer changes. It is the data complement to evolutionary architecture: just as <a href="../concepts/fitness-functions.html">Fitness Functions</a> govern code quality continuously, migration tools govern schema drift as part of the <a href="../concepts/deployment-pipelines.html">deployment pipeline</a>.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Databases are often the hardest coupling point in a distributed system. A shared schema couples every consumer to the same data model; any field change requires coordinated deployment of all consumers. Without an explicit evolutionary approach, schemas calcify: developers fear touching them, legacy columns accumulate, and data inconsistencies compound over time (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 5).</p>
-<h2>Inappropriate Data Coupling</h2>
+<h2 id="inappropriate-data-coupling">Inappropriate Data Coupling</h2>
 <p>Three forms of data coupling that resist evolution:</p>
 <p><strong>Shared schema coupling</strong>: multiple services read and write the same tables without schema ownership. A field rename requires simultaneous deployment of all consumers. Solution: each service owns its schema; shared data flows through service APIs, not direct database connections.</p>
 <p><strong>Age and quality of legacy data</strong>: historical schemas encode past business logic in null patterns, inconsistent formats, and deprecated fields. Consumer logic couples to these historical decisions and must be updated in lockstep. Solution: clean data quality before or during migration, not after.</p>
 <p><strong>Vendor coupling</strong>: proprietary SQL syntax (stored procedures, vendor-specific functions, non-standard types) couples the schema to a specific database vendor. Solution: use standard SQL; treat the database vendor as a replaceable implementation detail.</p>
-<h2>The Expand/Contract Pattern</h2>
+<h2 id="the-expandcontract-pattern">The Expand/Contract Pattern</h2>
 <p>The expand/contract (or parallel change) pattern enables zero-downtime schema evolution (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 5):</p>
 <p><strong>Phase 1 — Expand</strong>: add the new column, table, or structure alongside the old. New writes populate both; reads continue from the old structure. No consumer is broken.</p>
 <p><strong>Phase 2 — Migrate</strong>: update consumers to read from the new structure. Backfill historical data from old to new. Run dual-writes (writing to both) during the transition window.</p>
@@ -337,14 +357,14 @@ UPDATE users SET display_name = first_name || &#39; &#39; || last_name;
 ALTER TABLE users DROP COLUMN first_name;
 ALTER TABLE users DROP COLUMN last_name;
 </code></pre>
-<h2>Migration Tools</h2>
+<h2 id="migration-tools">Migration Tools</h2>
 <p>Version-controlled SQL migration scripts applied sequentially in the deployment pipeline:</p>
 <ul>
 <li><strong>Flyway</strong>: migration scripts numbered sequentially; applied in order on deploy; scripts are immutable once applied (no rollback by default)</li>
 <li><strong>Liquibase</strong>: change sets defined in XML/YAML/JSON; supports rollback definitions alongside forward migrations; change sets are checksummed for integrity</li>
 </ul>
 <p>Both tools maintain a schema version table. The pipeline applies pending migrations automatically on each deploy, making schema evolution part of CI/CD rather than a manual DBA operation.</p>
-<h2>Shared Database Decomposition</h2>
+<h2 id="shared-database-decomposition">Shared Database Decomposition</h2>
 <p>When decomposing a monolith, the shared database must be split alongside the code. Three scenarios with different migration complexity (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 5):</p>
 <p><strong>Option 1 — No integration points, no legacy data</strong>: clean split. Each service claims its tables; no external consumer reads them directly. Straightforward: move tables, update connection strings, deploy.</p>
 <p><strong>Option 2 — Legacy data, no integration points</strong>: data migration required but no external coordination. Use expand/contract to move data to new schema. No other services are affected, so migration can proceed at the owning team&#39;s pace.</p>
@@ -363,7 +383,7 @@ FOR EACH ROW
   INSERT INTO orders_v2 (id, customer_id, total, placed_at)
   VALUES (NEW.order_id, NEW.cust_fk, NEW.amount, NEW.created);
 </code></pre>
-<h2>Schema as Code</h2>
+<h2 id="schema-as-code">Schema as Code</h2>
 <p>Database schemas should be treated like code: version-controlled, tested, and applied automatically in the deployment pipeline (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 5). Migrations are never run manually by a DBA — they are part of the build.</p>
 <p>Properties of well-managed schema evolution:</p>
 <ul>
@@ -373,7 +393,7 @@ FOR EACH ROW
 <li><strong>Immutable once applied</strong>: migration scripts are never edited after being applied to any environment; corrections are new migrations</li>
 </ul>
 <p>Flyway and Liquibase both maintain a schema version table (<code>flyway_schema_history</code>, <code>databasechangelog</code>) that tracks which migrations have been applied. The pipeline checks this table on each deploy and applies any pending migrations.</p>
-<h2>The Reporting Antipattern</h2>
+<h2 id="the-reporting-antipattern">The Reporting Antipattern</h2>
 <p>OLTP (operational transaction processing) and OLAP (analytical query processing) have fundamentally different requirements:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -409,7 +429,7 @@ FOR EACH ROW
 <blockquote>
 <p><strong>Contradiction note:</strong> <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> notes that service-based architectures may share a database legitimately if services own separate <em>schemas</em> within it. Evo-arch&#39;s treatment is stricter — even schema-level sharing creates coupling that resists evolution. The difference is one of degree: intentional, bounded schema sharing (FOSA) vs. schema ownership as an inviolable rule (evo-arch).</p>
 </blockquote>
-<h2>Database Decomposition Patterns (Newman)</h2>
+<h2 id="database-decomposition-patterns-newman">Database Decomposition Patterns (Newman)</h2>
 <p>Newman&#39;s <em>Monolith to Microservices</em> (ch. 4) provides the most complete practitioner catalogue of patterns for splitting a shared database during a migration. These patterns address both the read/write problem (how to access data while splitting) and the ownership problem (which service is the source of truth). (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>)</p>
 <p><strong>Coping patterns</strong> (bridge strategies while the split is not yet possible):</p>
 <div class="table-wrapper"><table>
@@ -485,7 +505,7 @@ FOR EACH ROW
 <li><em>Both at once</em>: avoid — the blast radius of a failed migration is maximised.</li>
 </ul>
 <p>Newman&#39;s overall advice: physical database separation is a goal, not a prerequisite. Start with logical separation (repository and schema per BC) and move to physical separation (separate database servers) only when independent scaling or failure isolation is needed.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -510,7 +530,7 @@ FOR EACH ROW
 <td>Focuses on data consistency and replication at the service layer rather than schema evolution practices</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — database evolution is one key dimension of evolutionary architecture</li>
 <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a> — decomposing a shared database creates distributed transaction challenges; <a href="../patterns/saga.html">Saga</a> and <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> address these</li>
@@ -518,10 +538,11 @@ FOR EACH ROW
 <li><a href="../streams/change-data-capture.html">Change Data Capture</a> — CDC as a database-decomposition mechanism; data liberation from shared monolithic stores</li>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — migration scripts as fitness functions: the pipeline applies and verifies schema migrations on every deploy</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the mechanism that applies schema migrations automatically as part of each release</li>
+<li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a> — where the database decomposition patterns fit in the overall migration toolkit</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
+        <ul><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../databases/data-models.html">Data Models</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li></ul>
       </aside>
     </main>
   </div>

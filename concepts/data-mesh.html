@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>The Operational vs Analytical Divide</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-operational-vs-analytical-divide">The Operational vs Analytical Divide</a></li><li><a href="#pattern-1-data-warehouse">Pattern 1: Data Warehouse</a></li><li><a href="#pattern-2-data-lake">Pattern 2: Data Lake</a></li><li><a href="#pattern-3-data-mesh">Pattern 3: Data Mesh</a></li><li><a href="#data-product-quantum-dpq">Data Product Quantum (DPQ)</a></li><li><a href="#relationship-to-service-mesh-and-sidecar">Relationship to Service Mesh and Sidecar</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="the-operational-vs-analytical-divide">The Operational vs Analytical Divide</h2>
 <p>Operational data (OLTP) and analytical data serve fundamentally different purposes:</p>
 <ul>
 <li><strong>Operational data</strong>: transactional, drives daily business operations, consistency and availability critical, OLTP access patterns.</li>
 <li><strong>Analytical data</strong>: business intelligence, trend analysis, ML model training, supports long-term strategic decisions; staleness more acceptable; large aggregations; OLAP access patterns.</li>
 </ul>
 <p>These access patterns are incompatible at scale — heavy analytical queries on an OLTP database impede transactional throughput. Every architecture must decide how to manage this separation.</p>
-<h2>Pattern 1: Data Warehouse</h2>
+<h2 id="pattern-1-data-warehouse">Pattern 1: Data Warehouse</h2>
 <p><strong>Approach</strong>: Extract-Transform-Load (ETL) — operational data is extracted from source databases, transformed into a unified schema (typically Star Schema), and loaded into a centralised analytical store. Analysis happens on the warehouse.</p>
 <p><strong>Star Schema</strong>: denormalised design separating &quot;facts&quot; (measurable data: counts, amounts, durations) from &quot;dimensions&quot; (descriptive context: names, locations, categories). Optimised for aggregation queries; not for transactional workloads.</p>
 <p><strong>Trade-offs:</strong></p>
@@ -349,7 +360,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Why it fails in distributed architectures</strong>: a data warehouse centralises analytically-transformed data in a technically-partitioned schema, losing domain context. Schema changes in any operational service cascade through transformation pipelines. Domain expertise must reside both in operational systems and in the warehouse team. Not compatible with microservices&#39; bounded context model.</p>
-<h2>Pattern 2: Data Lake</h2>
+<h2 id="pattern-2-data-lake">Pattern 2: Data Lake</h2>
 <p><strong>Approach</strong>: Load-and-Transform — operational data is dumped into the lake in raw (or minimally-transformed) form. Transformation and analysis happen on demand by data scientists querying the lake directly.</p>
 <p><strong>Rationale</strong>: data warehouse pre-built schemas frequently didn&#39;t match the query patterns actually needed, wasting the enormous transformation effort. By storing data &quot;closer to raw&quot;, the burden of transformation becomes reactive rather than proactive.</p>
 <p><strong>Trade-offs:</strong></p>
@@ -378,7 +389,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Why it still fails</strong>: both Data Warehouse and Data Lake are technically partitioned approaches. Modern architecture trends favour domain partitioning (microservices, bounded contexts). Both approaches extract data from its domain context and centralise it, losing the domain perspective required to make the analytical data meaningful. They treat data as a separate concern from the services that produce it.</p>
-<h2>Pattern 3: Data Mesh</h2>
+<h2 id="pattern-3-data-mesh">Pattern 3: Data Mesh</h2>
 <p>Data Mesh (Zhamak Dehghani) applies the domain ownership principle from microservices to analytical data, rather than centralising it (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 14; see also Dehghani&#39;s book <em>Data Mesh</em>).</p>
 <p><strong>Definition</strong>: a sociotechnical approach to sharing, accessing, and managing analytical data in a decentralised fashion, aligning data ownership with business domains and enabling peer-to-peer consumption.</p>
 <p><strong>Four principles:</strong></p>
@@ -417,7 +428,7 @@
 <td>—</td>
 </tr>
 </tbody></table></div>
-<h2>Data Product Quantum (DPQ)</h2>
+<h2 id="data-product-quantum-dpq">Data Product Quantum (DPQ)</h2>
 <p>The DPQ is the core architectural unit of the data mesh. It is deployed adjacent to but operationally separate from its cooperating service (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 14).</p>
 <p><strong>Three DPQ types:</strong></p>
 <ul>
@@ -433,9 +444,9 @@
 </ul>
 <p><strong>Static coupling note</strong>: the DPQ is part of the architecture quantum&#39;s static coupling — its availability is required for the service to provide analytical capabilities, just as a message broker must be available if messaging is used.</p>
 <p><strong>Governance sidecar</strong>: each DPQ includes an embedded sidecar (supplied by the platform team) that executes policy at the point of data access — handling access control, compliance, schema validation, and PII protection. This is the &quot;computational&quot; in computational federated governance.</p>
-<h2>Relationship to Service Mesh and Sidecar</h2>
+<h2 id="relationship-to-service-mesh-and-sidecar">Relationship to Service Mesh and Sidecar</h2>
 <p>The data mesh pattern draws explicitly from the service mesh pattern (<a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>): just as the service mesh uses sidecars to manage operational coupling (logging, monitoring, authentication) orthogonal to business logic, the DPQ sidecar manages analytical governance orthogonal to the service&#39;s operational concerns. Dehghani applied the same &quot;orthogonal coupling via a sidecar&quot; principle to the analytical data domain.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -455,7 +466,7 @@
 <blockquote>
 <p><strong>Open question:</strong> Data Mesh requires significant organisational maturity — domain teams must take responsibility for their analytical data as a product, which is a substantial culture shift. The book does not deeply address the transition path from a centralised data warehouse to a data mesh.</p>
 </blockquote>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — DPQ as cooperative quantum; static/dynamic coupling for analytical data</li>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — the organisational precedent for the DPQ governance sidecar; orthogonal coupling</li>

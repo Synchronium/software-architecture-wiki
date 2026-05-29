@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,16 +309,20 @@
       <h1>Feature Flags</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/feature-flags.html">feature-flags</a></li><li><a class="tag-chip" href="../tags/feature-toggles.html">feature-toggles</a></li><li><a class="tag-chip" href="../tags/deployment.html">deployment</a></li><li><a class="tag-chip" href="../tags/release.html">release</a></li><li><a class="tag-chip" href="../tags/progressive-delivery.html">progressive-delivery</a></li><li><a class="tag-chip" href="../tags/technical-debt.html">technical-debt</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#toggle-categories">Toggle Categories</a></li><li><a href="#lifecycle-discipline">Lifecycle Discipline</a></li><li><a href="#architectural-implications">Architectural Implications</a></li><li class="toc-sub"><a href="#flags-as-configuration-not-deployment">Flags as configuration, not deployment</a></li><li class="toc-sub"><a href="#default-behaviour-matters">Default behaviour matters</a></li><li class="toc-sub"><a href="#cohort-routing">Cohort routing</a></li><li class="toc-sub"><a href="#multi-flag-interactions">Multi-flag interactions</a></li><li class="toc-sub"><a href="#flags-and-architectural-coupling">Flags and architectural coupling</a></li><li><a href="#feature-flags-vs-other-release-mechanisms">Feature Flags vs Other Release Mechanisms</a></li><li><a href="#operational-patterns">Operational Patterns</a></li><li class="toc-sub"><a href="#kill-switches">Kill switches</a></li><li class="toc-sub"><a href="#circuit-breaker-driven-flags">Circuit-breaker-driven flags</a></li><li class="toc-sub"><a href="#load-shedding-flags">Load-shedding flags</a></li><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A feature flag (or feature toggle) is a runtime conditional in application code that determines whether a given code path is active for a given request. The flag&#39;s state is controlled by configuration external to the deployment, so the same deployed artefact can present different behaviour to different users without redeployment. Variants include release toggles, experiment toggles, ops toggles, and permission toggles — each with different lifecycles and audiences.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Feature flags are the application-layer mechanism that makes <a href="../patterns/progressive-delivery.html">Progressive Delivery</a> possible without infrastructure changes. They decouple <strong>deployment</strong> (placing code in production) from <strong>release</strong> (exposing it to users), enabling:</p>
 <ul>
 <li><strong>Trunk-based development of large changes:</strong> ship incomplete code behind a flag rather than maintaining a long-lived branch (→ <a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a>)</li>
@@ -321,7 +332,7 @@
 <li><strong>Operational levers:</strong> disable expensive features under load shedding (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>)</li>
 </ul>
 <p>The cost is that every flag is a runtime branch with two behaviours that must be maintained, tested, and eventually removed. Flags accumulate as technical debt with a use-by date.</p>
-<h2>Toggle Categories</h2>
+<h2 id="toggle-categories">Toggle Categories</h2>
 <p>Pete Hodgson&#39;s taxonomy (referenced in <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) distinguishes four kinds, each with different lifecycle expectations:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -358,7 +369,7 @@
 </tr>
 </tbody></table></div>
 <p>Conflating these categories is the most common source of feature-flag mess. A &quot;temporary release toggle&quot; that quietly becomes a permission toggle becomes a permanent runtime conditional with no owner. The taxonomy is partly a discipline for forcing the question: <em>which kind of toggle is this, and what&#39;s the removal trigger?</em></p>
-<h2>Lifecycle Discipline</h2>
+<h2 id="lifecycle-discipline">Lifecycle Discipline</h2>
 <p>Flags are technical debt that pays back only if it is repaid. The lifecycle:</p>
 <ol>
 <li><strong>Introduce</strong> — wrap the new code path in a flag; flag defaults to off</li>
@@ -374,18 +385,18 @@
 <li>&quot;Toggle debt&quot; is a backlog item, not a &quot;nice to have&quot;</li>
 </ul>
 <p>From <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>: feature toggles are tracked as technical debt; teams that accumulate dozens of permanent &quot;temporary&quot; flags develop runtime behaviour they no longer understand.</p>
-<h2>Architectural Implications</h2>
-<h3>Flags as configuration, not deployment</h3>
+<h2 id="architectural-implications">Architectural Implications</h2>
+<h3 id="flags-as-configuration-not-deployment">Flags as configuration, not deployment</h3>
 <p>The flag store is a configuration system — runtime-mutable, low-latency, available even when the deployment pipeline is not. From <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>: feature flags belong to the <a href="../operations/manageability.html">Manageability</a> triad — dynamic configuration that can be changed without redeploying. The config store itself must be designed for availability; a flag store outage that defaults closed turns a routine config issue into an outage.</p>
-<h3>Default behaviour matters</h3>
+<h3 id="default-behaviour-matters">Default behaviour matters</h3>
 <p>Every flag has a default-when-the-config-system-is-unreachable. &quot;Default off&quot; is conservative (new feature stays off if config is unavailable). &quot;Default on&quot; is required for ops toggles whose default state is the steady-state behaviour. Make the default explicit in code, not implicit in the config store&#39;s behaviour.</p>
-<h3>Cohort routing</h3>
+<h3 id="cohort-routing">Cohort routing</h3>
 <p>User-targeted flags need a stable bucketing function — typically a hash of <code>(user_id, flag_name)</code> modulo the rollout percentage. Stability matters: a user who sees the new behaviour at 5% should still see it at 10%, not be re-shuffled into the old behaviour. Hash-based bucketing handles this; random per-request bucketing doesn&#39;t.</p>
-<h3>Multi-flag interactions</h3>
+<h3 id="multi-flag-interactions">Multi-flag interactions</h3>
 <p>Two flags that are each safe alone may interact unexpectedly. The combinatorial space is N² for N flags. Mitigations: limit the set of simultaneously rolling-out flags; document known interactions; treat the cross-product space the way <a href="../operations/chaos-engineering.html">Chaos Engineering</a> treats combined-failure experiments.</p>
-<h3>Flags and architectural coupling</h3>
+<h3 id="flags-and-architectural-coupling">Flags and architectural coupling</h3>
 <p>A flag-heavy codebase has a high &quot;static coupling&quot; cost: code paths that may or may not execute at runtime are harder to reason about than code paths that are simply present or absent. Use flags where the runtime control is genuinely needed; prefer build-time exclusion (compile-time feature toggles, branch-based) when runtime control is not needed.</p>
-<h2>Feature Flags vs Other Release Mechanisms</h2>
+<h2 id="feature-flags-vs-other-release-mechanisms">Feature Flags vs Other Release Mechanisms</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -427,21 +438,21 @@
 </tr>
 </tbody></table></div>
 <p>Feature flags are the <em>finest-grained</em> of these tools and the only one with per-user targeting. They are also the only one with significant ongoing maintenance cost — the others end when the release ends.</p>
-<h2>Operational Patterns</h2>
-<h3>Kill switches</h3>
+<h2 id="operational-patterns">Operational Patterns</h2>
+<h3 id="kill-switches">Kill switches</h3>
 <p>Every newly launched feature should have an ops-toggle kill switch that disables it instantly. This is distinct from a release toggle: a release toggle is removed when rollout completes; a kill switch is kept indefinitely as an operational lever. The cost of a permanent kill switch is one runtime conditional; the benefit is sub-minute MTTR for feature-induced incidents (→ <a href="../operations/availability.html">Availability</a>).</p>
-<h3>Circuit-breaker-driven flags</h3>
+<h3 id="circuit-breaker-driven-flags">Circuit-breaker-driven flags</h3>
 <p>Connect flag state to circuit-breaker state: when a downstream dependency&#39;s circuit opens, automatically disable features that depend on it. The flag becomes the application&#39;s response to the breaker, gracefully degrading rather than failing (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../operations/common-failure-causes.html">Common Failure Causes</a>).</p>
-<h3>Load-shedding flags</h3>
+<h3 id="load-shedding-flags">Load-shedding flags</h3>
 <p>Expensive features (search, recommendations, personalisation) can be flagged off under load shedding — the system degrades to the cheap baseline rather than failing entirely (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</p>
-<h2>Anti-patterns</h2>
+<h2 id="anti-patterns">Anti-patterns</h2>
 <p><strong>Permanent &quot;temporary&quot; flags.</strong> The flag was added for a 2-week rollout three years ago. The team that owned it doesn&#39;t exist. Removing it is risky because no one knows what depends on the off-path. Prevention: every flag has an owner and an expected removal date.</p>
 <p><strong>Flag-driven branching that should be subtyping.</strong> A flag becomes a permanent toggle because the two behaviours are genuinely different products. Move to a real subtype/strategy pattern; reserve flags for <em>transient</em> behaviour differences.</p>
 <p><strong>Configuration coupled across services.</strong> A flag that controls behaviour in multiple services creates implicit coordination requirements. Either the flag becomes a release-coordination point (defeating independent deployment) or services drift out of sync. Prefer per-service flags whose interaction is explicit.</p>
 <p><strong>Untested off-path / on-path.</strong> If the test suite only exercises one flag state, regressions can hide in the unexercised path. Test both paths; if testing both is too expensive, that&#39;s evidence the flag should be removed.</p>
 <p><strong>Flag state as security boundary.</strong> A permission toggle that&#39;s the only thing standing between a user and a premium feature can be bypassed by a client that controls the flag check. Permission decisions belong server-side, not in a UI-visible flag.</p>
 <p><strong>Flag thrashing during incidents.</strong> Flipping a flag back and forth during an incident creates a moving target for diagnosis. Stabilise (on or off) and observe; flip once.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -470,7 +481,7 @@
 <td>Ops toggles as resilience tools: kill switches, load-shedding flags, dependency-failure graceful-degradation flags. Feature flags as part of the &quot;design for production&quot; toolkit.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a> — the broader release pattern feature flags enable</li>
 <li><a href="../operations/manageability.html">Manageability</a> — flags as dynamic configuration</li>
@@ -480,8 +491,9 @@
 <li><a href="../patterns/parallel-run.html">Parallel Run</a> — flags for routing between old and new implementations</li>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — flags as automatic responses to breaker state</li>
 <li><a href="../operations/error-budgets.html">Error Budgets</a> — flag-driven feature disable as a budget-preservation tool</li>
+<li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a> — feature flags as the per-user routing layer in migrations</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Feature toggles allow developers to deploy code to production that isn&#39;t yet active for users — but each toggle is technical debt with a use-by date.&quot; — <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></p>
 </blockquote>
@@ -490,7 +502,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
+        <ul><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
       </aside>
     </main>
   </div>

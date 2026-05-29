@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-three-types-of-cognitive-load">The Three Types of Cognitive Load</a></li><li><a href="#cognitive-load-drives-software-boundaries">Cognitive Load Drives Software Boundaries</a></li><li><a href="#domain-complexity-heuristics">Domain Complexity Heuristics</a></li><li><a href="#assessing-cognitive-load">Assessing Cognitive Load</a></li><li><a href="#reducing-cognitive-load-levers">Reducing Cognitive Load: Levers</a></li><li><a href="#relationship-to-architecture-decisions">Relationship to Architecture Decisions</a></li><li><a href="#cognitive-load-at-the-code-level-ousterhout">Cognitive Load at the Code Level (Ousterhout)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Cognitive load, as characterised by psychologist John Sweller (1988), is &quot;the total amount of mental effort being used in the working memory.&quot; Applied to teams: every team has a finite cognitive capacity — the maximum complexity of system it can build, own, and operate while remaining effective. When this capacity is exceeded the team stops behaving as a cohesive unit and degrades into individuals firefighting independently.</p>
 <p>Team Topologies makes cognitive load a first-class architectural constraint: <strong>software subsystem boundaries should be sized to fit within a team&#39;s cognitive capacity, not the other way around</strong> (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 3).</p>
-<h2>The Three Types of Cognitive Load</h2>
+<h2 id="the-three-types-of-cognitive-load">The Three Types of Cognitive Load</h2>
 <p>Sweller distinguishes three types, each requiring a different response:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -339,7 +350,7 @@
 </tr>
 </tbody></table></div>
 <p>The goal for engineering teams: minimise intrinsic, eliminate extraneous, leave maximum space for germane.</p>
-<h2>Cognitive Load Drives Software Boundaries</h2>
+<h2 id="cognitive-load-drives-software-boundaries">Cognitive Load Drives Software Boundaries</h2>
 <blockquote>
 <p>&quot;Instead of choosing between a monolithic architecture or a microservices architecture, design the software to fit the maximum team cognitive load.&quot; (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 3)</p>
 </blockquote>
@@ -351,7 +362,7 @@
 <li>Experience motivation loss (autonomy, mastery, and purpose — all impeded)</li>
 </ul>
 <p>A shared mental model within the team is a strong predictor of team performance: fewer mistakes, more coherent code, faster delivery. Keeping software boundaries team-sized builds this shared model naturally.</p>
-<h2>Domain Complexity Heuristics</h2>
+<h2 id="domain-complexity-heuristics">Domain Complexity Heuristics</h2>
 <p>Teams should assess the domains they own and classify them by complexity:</p>
 <ul>
 <li><strong>Simple</strong>: clear path of action; mostly mechanical/procedural responses</li>
@@ -388,11 +399,11 @@
 </tr>
 </tbody></table></div>
 <p>If a domain is too large for a single team, <strong>split the domain into subdomains</strong> — assign each subdomain to one team. Do not split a single domain across multiple teams.</p>
-<h2>Assessing Cognitive Load</h2>
+<h2 id="assessing-cognitive-load">Assessing Cognitive Load</h2>
 <p>A simple, non-judgmental diagnostic: ask the team <em>&quot;Do you feel effective and able to respond in a timely fashion to the work you are asked to do?&quot;</em></p>
 <p>Cognitive load should not be measured by lines of code or number of classes — these don&#39;t capture domain complexity. What matters is the <em>relative complexity of domains</em> for which the team is responsible.</p>
 <p>A team experiencing high extraneous load signals a platform or tooling problem. A team experiencing high intrinsic load may need the domain split or specialist enabling support (see <a href="../concepts/team-topologies-model.html">Team Topologies Model</a>).</p>
-<h2>Reducing Cognitive Load: Levers</h2>
+<h2 id="reducing-cognitive-load-levers">Reducing Cognitive Load: Levers</h2>
 <p>To increase the cognitive capacity available for a team (without reducing domain responsibility):</p>
 <ul>
 <li><strong>Platform</strong>: a well-designed internal developer platform eliminates extraneous load for consuming teams</li>
@@ -401,7 +412,7 @@
 <li><strong>Minimise interruptions</strong>: dedicated support channels, limits on meetings</li>
 <li><strong>Physical/virtual environment</strong>: designed for focused work, collaborative intra-team work, and occasional inter-team work — not open-plan noise that generates constant context switching</li>
 </ul>
-<h2>Relationship to Architecture Decisions</h2>
+<h2 id="relationship-to-architecture-decisions">Relationship to Architecture Decisions</h2>
 <p>Cognitive load is the mechanism behind several architectural principles that might otherwise seem arbitrary:</p>
 <ul>
 <li><strong>Microservices require team alignment</strong>: a microservice decomposition that ignores team cognitive load produces services too small for meaningful ownership, increasing the number of teams and inter-team dependencies</li>
@@ -409,14 +420,14 @@
 <li><strong>Platform teams</strong>: their value is precisely in eliminating extraneous cognitive load from stream-aligned teams, freeing that capacity for germane (business-value) thinking</li>
 <li><strong>Domain per team</strong>: every software system component must be owned by exactly one team; shared ownership means no team has the cognitive space to maintain it properly</li>
 </ul>
-<h2>Cognitive Load at the Code Level (Ousterhout)</h2>
+<h2 id="cognitive-load-at-the-code-level-ousterhout">Cognitive Load at the Code Level (Ousterhout)</h2>
 <p>Ousterhout (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 2) uses cognitive load as a symptom of complexity at the code and module level — distinct from Sweller&#39;s theory and Team Topologies&#39; team-level application, but grounded in the same psychological reality.</p>
 <p>At the code level, cognitive load measures how much a developer must know to complete a task. It arises from: APIs with many methods, global variables, inconsistencies, and dependencies between modules. Modules with simple interfaces (deep modules) reduce cognitive load directly — the interface is all the developer needs to hold in their head.</p>
 <p>Good documentation reduces cognitive load further: instead of reading the entire body of a method, a developer reads a short interface comment. Without adequate comments, developers must reconstruct the designer&#39;s intent from code — expensive and error-prone.</p>
 <blockquote>
 <p><strong>Alignment:</strong> Ousterhout&#39;s code-level cognitive load reduction is the micro-scale version of the same principle that drives Team Topologies&#39; architecture sizing: keep cognitive load low enough that developers can work effectively. At the team level, this means appropriately-sized service ownership. At the code level, it means deep modules with simple interfaces and good documentation.</p>
 </blockquote>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a> — the four team types and three interaction modes; platform teams reduce extraneous cognitive load; enabling teams help with intrinsic</li>
 <li><a href="../concepts/conways-law.html">Conways Law</a> — cognitive load constraints shape team boundaries, which in turn shape architecture</li>

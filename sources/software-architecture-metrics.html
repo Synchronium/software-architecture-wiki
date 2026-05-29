@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,15 +316,19 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Editor:</strong> <a href="../authors/christian-ciceri.html">Christian Ciceri</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-1-four-key-metrics-unleashed-andrew-harmel-law">Chapter 1 — Four Key Metrics Unleashed (Andrew Harmel-Law)</a></li><li class="toc-sub"><a href="#chapter-2-fitness-function-testing-pyramid-ren-weiss">Chapter 2 — Fitness Function Testing Pyramid (René Weiss)</a></li><li class="toc-sub"><a href="#chapter-3-evolutionary-architecture-guiding-architecture-with-testability-and-deployability-dave-farley">Chapter 3 — Evolutionary Architecture: Guiding Architecture with Testability and Deployability (Dave Farley)</a></li><li class="toc-sub"><a href="#chapter-4-improve-your-architecture-with-the-modularity-maturity-index-carola-lilienthal">Chapter 4 — Improve Your Architecture with the Modularity Maturity Index (Carola Lilienthal)</a></li><li class="toc-sub"><a href="#chapter-5-private-builds-and-metrics-tools-for-surviving-devops-transitions-christian-ciceri">Chapter 5 — Private Builds and Metrics: Tools for Surviving DevOps Transitions (Christian Ciceri)</a></li><li class="toc-sub"><a href="#chapter-6-scaling-an-organisation-the-central-role-of-software-architecture-joo-rosa">Chapter 6 — Scaling an Organisation: The Central Role of Software Architecture (João Rosa)</a></li><li class="toc-sub"><a href="#chapter-7-the-role-of-measurement-in-software-architecture-eoin-woods">Chapter 7 — The Role of Measurement in Software Architecture (Eoin Woods)</a></li><li class="toc-sub"><a href="#chapter-8-progressing-from-metrics-to-engineering-neal-ford">Chapter 8 — Progressing from Metrics to Engineering (Neal Ford)</a></li><li class="toc-sub"><a href="#chapter-9-using-software-metrics-to-ensure-maintainability-alexander-von-zitzewitz">Chapter 9 — Using Software Metrics to Ensure Maintainability (Alexander von Zitzewitz)</a></li><li class="toc-sub"><a href="#chapter-10-measure-the-unknown-with-the-goal-question-metric-approach-michael-keeling">Chapter 10 — Measure the Unknown with the Goal-Question-Metric Approach (Michael Keeling)</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Editor:</strong> <a href="../authors/christian-ciceri.html">Christian Ciceri</a>
 <strong>Contributing authors:</strong> <a href="../authors/andrew-harmel-law.html">Andrew Harmel Law</a> (ch. 1), <a href="../authors/rene-weiss.html">Rene Weiss</a> (ch. 2), <a href="../authors/dave-farley.html">Dave Farley</a> (ch. 3), <a href="../authors/carola-lilienthal.html">Carola Lilienthal</a> (ch. 4), <a href="../authors/christian-ciceri.html">Christian Ciceri</a> (ch. 5), <a href="../authors/joao-rosa.html">Joao Rosa</a> (ch. 6), <a href="../authors/eoin-woods.html">Eoin Woods</a> (ch. 7), <a href="../authors/neal-ford.html">Neal Ford</a> (ch. 8), <a href="../authors/alexander-von-zitzewitz.html">Alexander Von Zitzewitz</a> (ch. 9), <a href="../authors/michael-keeling.html">Michael Keeling</a> (ch. 10)
 <strong>Published:</strong> 2022 (O&#39;Reilly)
 <strong>Slug:</strong> <code>software-architecture-metrics</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p><em>Software Architecture Metrics</em> is an edited collection of ten chapters by different practitioners, each addressing a specific dimension of making architecture decisions measurable. The unifying thesis is that software architecture quality is not a matter of taste or experience alone — it can be observed, quantified, and governed through empirical feedback loops.</p>
 <p>The book spans three levels of abstraction. At the delivery level (Harmel-Law, Farley, Ciceri), it connects architecture to the four DORA metrics, continuous delivery practices, and trunk stability. At the structural level (Lilienthal, von Zitzewitz), it provides cognitive-science-grounded and graph-theoretic metrics for measuring modularity and architectural erosion. At the strategic level (Rosa, Keeling, Weiss, Woods, Ford), it addresses how measurement should be goal-directed, stakeholder-aligned, and automated into fitness functions.</p>
 <p>The book does not propose a unified measurement framework — each chapter reflects its author&#39;s independent practice. Its value lies in the breadth of lenses it provides, and in repeatedly demonstrating that measurement is not a reporting exercise but an architectural and organisational feedback mechanism.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Metrics are only useful when tied to explicit goals; untargeted measurement is noise (→ ch. 10)</li>
 <li>The four DORA key metrics are among the most valuable architectural metrics because they generate authentic team conversations and expose architectural constraints on delivery (→ ch. 1)</li>
@@ -327,34 +338,34 @@
 <li>Trunk stability is a prerequisite for meaningful architectural metrics — a broken trunk corrupts all quality signals (→ ch. 5)</li>
 <li>Fitness functions transform metrics into governance: the same transformation CI did for code integration (→ ch. 8)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Chapter 1 — Four Key Metrics Unleashed (Andrew Harmel-Law)</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-1-four-key-metrics-unleashed-andrew-harmel-law">Chapter 1 — Four Key Metrics Unleashed (Andrew Harmel-Law)</h3>
 <p>The four DORA metrics — deployment frequency, lead time for changes, change failure rate, time to restore service — are reframed as architectural tools. High performers in all four simultaneously have fewer architectural constraints on delivery. Harmel-Law describes four pipeline topology variants (single, multiple end-to-end, subpipeline chain, fan-in), concrete instrumentation points (commit timestamp, deploy timestamp, failure ticket open/close), and a minimal viable dashboard. Key argument: the metrics are not gameable, and their real value is the team conversations and self-directed improvements they generate, not the numbers themselves.</p>
 <blockquote>
 <p>&quot;That&#39;s what places the four key metrics among the most valuable architectural metrics out there.&quot; — Harmel-Law</p>
 </blockquote>
 <p>See <a href="../concepts/four-key-metrics.html">Four Key Metrics</a> for the full treatment.</p>
-<h3>Chapter 2 — Fitness Function Testing Pyramid (René Weiss)</h3>
+<h3 id="chapter-2-fitness-function-testing-pyramid-ren-weiss">Chapter 2 — Fitness Function Testing Pyramid (René Weiss)</h3>
 <p>Extends the evolutionary architecture fitness function taxonomy with a seven-step development process (stakeholder quality goals → draft → prioritise → finalise → automate → visualise → iterate) and anchors each fitness function to ISO 25010 quality attributes. The fitness function testing pyramid provides three layers — triggered atomic (code coverage, static analysis, simple perf) at the base; triggered holistic or continuous atomic (integration tests, production monitoring) in the middle; continuous holistic or triggered holistic in production (chaos engineering, business KPIs, zero-downtime tests) at the top — balancing cost and confidence.</p>
 <p>See <a href="../concepts/fitness-functions.html">Fitness Functions</a> for the full taxonomy.</p>
-<h3>Chapter 3 — Evolutionary Architecture: Guiding Architecture with Testability and Deployability (Dave Farley)</h3>
+<h3 id="chapter-3-evolutionary-architecture-guiding-architecture-with-testability-and-deployability-dave-farley">Chapter 3 — Evolutionary Architecture: Guiding Architecture with Testability and Deployability (Dave Farley)</h3>
 <p>Argues that testability, not design principles applied directly, is the most reliable driver of the five sustainable design attributes: modularity, cohesion, separation of concerns, abstraction/information hiding, and low coupling. Code designed to be testable is inherently well-structured. TDD provides real-time architectural feedback before implementation locks in bad decisions. Deployability is an architectural property — the scope of a deployment pipeline equals the scope of an independently deployable unit. Architectural descriptions should be &quot;tourist maps&quot;: highlight landmarks, suppress irrelevant detail; over-specified diagrams become outdated immediately.</p>
 <p>See <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> and <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>.</p>
-<h3>Chapter 4 — Improve Your Architecture with the Modularity Maturity Index (Carola Lilienthal)</h3>
+<h3 id="chapter-4-improve-your-architecture-with-the-modularity-maturity-index-carola-lilienthal">Chapter 4 — Improve Your Architecture with the Modularity Maturity Index (Carola Lilienthal)</h3>
 <p>The Modularity Maturity Index (MMI) is a 0–10 empirical score developed from 300+ architecture reviews, grounded in cognitive science rather than formal theory. Three weighted principles: modularity/chunking (45%), hierarchy (30%), pattern consistency/schema theory (25%). Decision thresholds: MMI &lt; 4 → consider replacement; 4–8 → refactor; &gt; 8 → low debt. Architecture erosion is the default outcome without continuous improvement cycles — each change slows as debt compounds. Two debt types: implementation debt (measurable by tools, cheap to fix) vs design/architecture debt (requires structured review, expensive because it demands structural change). Tools include Lattix, Sotograph/SotoArc, Sonargraph, Structure101, TeamScale.</p>
 <p>See <a href="../concepts/modularity.html">Modularity</a> for the full MMI treatment.</p>
-<h3>Chapter 5 — Private Builds and Metrics: Tools for Surviving DevOps Transitions (Christian Ciceri)</h3>
+<h3 id="chapter-5-private-builds-and-metrics-tools-for-surviving-devops-transitions-christian-ciceri">Chapter 5 — Private Builds and Metrics: Tools for Surviving DevOps Transitions (Christian Ciceri)</h3>
 <p>Identifies the <em>ownership shift antipattern</em>: DevOps becomes a separate automations team, development loses pipeline ownership, and trunk becomes unstable. The fix is the <em>private build</em> — an integration build in a local or dedicated environment before committing to mainline. Three transition metrics track progress: Time to Feedback (qualitative, indirect — warns of long cycles), Evitable Integration Issues per Iteration (quantitative, indirect — measures private build discipline), Time Spent Restoring Trunk Stability per Iteration (quantitative, direct — cost of regressions entering mainline). Key framing: trunk stability must be established before any architectural quality metrics become meaningful.</p>
-<h3>Chapter 6 — Scaling an Organisation: The Central Role of Software Architecture (João Rosa)</h3>
+<h3 id="chapter-6-scaling-an-organisation-the-central-role-of-software-architecture-joo-rosa">Chapter 6 — Scaling an Organisation: The Central Role of Software Architecture (João Rosa)</h3>
 <p>Architecture is sociotechnical: without intentional direction guided by business KPIs, Conway&#39;s Law drives monoliths into Distributed Big Balls of Mud. Rosa&#39;s primary tools: <strong>Big Picture EventStorming</strong> (maps software components onto emergent business domains, reveals ownership mismatches and cognitive load hotspots, surfaces domain KPIs) and <strong>Process Modeling EventStorming</strong> (operational value stream detail: KPIs, hotspots, Lean waste). The <strong>KPI Value Tree</strong> connects organisational KPIs (lagging) → domain KPIs (lagging) → technical metrics (leading + lagging, including the DORA four). Additional metrics: throughput (Lean), eNPS, mean time to discover (MTTD). Central warning: Goodhart&#39;s Law — when a measure becomes a target, it ceases to be a good measure.</p>
 <p>See <a href="../concepts/eventstorming.html">Eventstorming</a> and <a href="../concepts/four-key-metrics.html">Four Key Metrics</a>.</p>
-<h3>Chapter 7 — The Role of Measurement in Software Architecture (Eoin Woods)</h3>
+<h3 id="chapter-7-the-role-of-measurement-in-software-architecture-eoin-woods">Chapter 7 — The Role of Measurement in Software Architecture (Eoin Woods)</h3>
 <p>A four-quadrant measurement taxonomy: <strong>artifact vs operational</strong> × <strong>external vs internal</strong>. External artifact (design compliance — judgment-based, early in lifecycle) → internal artifact (code metrics — cheap, after code written) → external operational (response time, throughput, recovery — requires running system) → internal operational (memory, DB growth — predictive, running system required). Quality attribute specifics: performance (latency + throughput inversely proportional; measure response time distribution; pitfalls: test vs reality, workload fidelity); scalability (linear scaling ideal; watch for nonlinear behaviour); availability (MTTR more important than MTBF — Allspaw 2010; RPO + RTO more actionable than &quot;the nines&quot;; tyranny of the nines antipattern); security (static analysis + dynamic testing; weight by risk). Fitness functions don&#39;t make measurement easier — they help use measurements effectively.</p>
 <p>See <a href="../operations/availability.html">Availability</a> for the MTTR/RPO/RTO treatment.</p>
-<h3>Chapter 8 — Progressing from Metrics to Engineering (Neal Ford)</h3>
+<h3 id="chapter-8-progressing-from-metrics-to-engineering-neal-ford">Chapter 8 — Progressing from Metrics to Engineering (Neal Ford)</h3>
 <p>Metrics become engineering when continuously applied with objective, automated thresholds — the same transformation CI did to code integration. Practical tools: <strong>ArchUnit</strong> (Java) and <strong>NetArchTest</strong> (.NET) for compile-time governance (cycle checks, layer enforcement). Distributed architectures require custom fitness functions (e.g., parse service logs to verify orchestrator communication patterns). <strong>Zero-day enterprise security pattern</strong>: security team owns a pipeline &quot;slot&quot; in all projects; injects a version-check fitness function org-wide when a CVE is announced — motivated by the Equifax 2017 Struts breach, missed for four months because not all systems had active pipelines. Fitness functions reframed as executable checklists (Gawande&#39;s <em>Checklist Manifesto</em>): complex systems have too many simultaneous concerns to rely on memory; automation prevents important principles being skipped under deadline pressure.</p>
 <p>See <a href="../concepts/fitness-functions.html">Fitness Functions</a>.</p>
-<h3>Chapter 9 — Using Software Metrics to Ensure Maintainability (Alexander von Zitzewitz)</h3>
+<h3 id="chapter-9-using-software-metrics-to-ensure-maintainability-alexander-von-zitzewitz">Chapter 9 — Using Software Metrics to Ensure Maintainability (Alexander von Zitzewitz)</h3>
 <p>The central claim: 80% of nontrivial systems exceeding 100K LoC become Big Balls of Mud without an active metrics-based feedback loop — structural erosion is the default outcome. A suite of CI-enforceable structural metrics:</p>
 <ul>
 <li><strong>ACD/CCD/Propagation Cost</strong>: average and cumulative component dependency; Propagation Cost (CCD/n²) normalised to system size. Thresholds: &gt; 20% for 500–5,000 components; &gt; 10% for 5,000+</li>
@@ -368,21 +379,21 @@
 <p><strong>Six golden rules</strong>: formal architectural model; no namespace/package cycles; source-file cycles ≤ 5 elements; no duplication; LoC ≤ 800 per file; max indentation 4 and Modified Cyclomatic Complexity ≤ 15.</p>
 <p>Tools: Sonargraph-Explorer (free), NDepend, Understand, SonarQube, Source Monitor.</p>
 <p>See <a href="../concepts/modularity.html">Modularity</a> for the full structural metrics treatment.</p>
-<h3>Chapter 10 — Measure the Unknown with the Goal-Question-Metric Approach (Michael Keeling)</h3>
+<h3 id="chapter-10-measure-the-unknown-with-the-goal-question-metric-approach-michael-keeling">Chapter 10 — Measure the Unknown with the Goal-Question-Metric Approach (Michael Keeling)</h3>
 <p>GQM (Basili &amp; Weiss, 1984) is a hierarchical framework: goal → questions → metrics → data. Every data point collected must link upward to a goal; metrics without a traceable goal are candidates for retirement. Goal statement structure: purpose + object + issue/topic + viewpoint. Metric selection criteria: strong unambiguous signal preferred; inexpensive preferred; metrics that answer multiple questions more efficient than single-purpose ones. Nine-step workshop: intro → write goal → gather questions → brainstorm metrics → sanity-check goal → identify data sources → prioritise → open reflection → document and share.</p>
 <p><strong>Foo Service case study</strong>: recurring Monday rate-limit breach → postmortem → GQM tree → heartbeat component + fail-fast ADR (jobs fail fast, work queue retries) → 9 months later, same service goes down for 14 hours; team alerted in 10 minutes before any user impact. GQM functions simultaneously as a measurement framework, a coaching tool, and a stakeholder alignment mechanism.</p>
 <blockquote>
 <p>&quot;A metric by itself can only tell you something is wrong. It can&#39;t tell you what to do about it.&quot; — team leader, Foo Service case study</p>
 </blockquote>
 <p>See <a href="../concepts/goal-question-metric.html">Goal Question Metric</a>.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;That&#39;s what places the four key metrics among the most valuable architectural metrics out there.&quot; — Andrew Harmel-Law (ch. 1)</p>
 </blockquote>
 <blockquote>
 <p>&quot;A metric by itself can only tell you something is wrong. It can&#39;t tell you what to do about it.&quot; — team leader, Foo Service case study (ch. 10)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — Harmel-Law (ch. 1) and Rosa (ch. 6)</li>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — Weiss (ch. 2) and Ford (ch. 8)</li>
@@ -396,7 +407,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li><li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li><li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li><li><a href="../authors/dave-farley.html">Dave Farley</a></li><li><a href="../authors/eoin-woods.html">Eoin Woods</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li><li><a href="../authors/joao-rosa.html">João Rosa</a></li><li><a href="../authors/michael-keeling.html">Michael Keeling</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../authors/neal-ford.html">Neal Ford</a></li><li><a href="../authors/rene-weiss.html">René Weiss</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li></ul>
+        <ul><li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li><li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li><li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../authors/dave-farley.html">Dave Farley</a></li><li><a href="../authors/eoin-woods.html">Eoin Woods</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li><li><a href="../authors/joao-rosa.html">João Rosa</a></li><li><a href="../authors/michael-keeling.html">Michael Keeling</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../authors/neal-ford.html">Neal Ford</a></li><li><a href="../authors/rene-weiss.html">René Weiss</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li></ul>
       </aside>
     </main>
   </div>

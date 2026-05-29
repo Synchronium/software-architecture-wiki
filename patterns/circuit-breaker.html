@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,19 @@
       <h1>Circuit Breaker</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/downstream-dependencies.html">downstream-dependencies</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/stability.html">stability</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A state machine that wraps calls to a downstream dependency, automatically stopping requests when the dependency is failing and resuming when it recovers. Named after the electrical circuit breaker that trips to protect a circuit from overload.</p>
-<h2>States</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#states">States</a></li><li><a href="#configuration-parameters">Configuration Parameters</a></li><li><a href="#why-it-works">Why It Works</a></li><li><a href="#graceful-degradation">Graceful Degradation</a></li><li><a href="#timeouts">Timeouts</a></li><li><a href="#retries">Retries</a></li><li><a href="#relationship-to-timeouts-and-retries">Relationship to Timeouts and Retries</a></li><li><a href="#implementation-notes">Implementation Notes</a></li><li><a href="#the-antipatterns-circuit-breaker-addresses">The Antipatterns Circuit Breaker Addresses</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A state machine that wraps calls to a downstream dependency, automatically stopping requests when the dependency is failing and resuming when it recovers. Named after the electrical circuit breaker that trips to protect a circuit from overload.</p>
+<h2 id="states">States</h2>
 <pre><code>            failure threshold exceeded
 CLOSED ──────────────────────────────► OPEN
   ▲                                      │
@@ -325,14 +336,14 @@ CLOSED ────────────────────────�
 <li><strong>OPEN</strong>: dependency is unavailable; calls fail immediately without hitting the dependency (&quot;fail fast&quot;); error budget not burned waiting for timeouts.</li>
 <li><strong>HALF-OPEN</strong>: cooldown elapsed; a single probe request is allowed through. If it succeeds, transition to CLOSED; if it fails, return to OPEN.</li>
 </ul>
-<h2>Configuration Parameters</h2>
+<h2 id="configuration-parameters">Configuration Parameters</h2>
 <ul>
 <li><strong>Failure threshold</strong>: number or percentage of failures to trip the breaker (e.g., 5 failures in 10 seconds, or 50% error rate).</li>
 <li><strong>Cooldown / reset timeout</strong>: how long to stay OPEN before probing (e.g., 30s).</li>
 <li><strong>Half-open probe count</strong>: how many requests to allow through before declaring recovery.</li>
 </ul>
 <p>Thresholds should be tuned to the dependency&#39;s expected P99.9 latency and acceptable error rate.</p>
-<h2>Why It Works</h2>
+<h2 id="why-it-works">Why It Works</h2>
 <p>Without a circuit breaker:</p>
 <ul>
 <li>A slow/failed downstream service causes every caller to block for the full timeout duration.</li>
@@ -345,7 +356,7 @@ CLOSED ────────────────────────�
 <li>The caller can implement graceful degradation (return cached data, return a default, show a degraded UI).</li>
 <li>The downstream service gets relief during recovery (no retry storm).</li>
 </ul>
-<h2>Graceful Degradation</h2>
+<h2 id="graceful-degradation">Graceful Degradation</h2>
 <p>The circuit breaker only adds resilience if the caller handles the open state gracefully. For non-critical dependencies, the caller should:</p>
 <ol>
 <li>Catch the circuit-breaker exception.</li>
@@ -353,11 +364,11 @@ CLOSED ────────────────────────�
 <li>Log the degradation.</li>
 </ol>
 <p>For critical dependencies, the caller should still return an error — but fast, preserving resources for other requests.</p>
-<h2>Timeouts</h2>
+<h2 id="timeouts">Timeouts</h2>
 <p>Always configure a timeout on every network call. A call without a timeout can hang indefinitely, consuming a thread (or goroutine/connection) for as long as the downstream is unresponsive — this leads to the resource leak pattern described in <a href="../operations/common-failure-causes.html">Common Failure Causes</a>.</p>
 <p><strong>Sizing</strong>: base the timeout on the desired false-timeout rate. For a 0.1% false-timeout rate, set the timeout at P99.9 of the downstream service&#39;s response time. Monitor the full call lifecycle (duration, status code, timeout flag) at integration points. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27)</p>
 <p><strong>Gotcha</strong>: many popular libraries have no default timeout — Python <code>requests</code>, Go&#39;s <code>net/http</code>, and JavaScript&#39;s <code>XMLHttpRequest</code> (default = 0, meaning no timeout). Always set explicitly, or wrap calls in a library that enforces them. A sidecar proxy (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>) can enforce timeouts transparently.</p>
-<h2>Retries</h2>
+<h2 id="retries">Retries</h2>
 <p>Retries recover from transient failures where the next call is likely to succeed. They complement circuit breakers: retries address short-lived faults; circuit breakers address sustained ones.</p>
 <p><strong>Exponential backoff with jitter</strong>:</p>
 <pre><code>delay = random(0, min(cap, initial_backoff × 2^attempt))
@@ -366,7 +377,7 @@ CLOSED ────────────────────────�
 <p><strong>Only retry transient failures</strong>: authorization errors, validation failures, and other permanent errors should fail fast — retrying a 403 wastes resources. Understand idempotency before retrying: retrying a non-idempotent call can cause duplicated side effects. (→ <a href="../distributed/idempotency.html">Idempotency</a>)</p>
 <p><strong>Retry amplification in service chains</strong>: in a chain A → B → C, if B retries calls to C and A retries calls to B, the total number of requests arriving at C can multiply. As the chain deepens, the load amplification worsens. Mitigation: retry at one level of the chain only; all other layers fail fast. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27)</p>
 <p><strong>Retry queues</strong>: for batch applications where prompt response is not required, failed requests can be written to a retry queue and processed later, decoupling the retry from the request lifecycle.</p>
-<h2>Relationship to Timeouts and Retries</h2>
+<h2 id="relationship-to-timeouts-and-retries">Relationship to Timeouts and Retries</h2>
 <p>Circuit breakers work alongside (not instead of) timeouts and retries:</p>
 <ol>
 <li><strong>Timeout</strong>: always set; prevents indefinite blocking on a single call.</li>
@@ -374,7 +385,7 @@ CLOSED ────────────────────────�
 <li><strong>Circuit breaker</strong>: handles sustained failures; stops sending requests entirely when the downstream is reliably failing.</li>
 </ol>
 <p>Use retries when the expectation is that the next call will succeed; use a circuit breaker when the expectation is that the next call will fail. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27)</p>
-<h2>Implementation Notes</h2>
+<h2 id="implementation-notes">Implementation Notes</h2>
 <ul>
 <li>State must be <strong>per process</strong>. Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 5) explicitly argues against sharing circuit breaker state across instances — each process independently tracks its own fault density. Distributed circuit breaker state in Redis introduces coupling and a new failure point.</li>
 <li>Track fault <strong>density</strong> (faults per time window) using a <strong>leaky bucket</strong>, not a simple fault count. A leaky bucket drains over time; a burst of faults that clears doesn&#39;t leave stale fault counts that could trip the breaker indefinitely. This makes the circuit breaker adaptive to burstiness without over-sensitivity.</li>
@@ -383,7 +394,7 @@ CLOSED ────────────────────────�
 <li>Many libraries provide implementations: Hystrix (Java, now in maintenance), Resilience4j (Java), Polly (.NET), py-breaker (Python).</li>
 <li>Service meshes (Envoy, Istio) implement circuit breaking at the network proxy layer, transparently to the application code. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</li>
 </ul>
-<h2>The Antipatterns Circuit Breaker Addresses</h2>
+<h2 id="the-antipatterns-circuit-breaker-addresses">The Antipatterns Circuit Breaker Addresses</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 4) names the antipatterns that Circuit Breaker is designed to counter:</p>
 <ul>
 <li><strong>Integration Points</strong>: every integration point will eventually fail — refused connections, hangs, slow responses, protocol violations. Circuit Breaker stops calls to failing integration points instead of letting every caller pile up blocked threads.</li>
@@ -394,13 +405,13 @@ CLOSED ────────────────────────�
 <blockquote>
 <p><strong>Contradiction (Vitillo vs Nygard)</strong>: <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27 treats Circuit Breaker primarily as a configuration and tuning problem (threshold, cooldown, probe count). <a href="../sources/release-it.html">Release It</a> ch. 4 treats the same pattern as the cornerstone of a stability architecture — the primary defence against cascading failures — and motivates it with detailed real-world failure chains. The patterns are compatible; Nygard&#39;s framing is richer on <em>when</em> to use it and <em>why</em>.</p>
 </blockquote>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27) — circuit breaker state machine, configuration, relationship to timeouts/retries.</li>
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 4) — Circuit Breaker as defence against Integration Points, Cascading Failures, Slow Responses, and Unbalanced Capacities antipatterns; motivation from real failure chains.</li>
 <li>(→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 9) — Circuit Breaker in microservices context: relieves load on overloaded downstream during OPEN state; complements fail-fast timeout strategy; Resilience4j Python <code>@circuit</code> decorator as implementation example (failure_threshold, recovery_timeout).</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/timeout.html">Timeout</a> — prerequisite to circuit breaker; every call needs a timeout before a breaker makes sense</li>
 <li><a href="../patterns/retry.html">Retry</a> — handles transient failures; circuit breaker handles sustained ones; the two compose</li>
@@ -408,12 +419,13 @@ CLOSED ────────────────────────�
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a></li>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — Nygard&#39;s full pattern set; circuit breaker as one of the failure-arresting patterns</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — when to reach for which stability pattern; circuit breaker&#39;s role in the composition order</li>
 <li><a href="../distributed/backpressure.html">Backpressure</a> — what to do when the downstream is slow but not failing</li>
 <li><a href="../concepts/feature-flags.html">Feature Flags</a> — flag-driven graceful degradation when a breaker opens</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

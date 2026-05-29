@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#testing-and-mttr">Testing and MTTR</a></li><li><a href="#traditional-test-hierarchy">Traditional Test Hierarchy</a></li><li><a href="#production-tests">Production Tests</a></li><li class="toc-sub"><a href="#configuration-tests">Configuration Tests</a></li><li class="toc-sub"><a href="#stress-tests">Stress Tests</a></li><li class="toc-sub"><a href="#canary-tests">Canary Tests</a></li><li><a href="#production-probes">Production Probes</a></li><li><a href="#zero-mttr-and-the-testing-reliability-loop">Zero MTTR and the Testing-Reliability Loop</a></li><li><a href="#configuration-files-as-a-reliability-risk">Configuration Files as a Reliability Risk</a></li><li><a href="#testing-sre-tools">Testing SRE Tools</a></li><li><a href="#statistical-testing">Statistical Testing</a></li><li><a href="#testing-culture">Testing Culture</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Testing for reliability is the practice of using software tests to quantify confidence in a system&#39;s future behaviour. Confidence has two sources: historical monitoring data, and predictions derived from demonstrating equivalence across changes. Each test that passes both before and after a change reduces uncertainty about whether the change has degraded reliability. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 17)</p>
-<h2>Testing and MTTR</h2>
+<h2 id="testing-and-mttr">Testing and MTTR</h2>
 <p>A test that blocks a failing push catches a bug with <strong>zero MTTR</strong> — the bug never reaches production. Monitoring that catches the same bug in production has non-zero MTTR (detection latency + mitigation latency). More zero-MTTR catches → higher MTBF experienced by users, which in turn encourages faster iteration (higher release velocity). The relationship is self-reinforcing: better test coverage → fewer production incidents → more confidence to release faster → more opportunities to add coverage.</p>
-<h2>Traditional Test Hierarchy</h2>
+<h2 id="traditional-test-hierarchy">Traditional Test Hierarchy</h2>
 <pre><code>Unit tests          → milliseconds; cheapest; test a single function/class in isolation
 Integration tests   → seconds to minutes; test assembled components; dependency injection for mocks
 System tests        → minutes to hours; test end-to-end assembled system
@@ -322,14 +333,14 @@ System tests        → minutes to hours; test end-to-end assembled system
   └── Regression tests  → prevent known bugs from re-entering the codebase
 </code></pre>
 <p>Cost increases dramatically up the stack. Test cost (time and compute) must be managed deliberately — test coverage is not just a correctness investment but also a developer-productivity investment.</p>
-<h2>Production Tests</h2>
+<h2 id="production-tests">Production Tests</h2>
 <p>Production tests operate against a live system rather than a hermetic environment. They complement traditional tests by covering what cannot be verified offline.</p>
-<h3>Configuration Tests</h3>
+<h3 id="configuration-tests">Configuration Tests</h3>
 <p>Verify that a binary&#39;s live configuration matches its checked-in source file. Configuration tests are inherently non-hermetic — they reach into production state. They are particularly valuable as distributed monitoring: the pattern of pass/fail across a fleet identifies rollout paths that produce invalid configuration combinations before those paths affect users.</p>
 <p>A configuration test is versioned alongside its config file. Comparing which test version is passing against the target version indicates how far production currently lags behind the latest engineering work.</p>
-<h3>Stress Tests</h3>
+<h3 id="stress-tests">Stress Tests</h3>
 <p>Identify the limits of a component before it catastrophically fails. Most components degrade non-gracefully at some threshold rather than gracefully degrading. Knowing the threshold enables capacity planning and SLO-setting with real data rather than estimates.</p>
-<h3>Canary Tests</h3>
+<h3 id="canary-tests">Canary Tests</h3>
 <p>The canary is <strong>not technically a test</strong> — the SRE book explicitly notes it is &quot;conspicuously absent from the list of production tests.&quot; A canary is structured user acceptance: a subset of servers receives the new version and is left in an incubation period (&quot;baking the binary&quot;) before the rollout proceeds.</p>
 <p>Unlike deterministic tests, canaries expose code to unpredictable live traffic. They detect fault orders:</p>
 <div class="table-wrapper"><table>
@@ -354,10 +365,10 @@ System tests        → minutes to hours; test end-to-end assembled system
 </tbody></table></div>
 <p>Most bugs are U=1 and can be caught by converting anomalous request logs into regression tests. Higher-order bugs require order-of-magnitude more exposure to detect and cannot be caught by simply replaying the same requests.</p>
 <p><strong>Exponential rollout rule of thumb</strong>: start at 0.1% of traffic; scale by an order of magnitude every 24 hours while varying geographic location (day 2: 1%, day 3: 10%, day 4: 100%).</p>
-<h2>Production Probes</h2>
+<h2 id="production-probes">Production Probes</h2>
 <p>Monitoring probes that replay known-good and known-bad requests against live production. These differ from release tests because they use the real frontend and backend — not fake or hermetic equivalents.</p>
 <p>All four combinations of old/new probe against old/new application are continuously generated during rollouts. A probe failure indicates an API incompatibility between production and release environments. The production updater can detect probe failures and halt or roll back the rollout before user traffic is routed to the broken version.</p>
-<h2>Zero MTTR and the Testing-Reliability Loop</h2>
+<h2 id="zero-mttr-and-the-testing-reliability-loop">Zero MTTR and the Testing-Reliability Loop</h2>
 <pre><code>Better test coverage
   → more bugs caught pre-production (zero MTTR)
   → higher MTBF observed by users
@@ -367,7 +378,7 @@ System tests        → minutes to hours; test end-to-end assembled system
   → more opportunities to catch regressions
 </code></pre>
 <p>The feedback loop is bidirectional: if release cadence is increased without improving test coverage, MTBF drops and users see more failures, which creates pressure to slow releases.</p>
-<h2>Configuration Files as a Reliability Risk</h2>
+<h2 id="configuration-files-as-a-reliability-risk">Configuration Files as a Reliability Risk</h2>
 <p>Configuration files present a distinct reliability challenge because they change frequently but are often not tested with the same rigour as code.</p>
 <p><strong>Two categories</strong>:</p>
 <ol>
@@ -376,14 +387,14 @@ System tests        → minutes to hours; test end-to-end assembled system
 </ol>
 <p><strong>Break-glass mechanism</strong>: an emergency override that allows pushing a config before testing completes. Should be auditable, noisy (file a bug automatically), and should run tests asynchronously, back-annotating the push with any failures so the next action can be better informed.</p>
 <p><strong>Config syntax and schema</strong>: configuration written as an interpreted language (Python) has no upper bound on loading time and can execute arbitrary code. Protocol buffers define schema statically and are checked at load time with bounded runtime — the preferred approach for safety-critical config.</p>
-<h2>Testing SRE Tools</h2>
+<h2 id="testing-sre-tools">Testing SRE Tools</h2>
 <p>Automation tools that operate outside the mainstream API have a subtly different risk profile from ordinary software. They can alter system state in ways that are invisible to the regular API. Two properties distinguish SRE tools:</p>
 <ul>
 <li><strong>SRE operational tools</strong>: side effects remain within the mainstream API; isolated from user-facing production by release barriers</li>
 <li><strong>Automation tools</strong>: the actual operation targets a robust, predictable API; the purpose is a side effect invisible to other API clients</li>
 </ul>
 <p><strong>Barrier defence pattern</strong> for risky software: (1) use a separate tool to place a barrier that causes the replica to fail its health check; (2) configure risky software to only operate on unhealthy replicas; (3) use the black-box health monitor to remove the barrier and return the replica to service. This prevents maintenance software from accidentally operating on user-facing replicas.</p>
-<h2>Statistical Testing</h2>
+<h2 id="statistical-testing">Statistical Testing</h2>
 <p>Techniques such as Chaos Monkey, Jepsen, and fuzzing are not repeatable — rerunning with a new seed doesn&#39;t prove the original bug is fixed. Useful practices:</p>
 <ul>
 <li>Log the random number seed (or full action sequence) immediately on failure</li>
@@ -391,7 +402,7 @@ System tests        → minutes to hours; test end-to-end assembled system
 <li>Multiple replay runs may reveal more severe manifestations of the same fault, warranting a severity escalation</li>
 </ul>
 <p>These techniques are especially useful for finding <strong>higher-order bugs</strong> (U≥2) that cannot be caught by deterministic replay.</p>
-<h2>Testing Culture</h2>
+<h2 id="testing-culture">Testing Culture</h2>
 <p>Building a testing culture requires structural reinforcement:</p>
 <ul>
 <li><strong>Document all bugs as test cases</strong>: every bug is converted into a failing test first, then fixed. This builds regression coverage organically.</li>
@@ -399,7 +410,7 @@ System tests        → minutes to hours; test end-to-end assembled system
 <li><strong>Broken build = highest priority</strong>: engineers must treat a broken build as the most urgent issue and drop all other work. Reasons: (1) the bug is harder to fix the more commits accumulate; (2) the team works around the breakage at increasing cost; (3) release cadences lose their value; (4) emergency release capability is impaired.</li>
 <li><strong>Explicit coverage goals</strong>: treat test coverage as an engineering project with stated targets and deadlines, not a philosophical stance.</li>
 </ul>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — Chaos Monkey and Jepsen are statistical testing tools for distributed system reliability</li>
 <li><a href="../operations/monitoring.html">Monitoring</a> — black-box monitoring and production probes serve complementary roles to testing</li>

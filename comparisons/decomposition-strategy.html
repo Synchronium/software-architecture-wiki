@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html" aria-current="page">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,30 +309,34 @@
       <h1>Decomposition Strategy: How Far to Break Up a System</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/decomposition.html">decomposition</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/monolith.html">monolith</a></li><li><a class="tag-chip" href="../tags/service-based.html">service-based</a></li><li><a class="tag-chip" href="../tags/modularity.html">modularity</a></li><li><a class="tag-chip" href="../tags/migration.html">migration</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>The most common architectural mistake is decomposing too eagerly — reaching for microservices before the team has the domain knowledge, operational maturity, or organisational structure to benefit from them. The second most common mistake is not decomposing at all, letting a monolith accumulate until change is nearly impossible.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-decomposition-spectrum">The Decomposition Spectrum</a></li><li><a href="#decision-factors">Decision Factors</a></li><li class="toc-sub"><a href="#1-domain-understanding">1. Domain understanding</a></li><li class="toc-sub"><a href="#2-team-structure-and-size">2. Team structure and size</a></li><li class="toc-sub"><a href="#3-operational-maturity-devops-capability">3. Operational maturity (DevOps capability)</a></li><li class="toc-sub"><a href="#4-transaction-requirements">4. Transaction requirements</a></li><li class="toc-sub"><a href="#5-scalability-and-elasticity-requirements">5. Scalability and elasticity requirements</a></li><li><a href="#what-each-style-gives-you">What Each Style Gives You</a></li><li><a href="#migration-recommended-path">Migration: Recommended Path</a></li><li><a href="#the-ferrari-anti-pattern">The Ferrari Anti-Pattern</a></li><li><a href="#granularity-within-microservices">Granularity Within Microservices</a></li><li><a href="#how-sources-frame-the-decision">How Sources Frame the Decision</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>The most common architectural mistake is decomposing too eagerly — reaching for microservices before the team has the domain knowledge, operational maturity, or organisational structure to benefit from them. The second most common mistake is not decomposing at all, letting a monolith accumulate until change is nearly impossible.</p>
 <p>This page answers: <strong>given where you are now, how far should you decompose, and what should drive the decision?</strong></p>
-<h2>The Decomposition Spectrum</h2>
+<h2 id="the-decomposition-spectrum">The Decomposition Spectrum</h2>
 <pre><code>Layered monolith → Modular monolith → Service-based → Microservices
   (technical          (domain-logical     (domain-physical   (domain-physical
    partitioning)       partitioning,        partitioning,      partitioning,
                        single deploy)       shared DB)         independent DBs)
 </code></pre>
 <p>Each step increases operational complexity and coupling flexibility; each step requires more maturity to execute correctly. The right position is the one your team can maintain, not the most sophisticated one you can envision.</p>
-<h2>Decision Factors</h2>
-<h3>1. Domain understanding</h3>
+<h2 id="decision-factors">Decision Factors</h2>
+<h3 id="1-domain-understanding">1. Domain understanding</h3>
 <p><strong>Don&#39;t decompose what you don&#39;t understand.</strong> Premature service boundaries cut across the wrong seams, creating coupling that is harder to fix than a monolith — distributed coupling. (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 3)</p>
 <p>Heuristic: if you cannot draw the bounded context map with reasonable confidence, stay in a monolith. Modularise within the monolith to discover the real boundaries. Extract services only when the boundaries are stable.</p>
 <blockquote>
 <p>&quot;If you can&#39;t build a monolith, what makes you think microservices are the answer?&quot; — Simon Brown (cited in → <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> ch. 4)</p>
 </blockquote>
-<h3>2. Team structure and size</h3>
+<h3 id="2-team-structure-and-size">2. Team structure and size</h3>
 <p>Conway&#39;s Law is a constraint, not a suggestion (→ <a href="../concepts/conways-law.html">Conways Law</a>). Services decompose along team boundaries whether you plan for it or not. The relevant question is: does your team structure <em>support</em> the decomposition you&#39;re considering?</p>
 <p>Team Topologies guidance (→ <a href="../sources/team-topologies.html">Team Topologies</a>): a service or bounded context should be ownable by a single stream-aligned team without exceeding that team&#39;s cognitive load capacity. The two-pizza rule is an approximation — the real constraint is Dunbar&#39;s number and the complexity of the domain the team must hold in mind.</p>
 <ul>
@@ -333,14 +344,14 @@
 <li><strong>Service-based</strong>: 4–8 teams, each owning a coarse domain (OrderService, CatalogService, etc.)</li>
 <li><strong>Microservices</strong>: many autonomous teams, each owning end-to-end a narrow capability; requires strong platform support</li>
 </ul>
-<h3>3. Operational maturity (DevOps capability)</h3>
+<h3 id="3-operational-maturity-devops-capability">3. Operational maturity (DevOps capability)</h3>
 <p>Distributed systems require significantly more operational sophistication: distributed tracing, per-service deployment pipelines, service discovery, health checks, circuit breakers, distributed configuration, container orchestration. Teams that lack this capability will spend more time operating the distributed system than building features.</p>
 <p>The DORA four key metrics (→ <a href="../concepts/four-key-metrics.html">Four Key Metrics</a>) are a good proxy: if deployment frequency is low (monthly or quarterly), a distributed architecture will not improve it — the bottleneck is process and culture, not the architecture.</p>
 <ul>
 <li><strong>Low DevOps maturity</strong>: modular monolith or service-based; extract services only as capability grows</li>
 <li><strong>High DevOps maturity</strong>: microservices are viable; the operational overhead is managed, not feared</li>
 </ul>
-<h3>4. Transaction requirements</h3>
+<h3 id="4-transaction-requirements">4. Transaction requirements</h3>
 <p>ACID transactions are local to a single process and database. Decomposing across databases requires sagas for any multi-step operation that must remain consistent — adding significant complexity and losing isolation guarantees (→ <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>, <a href="../patterns/saga.html">Saga</a>).</p>
 <p>Key question: does your domain require strong transactional consistency <em>across</em> the proposed service boundaries?</p>
 <ul>
@@ -349,14 +360,14 @@
 <li><strong>No, or eventual consistency is acceptable</strong>: microservices are viable</li>
 </ul>
 <p>Richards &amp; Ford&#39;s warning (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 17): if sagas are the dominant feature of your microservices design, the service boundaries are wrong. Fix granularity before reaching for saga.</p>
-<h3>5. Scalability and elasticity requirements</h3>
+<h3 id="5-scalability-and-elasticity-requirements">5. Scalability and elasticity requirements</h3>
 <ul>
 <li><strong>Uniform scaling</strong> (the whole system scales together): monolith is fine; adding replicas of a stateless monolith is straightforward</li>
 <li><strong>Independent scaling of specific capabilities</strong>: service-based or microservices — you can scale the OrderService without scaling the ReportingService</li>
 <li><strong>Extreme elasticity / spike workloads</strong>: microservices or space-based architecture (→ <a href="../styles/space-based-architecture.html">Space Based Architecture</a>)</li>
 </ul>
 <p>Do not decompose for scalability you don&#39;t have evidence you need. Premature decomposition is a real cost; defer it until you have load data.</p>
-<h2>What Each Style Gives You</h2>
+<h2 id="what-each-style-gives-you">What Each Style Gives You</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -427,16 +438,16 @@
 <td>No</td>
 </tr>
 </tbody></table></div>
-<h2>Migration: Recommended Path</h2>
+<h2 id="migration-recommended-path">Migration: Recommended Path</h2>
 <p>The recommended progression (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> ch. 4, <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 2):</p>
 <p><strong>Step 1 — Modularise in place.</strong> Impose domain boundaries within the existing monolith. Use fitness functions (ArchUnit, etc.) to enforce module isolation. This reveals where the true coupling lies — and much of it is unexpected. This step is required before extraction; skipping it means extracting along the wrong boundaries.</p>
 <p><strong>Step 2 — Extract to service-based.</strong> Once domain modules are clean, extract the highest-value or highest-change-rate module as a coarse service. Keep the shared database. Validate deployment, observability, and team ownership patterns at this smaller scale.</p>
 <p><strong>Step 3 — Split the database (only when needed).</strong> Splitting the database is the hardest step — it forces you to address data ownership, eventual consistency, and saga patterns. Don&#39;t do it before you need to. Newman&#39;s heuristic (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 4): split the application code first; split the database only when independent scaling or team autonomy genuinely requires it.</p>
 <p><strong>Step 4 — Fine-grained extraction.</strong> Only once team structure, operational maturity, and domain understanding are in place. Each fine-grained service should be small enough for one team to hold its full context, and independently deployable without coordinating with other teams.</p>
-<h2>The Ferrari Anti-Pattern</h2>
+<h2 id="the-ferrari-anti-pattern">The Ferrari Anti-Pattern</h2>
 <p>Richards &amp; Ford name this: using the most powerful architecture style (microservices, event-driven) for a problem that doesn&#39;t warrant it. A system that doesn&#39;t need 99.99% availability, independent scalability of 50+ services, or 20 autonomous teams gains nothing from microservices — and pays all the costs (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 9).</p>
 <p>Choose the <strong>least complex architecture that satisfies your actual requirements</strong>, not the most sophisticated one you can imagine needing.</p>
-<h2>Granularity Within Microservices</h2>
+<h2 id="granularity-within-microservices">Granularity Within Microservices</h2>
 <p>Once you&#39;ve committed to microservices, granularity is a second decomposition decision. The disintegrators (reasons to split) and integrators (reasons to keep together) framework from SATH (→ <a href="../concepts/service-granularity.html">Service Granularity</a>):</p>
 <p><strong>Disintegrators</strong> (reasons to split a service):</p>
 <ul>
@@ -457,7 +468,7 @@
 <blockquote>
 <p>Key insight from SATH: <strong>volatility-based decomposition is the strongest decomposition driver</strong>. The parts of a system that change together should deploy together. Parts that change independently should deploy independently.</p>
 </blockquote>
-<h2>How Sources Frame the Decision</h2>
+<h2 id="how-sources-frame-the-decision">How Sources Frame the Decision</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -497,7 +508,7 @@
 <td>Bounded context as the unit of decomposition; subdomains as safe granularity heuristic</td>
 </tr>
 </tbody></table></div>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../styles/modular-monolith.html">Modular Monolith</a> — the recommended starting point and intermediate step</li>
 <li><a href="../styles/service-based-architecture.html">Service Based Architecture</a> — pragmatic middle ground; ACID-preserving</li>
@@ -507,12 +518,13 @@
 <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a> — decomposition patterns and six-pattern taxonomy</li>
 <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> — database decomposition patterns</li>
 <li><a href="../concepts/conways-law.html">Conways Law</a> — why team structure determines service boundaries</li>
+<li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a> — pattern selection during the decomposition itself (strangler, branch by abstraction, parallel run)</li>
 <li><a href="../patterns/strangler-fig.html">Strangler Fig</a> — primary extraction migration pattern</li>
 <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a> — what you lose when you split databases</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li></ul>
+        <ul><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li></ul>
       </aside>
     </main>
   </div>

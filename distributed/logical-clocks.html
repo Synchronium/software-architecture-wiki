@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#physical-clocks-the-problem">Physical Clocks: The Problem</a></li><li><a href="#the-happened-before-relationship">The Happened-Before Relationship</a></li><li><a href="#lamport-clocks">Lamport Clocks</a></li><li><a href="#vector-clocks">Vector Clocks</a></li><li><a href="#summary-which-clock-for-what">Summary: Which Clock for What</a></li><li><a href="#lamport-timestamps-insufficient-for-uniqueness">Lamport Timestamps: Insufficient for Uniqueness</a></li><li><a href="#practical-applications">Practical Applications</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A logical clock is a mechanism for capturing the causal ordering of events across distributed processes without relying on synchronised physical clocks. In distributed systems, there is no shared global clock, and physical clocks on different nodes drift apart — making physical timestamps unreliable for determining whether one event happened before another. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 8)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>To build correct distributed systems, we often need to know whether one operation happened before another. This ordering determines correctness in replication (which write wins?), conflict resolution in CRDTs (→ <a href="../distributed/crdts.html">Crdts</a>), and causal consistency (→ <a href="../distributed/consistency-models.html">Consistency Models</a>). Physical clocks cannot reliably provide this across nodes.</p>
-<h2>Physical Clocks: The Problem</h2>
+<h2 id="physical-clocks-the-problem">Physical Clocks: The Problem</h2>
 <p><strong>Quartz clocks</strong> are cheap and common but drift at different rates due to manufacturing differences and temperature. Two machines&#39; clocks will diverge over time.</p>
 <p><strong>Clock synchronization (NTP)</strong>: the Network Time Protocol estimates the offset between a client&#39;s clock and a reference server&#39;s clock, then adjusts the local clock. But:</p>
 <ul>
@@ -323,7 +334,7 @@
 </ul>
 <p><strong>Monotonic clocks</strong>: the OS provides a clock that only moves forward, measuring elapsed time since some arbitrary point (e.g., boot). Safe for measuring durations on a single node; useless for comparing timestamps across nodes (they have no common epoch).</p>
 <p><strong>Consequence</strong>: physical clocks cannot be used to definitively order events across processes. Physical timestamps are fine for approximate ordering (e.g., log timestamps for debugging) but not for algorithm correctness.</p>
-<h2>The Happened-Before Relationship</h2>
+<h2 id="the-happened-before-relationship">The Happened-Before Relationship</h2>
 <p>The key insight is to capture causality rather than physical time. Event A <strong>happened-before</strong> event B (written A → B) if:</p>
 <ul>
 <li>A and B execute on the same process, and A executes before B.</li>
@@ -331,7 +342,7 @@
 <li>A → C and C → B for some event C (transitivity).</li>
 </ul>
 <p>If neither A → B nor B → A, then A and B are <strong>concurrent</strong> — there is no causal relationship between them.</p>
-<h2>Lamport Clocks</h2>
+<h2 id="lamport-clocks">Lamport Clocks</h2>
 <p>A Lamport clock assigns a logical timestamp to each event by maintaining a counter per process. Rules:</p>
 <ol>
 <li>Initialize counter to 0.</li>
@@ -342,7 +353,7 @@
 <p><strong>Guarantee</strong>: if A happened-before B, then <code>timestamp(A) &lt; timestamp(B)</code>.</p>
 <p><strong>Limitation</strong>: the converse does not hold. If <code>timestamp(A) &lt; timestamp(B)</code>, it does not mean A happened-before B — they could be concurrent. Lamport clocks create a total order (with tie-breaking by process ID), but that total order does not imply causality.</p>
 <p><strong>Use case</strong>: providing a consistent global ordering of events when the exact causal relationship is not required — e.g., serialising writes to a replicated log.</p>
-<h2>Vector Clocks</h2>
+<h2 id="vector-clocks">Vector Clocks</h2>
 <p>Vector clocks extend Lamport clocks to detect concurrency. Each process maintains an <strong>array of counters</strong>, one per process. Rules:</p>
 <ol>
 <li>Initialize all counters to 0.</li>
@@ -358,7 +369,7 @@
 </ul>
 <p><strong>Example</strong>: if V₁ = [2, 1, 0] and V₂ = [1, 3, 1], then V₁ and V₂ are concurrent (2 &gt; 1 in position 0 but 1 &lt; 3 in position 1).</p>
 <p><strong>Trade-off</strong>: vector clocks require O(N) storage per event, where N is the number of processes. For systems with many clients, this becomes impractical. Dotted version vectors are an alternative that reduces storage in some topologies.</p>
-<h2>Summary: Which Clock for What</h2>
+<h2 id="summary-which-clock-for-what">Summary: Which Clock for What</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -387,17 +398,17 @@
 <td>Vector clocks or dependency tracking</td>
 </tr>
 </tbody></table></div>
-<h2>Lamport Timestamps: Insufficient for Uniqueness</h2>
+<h2 id="lamport-timestamps-insufficient-for-uniqueness">Lamport Timestamps: Insufficient for Uniqueness</h2>
 <p>A subtle but important limitation: Lamport timestamps establish a total order consistent with causality, but cannot determine whether the order is <em>final</em>. Consider two nodes independently trying to claim the same username. Each can generate a Lamport timestamp for its registration request. They can compare timestamps to determine which request should &quot;win.&quot; But — they cannot know this at the time of the request: they would need to have received and compared all concurrent requests across the whole system first.</p>
 <p>This is why Lamport timestamps alone cannot implement uniqueness constraints in a distributed system. What is needed is <strong>total order broadcast</strong>: a protocol that reliably delivers messages to all nodes in the same order, and where a node knows the order is final once the message is delivered. Consensus is required for total order broadcast, and thus for uniqueness. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9)</p>
-<h2>Practical Applications</h2>
+<h2 id="practical-applications">Practical Applications</h2>
 <ul>
 <li><strong>CRDTs</strong>: use vector clocks (or similar) to determine which operations are concurrent and can be merged (→ <a href="../distributed/crdts.html">Crdts</a>)</li>
 <li><strong>Multi-leader conflict resolution</strong>: last-write-wins using Lamport timestamps; version vectors for detecting true concurrency (→ <a href="../distributed/replication.html">Replication</a>)</li>
 <li><strong>Causal consistency</strong>: vector clocks track causal dependencies to ensure causally prior writes are visible before dependent writes (→ <a href="../distributed/consistency-models.html">Consistency Models</a>)</li>
 <li><strong>Distributed snapshots</strong>: logical timestamps enable consistent global snapshots without stopping all processes</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;In general, we can&#39;t use physical clocks to accurately derive the order of events that happened on different processes.&quot; (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 8)</p>
 </blockquote>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,21 +316,25 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#the-six-patterns">The Six Patterns</a></li><li class="toc-sub"><a href="#1-intention-revealing-interfaces">1. Intention-Revealing Interfaces</a></li><li class="toc-sub"><a href="#2-side-effect-free-functions">2. Side-Effect-Free Functions</a></li><li class="toc-sub"><a href="#3-assertions">3. Assertions</a></li><li class="toc-sub"><a href="#4-conceptual-contours">4. Conceptual Contours</a></li><li class="toc-sub"><a href="#5-standalone-classes">5. Standalone Classes</a></li><li class="toc-sub"><a href="#6-closure-of-operations">6. Closure of Operations</a></li><li><a href="#the-interplay-of-the-patterns">The Interplay of the Patterns</a></li><li><a href="#declarative-design">Declarative Design</a></li><li><a href="#supple-design-and-deep-models">Supple Design and Deep Models</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Supple design is design that is a pleasure to work with and inviting to change. Where a deep model provides the conceptual raw material, supple design shapes that material into software that developers can use and extend without cognitive overload (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 10).</p>
 <blockquote>
 <p>&quot;To have a project accelerate as development proceeds — rather than get weighed down by its own legacy — demands a design that is a pleasure to work with, inviting to change.&quot; (Evans, ch. 10)</p>
 </blockquote>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Without supple design, a ceiling forms on achievable richness. Developers dread changing code they can&#39;t predict. Duplication spreads as copying is safer than reuse. Refactoring stops because no one can trace the consequences. A MODEL-DRIVEN DESIGN depends on the ability to keep model and code in lockstep through continuous refactoring; supple design is what makes that practical.</p>
-<h2>The Six Patterns</h2>
-<h3>1. Intention-Revealing Interfaces</h3>
+<h2 id="the-six-patterns">The Six Patterns</h2>
+<h3 id="1-intention-revealing-interfaces">1. Intention-Revealing Interfaces</h3>
 <p>Name classes and operations to describe their <strong>effect and purpose</strong>, not their mechanism. Every public element is an opportunity to communicate intent. Write a test for a behaviour before creating it — this forces the designer into client-developer mode, exposing whether the interface makes sense from the outside.</p>
 <p>Names should conform to the <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> so team members can infer meaning from context.</p>
 <blockquote>
 <p>Don&#39;t name it <code>paint(Paint p)</code> — name it <code>mixIn(Paint other)</code>. The name reveals what happens from the client&#39;s perspective.</p>
 </blockquote>
-<h3>2. Side-Effect-Free Functions</h3>
+<h3 id="2-side-effect-free-functions">2. Side-Effect-Free Functions</h3>
 <p>Strictly segregate <strong>commands</strong> (operations that change observable state) from <strong>queries</strong> (operations that return results without side effects). Commands should be as simple as possible and return nothing. Queries can be freely called and composed without worrying about hidden state changes.</p>
 <p>The best way to eliminate side effects from complex logic is to move it into a VALUE OBJECT. Because value objects are immutable, all their operations are automatically side-effect-free.</p>
 <pre><code class="language-java">// Command: simple, obvious, no return value
@@ -336,19 +347,19 @@ SharePie calculatePrincipalPaymentDistribution(double amount) {
     return shares.prorated(amount);
 }
 </code></pre>
-<h3>3. Assertions</h3>
+<h3 id="3-assertions">3. Assertions</h3>
 <p>State <strong>post-conditions</strong> of operations and <strong>invariants</strong> of classes and aggregates. If the language doesn&#39;t support assertions directly, use automated unit tests. Class invariants help characterise the meaning of a class; post-conditions state what will be true after a command executes.</p>
 <p>Without assertions, the side effects of commands are only known by reading implementations. With assertions, the developer using a command can trust its contract without piercing the abstraction.</p>
-<h3>4. Conceptual Contours</h3>
+<h3 id="4-conceptual-contours">4. Conceptual Contours</h3>
 <p>Decompose design elements along <strong>natural joints of the domain</strong>, not arbitrary size or technical convenience. Ask: &quot;does this split echo a contour of the underlying domain, or is it an expedient?&quot; </p>
 <p>When successive refactorings tend to be localised (small changes in a few places), the decomposition matches the domain&#39;s contours. When a change ripples widely, the model is misaligned with the domain.</p>
 <blockquote>
 <p>Half a uranium atom is not uranium. Don&#39;t decompose below the conceptual unit of the domain.</p>
 </blockquote>
-<h3>5. Standalone Classes</h3>
+<h3 id="5-standalone-classes">5. Standalone Classes</h3>
 <p>Reduce dependencies between classes to zero where possible. Every dependency — explicit reference or implicit concept — adds to cognitive load. The developer holding a class in mind must also hold everything it depends on. A standalone class can be understood, tested, and used entirely by itself.</p>
 <p>The path to standalone classes is usually through VALUE OBJECTS: complex calculations factored into an immutable VALUE OBJECT naturally shed their dependencies on entities.</p>
-<h3>6. Closure of Operations</h3>
+<h3 id="6-closure-of-operations">6. Closure of Operations</h3>
 <p>Define operations whose <strong>return type is the same as the type of the argument or receiver</strong>. Closed operations introduce no new concepts — you operate within the same set. The result can be passed back to another operation of the same type, enabling natural chaining.</p>
 <pre><code class="language-java">// All operations on SharePie return SharePie
 SharePie shares = facilityShares.prorated(loanAmount);
@@ -356,7 +367,7 @@ SharePie deviation = actual.minus(shares);
 SharePie combined = drawdown.plus(existingLoan);
 </code></pre>
 <p>Most natural on VALUE OBJECTS. Entities are rarely useful as computation results because their lifecycle has domain significance.</p>
-<h2>The Interplay of the Patterns</h2>
+<h2 id="the-interplay-of-the-patterns">The Interplay of the Patterns</h2>
 <p>The patterns build on each other:</p>
 <ul>
 <li>INTENTION-REVEALING INTERFACES make abstractions usable without understanding internals</li>
@@ -367,7 +378,7 @@ SharePie combined = drawdown.plus(existingLoan);
 <li>CLOSURE OF OPERATIONS enables combinable, declarative expressions</li>
 </ul>
 <p>Together they produce a design where client code can be written in a <strong>declarative style</strong>: expressing <em>what</em> the business logic means, not <em>how</em> it is computed. The SharePie example shows this: <code>shares.minus(payment)</code> reads as a statement of financial reality, not as a computation.</p>
-<h2>Declarative Design</h2>
+<h2 id="declarative-design">Declarative Design</h2>
 <p>A design with these properties naturally edges toward declarative style. Fully declarative design (code generation, rule engines) is harder than it appears:</p>
 <ul>
 <li>Declaration languages are often not expressive enough for edge cases</li>
@@ -375,9 +386,9 @@ SharePie combined = drawdown.plus(existingLoan);
 <li>Sweeping frameworks constrain domain design; narrowly scoped frameworks (persistence, mapping) tend to deliver value</li>
 </ul>
 <p>The practical goal is not full declarative design but a <em>declarative style</em> in the domain layer, achieved through the patterns above.</p>
-<h2>Supple Design and Deep Models</h2>
+<h2 id="supple-design-and-deep-models">Supple Design and Deep Models</h2>
 <p>Supple design requires deep modelling to work: a design can only be supple along the domain&#39;s natural contours if the model has found those contours. At the same time, supple design feeds back into the model: a design with easy composition and transparent effects enables a developer to experiment, explore, and discover deeper insights that would be invisible in a tangled codebase.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -390,7 +401,7 @@ SharePie combined = drawdown.plus(existingLoan);
 <td>Originating treatment: six patterns as tools for achieving suppleness; extended Shares Math example; declarative style as an outcome; connection between supple design and model breakthrough (ch. 10)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/model-driven-design.html">Model Driven Design</a> — supple design is the design complement to deep modelling; one without the other fails</li>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — intention-revealing interfaces must speak the UL; the model&#39;s vocabulary must appear in names</li>

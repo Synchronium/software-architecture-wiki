@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,9 +316,13 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>An anticorruption layer is a translation boundary at the edge of a bounded context that converts an upstream system&#39;s model into the downstream context&#39;s own model. The downstream&#39;s domain concepts, language, and types remain &quot;uncorrupted&quot; — they never directly express the upstream&#39;s structures or terminology.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-problem-it-solves">The Problem It Solves</a></li><li><a href="#structure-evans">Structure (Evans)</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#acl-vs-conformist-the-fundamental-trade-off">ACL vs Conformist: The Fundamental Trade-off</a></li><li><a href="#acl-vs-open-host-service-who-does-the-translation">ACL vs Open-Host Service: Who Does the Translation?</a></li><li><a href="#implementation-approaches">Implementation Approaches</a></li><li><a href="#acl-in-migration-contexts">ACL in Migration Contexts</a></li><li><a href="#what-the-acl-does-not-do">What the ACL Does Not Do</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>An anticorruption layer is a translation boundary at the edge of a bounded context that converts an upstream system&#39;s model into the downstream context&#39;s own model. The downstream&#39;s domain concepts, language, and types remain &quot;uncorrupted&quot; — they never directly express the upstream&#39;s structures or terminology.</p>
 <p>The pattern was named by Eric Evans (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 14) who observed that when integrating with legacy or foreign systems, the path of least resistance is to let the upstream&#39;s model bleed into the downstream code — producing a &quot;corrupted&quot; model that is a patchwork of two incompatible languages.</p>
-<h2>The Problem It Solves</h2>
+<h2 id="the-problem-it-solves">The Problem It Solves</h2>
 <p>Without an ACL, every place a downstream service calls an upstream service tends to import that service&#39;s language into the downstream&#39;s code:</p>
 <pre><code>// Without ACL — upstream&#39;s LegacyCustomer leaks into the domain
 LegacyCustomer lc = legacyApi.getCustomer(id);
@@ -325,7 +336,7 @@ Customer customer = acl.getCustomer(id);      // downstream&#39;s own type
 order.setCustomer(customer);                  // downstream&#39;s language
 </code></pre>
 <p>The ACL owns the translation. Everything inside the bounded context works exclusively with the downstream&#39;s model.</p>
-<h2>Structure (Evans)</h2>
+<h2 id="structure-evans">Structure (Evans)</h2>
 <p>Evans implements the ACL using two classical patterns (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 14):</p>
 <ul>
 <li><strong>FACADE</strong>: belongs to the upstream system&#39;s context; provides access points in the upstream&#39;s own terminology and hides the foreign system&#39;s complexity. The FACADE is narrow — it exposes only the parts of the upstream that the downstream needs.</li>
@@ -334,14 +345,14 @@ order.setCustomer(customer);                  // downstream&#39;s language
 <p>The ACL&#39;s public-facing side exposes <strong>domain SERVICES</strong> in the downstream&#39;s own language. Callers inside the bounded context see only the downstream&#39;s model — they are unaware that any foreign system exists.</p>
 <p>The ACL can be <strong>bidirectional</strong>: translating upstream requests into the downstream&#39;s model on the way in, and translating the downstream&#39;s responses into the upstream&#39;s expected format on the way out.</p>
 <p><strong>Classic failure mode</strong>: hiding the ACL inside the UI layer. This makes it invisible to the architecture — other parts of the system may bypass it and access the upstream directly, allowing the upstream&#39;s model to corrupt additional areas.</p>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <p>From Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 4):</p>
 <ol>
 <li><strong>The downstream contains a core subdomain.</strong> Core subdomains are competitive assets; their models require maximum care. Polluting a core subdomain&#39;s model with a foreign system&#39;s concepts is a strategic mistake that compounds with every feature added.</li>
 <li><strong>The upstream model is messy, legacy, or inefficient.</strong> The upstream may use technical IDs where the domain needs natural keys, denormalised structures where the domain needs objects, or terminology that conflicts with the downstream&#39;s ubiquitous language.</li>
 <li><strong>The upstream contract changes frequently.</strong> When the upstream evolves, the ACL contains the impact. Without it, every upstream change propagates directly into the downstream&#39;s domain model.</li>
 </ol>
-<h2>ACL vs Conformist: The Fundamental Trade-off</h2>
+<h2 id="acl-vs-conformist-the-fundamental-trade-off">ACL vs Conformist: The Fundamental Trade-off</h2>
 <p>The Conformist pattern is the ACL&#39;s alternative when the downstream accepts the upstream&#39;s model directly with no translation. The choice:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -373,7 +384,7 @@ order.setCustomer(customer);                  // downstream&#39;s language
 </tr>
 </tbody></table></div>
 <p>Evans&#39; note: Conformist is &quot;emotionally unappealing&quot; but genuinely appropriate more often than teams admit. When the upstream model is an industry standard, or is adequate for the downstream&#39;s needs, the ACL adds cost with little benefit. The key question: <strong>does the upstream&#39;s model conflict with or degrade the downstream&#39;s ubiquitous language?</strong> If not, Conformist is the right choice.</p>
-<h2>ACL vs Open-Host Service: Who Does the Translation?</h2>
+<h2 id="acl-vs-open-host-service-who-does-the-translation">ACL vs Open-Host Service: Who Does the Translation?</h2>
 <p>Both patterns achieve model isolation between bounded contexts. They differ in which side carries the translation cost:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -400,17 +411,17 @@ order.setCustomer(customer);                  // downstream&#39;s language
 </tr>
 </tbody></table></div>
 <p>If multiple consumers all need to translate the same upstream model, Open-Host Service is more efficient — the supplier does the translation once in a published language. If the upstream is a legacy system or has no incentive to adapt, each consumer must build their own ACL.</p>
-<h2>Implementation Approaches</h2>
+<h2 id="implementation-approaches">Implementation Approaches</h2>
 <p><strong>Synchronous (stateless proxy)</strong>: the ACL is a facade service or library that wraps outbound calls to the upstream. Requests from domain code are translated into upstream calls; responses from the upstream are translated into downstream domain objects before returning. No state is accumulated between calls.</p>
 <p><strong>Asynchronous (message translator)</strong>: the ACL is a separate process that subscribes to the upstream&#39;s event stream, translates each event into the downstream&#39;s event schema, and publishes to a downstream-owned topic. The downstream never sees the upstream&#39;s event format. This is the pattern Bellemare calls a <em>data liberation</em> transformer (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>).</p>
 <p><strong>Dedicated service vs in-process layer</strong>: for complex translation logic (stateful aggregation, joining multiple upstream sources), a dedicated ACL service is appropriate. For simple field mapping, an in-process adapter layer is simpler and avoids the operational overhead of an additional service.</p>
-<h2>ACL in Migration Contexts</h2>
+<h2 id="acl-in-migration-contexts">ACL in Migration Contexts</h2>
 <p>The ACL is a core mechanism in monolith decomposition. During a Strangler Fig migration (→ <a href="../patterns/strangler-fig.html">Strangler Fig</a>), an ACL-like facade is placed at the monolith boundary. As the new bounded context grows, traffic redirects from old to new behind the facade. The ACL prevents the new implementation from inheriting the monolith&#39;s model — the new bounded context develops its own clean language from the start.</p>
 <p>Building evolutionary architectures recommends building ACLs &quot;just in time&quot; — at the point of extracting a capability from a monolith or integrating a third-party service — rather than speculatively (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>).</p>
 <blockquote>
 <p>The ACL shrinks as migration progresses: as each part of the legacy system is replaced, the ACL&#39;s translation for that part is removed. When the legacy system is fully replaced, the ACL disappears entirely.</p>
 </blockquote>
-<h2>What the ACL Does Not Do</h2>
+<h2 id="what-the-acl-does-not-do">What the ACL Does Not Do</h2>
 <p>The ACL is a translation boundary, not a validation layer or a data transformation pipeline. Concerns it should not absorb:</p>
 <ul>
 <li><strong>Business logic</strong>: if the translation requires domain decisions (&quot;is this customer active?&quot;), those decisions belong in the domain, not the ACL.</li>
@@ -418,7 +429,7 @@ order.setCustomer(customer);                  // downstream&#39;s language
 <li><strong>Error handling policy</strong>: the ACL can translate upstream error codes into domain exceptions, but whether to retry, compensate, or fail is the caller&#39;s policy.</li>
 </ul>
 <p>Keeping the ACL thin prevents it from becoming a &quot;big ball of mud&quot; translation service that accumulates concerns over time.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/context-map.html">Context Map</a> — the ACL is one of the six integration patterns in the context map vocabulary; full pattern group descriptions including Open-Host Service and Conformist</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — the unit the ACL protects; core vs generic vs supporting subdomain distinction drives the ACL decision</li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#the-goal-statement">The Goal Statement</a></li><li><a href="#questions">Questions</a></li><li><a href="#metrics">Metrics</a></li><li><a href="#data-collection-strategy">Data Collection Strategy</a></li><li><a href="#the-gqm-workshop-9-step-process">The GQM Workshop (9-Step Process)</a></li><li><a href="#case-study-foo-service">Case Study: Foo Service</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p><strong>Goal-Question-Metric (GQM)</strong> is a structured approach to defining software measurements by working top-down from goals rather than bottom-up from what tools make easy to measure. Developed by Basili &amp; Weiss (1984). A GQM tree has four levels:</p>
 <pre><code>Goal        (root)  — what you want to achieve or understand
   └── Questions     — how you would evaluate progress toward the goal
@@ -317,10 +328,10 @@
               └── Data (leaves) — the raw data needed to produce the metric
 </code></pre>
 <p>This structure creates traceability: every collected data point links upward to a metric, which links to a question, which links to the goal. Metrics without a traceable goal are candidates for retirement. (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 10)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>The alternative to GQM is measuring what tools make convenient — which typically produces implementation metrics (code coverage, cyclomatic complexity, build time) that are easy to collect but may not reflect the architectural properties that actually matter. GQM forces the team to articulate goals first, then derive what evidence would indicate progress, then select or build the instruments to collect that evidence.</p>
 <p>GQM is equally valuable as a <strong>coaching and alignment tool</strong>: the process of writing the goal statement and generating questions surfaces hidden disagreements about what the system should achieve — disagreements that, if left implicit, eventually surface as architectural misalignment.</p>
-<h2>The Goal Statement</h2>
+<h2 id="the-goal-statement">The Goal Statement</h2>
 <p>A well-formed GQM goal statement has four parts:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -352,14 +363,14 @@
 </tr>
 </tbody></table></div>
 <p>Investing time in a precise goal statement pays off: a vague goal produces vague questions and unmeasurable metrics. Rewrite the goal if the questions derived from it feel unfocused.</p>
-<h2>Questions</h2>
+<h2 id="questions">Questions</h2>
 <p>Questions operationally focus the goal — they ask what evidence would indicate progress. Good questions:</p>
 <ul>
 <li>Do not prejudge the answer</li>
 <li>&quot;Let go of what is practical&quot; — ask what you would want to know, not just what is easy to measure; cost constraints enter at the metric level, not the question level</li>
 <li>Evaluate progress positively and negatively (negative metrics prevent optimising one dimension at the expense of another)</li>
 </ul>
-<h2>Metrics</h2>
+<h2 id="metrics">Metrics</h2>
 <p>For each question, identify one or more metrics. Select by:</p>
 <ul>
 <li><strong>Signal strength</strong>: a metric with a strong, unambiguous signal is preferable to one that only weakly indicates the answer</li>
@@ -367,7 +378,7 @@
 <li><strong>Cross-question reuse</strong>: a metric that answers multiple questions is more efficient than a single-purpose one</li>
 </ul>
 <p>Include both positive and negative metrics to ensure honesty — optimising deployment frequency while ignoring change failure rate produces misleading progress signals.</p>
-<h2>Data Collection Strategy</h2>
+<h2 id="data-collection-strategy">Data Collection Strategy</h2>
 <p>Once metrics are selected, plan how each will be collected:</p>
 <ul>
 <li>Instrument the code (logs, traces, counters)</li>
@@ -377,7 +388,7 @@
 <li>Automated tools</li>
 <li>Manual collection for short-duration experiments</li>
 </ul>
-<h2>The GQM Workshop (9-Step Process)</h2>
+<h2 id="the-gqm-workshop-9-step-process">The GQM Workshop (9-Step Process)</h2>
 <p>Keeling describes a facilitated workshop format (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 10):</p>
 <ol>
 <li><strong>Introduction and ground rules</strong> — set expectations; explain GQM; establish psychological safety</li>
@@ -390,7 +401,7 @@
 <li><strong>Open floor for reflection</strong> — surface doubts, gaps, concerns</li>
 <li><strong>Document and share</strong> — publish the GQM tree; circulate before the next meeting</li>
 </ol>
-<h2>Case Study: Foo Service</h2>
+<h2 id="case-study-foo-service">Case Study: Foo Service</h2>
 <p>A job-processing service exceeded its external API rate limit every Monday morning. The team treated it as a recurring ops issue for months before a postmortem triggered a GQM exercise.</p>
 <p><strong>Goal</strong>: Understand why Foo Service exceeds its API rate limit on Monday mornings from the perspective of the on-call team.</p>
 <p><strong>Questions</strong>: How many jobs are queued at the start of the week? What retry behaviour occurs when rate-limited? How quickly does the team detect a failure?</p>
@@ -404,7 +415,7 @@
 <blockquote>
 <p>&quot;A metric by itself can only tell you something is wrong. It can&#39;t tell you what to do about it.&quot; (team leader, → <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 10)</p>
 </blockquote>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -417,7 +428,7 @@
 <td>Keeling (ch. 10): GQM as measurement and alignment tool; 9-step workshop; Foo Service case study; practical metric selection criteria</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — GQM produces the goals and metrics that fitness functions operationalise; fitness functions are one data collection mechanism for GQM metrics</li>
 <li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — the DORA four are a ready-made GQM answer for delivery performance goals; can be incorporated into a broader GQM tree</li>

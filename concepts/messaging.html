@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,27 +309,40 @@
       <h1>Messaging</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/messaging.html">messaging</a></li><li><a class="tag-chip" href="../tags/async.html">async</a></li><li><a class="tag-chip" href="../tags/decoupling.html">decoupling</a></li><li><a class="tag-chip" href="../tags/queues.html">queues</a></li><li><a class="tag-chip" href="../tags/events.html">events</a></li><li><a class="tag-chip" href="../tags/integration.html">integration</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Messaging is a form of indirect, asynchronous communication in which a <strong>producer</strong> writes a message to a <strong>channel</strong> (message broker), and a <strong>consumer</strong> reads from it. Unlike direct request-response, messaging does not require the producer and consumer to be simultaneously available — the channel acts as a buffer.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-use-messaging">Why Use Messaging</a></li><li><a href="#message-types-eip">Message Types (EIP)</a></li><li><a href="#communication-styles">Communication Styles</a></li><li><a href="#channel-types">Channel Types</a></li><li><a href="#publish-subscribe-as-distributed-observer">Publish-Subscribe as Distributed Observer</a></li><li><a href="#ordering">Ordering</a></li><li><a href="#delivery-guarantees-and-exactly-once-processing">Delivery Guarantees and Exactly-Once Processing</a></li><li><a href="#guaranteed-delivery">Guaranteed Delivery</a></li><li><a href="#handling-failures">Handling Failures</a></li><li class="toc-sub"><a href="#invalid-message-channel-vs-dead-letter-channel">Invalid Message Channel vs. Dead Letter Channel</a></li><li class="toc-sub"><a href="#dead-letter-channel">Dead Letter Channel</a></li><li class="toc-sub"><a href="#poison-message-isolation">Poison Message Isolation</a></li><li><a href="#messaging-infrastructure-patterns">Messaging Infrastructure Patterns</a></li><li><a href="#backlogs">Backlogs</a></li><li><a href="#operational-considerations">Operational Considerations</a></li><li><a href="#processing-patterns-hohpe-woolf-ch-3">Processing Patterns (Hohpe &amp; Woolf — Ch 3)</a></li><li><a href="#composed-routing-patterns-hohpe-woolf-ch-7">Composed Routing Patterns (Hohpe &amp; Woolf — Ch 7)</a></li><li><a href="#message-transformation-patterns-hohpe-woolf-ch-8">Message Transformation Patterns (Hohpe &amp; Woolf — Ch 8)</a></li><li><a href="#messaging-endpoints-hohpe-woolf-ch-10">Messaging Endpoints (Hohpe &amp; Woolf — Ch 10)</a></li><li><a href="#system-management-patterns-hohpe-woolf-ch-11">System Management Patterns (Hohpe &amp; Woolf — Ch 11)</a></li><li><a href="#messaging-as-an-integration-style-hohpe-woolf">Messaging as an Integration Style (Hohpe &amp; Woolf)</a></li><li><a href="#decoupling-middleware-and-stability">Decoupling Middleware and Stability</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Messaging is a form of indirect, asynchronous communication in which a <strong>producer</strong> writes a message to a <strong>channel</strong> (message broker), and a <strong>consumer</strong> reads from it. Unlike direct request-response, messaging does not require the producer and consumer to be simultaneously available — the channel acts as a buffer.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Three message types: command, document, event.</strong> Commands are imperative requests; documents transfer data; events are notifications of past facts. The type determines the architectural style of consumer.</li>
+<li><strong>Channels create decoupling in space and time.</strong> The producer doesn&#39;t need to know the consumer&#39;s address; the consumer doesn&#39;t need to be available when the producer sends. This is the architectural property that distinguishes messaging from RPC.</li>
+<li><strong>At-least-once delivery is the default; exactly-once is an application-level property.</strong> Idempotency, deduplication keys, and end-to-end operation IDs are how systems achieve exactly-once semantics on top of at-least-once transport.</li>
+<li><strong>The choice between sync and async messaging is a stability decision.</strong> Synchronous calls propagate cascading failures; async decouples in time. This is Nygard&#39;s &quot;Decoupling Middleware&quot; pattern (see <a href="../concepts/stability-patterns.html">Stability Patterns</a>).</li>
+<li><strong>Bounded queues, always.</strong> Unbounded queues mask backlogs and produce unbounded latency (Little&#39;s Law). See <a href="../distributed/backpressure.html">Backpressure</a>, <a href="../distributed/queueing-theory.html">Queueing Theory</a>.</li>
+<li><strong>EIP&#39;s 65+ patterns categorise into five concerns:</strong> channels, routing, transformation, endpoints, and management. The catalogue is large but the conceptual structure is small.</li>
+</ul>
 <p>Messages have a header (metadata: unique message ID, timestamps, source identifier) and a body (content). A message is either:</p>
 <ul>
 <li>A <strong>command</strong>: specifies an operation to be performed by the consumer.</li>
 <li>An <strong>event</strong>: signals that something has happened; consumers decide what to do with it.</li>
 </ul>
-<h2>Why Use Messaging</h2>
+<h2 id="why-use-messaging">Why Use Messaging</h2>
 <ul>
 <li><strong>Temporal decoupling</strong>: producer can send even if consumer is temporarily unavailable.</li>
 <li><strong>Load levelling</strong>: channel absorbs traffic spikes; consumer processes at its own pace.</li>
 <li><strong>Load balancing</strong>: multiple consumer instances can read from the same channel; work distributes naturally.</li>
 <li><strong>Batching</strong>: most brokers allow fetching N messages per read; batching trades per-message latency for throughput.</li>
 </ul>
-<h2>Message Types (EIP)</h2>
+<h2 id="message-types-eip">Message Types (EIP)</h2>
 <p>Hohpe &amp; Woolf classify messages by the <em>intent</em> the sender has for the receiver (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 5):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -353,7 +373,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Document vs Event distinction</strong>: a Document Message&#39;s content is important; timing is secondary (use Guaranteed Delivery, not Message Expiration). An Event Message&#39;s timing is critical; content may be empty (the message&#39;s mere existence signals the change). Message Expiration is useful for events (discard stale events); less so for documents.</p>
-<h2>Communication Styles</h2>
+<h2 id="communication-styles">Communication Styles</h2>
 <p><strong>One-way messaging</strong>: producer writes to a point-to-point channel; one consumer instance reads and processes it. The consumer deletes the message when done. Fire-and-forget at the producer side, but reliable delivery via the broker.</p>
 <p><strong>Request-response messaging</strong>: producer writes a request with a request ID and a reference to its dedicated response channel. Consumer reads the request, processes it, and writes the response to the producer&#39;s response channel tagged with the request ID. Allows async request-response without polling.</p>
 <p>EIP identifies two implementation styles for the requestor receiving a reply (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 5):</p>
@@ -364,7 +384,7 @@
 <p><strong>Return Address</strong>: the request message carries the reply channel address in its header (JMS: <code>JMSReplyTo</code>; .NET: <code>ResponseQueue</code>). Decouples the replier from hard-coding which channel to use — different requestors (or different callback processors within the same requestor) route replies wherever they need them.</p>
 <p><strong>Correlation Identifier</strong>: reply message contains a token matching it to its request (JMS: <code>JMSCorrelationID</code>; .NET: <code>CorrelationId</code>). Required because async messaging allows multiple outstanding requests with replies arriving out of order. Implementation approaches: (1) copy request&#39;s message ID to reply&#39;s correlation ID; (2) use a business object ID shared by both request and reply (allows processing the reply without re-reading the request); (3) maintain a requestor-side map of request IDs to business object IDs.</p>
 <p><strong>Broadcast messaging</strong>: producer writes to a publish-subscribe channel; all subscribed consumer instances receive a copy. Used for notifications and event fanout. (Related to the outbox pattern → <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>)</p>
-<h2>Channel Types</h2>
+<h2 id="channel-types">Channel Types</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -391,7 +411,7 @@
 </tbody></table></div>
 <p><strong>Datatype Channel</strong> (Hohpe &amp; Woolf): a channel carries exactly one data type; both producer and consumer agree on the type by virtue of which channel they use. No type-checking required on the consumer side. Variant: <em>Quality-of-Service Channel</em> — separate channels for different delivery guarantees (guaranteed-delivery vs. best-effort) on the same logical data type. To demultiplex from a mixed channel into typed channels, use a Content-Based Router; to multiplex from typed channels into one, use a Selective Consumer.</p>
 <p><strong>Publish-Subscribe security:</strong> all subscribers on a pub-sub channel receive all messages. Any authorised subscriber can eavesdrop — relevant when channels carry sensitive data. JMS Topics support <em>durable</em> subscriptions (broker stores messages for offline subscribers) and <em>non-durable</em> subscriptions (subscriber only receives messages published while connected).</p>
-<h2>Publish-Subscribe as Distributed Observer</h2>
+<h2 id="publish-subscribe-as-distributed-observer">Publish-Subscribe as Distributed Observer</h2>
 <p>The Publish-Subscribe Channel implements the Observer pattern in distributed systems, and is significantly simpler than an RPC-based Observer implementation (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 5-6):</p>
 <ul>
 <li><code>Subject.Notify()</code> becomes &quot;send a message on the channel&quot;</li>
@@ -407,11 +427,11 @@
 <li><em>Pull</em>: Event Message body is empty (signals change only). Interested observers follow up with a Request-Reply (Command Message + Document reply via TemporaryQueue) to fetch state. Three messages per notification per interested observer; requires temporary channels. Use when pushing state to all observers (including uninterested ones) is prohibitively expensive.</li>
 </ul>
 <p><strong>Channel design — avoiding channel explosion:</strong> Datatype Channel requires separate channels for different message types. But too many channels is also a problem: low-traffic channels waste resources, confuse subscribers, and require many consumer threads. Strategy: consolidate channels for <em>related</em> events going to the <em>same observers</em> using a unified message type (e.g., <code>CustomerChange</code> with nested <code>AddressChange</code> or <code>CreditRatingChange</code> elements), and use Selective Consumer for subscribers only interested in specific sub-types. When subscriber populations differ significantly between event types, separate channels make more sense.</p>
-<h2>Ordering</h2>
+<h2 id="ordering">Ordering</h2>
 <p>Strict message ordering requires coordination — it is not free. Two approaches:</p>
 <p><strong>No ordering guarantee</strong>: simpler broker implementations (e.g., SQS standard queues) make no ordering promise. The broker can scale freely because no coordination is needed between broker nodes.</p>
 <p><strong>Partition-based ordering (Kafka)</strong>: the channel is partitioned by key; each partition is handled by a single broker process and enforces ordering within that partition. Only one consumer process may read from a partition at a time to preserve end-to-end order. Trade-off: a hot partition (too many messages for one consumer) becomes a bottleneck; rebalancing partitions disrupts ordering temporarily.</p>
-<h2>Delivery Guarantees and Exactly-Once Processing</h2>
+<h2 id="delivery-guarantees-and-exactly-once-processing">Delivery Guarantees and Exactly-Once Processing</h2>
 <p>Most brokers offer <strong>at-least-once delivery</strong>: a message may be delivered to more than one consumer instance (e.g., if the consumer crashes after processing but before acknowledging, the message is re-delivered). There is no such thing as exactly-once message delivery in a distributed system.</p>
 <p><strong>Simulating exactly-once processing</strong>:</p>
 <ol>
@@ -420,11 +440,11 @@
 </ol>
 <p>If the consumer crashes between processing and deletion, the message is re-delivered — but idempotency makes the re-processing harmless.</p>
 <p><strong>Visibility timeout</strong>: while a consumer is processing a message, the message is invisible to other consumer instances for a configured duration. If the consumer crashes, the timeout expires and the message becomes visible again for another instance to pick up.</p>
-<h2>Guaranteed Delivery</h2>
+<h2 id="guaranteed-delivery">Guaranteed Delivery</h2>
 <p>Persists every message to a durable local datastore (disk) on the sending machine immediately on send — the send operation does not complete until the message is durably stored. The broker then forwards the persisted message to the next hop and only deletes it from the local store after the next store confirms receipt. This continues hop-by-hop through the delivery chain (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 4).</p>
 <p>Trade-offs: reliability vs. throughput (disk I/O on every message); disk space risk under backlogs; should be disabled during testing. Technology: JMS PERSISTENT delivery mode; .NET transactional queues.</p>
-<h2>Handling Failures</h2>
-<h3>Invalid Message Channel vs. Dead Letter Channel</h3>
+<h2 id="handling-failures">Handling Failures</h2>
+<h3 id="invalid-message-channel-vs-dead-letter-channel">Invalid Message Channel vs. Dead Letter Channel</h3>
 <p>These are distinct — the difference is <em>who</em> decides a message is undeliverable and <em>why</em> (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 4):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -460,7 +480,7 @@
 <td>Application-level errors</td>
 </tr>
 </tbody></table></div>
-<h3>Dead Letter Channel</h3>
+<h3 id="dead-letter-channel">Dead Letter Channel</h3>
 <p>When a message consistently fails processing, retrying it indefinitely wastes consumer resources and blocks the queue. Solution:</p>
 <ol>
 <li>Track delivery count (broker stamps a counter, or consumer maintains it).</li>
@@ -468,14 +488,14 @@
 <li>A human inspects dead letter messages, diagnoses the root cause, fixes it, and requeues the messages for reprocessing.</li>
 </ol>
 <p>Dead letter channels prevent poison messages from polluting the main channel while ensuring no data is lost.</p>
-<h3>Poison Message Isolation</h3>
+<h3 id="poison-message-isolation">Poison Message Isolation</h3>
 <p>A single producer emitting consistently-failing messages can degrade the consumer and build up a backlog. If messages are tagged with a source identifier, the consumer can:</p>
 <ul>
 <li>Route messages from the offending source to a low-priority secondary channel.</li>
 <li>Process the secondary channel less frequently (e.g., once per minute vs. continuously).</li>
 </ul>
 <p>This limits the blast radius of a single bad producer without dropping its messages.</p>
-<h2>Messaging Infrastructure Patterns</h2>
+<h2 id="messaging-infrastructure-patterns">Messaging Infrastructure Patterns</h2>
 <p><strong>Messaging Bridge</strong> (Hohpe &amp; Woolf): connects two different messaging systems. A Messaging Bridge is a pair of Channel Adapters where the &quot;application&quot; being adapted is itself a messaging system. Necessary because JMS standardises the client API but not interoperability between vendor implementations — two JMS-compliant brokers cannot natively route messages to each other without a bridge (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 4).</p>
 <p><strong>Message Bus</strong> (Hohpe &amp; Woolf): the architectural pattern that assembles messaging components into a coherent integration backbone. Three required elements:</p>
 <ol>
@@ -484,7 +504,7 @@
 <li><em>Common command structure</em>: a Canonical Data Model and shared command vocabulary all applications use.</li>
 </ol>
 <p>With a Message Bus, applications can be added or removed without modifying existing participants — the bus is the integration contract. Request channels on the bus serve as a service directory, making the Message Bus the foundation of a service-oriented architecture. The Enterprise Service Bus of the 2000s was an over-engineered realisation of this pattern that centralised too much business logic and became a political bottleneck (→ <a href="../styles/soa-architecture.html">Soa Architecture</a>).</p>
-<h2>Backlogs</h2>
+<h2 id="backlogs">Backlogs</h2>
 <p>A messaging channel has two modes:</p>
 <ul>
 <li><strong>Steady state</strong>: arrival rate ≤ deletion rate; everything is fine.</li>
@@ -497,14 +517,14 @@
 <li>Poison messages repeatedly consume consumer capacity before ending up in dead letter.</li>
 </ul>
 <p><strong>Monitoring</strong>: measure the age of the oldest unprocessed message (timestamp at write vs. timestamp at read). This gives a leading indicator of backlog formation before queue depth alone would alert.</p>
-<h2>Operational Considerations</h2>
+<h2 id="operational-considerations">Operational Considerations</h2>
 <ul>
 <li>A message broker is another stateful service to operate, monitor, and scale. It is a dependency in the availability chain (→ <a href="../operations/availability.html">Availability</a>).</li>
 <li>At-least-once semantics means consumers must be idempotent — this is a design constraint on every consumer.</li>
 <li>Consumer scale-out is easy; broker scale-out (partitioning) requires more care around ordering guarantees.</li>
 <li>Brokers must be sized for peak backlog, not just steady-state throughput.</li>
 </ul>
-<h2>Processing Patterns (Hohpe &amp; Woolf — Ch 3)</h2>
+<h2 id="processing-patterns-hohpe-woolf-ch-3">Processing Patterns (Hohpe &amp; Woolf — Ch 3)</h2>
 <p><strong>Pipes and Filters</strong> is the structural pattern for composing message-processing pipelines: independent <em>filters</em> (processing components) connected by <em>pipes</em> (channels). Each filter has input and output channels, does one thing, and can be unit-tested in isolation. Benefits:</p>
 <ul>
 <li><em>Testability</em>: inject known inputs on a channel; verify outputs.</li>
@@ -522,7 +542,7 @@
 </ul>
 <p>Excessive Message Routers in a network reduce observability — use Message History to trace message paths. Contrast: a Message Router makes routing decisions proactively; a Message Filter reactively discards non-matching messages from all channels.</p>
 <p><strong>Message Translator</strong>: converts format between producer and consumer — the messaging Adapter pattern (GoF). Four translation layers: (1) data structure (object models), (2) data type (field names, units), (3) data representation (XML vs. fixed-width vs. COBOL), (4) transport (protocol). Specialisations: Envelope Wrapper, Content Enricher, Content Filter, Claim Check, Normalizer, Canonical Data Model.</p>
-<h2>Composed Routing Patterns (Hohpe &amp; Woolf — Ch 7)</h2>
+<h2 id="composed-routing-patterns-hohpe-woolf-ch-7">Composed Routing Patterns (Hohpe &amp; Woolf — Ch 7)</h2>
 <p>These patterns operate at a higher level than individual routers — they solve problems of <em>combining</em> and <em>orchestrating</em> messages across multiple steps or recipients.</p>
 <p><strong>Aggregator</strong>: A stateful filter that collects related messages until a completeness condition is met, then emits one aggregated result. Three design decisions: <em>Correlation</em> (how to group incoming messages — typically Correlation Identifier or message type); <em>Completeness Condition</em> (Wait for All / Timeout / First Best / Timeout with Override / External Event); <em>Aggregation Algorithm</em> (select best answer / condense/average numeric fields / collect all for downstream decision). Two variants: <em>self-starting</em> (creates a new aggregate on first message) vs. <em>initialized</em> (receives upfront count so it can apply precise completeness logic). Maintains a list of closed aggregates to avoid late-arriving messages spawning spurious new aggregates. Can listen on a control channel for manual aggregate purging.</p>
 <p><strong>Resequencer</strong>: A stateful filter that accepts an out-of-order message stream and re-publishes messages in the correct sequence order. Requires a sequence number field per message (distinct from message IDs and Correlation Identifiers — those need not be ordinal). Buffers out-of-sequence messages and flushes when a consecutive sequence is available. Buffer overrun risk: if a message is lost the Resequencer waits indefinitely; mitigation is active acknowledgement (Resequencer advertises available buffer slots, analogous to TCP sliding window). Generating global sequence numbers is harder than generating UUIDs — needs a centralised counter; best done in the Splitter if messages originate from one.</p>
@@ -580,7 +600,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Message Broker (as architectural pattern)</strong>: Assembles a set of routing components into a coherent integration backbone. Solves &quot;integration spaghetti&quot; — the N×(N-1) direct channels that emerge when every application connects to every other. Internally composed of Content-Based Routers, Recipient Lists, etc. Risk of becoming a single bottleneck; mitigations: multiple stateless instances competing on a P2P input channel; broker hierarchy (local brokers for intra-subnet, central broker for cross-subnet). Typically uses a Canonical Data Model internally to avoid N×(N-1) translators. Contrast with Message Bus (→ above): Message Bus is the architectural pattern assembling infrastructure + adapters + canonical structure; Message Broker is the routing component within it.</p>
-<h2>Message Transformation Patterns (Hohpe &amp; Woolf — Ch 8)</h2>
+<h2 id="message-transformation-patterns-hohpe-woolf-ch-8">Message Transformation Patterns (Hohpe &amp; Woolf — Ch 8)</h2>
 <p>Specialisations of the Message Translator pattern. Message transformation is a metadata problem: integration solutions operate on two parallel systems — actual data and the metadata describing its format.</p>
 <p><strong>Envelope Wrapper</strong>: Adapts application messages to comply with messaging infrastructure requirements (required headers, encryption, security credentials). The application payload becomes the body; infrastructure-required fields become the outer envelope. Multiple wrappers are chained symmetrically (wrap on send, unwrap on receipt), analogous to TCP/IP/Ethernet protocol layers. A body field can be &quot;promoted&quot; to the outer header when routers need to inspect it for routing decisions. SOAP is a canonical example of envelope wrapping.</p>
 <p><strong>Content Enricher</strong>: Adds missing data to a message by fetching it from an external source. Three data sources: (1) <em>computation</em> from existing fields (ZIP→city+state); (2) <em>environment</em> (timestamp from OS); (3) <em>another system</em> (customer SSN from CRM). The enricher&#39;s interaction with the external source is inherently synchronous — a synchronous protocol (HTTP, ODBC) typically outperforms async messaging here. Pattern for efficiency: pass only reference IDs (customer ID) through intermediate steps; insert a Content Enricher just before the consumer that needs the full record, avoiding carrying large data through all intermediate routers.</p>
@@ -588,7 +608,7 @@
 <p><strong>Claim Check</strong>: Stores large or sensitive data in a persistent datastore and replaces it in the message with a reference key. Reduces marshalling overhead for data that only the final consumer needs. Key selection: prefer a dedicated abstract key (not message ID — dual semantics; not business key unless downstream components should know what it represents). Data lifecycle options: read-once delete (highest security), expiry-based GC, or never delete (if the datastore is a business system of record). Security use: send only the Claim Check key to external parties — they cannot access the full data without a valid key; expired or invalid keys are blocked at the Content Enricher. A Process Manager serves as a natural Claim Check, storing per-instance data and sending only relevant subsets to each external step.</p>
 <p><strong>Normalizer</strong>: Routes each incoming message format to a dedicated Message Translator that converts it to a common output format. Composed of a Message Router (detects format; routes) + per-format Message Translators. Format detection: type specifier header (ideal), XML root element name, XPath expressions, filename conventions (for file-based B2B). One Translator can serve multiple partners if formats are compatible or transformations are sufficiently generic (XPath handles variation well).</p>
 <p><strong>Canonical Data Model</strong>: A shared, application-independent data format that all applications translate to and from. Reduces N×(N-1) translators (direct pairwise translation) to 2N (each application needs only two: to-canonical and from-canonical). Adding any new application requires exactly 2 new translators regardless of how many applications already participate. Trade-off: <em>double translation</em> overhead increases latency per message; stateless translators can be parallelised to compensate. Design guidance: scope the canonical model to the data that participates in messaging only — it need not cover entire application data models. Application-private messages (between an application and its own translator) must not be consumed by other components — only the canonical-format output is &quot;public.&quot; Political value: forces agreement on shared business terminology, resolving semantic dissonance where different applications use different names for the same concept.</p>
-<h2>Messaging Endpoints (Hohpe &amp; Woolf — Ch 10)</h2>
+<h2 id="messaging-endpoints-hohpe-woolf-ch-10">Messaging Endpoints (Hohpe &amp; Woolf — Ch 10)</h2>
 <p>Endpoint patterns govern how applications connect to and interact with messaging channels. Two central concerns: <em>throttling</em> (controlling consumption rate) and <em>transactional compatibility</em> (some endpoint types interact poorly with Transactional Clients).</p>
 <p><strong>Messaging Gateway</strong>: Encapsulates the messaging API from application code; exposes a domain-specific interface. Two variants: <em>blocking</em> (thread blocks until reply; simple; one outstanding request per thread) and <em>event-driven</em> (callback on message arrival; no blocking thread; multiple concurrent requests). ACT (Asynchronous Completion Token) pattern: attach an opaque token to the outbound request; the reply carries it back, restoring caller context without server-side state. Gateways can chain (one wraps another adding capabilities). Use Service Stub for testing in isolation.</p>
 <p><strong>Messaging Mapper</strong>: Separates domain objects from messaging infrastructure code. Neither layer knows about the Mapper. Triggered via Observer/events on domain state changes. Contrast with Message Translator: Translator converts between two message formats; Mapper converts between an in-memory domain object and a message.</p>
@@ -601,7 +621,7 @@
 <p><strong>Durable Subscriber</strong>: A Pub-Sub subscriber that retains its subscription while disconnected, so messages published during disconnection are queued and delivered on reconnection. Three states: <em>active</em> (connected), <em>inactive</em> (disconnected but subscribed), <em>unsubscribed</em> (explicitly terminated — no messages saved). Use for subscribers that must not miss any events (databases, audit logs). Risk: an inactive subscription that is never explicitly unsubscribed accumulates messages indefinitely — use Message Expiration to bound storage.</p>
 <p><strong>Idempotent Receiver</strong>: Designs receivers to safely process the same message multiple times — necessary because at-least-once delivery can produce duplicates (lost acknowledgement → retransmit; distributed transaction failure → resend to all recipients). Two approaches: (1) <em>Explicit de-duplication</em> — maintain a history of received message IDs; discard duplicates; size the history to the sender&#39;s outstanding-message window (TCP sliding window analogy); do not overload business keys as message IDs (dual semantics break when business requirements change). (2) <em>Idempotent message semantics</em> — express absolute state (&quot;set balance to $110&quot;) not relative operations (&quot;add $10&quot;), so re-processing is harmless.</p>
 <p><strong>Service Activator</strong>: Adapter from messaging to a service-layer operation. Receives a request message, extracts parameters, and invokes the service synchronously — the service has no knowledge of messaging. Enables the same service to be invoked via multiple communication styles without changing the service. Can be one-way or Request-Reply. If the service is transactional, the Activator should be a Transactional Client so message consumption and service execution share the same transaction. Related to Half-Sync/Half-Async (POSA2).</p>
-<h2>System Management Patterns (Hohpe &amp; Woolf — Ch 11)</h2>
+<h2 id="system-management-patterns-hohpe-woolf-ch-11">System Management Patterns (Hohpe &amp; Woolf — Ch 11)</h2>
 <p>Patterns for monitoring, controlling, and testing distributed messaging solutions. Loose coupling and asynchronicity that make messaging powerful also make it hard to observe and debug (&quot;architect&#39;s dream, developer&#39;s nightmare&quot; — Fowler). Two monitoring levels: <em>system management</em> (header-level: throughput, routing, component health) and <em>Business Activity Monitoring</em> (payload-level: business metrics).</p>
 <p><strong>Control Bus</strong>: Separate messaging subsystem for management traffic. Each component connects to both the application message flow and the Control Bus. Control bus message types: (1) <em>Configuration</em> — dynamic routing table updates, timeout changes, channel address changes without file deployment; (2) <em>Heartbeat</em> — periodic &quot;alive&quot; messages with metrics; (3) <em>Test Messages</em> — active synthetic probes (heartbeat = alive; test message = functioning correctly); (4) <em>Exceptions</em> — centralised error routing and alerting; (5) <em>Statistics</em> — throughput and latency metrics (lower-priority, non-guaranteed channels). A live console aggregates all of these.</p>
 <p><strong>Detour</strong>: Content-Based Router controlled via the Control Bus. In normal state it passes messages directly to the destination; when the Control Bus activates the detour, it routes messages through additional steps (validation, logging, debugging). Analogous to assert statements in debug vs. release builds. Multiple Detours can be activated/deactivated simultaneously via Pub-Sub on the Control Bus.</p>
@@ -611,7 +631,7 @@
 <p><strong>Smart Proxy</strong>: Intercepts messages sent to Request-Reply services that use dynamic Return Address routing. Stores the original requestor&#39;s Return Address, substitutes its own address, and forwards to the service. When the reply arrives, performs analysis (QoS timing, metrics), restores the original Correlation Identifier and Return Address, and routes the reply to the original requestor. Proxy generates its own Correlation ID to avoid collisions when multiple requestors share the reply channel.</p>
 <p><strong>Test Message</strong>: Injects synthetic messages into the live message stream to actively verify that components process messages correctly. Four components: <em>Test Data Generator</em> (creates payloads), <em>Test Message Injector</em> (tags messages with a special header field — do not overload business fields), <em>Test Message Separator</em> (Content-Based Router that extracts test results from the output stream), <em>Test Data Verifier</em> (compares actual to expected output; alerts on discrepancy). Return Address can substitute for a separator if the component supports it — test replies route to a dedicated test channel instead of through the system. Limitation: stateful components may process test data as real data.</p>
 <p><strong>Channel Purger</strong>: Removes leftover or unwanted messages from a channel. Basic variant removes all messages; more advanced variants filter by message ID or field criteria. Disposal options: discard (sufficient for test reset) or store for later replay/editing (useful for production incidents). Use cases: test state reset; removing poison messages that cause a component to fail on every startup; clearing residual messages from a debugging session.</p>
-<h2>Messaging as an Integration Style (Hohpe &amp; Woolf)</h2>
+<h2 id="messaging-as-an-integration-style-hohpe-woolf">Messaging as an Integration Style (Hohpe &amp; Woolf)</h2>
 <p>Hohpe &amp; Woolf make messaging&#39;s architectural case from an integration perspective (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 2). Where Vitillo and Kleppmann assume messaging is already chosen, EIP argues <em>why</em> messaging should be chosen over the three alternative integration styles.</p>
 <p><strong>Messaging is &quot;a pragmatic reaction to the problems of distributed systems.&quot;</strong> Sending a message does not require both systems to be available simultaneously. Furthermore, the async model forces developers to acknowledge that remote work is slower — which encourages high-cohesion (do lots locally) and low-adhesion (do little remotely) component design.</p>
 <p><strong>The core EIP pattern taxonomy</strong> — patterns detailed in later chapters — covers six categories:</p>
@@ -624,10 +644,10 @@
 <li><strong>System Management</strong> — operational patterns: Control Bus, Detour, Wire Tap, Message History, Message Store, Smart Proxy, Test Message, Channel Purger</li>
 </ul>
 <p><strong>Canonical Data Model</strong>: when N applications each have their own data format, N×N translators are needed if applications translate to each other directly. A canonical (shared public) format reduces this to N translators — each application translates to/from canonical only. Application-private messages should never be consumed by components outside the owning application.</p>
-<h2>Decoupling Middleware and Stability</h2>
+<h2 id="decoupling-middleware-and-stability">Decoupling Middleware and Stability</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 5) frames the synchronous vs. asynchronous choice as a <strong>stability decision</strong>, not just a coupling decision. Synchronous call-and-response (REST, RPC) propagates back pressure and cascading failures: a slow downstream slows the caller, which slows its callers. Asynchronous messaging decouples in <strong>space</strong> (the caller doesn&#39;t need the consumer&#39;s address) and <strong>time</strong> (the caller continues immediately; the consumer processes when ready). See <a href="../distributed/backpressure.html">Backpressure</a> for the full treatment of how bounded queues create flow control without thread-blocking, and <a href="../concepts/stability-patterns.html">Stability Patterns</a> for how this decision composes with other stability patterns.</p>
 <p>This is an architectural decision with high switching cost — it cannot easily be retrofitted. Choose asynchronous messaging when: (1) the caller does not legitimately need a synchronous response to proceed; (2) the downstream is prone to slowness or instability; (3) load levelling across time is acceptable.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -659,7 +679,7 @@
 <blockquote>
 <p><strong>Contrast:</strong> Vitillo treats messaging as a decoupling mechanism for services; Kleppmann treats it as a durable event log for stream processing; Hohpe &amp; Woolf treat it as the preferred enterprise integration style; Nygard treats the choice as a primary stability lever — four levels of abstraction, all valid.</p>
 </blockquote>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/idempotency.html">Idempotency</a> — required for at-least-once delivery; consumers must handle duplicate messages</li>
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — reliable message publication from within a database transaction</li>
@@ -669,7 +689,7 @@
 <li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — messaging is the backbone of event-driven architectures</li>
 <li><a href="../concepts/integration-styles.html">Integration Styles</a> — messaging as the fourth and preferred integration style</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 23) — one-way/req-resp/broadcast styles; point-to-point vs pub-sub; ordering; at-least-once; visibility timeout; dead letter channel; backlogs; poison message isolation.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5) — initial introduction of messaging as an API style alongside REST and gRPC.</li>

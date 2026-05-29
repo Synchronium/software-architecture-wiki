@@ -208,8 +208,12 @@
         <li><a href="comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="authors/james-gough.html">James Gough</a></li>
+        <li><a href="authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content">
       
     <div class="page-header">
@@ -302,23 +309,38 @@
       <h1>Overview — Software Architecture</h1>
       <div class="page-meta">
         <span class="page-type-badge">overview</span>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><blockquote>
-<p>This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: <strong>19 sources fully ingested.</strong></p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#the-central-question">The Central Question</a></li><li><a href="#major-themes">Major Themes</a></li><li class="toc-sub"><a href="#architecture-is-more-than-structure">Architecture Is More Than Structure</a></li><li class="toc-sub"><a href="#failures-are-unavoidable-design-for-production-not-qa">Failures Are Unavoidable — Design for Production, Not QA</a></li><li class="toc-sub"><a href="#coordination-is-expensive">Coordination Is Expensive</a></li><li class="toc-sub"><a href="#the-consistency-vs-availability-trade-off">The Consistency vs. Availability Trade-off</a></li><li class="toc-sub"><a href="#architecture-characteristics-drive-style-selection">Architecture Characteristics Drive Style Selection</a></li><li class="toc-sub"><a href="#storage-engines-physics-drives-design">Storage Engines: Physics Drives Design</a></li><li class="toc-sub"><a href="#scalability-is-empirical">Scalability Is Empirical</a></li><li class="toc-sub"><a href="#the-api-contract-as-architectural-seam">The API Contract as Architectural Seam</a></li><li class="toc-sub"><a href="#integration-styles-are-architectural-choices">Integration Styles Are Architectural Choices</a></li><li class="toc-sub"><a href="#domain-logic-patterns-are-chosen-not-inherited">Domain Logic Patterns Are Chosen, Not Inherited</a></li><li class="toc-sub"><a href="#security-from-perimeter-to-zero-trust">Security: From Perimeter to Zero Trust</a></li><li class="toc-sub"><a href="#deployment-release">Deployment ≠ Release</a></li><li class="toc-sub"><a href="#governance-is-architecture-in-motion">Governance Is Architecture in Motion</a></li><li class="toc-sub"><a href="#architecture-quality-is-measurable">Architecture Quality Is Measurable</a></li><li class="toc-sub"><a href="#complexity-is-the-enemy-of-maintainability">Complexity Is the Enemy of Maintainability</a></li><li class="toc-sub"><a href="#team-structure-is-architecture">Team Structure Is Architecture</a></li><li class="toc-sub"><a href="#delivery-performance-has-four-leading-indicators">Delivery Performance Has Four Leading Indicators</a></li><li class="toc-sub"><a href="#transactions-isolation-levels-are-widely-misunderstood">Transactions: Isolation Levels Are Widely Misunderstood</a></li><li class="toc-sub"><a href="#batch-and-stream-processing-as-derived-data">Batch and Stream Processing as Derived Data</a></li><li class="toc-sub"><a href="#the-data-communication-layer-is-the-missing-piece">The Data Communication Layer Is the Missing Piece</a></li><li class="toc-sub"><a href="#domain-driven-design-language-before-architecture">Domain-Driven Design: Language Before Architecture</a></li><li class="toc-sub"><a href="#monolith-decomposition-is-a-journey-not-a-cut-over">Monolith Decomposition Is a Journey, Not a Cut-over</a></li><li class="toc-sub"><a href="#consensus-is-required-for-linearizability">Consensus Is Required for Linearizability</a></li><li class="toc-sub"><a href="#observability-is-not-optional">Observability Is Not Optional</a></li><li class="toc-sub"><a href="#50-of-architecture-is-soft-skills">~50% of Architecture Is Soft Skills</a></li><li class="toc-sub"><a href="#sre-operationalises-reliability-as-an-engineering-discipline">SRE Operationalises Reliability as an Engineering Discipline</a></li><li class="toc-sub"><a href="#chaos-engineering-discovers-unknown-failure-modes">Chaos Engineering Discovers Unknown Failure Modes</a></li><li class="toc-sub"><a href="#performance-is-queueing-theory-in-disguise">Performance Is Queueing Theory in Disguise</a></li><li class="toc-sub"><a href="#stability-patterns-form-a-composable-set-not-independent-choices">Stability Patterns Form a Composable Set, Not Independent Choices</a></li><li class="toc-sub"><a href="#release-is-progressive-not-atomic">Release Is Progressive, Not Atomic</a></li><li class="toc-sub"><a href="#cost-is-a-quality-attribute">Cost Is a Quality Attribute</a></li><li><a href="#sources-in-this-wiki">Sources in This Wiki</a></li><li><a href="#open-questions">Open Questions</a></li><li><a href="#key-authors">Key Authors</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><blockquote>
+<p>This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: <strong>21 sources fully ingested.</strong></p>
 </blockquote>
+<h2 id="at-a-glance">At a Glance</h2>
+<p>The wiki&#39;s working view of the field, in seven claims:</p>
+<ol>
+<li><strong>Architecture is decisions made under uncertainty.</strong> Every choice trades quality attributes against each other; there is no best architecture, only better fits for a context. The architect&#39;s job is to identify the <em>fewest</em> characteristics that matter most and accept under-optimisation on the rest.</li>
+<li><strong>Failures are a fact, not an edge case.</strong> Design for production, not QA: assume hardware fails, networks partition, clocks drift, configs corrupt. Minimise blast radius and stop propagation — don&#39;t try to prevent every failure.</li>
+<li><strong>Coordination is the most expensive primitive in distributed systems.</strong> Consensus, 2PC, and synchronous quorums are last-resort tools. Most &quot;we need strong consistency&quot; requirements turn out to be integrity requirements, achievable with idempotency and end-to-end IDs at a fraction of the cost.</li>
+<li><strong>Architecture is sociotechnical.</strong> Team structure encodes itself in system structure (<a href="concepts/conways-law.html">Conways Law</a>); cognitive load determines what a team can own; safety is a property of the whole system, not its components. Pure technical reasoning misses half the problem.</li>
+<li><strong>Governance must be automated and continuous, not periodic and manual.</strong> Architectural decisions degrade silently. <a href="concepts/fitness-functions.html">Fitness Functions</a> in <a href="concepts/deployment-pipelines.html">Deployment Pipelines</a> are the mechanism that makes governance survive over time.</li>
+<li><strong>Complexity accumulates incrementally and must be deliberately resisted.</strong> Tactical programming defers cost to every future reader; strategic programming invests ~10–15% in design and pays back compoundingly. Information hiding, deep modules, and bounded contexts are the techniques.</li>
+<li><strong>The empirical evidence supports counter-intuitive practices.</strong> Speed and stability correlate positively (not in tension); trunk-based development beats long-lived branches; CABs hurt rather than help; loose architectural coupling matters more than test automation for delivery performance (<a href="sources/accelerate.html">Accelerate</a>).</li>
+</ol>
 <hr>
-<h2>The Central Question</h2>
+<h2 id="the-central-question">The Central Question</h2>
 <p>Software architecture is fundamentally about making decisions under uncertainty. Every architectural choice involves trade-offs between competing quality attributes — performance vs. maintainability, consistency vs. availability, simplicity vs. flexibility. There is no &quot;best&quot; architecture; there are better or worse fits for a given context.</p>
 <p>Richards &amp; Ford distil this into two laws: <em>everything in software architecture is a trade-off</em>, and <em>why is more important than how</em>. Vitillo frames the same insight from the distributed systems side: the question is never &quot;how do we prevent all failures?&quot; but &quot;how do we minimise blast radius?&quot;</p>
 <hr>
-<h2>Major Themes</h2>
-<h3>Architecture Is More Than Structure</h3>
+<h2 id="major-themes">Major Themes</h2>
+<h3 id="architecture-is-more-than-structure">Architecture Is More Than Structure</h3>
 <p>FOSA adds a critical clarification: architecture is not synonymous with the architecture style (layered, microservices, etc.). It is the union of four things:</p>
 <ol>
 <li><strong>Structure</strong> — the style and topology.</li>
@@ -327,12 +349,12 @@
 <li><strong>Design principles</strong> — guidelines (not hard rules) for how teams should build within the constraints.</li>
 </ol>
 <p>Most architectural failures come from conflating structure with the full picture — choosing a style without explicit analysis of which characteristics matter or without documenting and governing decisions.</p>
-<h3>Failures Are Unavoidable — Design for Production, Not QA</h3>
+<h3 id="failures-are-unavoidable-design-for-production-not-qa">Failures Are Unavoidable — Design for Production, Not QA</h3>
 <p>The most important disposition in distributed systems design: failures are a fact, not an edge case. Hardware fails, networks partition, clocks drift, config changes cause outages. The question is never &quot;how do we prevent all failures?&quot; but &quot;how do we minimise blast radius and stop propagation?&quot;</p>
 <p>Techniques: redundancy (AZs, multi-region), fault isolation (<a href="patterns/bulkhead.html">Bulkhead</a>, shuffle sharding, cellular architecture), circuit breakers (<a href="patterns/circuit-breaker.html">Circuit Breaker</a>), load shedding, graceful degradation.</p>
 <p>Nygard (→ <a href="sources/release-it.html">Release It</a>) sharpens this with a production-first mandate: <strong>systems must be designed for the real world, not for QA</strong>. The characteristic failure of engineering teams is optimising to pass load tests with &quot;polite&quot; traffic (valid sessions, correct cookies, sensible URLs) while production sends bots, scrapers, 404 floods, and retry storms. Safety devices — circuit breakers, thread-pool timeouts, bulkheads — must be present from day one. Configuration changes are the leading root cause of catastrophic outages; they take effect when a specific code path runs, hours after the change, after the incident window is forgotten.</p>
 <p>A 2014 study of distributed data stores found the majority of catastrophic failures resulted from incorrect error handling, not hardware faults. Error paths are written fast, reviewed lightly, and almost never tested. Treating error handling as first-class code is one of the highest-leverage reliability investments. See <a href="operations/common-failure-causes.html">Common Failure Causes</a>.</p>
-<h3>Coordination Is Expensive</h3>
+<h3 id="coordination-is-expensive">Coordination Is Expensive</h3>
 <p>Every operation that requires nodes to agree (consensus, 2PC, leader confirmation) is a scalability bottleneck. The art of distributed systems design is minimising coordination:</p>
 <ul>
 <li>Push coordination off the critical path (async replication, eventual consistency).</li>
@@ -340,7 +362,7 @@
 <li>Exploit the CALM theorem: monotonic programs need no coordination at all.</li>
 </ul>
 <p>FOSA frames this in terms of distributed architecture costs: the 8 Fallacies of Distributed Computing mean every service boundary has a price. Service decomposition must be justified by the characteristics it unlocks.</p>
-<h3>The Consistency vs. Availability Trade-off</h3>
+<h3 id="the-consistency-vs-availability-trade-off">The Consistency vs. Availability Trade-off</h3>
 <p>Network partitions force a choice — <a href="distributed/cap-theorem.html">Cap Theorem</a>. In practice this is a spectrum of <a href="distributed/consistency-models.html">Consistency Models</a>:</p>
 <ul>
 <li><strong>Linearizability</strong>: strongest, most expensive; required for correctness-critical state.</li>
@@ -350,10 +372,10 @@
 <p>PACELC extends this: even without partitions, there is a latency/consistency trade-off. Most operational tuning lives here.</p>
 <p>Kleppmann (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) adds a sharper distinction: <strong>timeliness</strong> (users see up-to-date data) vs. <strong>integrity</strong> (no data loss, no contradictions). Integrity is far more important. A stale read is annoying; missing or corrupted data is catastrophic. Coordination-avoiding systems (end-to-end operation IDs, idempotency, deterministic derivation) can provide strong integrity with weak timeliness — without the cost of distributed transactions. This reframes the CAP question: most applications don&#39;t need linearizability, they need integrity, and integrity is achievable at much lower cost.</p>
 <p>CAP theorem itself Kleppmann calls &quot;best avoided&quot; — it covers only linearizability + network partitions, ignores normal-operation latency/consistency trade-offs, and conflates many distinct consistency models. PACELC is strictly more useful for operational reasoning.</p>
-<h3>Architecture Characteristics Drive Style Selection</h3>
+<h3 id="architecture-characteristics-drive-style-selection">Architecture Characteristics Drive Style Selection</h3>
 <p>The central contribution of FOSA: architecture style selection should be driven by which <a href="concepts/architecture-characteristics.html">Architecture Characteristics</a> the system needs, not by fashion or familiarity. The <a href="concepts/architecture-quantum.html">Architecture Quantum</a> determines scope — if different parts of the system need different characteristics, a distributed style with multiple quanta is required.</p>
 <p>The 8 architecture styles form a spectrum from maximum simplicity (layered) to maximum agility (microservices), with every intermediate position representing a different trade-off between operational complexity and architectural flexibility. See <a href="styles/architecture-styles.html">Architecture Styles</a> for an overview and <a href="comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a> for full ratings.</p>
-<h3>Storage Engines: Physics Drives Design</h3>
+<h3 id="storage-engines-physics-drives-design">Storage Engines: Physics Drives Design</h3>
 <p>DDIA (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) establishes that storage engine design follows from physical constraints, not convention. Sequential disk I/O is orders of magnitude faster than random I/O; this single fact explains:</p>
 <ul>
 <li><strong>LSM-Trees</strong> (LevelDB, RocksDB, Cassandra): all writes are sequential (memtable flush + compaction). High write throughput; read amplification requires checking multiple SSTables; bloom filters short-circuit misses.</li>
@@ -361,7 +383,7 @@
 <li><strong>Column-oriented storage</strong> (Redshift, BigQuery, Parquet): analytics workloads read few columns across many rows — column storage eliminates the I/O of reading unused columns. Vectorised CPU processing on compressed columns enables analytic query performance.</li>
 </ul>
 <p>The log — append-only, ordered, immutable — is the unifying data structure: WAL (B-Tree crash recovery), SSTable (LSM-Tree flush), replication log (leader → follower), CDC event log, Kafka partition, and event sourcing. &quot;The truth is the log. The database is a cache of the log.&quot;</p>
-<h3>Scalability Is Empirical</h3>
+<h3 id="scalability-is-empirical">Scalability Is Empirical</h3>
 <p>Gorton (→ <a href="sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a>) establishes that scalability must be measured, not assumed. Key principles:</p>
 <ul>
 <li><strong>Amdahl&#39;s Law</strong> sets the theoretical upper bound: if 5% of a workload is serial, no amount of parallelism can exceed 20× speedup. Identify and minimise the serial fraction first.</li>
@@ -370,7 +392,7 @@
 <li><strong>Hyperscale</strong> adds a second dimension to Amdahl: the coordination overhead of managing thousands of nodes itself becomes a bottleneck. Hyperscale systems minimise cross-node coordination via consistent hashing, gossip protocols, and eventual consistency.</li>
 </ul>
 <p>See <a href="distributed/scalability.html">Scalability</a>, <a href="distributed/caching.html">Caching</a>, <a href="distributed/serverless.html">Serverless</a>.</p>
-<h3>The API Contract as Architectural Seam</h3>
+<h3 id="the-api-contract-as-architectural-seam">The API Contract as Architectural Seam</h3>
 <p>In distributed systems, the API contract — not the code — is the primary interface between components (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>). A well-defined contract (OpenAPI for REST, Protocol Buffers for gRPC) makes the implementation replaceable: producers can be rewritten or replatformed without affecting consumers, provided the contract is honoured. This makes API design decisions architectural in scope.</p>
 <p>The exchange format decision is among the most consequential API choices:</p>
 <ul>
@@ -379,7 +401,7 @@
 <li><strong>GraphQL</strong> for client-driven aggregation: mobile, reporting, facade over legacy</li>
 </ul>
 <p>Two governance layers manage traffic at these boundaries: the <strong>API gateway</strong> handles north–south ingress (auth, rate limiting, routing, lifecycle management); the <strong>service mesh</strong> handles east–west service-to-service communication (mTLS, retries, circuit breaking, service authorisation). These are complementary — most production API platforms require both (<a href="concepts/api-gateway.html">Api Gateway</a>, <a href="patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>).</p>
-<h3>Integration Styles Are Architectural Choices</h3>
+<h3 id="integration-styles-are-architectural-choices">Integration Styles Are Architectural Choices</h3>
 <p>Hohpe &amp; Woolf (→ <a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a>) establish that the mechanism by which systems share data is itself an architectural decision with long-term consequences. The four integration styles, ordered by coupling:</p>
 <ol>
 <li><strong>File Transfer</strong>: systems produce/consume files on shared storage. Loose coupling; high latency; format negotiation burden.</li>
@@ -388,7 +410,7 @@
 <li><strong>Messaging</strong>: async communication via a broker. Loose coupling; decoupled availability; requires eventual consistency thinking.</li>
 </ol>
 <p>Each style is appropriate in specific contexts — the error is applying one universally. Most large systems use all four styles for different integration points. See <a href="concepts/integration-styles.html">Integration Styles</a> and the full messaging pattern catalogue at <a href="concepts/messaging.html">Messaging</a>.</p>
-<h3>Domain Logic Patterns Are Chosen, Not Inherited</h3>
+<h3 id="domain-logic-patterns-are-chosen-not-inherited">Domain Logic Patterns Are Chosen, Not Inherited</h3>
 <p>Fowler (→ <a href="sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a>) establishes that how you organise domain logic is one of the most consequential architectural decisions, largely ignored by style-focused discussions:</p>
 <ul>
 <li><strong>Transaction Script</strong>: simple procedural logic per business transaction. Appropriate for simple, low-duplication domains. Scales poorly as complexity grows.</li>
@@ -397,7 +419,7 @@
 <li><strong>Service Layer</strong>: defines an application&#39;s boundary, coordinates tasks, delegates domain logic to entities. The integration point for presentation and infrastructure layers.</li>
 </ul>
 <p>The selection cascades: a domain model requires an identity map and unit-of-work to avoid double-fetching and partial writes; transaction scripts can use a simple data gateway. See <a href="patterns/business-logic-patterns.html">Business Logic Patterns</a>.</p>
-<h3>Security: From Perimeter to Zero Trust</h3>
+<h3 id="security-from-perimeter-to-zero-trust">Security: From Perimeter to Zero Trust</h3>
 <p>Traditional perimeter (zonal) security assumes traffic inside the network can be trusted. Cloud environments invalidate this — workloads share infrastructure, network addresses are dynamic. Zero trust replaces implicit network trust with explicit, identity-based verification at every hop (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>):</p>
 <ul>
 <li>API gateway validates OAuth2/JWT tokens at the north–south edge</li>
@@ -405,9 +427,9 @@
 <li>Kubernetes NetworkPolicies provide a defence-in-depth layer below the mesh</li>
 </ul>
 <p>Threat modeling (STRIDE, DREAD, OWASP API Top 10) identifies what must be protected; the zero trust stack determines how each threat is mitigated (<a href="concepts/threat-modeling.html">Threat Modeling</a>, <a href="concepts/zero-trust.html">Zero Trust</a>, <a href="concepts/oauth2-and-authn.html">Oauth2 And Authn</a>).</p>
-<h3>Deployment ≠ Release</h3>
+<h3 id="deployment-release">Deployment ≠ Release</h3>
 <p>A critical operational distinction: <strong>deployment</strong> (code running in production) and <strong>release</strong> (activation for users) must be explicitly decoupled. Mechanisms: feature flags (code-level toggles), canary releases (traffic-split), and traffic mirroring (dark launch). The Knight Capital incident ($460M loss from a flag left enabled) illustrates the risk of flag accumulation — feature flags must be cleaned up after each migration (→ <a href="sources/mastering-api-architecture.html">Mastering Api Architecture</a>).</p>
-<h3>Governance Is Architecture in Motion</h3>
+<h3 id="governance-is-architecture-in-motion">Governance Is Architecture in Motion</h3>
 <p>Making architectural decisions once is insufficient — decisions must be enforced as the system evolves. <em>Building Evolutionary Architectures</em> (→ <a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) is the originating source for this thinking and defines the formal framework:</p>
 <p><strong>Three pillars of evolutionary architecture</strong>: incremental change (supported by deployment pipelines), fitness functions (objective automated governance), and appropriate coupling (matching coupling tightness to business necessity — inappropriate coupling is the root cause of non-evolvability).</p>
 <p><strong><a href="concepts/fitness-functions.html">Fitness Functions</a></strong> are any mechanism that provides an objective integrity assessment of an architecture characteristic — not just tests, but metrics, chaos experiments, monitoring alerts, and license monitors. They are classified by: atomic vs holistic, triggered vs continual, static vs dynamic, automated vs manual, temporal. Not everything needs the same treatment: key fitness functions block pipeline promotion; relevant ones are tracked; others are excluded.</p>
@@ -417,7 +439,7 @@
 <li><strong><a href="concepts/risk-storming.html">Risk Storming</a></strong>: collaborative, structured risk identification before problems reach production.</li>
 </ul>
 <p><strong>Evolvability varies by architecture style</strong>: microservices (highest — fine-grained quanta, maximum decoupling), broker event-driven (high), service-based (medium–high, pragmatic), down to Big Ball of Mud (none). The key limiting factors are quantum size and the presence of cross-quantum transactions (the &quot;strong nuclear force&quot; that binds quanta together).</p>
-<h3>Architecture Quality Is Measurable</h3>
+<h3 id="architecture-quality-is-measurable">Architecture Quality Is Measurable</h3>
 <p>Ciceri et al. (→ <a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a>) establish that architectural quality must be measured systematically, not assessed by feel:</p>
 <p><strong>Metrics become engineering</strong> when applied continuously via automated pipelines with objective thresholds. The same transformation CI did for code integration, fitness function automation does for architectural integrity. ArchUnit and NetArchTest enforce structural rules at compile time; custom fitness functions verify distributed communication patterns at runtime.</p>
 <p><strong>Structural metrics</strong> (von Zitzewitz) provide objective measurements of modularity:</p>
@@ -428,34 +450,34 @@
 </ul>
 <p><strong>The Goal-Question-Metric framework</strong> (Keeling, citing Basili &amp; Weiss 1984) provides a disciplined approach to selecting <em>which</em> metrics to collect: start from a goal, derive questions that would answer it, then select metrics that answer those questions. This creates measurement traceability — every data point links to a goal — and prevents collecting metrics that nobody acts on. See <a href="concepts/goal-question-metric.html">Goal Question Metric</a>.</p>
 <p><strong>The DORA four key metrics</strong> (Harmel-Law, citing Forsgren et al.) measure delivery performance: deployment frequency, lead time for changes, change failure rate, and time to restore service. These are leading indicators of organisational health — high performers score well on all four simultaneously, refuting the false trade-off between speed and stability. See <a href="concepts/four-key-metrics.html">Four Key Metrics</a>.</p>
-<h3>Complexity Is the Enemy of Maintainability</h3>
+<h3 id="complexity-is-the-enemy-of-maintainability">Complexity Is the Enemy of Maintainability</h3>
 <p>Ousterhout (→ <a href="sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a>) provides the most precise treatment of what makes software hard to change: <strong>complexity</strong> is defined operationally — not as size or intricacy, but as anything that makes it harder to understand and modify the system. It manifests in three symptoms: change amplification (a simple change requires edits in many places), cognitive load (the engineer must hold too much in mind to make a safe change), and unknown unknowns (the engineer doesn&#39;t know what they need to know before making a change). Unknown unknowns are the most insidious because you cannot defend against what you can&#39;t see.</p>
 <p>The root causes are just two: <strong>dependencies</strong> and <strong>obscurity</strong>. Dependencies are unavoidable but manageable; obscurity is eliminable. The primary tool is information hiding — each module should encapsulate a design decision, exposing only what callers need to know. This is the mechanism behind <em>deep modules</em>: a deep module has a small, simple interface and a large, complex implementation. The interface hides the complexity. Shallow modules are the anti-pattern: their interface is nearly as complex as their implementation, so they add interaction complexity without providing simplification.</p>
 <p><strong>Complexity accumulates incrementally</strong>: no single decision makes a system unmaintainable. It accretes via tactical programming — making each change &quot;just work&quot; with the minimum visible effort, deferring the cost of each decision to every future reader. Strategic programming invests ~10–15% of engineering time in design: writing abstractions, simplifying interfaces, correcting earlier mistakes before they compound. The compounding nature of complexity makes early investment dramatically more cost-effective than late remediation. See <a href="concepts/software-complexity.html">Software Complexity</a>.</p>
-<h3>Team Structure Is Architecture</h3>
+<h3 id="team-structure-is-architecture">Team Structure Is Architecture</h3>
 <p>Conway&#39;s Law (→ <a href="concepts/conways-law.html">Conways Law</a>) is an architectural force: team structure encodes itself in system structure. Functional silos produce technically partitioned systems; domain-centric teams produce domain-partitioned systems. The <strong>Inverse Conway Maneuver</strong> deliberately designs team structure to produce the desired architecture — reorganise teams first, then the architecture follows.</p>
 <p>Skelton &amp; Pais (→ <a href="sources/team-topologies.html">Team Topologies</a>) operationalise this with a formal model:</p>
 <p><strong>Four team types</strong>: stream-aligned (owns a value stream end-to-end), platform (reduces cognitive load for stream-aligned teams by providing self-service capabilities), enabling (accelerates stream-aligned teams during capability uplift, then withdraws), complicated-subsystem (owns a specific technical depth no stream-aligned team can maintain). One team owns one component; no team owns the same component as another.</p>
 <p><strong>Three interaction modes</strong>: collaboration (high bandwidth, used during discovery), X-as-a-service (low friction, for stable capabilities), and facilitating (temporary, knowledge-transfer focused). Teams are designed for a primary mode; mode mismatches indicate a topology problem.</p>
 <p><strong>Cognitive load as the sizing constraint</strong>: a team&#39;s cognitive capacity is the real limit on what it can maintain. Domain complexity, team tooling, and infrastructure overhead all consume cognitive load. Platform teams exist to eliminate <em>extraneous</em> cognitive load (how to deploy, monitor, configure) so stream-aligned teams can spend their cognitive budget on <em>intrinsic</em> load (the domain problem). See <a href="concepts/cognitive-load.html">Cognitive Load</a>, <a href="concepts/team-topologies-model.html">Team Topologies Model</a>.</p>
-<h3>Delivery Performance Has Four Leading Indicators</h3>
+<h3 id="delivery-performance-has-four-leading-indicators">Delivery Performance Has Four Leading Indicators</h3>
 <p>Forsgren, Humble &amp; Kim (→ <a href="sources/accelerate.html">Accelerate</a>) spent four years (2014–2017) empirically studying what separates high from low-performing technology organisations across 23,000+ survey respondents. Their central finding: <strong>speed and stability are positively correlated, not in tension</strong>. High performers deploy more frequently, have shorter lead times, restore service faster, and have lower change failure rates — simultaneously. This refutes the bimodal IT hypothesis that stability requires sacrificing speed.</p>
 <p>The <strong>DORA four key metrics</strong> operationalise this: deployment frequency (batch size proxy from Lean), lead time for changes (end-to-end cycle time), mean time to restore (recovery capability), and change failure rate (process quality). Cluster analysis consistently identifies discrete performance bands — elite, high, medium, low — with a gap between elite and the rest that increases year-on-year. See <a href="concepts/four-key-metrics.html">Four Key Metrics</a>.</p>
 <p><strong>Organisational culture independently predicts delivery performance</strong> (→ <a href="concepts/westrum-culture.html">Westrum Culture</a>): Westrum&#39;s generative culture (information flows freely, collaboration is rewarded, failure triggers inquiry rather than blame) is a separate predictor of both delivery performance and organisational outcomes. Critically, behaviour precedes belief — implementing CD practices improves culture, not the reverse. Culture cannot be mandated into existence; it is a lagging indicator of practices.</p>
 <p><strong>Loosely coupled architecture is the single largest driver of CD capability</strong> — larger than test automation and deployment automation combined in the 2017 data. Teams that can test and deploy their service independently, without coordinating outside the team, are the highest performers. This provides the strongest empirical validation of the Inverse Conway Maneuver (→ <a href="concepts/conways-law.html">Conways Law</a>): designing team structure for independence directly enables independently deployable services.</p>
-<h3>Transactions: Isolation Levels Are Widely Misunderstood</h3>
+<h3 id="transactions-isolation-levels-are-widely-misunderstood">Transactions: Isolation Levels Are Widely Misunderstood</h3>
 <p>DDIA (→ <a href="sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) makes an important corrective observation: most databases marketed as &quot;Serializable&quot; actually implement Snapshot Isolation (MVCC), which permits <strong>write skew</strong> — two transactions both read an overlapping dataset, make non-conflicting writes, and violate an application invariant (e.g., two on-call doctors both go off-call). True serializability requires SSI (Serializable Snapshot Isolation, PostgreSQL since v9.1) or actual serial execution (VoltDB, H-Store). Engineers should verify isolation level semantics for their specific database, not trust marketing claims.</p>
-<h3>Batch and Stream Processing as Derived Data</h3>
+<h3 id="batch-and-stream-processing-as-derived-data">Batch and Stream Processing as Derived Data</h3>
 <p>DDIA&#39;s Part III establishes a unified framework: data systems are divided into <strong>systems of record</strong> (source of truth, normalised, one representation) and <strong>derived data systems</strong> (rebuiltable from source, optimised for specific access patterns). The derived data layer — search indexes, caches, data warehouses, materialized views — is not optional; it is where performance is achieved.</p>
 <p><strong>Batch processing</strong> (MapReduce, Spark, Flink): bounded input, offline, immutable — key property is that inputs are never modified, enabling retry and replay.</p>
 <p><strong>Stream processing</strong> (Kafka + stream processors): unbounded event stream, low latency. Log-based brokers (Kafka) differ fundamentally from AMQP/JMS brokers: messages are retained on disk and consumers track their own offset, enabling fan-out, replay, and exactly-once processing. <strong>Change Data Capture (CDC)</strong> bridges the batch and stream worlds: the database&#39;s own write-ahead log becomes an event stream, enabling derived stores to stay up-to-date without dual writes.</p>
 <p><strong>Event sourcing and CQRS</strong> extend this further: the event log is the primary store; the mutable database is a derived projection. Multiple read models can be derived from the same event log. See <a href="streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>.</p>
 <p><strong>The lambda architecture</strong> (batch + stream in parallel, merged) is an anti-pattern — duplicate logic, complex merge, harder to maintain. The unified batch+stream model (Apache Flink, Apache Beam) handles both historical replay and live events through the same code path.</p>
-<h3>The Data Communication Layer Is the Missing Piece</h3>
+<h3 id="the-data-communication-layer-is-the-missing-piece">The Data Communication Layer Is the Missing Piece</h3>
 <p>Bellemare (→ <a href="sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>) identifies the historically missing architectural layer: while the <strong>business communication structure</strong> (business processes, team relationships) and <strong>implementation communication structure</strong> (APIs, service calls) are well-understood, the <strong>data communication structure</strong> — the mechanism by which domain data flows across the organisation — has been largely absent or ad hoc in traditional architectures.</p>
 <p>Without an explicit data communication layer, services must both implement business logic AND serve as data-access endpoints for every consumer that needs their data. This creates point-to-point data coupling and proliferation of APIs that are really data-synchronisation mechanisms in disguise.</p>
 <p><strong>Event brokers formalise the data communication layer</strong>: each service produces its domain data to event streams; any consumer can access that data independently and at their own pace. Bounded contexts are decoupled not just at the API level but at the data level. The event stream — not the API — becomes the single source of truth for each domain.</p>
-<h3>Domain-Driven Design: Language Before Architecture</h3>
+<h3 id="domain-driven-design-language-before-architecture">Domain-Driven Design: Language Before Architecture</h3>
 <p>Evans (→ <a href="sources/domain-driven-design.html">Domain Driven Design</a>) and Khononov (→ <a href="sources/learning-domain-driven-design.html">Learning Domain Driven Design</a>) establish DDD&#39;s core principle: a model that doesn&#39;t live in the code is just a picture. The ubiquitous language must pervade conversations, documentation, and code — when they diverge, the code becomes the real model by default, and the document becomes noise.</p>
 <p><strong>Strategic DDD</strong> starts with business domain structure:</p>
 <ul>
@@ -464,7 +486,7 @@
 <li><strong>Context maps</strong> make inter-context integration patterns explicit: Shared Kernel, Customer/Supplier, Conformist, ACL, OHS, Published Language, and Separate Ways each represent a different team relationship and coupling type (→ <a href="patterns/context-map.html">Context Map</a>).</li>
 </ul>
 <p><strong>Tactical DDD</strong> provides the building blocks for complex domain models: value objects (no identity, immutable), entities (identity persists through time), aggregates (consistency boundary, modified as a unit), domain events (facts that occurred), and domain services (stateless operations that don&#39;t belong on an entity). The right tactical pattern is chosen per subdomain — complex core subdomains warrant rich domain models; simple supporting subdomains warrant transaction scripts (→ <a href="patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
-<h3>Monolith Decomposition Is a Journey, Not a Cut-over</h3>
+<h3 id="monolith-decomposition-is-a-journey-not-a-cut-over">Monolith Decomposition Is a Journey, Not a Cut-over</h3>
 <p>Newman (→ <a href="sources/monolith-to-microservices.html">Monolith To Microservices</a>) establishes that &quot;big bang&quot; rewrites are among the highest-risk strategies in software. The characteristic outcome is two systems in production simultaneously, both half-maintained. Migration must be incremental, with each step independently deployable and reversible.</p>
 <p><strong>Core migration patterns</strong>:</p>
 <ul>
@@ -473,15 +495,31 @@
 <li><strong>Parallel Run</strong> (→ <a href="patterns/parallel-run.html">Parallel Run</a>): run both implementations simultaneously; return results from the old; compare against the new. Use to verify correctness before committing to the new path (GitHub Scientist).</li>
 </ul>
 <p><strong>Database decomposition</strong> is the hard part. Every shared-database coupling is a hidden contract. Newman&#39;s taxonomy of ~12 decomposition patterns includes database views (read-only facade over old schema), wrapping services (API encapsulates shared table access), tracer writes (dual-write with progressive migration), and synchronise-in-application (two stores kept consistent via application code, used transitionally). See <a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a>.</p>
-<h3>Consensus Is Required for Linearizability</h3>
+<h3 id="consensus-is-required-for-linearizability">Consensus Is Required for Linearizability</h3>
 <p>DDIA and <a href="sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> agree: linearizability requires consensus. Fault-tolerant consensus (Raft, Paxos, Zab) requires a strict majority quorum, has overhead from synchronous replication, and is sensitive to network delays. ZooKeeper and etcd implement consensus as a service for leader election, partition assignment, and distributed locks. The full equivalence theorem: linearizable CAS ≡ total order broadcast ≡ atomic transaction commit ≡ distributed locks ≡ uniqueness constraints — all require consensus. See <a href="distributed/consensus-algorithms.html">Consensus Algorithms</a>.</p>
-<h3>Observability Is Not Optional</h3>
+<h3 id="observability-is-not-optional">Observability Is Not Optional</h3>
 <p>Observability = metrics (detect symptoms) + logs (explain causes) + traces (causally ordered cross-service view). Monitoring tells you that something is wrong; observability tells you why.</p>
 <p>SLIs/SLOs with error budgets replace naive alerting — alert on burn rate, not raw thresholds. Allspaw&#39;s finding: <strong>MTTR matters more than MTBF</strong>. At hyperscale, MTBF approaches zero asymptotically; the resilience lever is recovery speed, not prevention.</p>
-<h3>~50% of Architecture Is Soft Skills</h3>
+<h3 id="50-of-architecture-is-soft-skills">~50% of Architecture Is Soft Skills</h3>
 <p>FOSA is unusually explicit: negotiation, facilitation, leadership, and communication are co-equal with technical knowledge for architect effectiveness. Key practices: turn architecture decisions into favours (not mandates), demonstrate rather than argue, maintain the right level of team control (elastic leadership), use the 4 C&#39;s (communication, collaboration, clarity, conciseness).</p>
+<h3 id="sre-operationalises-reliability-as-an-engineering-discipline">SRE Operationalises Reliability as an Engineering Discipline</h3>
+<p>Beyer et al. (→ <a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a>) establish that running production software is an engineering activity, not a maintenance activity. The central mechanism is the <a href="operations/error-budgets.html">error budget</a> — defined as <code>1 − SLO target</code>, it converts the dev/ops conflict (devs want fast releases, ops want stability) into an aligned incentive: the budget is a shared resource that gets spent by deployments and incidents alike. When exhausted, releases halt until reliability work restores it.</p>
+<p>The discipline rests on several enforced principles: <strong>100% is always the wrong target</strong> (over-engineering reliability past user-perceptible thresholds wastes engineering capacity that could go to features); <strong>toil capped at 50%</strong> (manual operational work eats engineering capacity exponentially if uncapped); <strong>MTTR matters more than MTBF</strong> at scale (failure is constant; recovery speed is the lever); <strong>blameless postmortems</strong> (blame destroys the information needed to prevent recurrence). See <a href="operations/site-reliability-engineering.html">Site Reliability Engineering</a>, <a href="operations/availability.html">Availability</a>, <a href="operations/incident-management.html">Incident Management</a>.</p>
+<h3 id="chaos-engineering-discovers-unknown-failure-modes">Chaos Engineering Discovers Unknown Failure Modes</h3>
+<p>Rosenthal &amp; Jones (→ <a href="sources/chaos-engineering.html">Chaos Engineering</a>) make the case that complex distributed systems have failure modes nobody knows to look for. Traditional testing verifies known properties; chaos engineering creates new knowledge — a disproved hypothesis reveals something previously unknown about the system.</p>
+<p>Five principles define the discipline: <strong>steady-state hypothesis</strong> (define normal output, then test whether it holds under turbulence); <strong>vary real-world events</strong> (failure modes that actually occur, not the easy ones); <strong>run in production</strong> (staging differs from production in ways humans cannot fully predict); <strong>automate continuously</strong> (the solution space is unknowable; dependencies change over time); <strong>minimise blast radius</strong> (control vs experimental groups, blast radius progression). The Netflix Chaos Monkey lineage matured into Continuous Verification — a CI/CD/CV progression where automated experiments verify system behaviour as a pipeline stage. See <a href="operations/chaos-engineering.html">Chaos Engineering</a>.</p>
+<p>The discipline&#39;s deeper insight is sociotechnical: the most valuable Game Days don&#39;t find bugs; they distil expert mental models that automation cannot capture (the <a href="sources/chaos-engineering.html">Chaos Engineering</a> <em>Law of Fluency</em>). Game Days, ChAP, and Disasterpiece Theater are as much about transferring tacit knowledge as testing the system.</p>
+<h3 id="performance-is-queueing-theory-in-disguise">Performance Is Queueing Theory in Disguise</h3>
+<p>The newer pages <a href="distributed/queueing-theory.html">Queueing Theory</a> and <a href="distributed/backpressure.html">Backpressure</a> surface a discipline scattered across multiple sources. Most production performance failures are queueing failures wearing other names: &quot;slow database&quot; is a queue at the connection pool; &quot;cascading failure&quot; is a queue at every blocked thread; &quot;tail latency amplification&quot; is a statistical consequence of queues in series.</p>
+<p>Three results dominate: <strong>Little&#39;s Law</strong> (<code>L = λW</code>) sizes capacity and explains why unbounded queues produce unbounded latency; the <strong>utilisation curve</strong> (<code>W = S/(1−ρ)</code>) shows response time bending hyperbolically past 70% utilisation — explaining why &quot;run servers hot for efficiency&quot; is wrong; <strong>percentile arithmetic</strong> shows that averaging averages is mathematically meaningless and that P99 of a fan-out request approaches the P99.9 of a single backend call. Architects who internalise these results set utilisation targets, bound every queue, and account for fan-out tail amplification at design time. See <a href="distributed/queueing-theory.html">Queueing Theory</a>, <a href="distributed/backpressure.html">Backpressure</a>, <a href="concepts/stability-patterns.html">Stability Patterns</a>.</p>
+<h3 id="stability-patterns-form-a-composable-set-not-independent-choices">Stability Patterns Form a Composable Set, Not Independent Choices</h3>
+<p>Nygard&#39;s stability patterns (<a href="concepts/stability-patterns.html">Stability Patterns</a>) — timeout, circuit breaker, bulkhead, retry, fail fast, shed load, backpressure, handshaking, decoupling middleware, governor, test harnesses — defend against specific antipatterns and compose at different boundaries. A production-grade integration point applies <em>all</em> of them at different layers: timeout on the outgoing call, circuit breaker for sustained failure, retry with backoff for transient failure, bulkhead to isolate the dependency&#39;s thread pool, fail fast on incoming requests when the breaker is open, handshaking with the load balancer. Applying the patterns at only one layer leaves known failure modes at the others.</p>
+<h3 id="release-is-progressive-not-atomic">Release Is Progressive, Not Atomic</h3>
+<p><a href="patterns/progressive-delivery.html">Progressive Delivery</a> unifies canary, blue-green, ring deployment, dark launch, parallel run, and feature flags as different points on a single design space. The defining shift is <strong>decoupling deployment from release</strong>: code reaches production without immediately being visible to users; visibility ramps via routing, traffic splitting, or <a href="concepts/feature-flags.html">Feature Flags</a>. SRE&#39;s &quot;roll back first, diagnose second&quot; makes rollback a routine, low-status action rather than a defeat. The economic case (from <a href="sources/release-it.html">Release It</a>) is direct: a $50K investment in zero-downtime deployment pays back 18× over five years through avoided downtime alone.</p>
+<h3 id="cost-is-a-quality-attribute">Cost Is a Quality Attribute</h3>
+<p>Cost is in trade-off with most other -ilities and is determined far more by architecture than by implementation. A poorly-chosen architecture can be 10× more expensive to run than an apt one, and no code-level optimisation closes the gap. The framing from <a href="sources/release-it.html">Release It</a>: architecture decisions are financial decisions playing out over years. Most engineers optimise development cost (where their incentives point); the organisation&#39;s interest demands optimising lifetime cost — dominated by operations, change, and downtime. See <a href="concepts/cost-as-architectural-force.html">Cost As Architectural Force</a>.</p>
 <hr>
-<h2>Sources in This Wiki</h2>
+<h2 id="sources-in-this-wiki">Sources in This Wiki</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -605,9 +643,21 @@
 <td>Forsgren, Humble &amp; Kim</td>
 <td>2026-05-18</td>
 </tr>
+<tr>
+<td><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>Site Reliability Engineering</td>
+<td>Beyer, Jones, Petoff, Murphy (eds.)</td>
+<td>2026-05-27</td>
+</tr>
+<tr>
+<td><a href="sources/chaos-engineering.html">Chaos Engineering</a></td>
+<td>Chaos Engineering: System Resiliency in Practice</td>
+<td>Rosenthal &amp; Jones (eds.)</td>
+<td>2026-05-28</td>
+</tr>
 </tbody></table></div>
 <hr>
-<h2>Open Questions</h2>
+<h2 id="open-questions">Open Questions</h2>
 <ul>
 <li>Newman&#39;s migration patterns (strangler fig, parallel run) assume HTTP/REST interfaces are easy to intercept. How do these apply to systems with tight binary protocol coupling or embedded SDK clients?</li>
 <li>Evo-arch&#39;s evolvability scorecard (microservices highest) appears to conflict with FOSA&#39;s nuanced view that microservices is not always appropriate. Where exactly is the tension, and what criteria reconcile it?</li>
@@ -616,9 +666,12 @@
 <li>The DORA four key metrics are organisational health indicators, not system health indicators. Goodhart&#39;s Law applies: once teams know they&#39;re measured on deployment frequency, they may deploy smaller batches with less value. What counterbalances?</li>
 <li>Evans&#39; Large-Scale Structure patterns (Responsibility Layers, System Metaphor) were articulated in 2003. Are they still applicable to cloud-native, event-driven systems, or have bounded contexts and event streams replaced their function?</li>
 <li>Team Topologies assumes one team per component and one component per team. How does this interact with platform engineering, where a single platform team may be the effective owner of infrastructure used by dozens of stream-aligned teams?</li>
+<li>SRE&#39;s &quot;100% is always the wrong target&quot; argument depends on users having degradation thresholds below 100%. Where does this break down — life-critical systems, financial settlement, regulated environments — and how should SLO targets be set in those contexts?</li>
+<li>Chaos engineering&#39;s &quot;experimentation creates new knowledge&quot; claim sits uneasily with the practical experience that most chaos experiments confirm what was already known. What does a high-value experiment look like in a mature programme, and at what point does running more experiments stop adding value?</li>
+<li>The eight-page lint pass added <a href="concepts/feature-flags.html">Feature Flags</a> as application-layer release control and <a href="concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> as a quality attribute. Both deserve their own ingest source — multi-tenancy, deep security, and ML systems remain genuinely unaddressed by the current corpus.</li>
 </ul>
 <hr>
-<h2>Key Authors</h2>
+<h2 id="key-authors">Key Authors</h2>
 <ul>
 <li><a href="authors/roberto-vitillo.html">Roberto Vitillo</a> — <em>Understanding Distributed Systems</em></li>
 <li><a href="authors/mark-richards.html">Mark Richards</a> — <em>Fundamentals of Software Architecture</em> (with Ford), <em>Software Architecture Patterns</em>, <em>Software Architecture: The Hard Parts</em></li>
@@ -655,6 +708,10 @@
 <li><a href="authors/nicole-forsgren.html">Nicole Forsgren</a> — <em>Accelerate</em> (with Humble, Kim); DORA research programme; psychometric rigour in DevOps research</li>
 <li><a href="authors/jez-humble.html">Jez Humble</a> — <em>Accelerate</em> (with Forsgren, Kim); co-author of <em>Continuous Delivery</em>; CI/CD and Lean practitioner</li>
 <li><a href="authors/gene-kim.html">Gene Kim</a> — <em>Accelerate</em> (with Forsgren, Humble); <em>The Phoenix Project</em>; high-performing technology organisations</li>
+<li><a href="authors/betsy-beyer.html">Betsy Beyer</a> — co-editor of <em>Site Reliability Engineering</em>; cultural and documentary aspects of reliability at Google</li>
+<li><a href="authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a> — wrote ch. 1 of <em>Site Reliability Engineering</em>; originator of the term SRE; creator of the error budget model</li>
+<li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a> — co-editor of <em>Chaos Engineering</em>; built Netflix&#39;s Chaos Engineering team; co-author of the Principles of Chaos Engineering</li>
+<li><a href="authors/nora-jones.html">Nora Jones</a> — co-editor of <em>Chaos Engineering</em>; safety science and sociotechnical perspective on resilience</li>
 </ul>
 </div>
     </main>

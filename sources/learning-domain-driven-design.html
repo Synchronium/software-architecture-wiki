@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/vlad-khononov.html">Vlad Khononov</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#preamble-introduction">Preamble / Introduction</a></li><li class="toc-sub"><a href="#chapter-1-analysing-business-domains">Chapter 1 — Analysing Business Domains</a></li><li class="toc-sub"><a href="#chapter-2-discovering-domain-knowledge">Chapter 2 — Discovering Domain Knowledge</a></li><li class="toc-sub"><a href="#chapter-3-managing-domain-complexity">Chapter 3 — Managing Domain Complexity</a></li><li class="toc-sub"><a href="#chapter-4-integrating-bounded-contexts">Chapter 4 — Integrating Bounded Contexts</a></li><li class="toc-sub"><a href="#chapter-6-tackling-complex-business-logic">Chapter 6 — Tackling Complex Business Logic</a></li><li class="toc-sub"><a href="#chapter-7-modeling-the-dimension-of-time">Chapter 7 — Modeling the Dimension of Time</a></li><li class="toc-sub"><a href="#chapter-5-implementing-simple-business-logic">Chapter 5 — Implementing Simple Business Logic</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li class="toc-sub"><a href="#chapter-8-architectural-patterns">Chapter 8 — Architectural Patterns</a></li><li class="toc-sub"><a href="#chapter-9-communication-patterns">Chapter 9 — Communication Patterns</a></li><li class="toc-sub"><a href="#chapter-10-design-heuristics">Chapter 10 — Design Heuristics</a></li><li class="toc-sub"><a href="#chapter-11-evolving-design-decisions">Chapter 11 — Evolving Design Decisions</a></li><li class="toc-sub"><a href="#chapter-12-eventstorming">Chapter 12 — EventStorming</a></li><li class="toc-sub"><a href="#chapter-13-domain-driven-design-in-the-real-world">Chapter 13 — Domain-Driven Design in the Real World</a></li><li class="toc-sub"><a href="#chapter-14-microservices">Chapter 14 — Microservices</a></li><li class="toc-sub"><a href="#chapter-15-event-driven-architecture">Chapter 15 — Event-Driven Architecture</a></li><li class="toc-sub"><a href="#chapter-16-data-mesh">Chapter 16 — Data Mesh</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Author:</strong> <a href="../authors/vlad-khononov.html">Vlad Khononov</a>
 <strong>Published:</strong> 2022 (O&#39;Reilly, first edition October 2021)
 <strong>Slug:</strong> <code>learning-domain-driven-design</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p><em>Learning Domain-Driven Design</em> is the clearest available introduction to DDD as a complete methodology — from business analysis through tactical implementation. Khononov&#39;s thesis is that software project failure (roughly 70% fail rate by scope/budget/time) is primarily a communication problem, and DDD is the systematic solution. The book is structured in four parts: strategic design (Chs 1–4), tactical design (Chs 5–7), DDD in practice (Chs 8–13), and DDD&#39;s relationship to other patterns and styles (Chs 14–16).</p>
 <p>The book sits between Evans&#39;s original &quot;Blue Book&quot; (rigorous but demanding) and domain-ignorant architecture texts. Khononov distils 10 years of teaching DDD into a progression that makes strategic and tactical patterns legible without sacrificing depth. The running example throughout is WolfDesk, a fictional help desk SaaS company.</p>
 <p>This is the most thorough DDD source in the wiki. It grounds abstract concepts like bounded context and ubiquitous language in concrete decision frameworks, and bridges DDD to microservices, event-driven architecture, and data mesh in later chapters.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Software project failure is fundamentally a communication problem; DDD attacks the root cause (→ Introduction)</li>
 <li>Subdomain type (core/generic/supporting) is the primary driver of implementation strategy decisions (→ ch. 1)</li>
@@ -325,11 +336,11 @@
 <li>Tactical design choice (transaction script, active record, domain model, event-sourced domain model) must be driven by business logic complexity (→ chs. 5–7)</li>
 <li>Every architectural pattern (layered, ports-and-adapters, CQRS, event sourcing) exists to serve the domain model — not the reverse (→ ch. 8)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Preamble / Introduction</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="preamble-introduction">Preamble / Introduction</h3>
 <p>DDD is divided into <em>strategic</em> design (what and why: business domain analysis, component boundaries, integration patterns) and <em>tactical</em> design (how: code-level patterns for implementing business logic). The book uses WolfDesk — a help desk ticket SaaS with ticket lifecycle management, autopilot, and fraud detection — as its running example.</p>
 <p>The framing: 70% of software projects fail, mostly due to communication failures (unclear requirements, misaligned goals). DDD addresses communication directly, at both the team/domain boundary level (strategic) and at the code level (tactical).</p>
-<h3>Chapter 1 — Analysing Business Domains</h3>
+<h3 id="chapter-1-analysing-business-domains">Chapter 1 — Analysing Business Domains</h3>
 <p><strong>Business domain</strong>: a company&#39;s main area of activity — the service it provides to clients. Companies can operate in multiple domains (Amazon: retail + cloud). Domains change over time (Nokia: rubber → telecom → mobile).</p>
 <p><strong>Subdomains</strong>: fine-grained areas of business activity. Three types:</p>
 <div class="table-wrapper"><table>
@@ -376,26 +387,26 @@
 <blockquote>
 <p><strong>Key heuristic</strong>: &quot;Would someone pay for this subdomain on its own?&quot; → core. &quot;Is it simpler to hack a quick implementation than integrate an external one?&quot; → supporting (not generic).</p>
 </blockquote>
-<h3>Chapter 2 — Discovering Domain Knowledge</h3>
+<h3 id="chapter-2-discovering-domain-knowledge">Chapter 2 — Discovering Domain Knowledge</h3>
 <p><strong>Ubiquitous language</strong> is the cornerstone practice of DDD. Traditional development creates a chain of translations: domain knowledge → analysis model → requirements → design → code. Each step loses information. DDD replaces this telephone game with a single shared language used by all stakeholders in all communications, including source code.</p>
 <p>Properties: business language only (no technical jargon), precise and consistent (one meaning per term; no synonyms), and continuously evolved. Tools: wiki glossaries (nouns), Gherkin BDD tests (behaviour), static analysis (NDepend for code enforcement). Tools support but don&#39;t replace actual usage.</p>
 <p>Ubiquitous language is effectively model building — a model captures just enough detail to solve the specific problem. Not a copy of reality but a purposeful abstraction. The model should reflect domain experts&#39; mental models.</p>
 <p>Cultivation is often co-creative: asking questions uncovers white spots in domain experts&#39; own understanding. Especially true for core subdomains.</p>
 <p>See <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> for the full treatment.</p>
-<h3>Chapter 3 — Managing Domain Complexity</h3>
+<h3 id="chapter-3-managing-domain-complexity">Chapter 3 — Managing Domain Complexity</h3>
 <p><strong>The bounded context pattern</strong> solves the problem of inconsistent models: different domain experts use the same term for different concepts (e.g., &quot;lead&quot; = contact event in marketing; &quot;lead&quot; = full lifecycle in sales). The answer is not a single enterprise model (overengineered everywhere, useful nowhere) but dividing the ubiquitous language into multiple bounded contexts, each internally consistent.</p>
 <p><strong>Subdomains vs. bounded contexts</strong>: subdomains are <em>discovered</em> (defined by business strategy); bounded contexts are <em>designed</em> (strategic engineering decisions). Not necessarily 1:1 — one bounded context can span multiple subdomains, or one subdomain can be split across multiple bounded contexts. Size: not a rule, depends on problem domain. Too large → hard to keep consistent. Too small → integration overhead.</p>
 <p><strong>Physical boundaries</strong>: each bounded context is an independent service/project with its own stack. <strong>Ownership boundaries</strong>: one team per bounded context (no two teams on the same context; one team can own multiple).</p>
 <p>Real-world analogy: the tomato is a fruit in botany, a vegetable in culinary arts, a vegetable in US tax law, and a feedback mechanism in theatre. Same entity, different models in different contexts — each is correct within its bounded context.</p>
 <p>See <a href="../concepts/bounded-contexts.html">Bounded Contexts</a> for the full treatment.</p>
-<h3>Chapter 4 — Integrating Bounded Contexts</h3>
+<h3 id="chapter-4-integrating-bounded-contexts">Chapter 4 — Integrating Bounded Contexts</h3>
 <p>Bounded contexts must integrate. Integration contracts are driven by team collaboration type, not technical preference. Six patterns, grouped by collaboration:</p>
 <p><strong>Cooperation</strong> (well-established communication): <em>Partnership</em> (ad hoc two-way coordination; both teams adapt) and <em>Shared Kernel</em> (limited overlapping model shared by multiple contexts; costly to coordinate; justified when duplication &gt; coordination cost).</p>
 <p><strong>Customer–Supplier</strong> (upstream has power): <em>Conformist</em> (downstream accepts upstream&#39;s model as-is), <em>Anticorruption Layer</em> (downstream translates upstream&#39;s model to protect its own; critical for core subdomain downstream), <em>Open-Host Service</em> (upstream decouples public interface from internal model using a &quot;published language&quot;; upstream does the translation for all consumers).</p>
 <p><strong>Separate Ways</strong> (no collaboration): justified for generic subdomains that are cheap to duplicate locally. Never for core subdomains.</p>
 <p><strong>Context map</strong>: visual diagram of bounded contexts and their integration patterns. Reveals high-level design, communication patterns, and organisational issues. Should be maintained as code (Context Mapper tool).</p>
 <p>See <a href="../patterns/context-map.html">Context Map</a> for full treatment.</p>
-<h3>Chapter 6 — Tackling Complex Business Logic</h3>
+<h3 id="chapter-6-tackling-complex-business-logic">Chapter 6 — Tackling Complex Business Logic</h3>
 <p><strong>Domain model</strong> pattern for complex business logic (core subdomains). Building blocks from DDD tactical design:</p>
 <ul>
 <li><strong>Value object</strong>: identified by values; immutable; encapsulates validation + business logic; prevents primitive obsession; use whenever possible</li>
@@ -406,31 +417,31 @@
 </ul>
 <p>Application layer is thin: load → execute → persist → publish events. The aggregate does all the work.</p>
 <p>See <a href="../patterns/domain-model.html">Domain Model</a> for full treatment.</p>
-<h3>Chapter 7 — Modeling the Dimension of Time</h3>
+<h3 id="chapter-7-modeling-the-dimension-of-time">Chapter 7 — Modeling the Dimension of Time</h3>
 <p><strong>Event-sourced domain model</strong> — same building blocks as the domain model but persists domain events instead of state. Four-step cycle: load events → rehydrate → execute command → append new events. Event store is append-only; uses expectedVersion for OCC.</p>
 <p>Advantages: time travel (reconstruct any past state), deep insight (multiple projections), strongly consistent audit log, advanced OCC.
 Disadvantages: learning curve, schema evolution complexity, architectural complexity (needs CQRS).
 Special: snapshot pattern (for 10K+ events per aggregate), forgettable payload pattern (GDPR compliance in append-only stores).</p>
 <p>See <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> for full treatment, including DDIA&#39;s complementary mechanistic perspective.</p>
-<h3>Chapter 5 — Implementing Simple Business Logic</h3>
+<h3 id="chapter-5-implementing-simple-business-logic">Chapter 5 — Implementing Simple Business Logic</h3>
 <p>Introduces the simple end of the business logic implementation spectrum:</p>
 <p><strong>Transaction script</strong>: each operation is a simple procedure; must be transactional (all-or-nothing). Three failure modes: lack of DB transaction, distributed transaction (DB + message bus), implicit distributed transaction (void method communicates success/failure). Solutions: idempotency, optimistic concurrency, <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>. Use for supporting subdomains; never for core.</p>
 <p><strong>Active record</strong>: transaction script that delegates DB access to data-aware objects (objects with CRUD methods). For simple logic with complex data structures. Also called &quot;anemic domain model&quot; — Khononov rejects the pejorative framing; it&#39;s valid for simple business logic.</p>
 <p>See <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> for full treatment.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;To design and build an effective solution, you have to understand the problem.&quot; (ch. 1)</p>
 </blockquote>
 <blockquote>
 <p>&quot;A core subdomain that is simple to implement can only provide a short-lived competitive advantage. Therefore, core subdomains are naturally complex.&quot; (ch. 1)</p>
 </blockquote>
-<h3>Chapter 8 — Architectural Patterns</h3>
+<h3 id="chapter-8-architectural-patterns">Chapter 8 — Architectural Patterns</h3>
 <p>Three patterns for organising a bounded context&#39;s internals, matched to business logic pattern:</p>
 <p><strong>Layered architecture</strong>: presentation layer → business logic layer → data access layer. Top-down dependencies. Natural fit for transaction script and active record. Distinction: <em>layer</em> = logical code organisation; <em>tier</em> = physical deployment unit. A &quot;three-layer&quot; bounded context can be deployed as a single tier.</p>
 <p><strong>Ports and adapters</strong> (hexagonal/onion/clean): business logic at centre; dependency inversion pushes all infrastructure dependencies to the outer ring. Ports are interfaces defined in the business logic layer; adapters are infrastructure implementations of those ports. Perfect fit for domain model and event-sourced domain model — keeps business logic completely infrastructure-agnostic and testable in isolation. See <a href="../styles/ports-and-adapters.html">Ports And Adapters</a>.</p>
 <p><strong>CQRS</strong>: command execution model (strongly consistent aggregate) + read models (projections from domain events). Two projection types: synchronous (catch-up subscription with checkpoint column; strongly consistent) and asynchronous (message bus subscription; eventually consistent). Commands may return data from the strongly consistent model — the strict separation applies to models, not method signatures.</p>
 <p><strong>Architectural slices</strong>: patterns apply per module within a bounded context, not across the entire context. A single bounded context may mix layered, ports-and-adapters, and CQRS across its modules based on each module&#39;s business logic complexity.</p>
-<h3>Chapter 9 — Communication Patterns</h3>
+<h3 id="chapter-9-communication-patterns">Chapter 9 — Communication Patterns</h3>
 <p><strong>Model translation</strong>: how bounded context integration patterns (ACL, OHS) are implemented in code.</p>
 <ul>
 <li><em>Stateless</em>: proxy translates each request/event independently. Sync: API gateway or facade. Async: message proxy converting upstream events to downstream schema; distinguishes private events (internal) from public events (published language).</li>
@@ -439,21 +450,21 @@ Special: snapshot pattern (for 10K+ events per aggregate), forgettable payload p
 <p><strong>Outbox pattern</strong>: two wrong approaches (publish before commit; publish after commit but before crash) → correct approach (state + domain events committed atomically; relay publishes asynchronously). At-least-once delivery; consumers must be idempotent. Pull relay (polling) or push relay (CDC/log tailing). NoSQL: embed outbox array in aggregate document. See <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>.</p>
 <p><strong>Saga</strong>: event-driven coordinator for long-running multi-aggregate processes. Listens to domain events; issues commands. Stateless (simple matching) or stateful (event-sourced aggregate). Does not handle compensation — that is a business concern. Warning: don&#39;t use sagas to paper over wrong aggregate boundaries.</p>
 <p><strong>Process manager</strong>: a saga with conditional branching. Explicitly instantiated by a command (not triggered by a domain event). Always maintains state. Implemented as an aggregate (state-based or event-sourced). Example: trip booking (flights + hotel + car, different failure paths). See <a href="../patterns/saga.html">Saga</a>.</p>
-<h3>Chapter 10 — Design Heuristics</h3>
+<h3 id="chapter-10-design-heuristics">Chapter 10 — Design Heuristics</h3>
 <p>Bridges strategic and tactical design into a unified decision framework. Key insight: &quot;it depends&quot; is correct but insufficient — specify <em>what</em> it depends on.</p>
 <p><strong>Bounded context size heuristic</strong>: treat size as a function of the model, not the other way around. Optimising for small bounded contexts is a mistake. For core subdomains (volatile, uncertain), start wide and decompose as domain knowledge stabilises.</p>
 <p><strong>Business logic pattern decision tree</strong>: (1) event sourcing if money/audit/deep analysis required; (2) domain model if complex logic; (3) active record if complex data structures; (4) transaction script otherwise. Use ubiquitous language complexity as a proxy for business logic complexity (CRUD → simple; processes/invariants → complex).</p>
 <p><strong>Architectural pattern decision tree</strong>: event-sourced → requires CQRS; domain model → requires ports &amp; adapters; active record → layered + service layer; transaction script → minimal layered. Exception: CQRS is also valid when multiple persistent read models are needed regardless of business logic pattern.</p>
 <p><strong>Testing strategy</strong>: domain model/event-sourced → testing pyramid (unit-heavy); active record → testing diamond (integration-heavy); transaction script → reversed testing pyramid (E2E-heavy).</p>
 <p>See <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> for the complete decision trees.</p>
-<h3>Chapter 11 — Evolving Design Decisions</h3>
+<h3 id="chapter-11-evolving-design-decisions">Chapter 11 — Evolving Design Decisions</h3>
 <p>Four vectors of change: business domain evolution, organisational structure changes, domain knowledge discovery, and growth.</p>
 <p><strong>Subdomain type evolution</strong>: all six transitions are possible (core↔generic, core↔supporting, generic↔supporting). Changes are driven by competitive dynamics, off-the-shelf availability, business strategy, and complexity growth. Strategic design consequences: integration patterns and implementation strategies must evolve with the subdomain type.</p>
 <p><strong>Pain as signal</strong>: when the existing technical design struggles to support business needs, this is the primary indicator that subdomain type has changed. A supporting subdomain that accumulates complex rules is becoming core. Use this pain as a trigger to reassess.</p>
 <p><strong>Tactical migration paths</strong> (see <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>): transaction script → active record (encapsulate complex data structures); active record → domain model (make setters private, let compilation errors reveal external state mutation, identify aggregate boundaries); domain model → event-sourced domain model (two migration strategies: generating past transitions or modeling migration events as <code>migrated-from-legacy</code>).</p>
 <p><strong>Organisational changes</strong>: team communication shifts affect integration patterns (partnership → customer-supplier when geographic distance grows; customer-supplier → separate ways when collaboration breaks down). Integration patterns must be actively maintained, not assumed stable.</p>
 <p><strong>Growth management</strong>: revisit subdomain, bounded context, and aggregate boundaries regularly. Eliminate accidental complexity (outdated design decisions). Manage essential complexity (inherent business domain complexity) using DDD tools. &quot;Chatty&quot; bounded contexts signal boundaries that need redesign for greater autonomy.</p>
-<h3>Chapter 12 — EventStorming</h3>
+<h3 id="chapter-12-eventstorming">Chapter 12 — EventStorming</h3>
 <p>A low-tech collaborative workshop for modeling business processes. Invented by Alberto Brandolini.</p>
 <p><strong>Participants</strong>: engineers, domain experts, product owners, testers, UX, support — diverse backgrounds increase knowledge discovery. Max 10 in-person; max 5 remote.</p>
 <p><strong>10-step process</strong>:</p>
@@ -472,21 +483,21 @@ Special: snapshot pattern (for 10K+ events per aggregate), forgettable payload p
 <p><strong>Real value</strong>: the process itself — knowledge sharing, alignment, UL formulation. Physical model is secondary.</p>
 <p><strong>Two-phase facilitation</strong>: big picture (steps 1–4) for the whole domain first; then dedicated sessions (all 10 steps) for each process.</p>
 <p>See <a href="../concepts/eventstorming.html">Eventstorming</a> for the full treatment.</p>
-<h3>Chapter 13 — Domain-Driven Design in the Real World</h3>
+<h3 id="chapter-13-domain-driven-design-in-the-real-world">Chapter 13 — Domain-Driven Design in the Real World</h3>
 <p>DDD is not greenfield-only — brownfield projects benefit most. DDD is not all-or-nothing.</p>
 <p><strong>Strategic analysis for brownfield</strong>: (1) understand the business domain (who are the customers, what is the competitive advantage, what is the value proposition?); (2) explore current design (identify high-level components, evaluate their tactical and strategic design decisions, chart the current context map).</p>
 <p><strong>Modernization strategy — think big, start small</strong>: align logical boundaries (namespaces, modules) with subdomains first. Only extract physical bounded contexts (separate services) when it&#39;s clearly justified.</p>
 <p><strong>Strangler pattern (DDD version)</strong>: a new bounded context implements new requirements and progressively absorbs legacy functionality; a facade routes traffic. Shared database temporarily permitted during migration (exception to the one-DB-per-BC rule). Legacy context is retired when all functionality is migrated.</p>
 <p><strong>Incremental tactical refactoring</strong>: never skip steps — don&#39;t jump straight from active record to event-sourced domain model. Introduce value objects first; then find aggregate boundaries; then extract domain model; finally consider event sourcing. Domain model → event-sourced domain model migration strategies covered in Ch 11.</p>
 <p><strong>Pragmatic DDD</strong>: DDD is about letting the business domain drive design decisions, not about mandatory use of any specific pattern. &quot;Undercover DDD&quot; — use tools individually without requiring org-wide buy-in: use ubiquitous language (trivial, borderline common sense); use bounded context principles (reason from first principles, not authority); justify tactical patterns by logic, not DDD dogma.</p>
-<h3>Chapter 14 — Microservices</h3>
+<h3 id="chapter-14-microservices">Chapter 14 — Microservices</h3>
 <p><strong>Microservice = micro-public interface, not micro-codebase</strong>. A service&#39;s public interface is its front door. A microservice has a micro front door — a small, focused set of capabilities. Encapsulating the database is required: exposing the DB as part of the public interface makes the interface arbitrarily large.</p>
 <p><strong>Deep modules</strong> (Ousterhout): effective modules are deep — simple public interface over complex internal logic. Shallow modules (interface ≈ logic) add accidental complexity. Method-per-service decomposition creates shallow modules that require expanding their integration interfaces.</p>
 <p><strong>Two boundary extremes</strong>: wider than bounded context = big ball of mud; narrower than microservice threshold = distributed big ball of mud. The safe design space is between bounded context (widest valid boundary) and microservice (narrowest valid boundary).</p>
 <p><strong>Relationship</strong>: all microservices are bounded contexts; not all bounded contexts are microservices. A wide bounded context (multiple subdomains, one team, consistent model) is a valid design, especially early in a core subdomain&#39;s lifecycle.</p>
 <p><strong>Granularity heuristic</strong>: align services with subdomains. Subdomains are naturally deep (function = &quot;what&quot;; logic = coherent use cases; strong functional relationships between use cases). Aggregates as services work only when coupling to other aggregates in the subdomain is minimal.</p>
 <p><strong>DDD tools for deeper microservices</strong>: Open-Host Service (published language compresses integration interface, decouples implementation from public API); ACL as standalone service (offloads integration complexity from consuming bounded context).</p>
-<h3>Chapter 15 — Event-Driven Architecture</h3>
+<h3 id="chapter-15-event-driven-architecture">Chapter 15 — Event-Driven Architecture</h3>
 <p><strong>EDA ≠ event sourcing</strong>: EDA = asynchronous communication between bounded contexts; event sourcing = state management technique inside a bounded context. Events designed for event sourcing (internal state transitions) are not designed for external integration.</p>
 <p><strong>Three event types</strong>:</p>
 <ul>
@@ -496,13 +507,13 @@ Special: snapshot pattern (for 10K+ events per aggregate), forgettable payload p
 </ul>
 <p><strong>Distributed Big Ball of Mud anti-pattern</strong>: exposing internal domain events to external consumers creates: implementation coupling (schema changes break all consumers); functional coupling (consumers duplicate projection logic); temporal coupling (ordering dependencies, hardcoded delays). Fix: encapsulate projection in producer (OHS + published language + ECST).</p>
 <p><strong>Design heuristics</strong>: &quot;assume the worst&quot; (outbox, idempotency, sagas); design explicit private events (internal use) vs public events (OHS published language); choose event type by consistency requirement: eventually consistent → ECST; need last write → notification + subsequent query.</p>
-<h3>Chapter 16 — Data Mesh</h3>
+<h3 id="chapter-16-data-mesh">Chapter 16 — Data Mesh</h3>
 <p><strong>OLTP vs OLAP</strong>: operational models are entity-centric, real-time transaction-optimised; analytical models use fact tables (business activities, append-only, similar to domain events) and dimension tables (context for facts). Star schema (one dimension level); snowflake schema (multi-level normalised dimensions). Analytical queries are unpredictable → high normalisation needed.</p>
 <p><strong>Data warehouse</strong>: ETL-based centralised model; strong coupling to operational DB implementation details; cross-team friction; ETL complexity grows to unmanageable scale.</p>
 <p><strong>Data lake</strong>: store raw operational data; transform later; schema-less → data swamp at scale; no data quality guarantees.</p>
 <p><strong>Data mesh — four principles</strong>: (1) Decompose around domains (align analytical model ownership with bounded contexts; same team owns OLTP + OLAP); (2) Data as a product (output ports, SLA, versioning, polyglot formats); (3) Enable autonomy (platform team provides interoperability infrastructure); (4) Build an ecosystem (federated governance body).</p>
 <p><strong>DDD + Data Mesh alignment</strong>: ubiquitous language drives analytical model design; OHS = analytical model is a published language for analytical consumers; CQRS generates analytical projections alongside operational model (multiple simultaneous schema versions); bounded context integration patterns (partnership, ACL, conformist, separate ways) apply to analytical models between product teams.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — LDDD&#39;s most thorough source for strategic DDD concepts; subdomain taxonomy, sizing heuristic, type evolution, growth management</li>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — cornerstone DDD practice; LDDD is the primary source</li>

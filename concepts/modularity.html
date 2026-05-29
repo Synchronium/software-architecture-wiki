@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,19 +309,32 @@
       <h1>Modularity</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/modularity.html">modularity</a></li><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li><li><a class="tag-chip" href="../tags/cohesion.html">cohesion</a></li><li><a class="tag-chip" href="../tags/connascence.html">connascence</a></li><li><a class="tag-chip" href="../tags/mmi.html">mmi</a></li><li><a class="tag-chip" href="../tags/technical-debt.html">technical-debt</a></li><li><a class="tag-chip" href="../tags/deep-modules.html">deep-modules</a></li><li><a class="tag-chip" href="../tags/information-hiding.html">information-hiding</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#cohesion">Cohesion</a></li><li><a href="#deep-vs-shallow-modules">Deep vs Shallow Modules</a></li><li><a href="#information-hiding">Information Hiding</a></li><li><a href="#designing-the-interface">Designing the Interface</a></li><li><a href="#coupling">Coupling</a></li><li><a href="#connascence">Connascence</a></li><li><a href="#connascence-and-architecture-quanta">Connascence and Architecture Quanta</a></li><li><a href="#coupling-at-the-service-boundary">Coupling at the Service Boundary</a></li><li><a href="#modularity-maturity-index-mmi">Modularity Maturity Index (MMI)</a></li><li><a href="#advanced-structural-metrics-von-zitzewitz">Advanced Structural Metrics (von Zitzewitz)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Modularity is cohesion plus coupling.</strong> Cohesion (how well internals belong together) and coupling (how strongly components depend on one another) are the two structural properties. High cohesion + loose coupling enables every property architecture cares about: independent deployability, testability, evolvability.</li>
+<li><strong>Deep modules beat shallow ones.</strong> A deep module has a small simple interface relative to its large complex implementation (Ousterhout). The Unix I/O interface hides hundreds of thousands of lines behind five system calls. Shallow modules add interface cost without simplification — <code>classitis</code> is the dominant cultural anti-pattern.</li>
+<li><strong>Information hiding is the technique.</strong> Each module should encapsulate design decisions invisible through its interface. Getters and setters defeat hiding; private fields alone are not enough. Information leakage (the same fact lives in multiple modules) is the primary cause of complexity.</li>
+<li><strong>Connascence generalises coupling.</strong> Static connascence (name, type, position, meaning) is weaker and preferred; dynamic connascence (execution, timing, values, identity) is stronger and should be avoided across encapsulation boundaries. Page-Jones&#39;s three rules: minimise overall connascence, minimise it across boundaries, maximise it within.</li>
+<li><strong>Coupling is also operational, not just structural.</strong> Newman&#39;s taxonomy adds implementation, temporal, deployment, and domain coupling on top of the structural metrics (Ca/Ce, A/I/D). Two services with low structural coupling can still be temporally coupled if they call each other synchronously.</li>
+<li><strong>Modularity is measurable and erodes by default.</strong> MMI (0–10, cognitive-science grounded), Propagation Cost, Relative Cyclicity, Maintainability Level — concrete metrics with concrete thresholds (e.g., zero package cycles, PC &lt; 20%, ML ≥ 75%). Without an enforced metrics-based feedback loop, 80% of nontrivial systems over 100K LoC become Big Balls of Mud.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Modularity is the degree to which a system&#39;s components are divided into separate, well-bounded units that can be understood, changed, and replaced in isolation. It encompasses both <em>cohesion</em> (how well the internals of a component belong together) and <em>coupling</em> (the degree to which components depend on one another).</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Modularity is the structural foundation of architecture. Low modularity makes systems brittle: a change in one place requires changes everywhere, deployment risk is high, and testability suffers. High modularity enables independent deployability, testability, and evolutionary change — all critical architecture characteristics.</p>
 <p>Software systems tend toward entropy — disorder increases unless architects actively work against it, just as physical systems require energy input to maintain order. Good modularity does not happen by accident; it requires deliberate attention and continuous enforcement (via <a href="../concepts/fitness-functions.html">Fitness Functions</a> such as dependency cycle detection).</p>
-<h2>Cohesion</h2>
+<h2 id="cohesion">Cohesion</h2>
 <p>Cohesion measures how well the responsibilities within a module belong together. Types from best (strongest cohesion) to worst:</p>
 <ol>
 <li><strong>Functional</strong> — every element contributes to a single, well-defined task. Best.</li>
@@ -326,78 +346,33 @@
 <li><strong>Coincidental</strong> — elements share a module by accident. Worst.</li>
 </ol>
 <p><strong>LCOM (Lack of Cohesion in Methods)</strong>: a structural metric measuring the degree to which a class&#39;s methods do not share instance fields. High LCOM → poor cohesion → candidate for splitting. LCOM is particularly valuable when migrating or restructuring architectures: it exposes shared utility classes that are incidentally coupled — never a coherent unit — and should be split before the monolith is extracted into services. The metric can only detect <em>structural</em> lack of cohesion, not logical relationships; interpretation always requires human judgment.</p>
-<h2>Deep vs. Shallow Modules (Ousterhout)</h2>
-<p>Ousterhout (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 4) introduces a cost/benefit framing for module design:</p>
-<ul>
-<li><strong>Benefit</strong> = the functionality a module provides to the rest of the system</li>
-<li><strong>Cost</strong> = the interface complexity it imposes on the rest of the system</li>
-</ul>
-<p>A <strong>deep module</strong> has a simple interface relative to its implementation — high benefit, low cost. The Unix I/O interface (five system calls: <code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, <code>close</code>) hides hundreds of thousands of lines of kernel implementation. A garbage collector is the extreme case: no interface at all, yet substantial hidden behaviour.</p>
-<p>A <strong>shallow module</strong> has an interface nearly as complex as its implementation. It provides little leverage. An extreme example: a one-line wrapper method whose documentation would be longer than the code itself.</p>
-<p><strong>Classitis</strong> is the cultural anti-pattern of excessive small classes driven by the &quot;classes should be small&quot; dogma. Each additional class adds interface cost to the overall system. Java I/O is the canonical example: three wrapper objects (<code>FileInputStream</code> → <code>BufferedInputStream</code> → <code>ObjectInputStream</code>) required to simply read a file, where buffering — needed in nearly every case — should be the default. Compare Unix I/O, where sequential access is the default and random access requires explicit <code>lseek</code>.</p>
-<p><strong>Design principle:</strong> interfaces should be designed so that the common case is as simple as possible. Rarely-used features should require explicit opt-in; they should not appear in the interface unless the developer specifically seeks them out. Overexposing rarely-used features is a red flag (Overexposure red flag).</p>
+<h2 id="deep-vs-shallow-modules">Deep vs Shallow Modules</h2>
+<p>The dominant treatment of module design at the code level comes from Ousterhout (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> chs. 4–9). The framing: every module has a <strong>benefit</strong> (functionality it provides) and a <strong>cost</strong> (interface complexity it imposes). A <strong>deep module</strong> has high benefit relative to its cost — a simple interface hiding a complex implementation. A <strong>shallow module</strong> has interface complexity comparable to its implementation; it adds friction without simplification.</p>
+<p>The canonical deep module is Unix I/O — five system calls (<code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, <code>close</code>) hide hundreds of thousands of lines of kernel implementation. The canonical shallow design is Java I/O, where reading a file requires three wrapper objects (<code>FileInputStream</code> → <code>BufferedInputStream</code> → <code>ObjectInputStream</code>). Buffering is needed in nearly every case; making it explicit pushes complexity onto every caller. <strong>Classitis</strong> — the cultural reflex that &quot;classes should be small&quot; — produces shallow designs because each new class adds interface cost.</p>
+<p>Design principle: interfaces should make the common case as simple as possible. Rarely-used features require explicit opt-in. Overexposure (a feature in the interface that callers rarely need) is a red flag.</p>
 <blockquote>
-<p><strong>Alignment:</strong> Ousterhout&#39;s deep/shallow distinction is the code-level counterpart to the cohesion hierarchy above. A shallow module often corresponds to coincidental or logical cohesion — elements grouped without a strong shared purpose. A deep module corresponds to functional cohesion — all internals serve a single coherent capability hidden behind a simple interface.</p>
+<p><strong>Synthesis:</strong> Deep/shallow is the code-level counterpart to the cohesion hierarchy. A shallow module often has coincidental or logical cohesion (elements grouped without shared purpose); a deep module has functional cohesion (all internals serve one coherent capability behind a simple interface). It also aligns with Martin&#39;s metrics: a stable abstract module (I=0, A=1) is deep — it provides a stable interface hiding concrete implementation.</p>
 </blockquote>
+<h2 id="information-hiding">Information Hiding</h2>
+<p>Information hiding (Parnas, 1972) is the technique that produces deep modules: each module encapsulates <strong>design decisions</strong> in its implementation that are invisible through its interface. Hidden information includes data structures, storage layouts, network protocols, scheduling policies, encoding formats — anything callers shouldn&#39;t have to know.</p>
+<p><strong>Two complexity reductions follow.</strong> Simpler interface → lower cognitive load on callers. No external dependencies on hidden information → implementation evolves without breaking callers.</p>
+<p><strong>Private fields are not enough.</strong> Getter/setter methods expose the variable just as effectively as public access — the variable&#39;s nature and usage become part of the interface. True information hiding means the information is genuinely irrelevant to callers.</p>
+<p><strong>Information leakage</strong> is the inverse: a design decision appearing in multiple modules creates a hidden dependency. Explicit leakage (same format in two interfaces) is bad; <strong>backdoor leakage</strong> (two classes both understand the same file format without it appearing in either interface) is worse because it&#39;s invisible.</p>
+<p><strong>Temporal decomposition</strong> is the most common cause of leakage. Structuring modules to mirror execution order rather than knowledge ownership: a read-then-parse design for HTTP requests forces both classes to understand the request format. Fix: structure modules around <em>what knowledge they own</em>, not <em>when they execute</em>.</p>
 <blockquote>
-<p><strong>Alignment:</strong> The cost/benefit framing aligns with Martin&#39;s abstractness/instability metrics: a stable, abstract module (I = 0, A = 1) is deep in Ousterhout&#39;s sense — it provides a stable interface hiding concrete implementation. A concrete, stable module with a complex interface is both in the Zone of Pain <em>and</em> shallow.</p>
+<p><strong>Synthesis:</strong> Information hiding is scale-invariant. Newman (→ <a href="../concepts/coupling.html">Coupling</a>) applies it to service API design — no service should depend on another&#39;s internal implementation. Ousterhout applies it to class interfaces. The principle is the same; only the boundary changes. A microservice with leaky internals (other services calling its database directly) is the same dysfunction as a class with leaky internals (callers manipulating its private state via getters).</p>
 </blockquote>
-<h2>Information Hiding (Parnas / Ousterhout)</h2>
-<p>Information hiding (David Parnas, 1972; cited by Ousterhout ch. 5 as the key technique for deep modules): each module encapsulates <em>design decisions</em> in its implementation that are invisible through its interface. Hidden information can be: data structures and algorithms, physical storage layouts, network protocol implementations, scheduling policies, encoding formats.</p>
-<p><strong>Why it reduces complexity:</strong></p>
-<ol>
-<li>Simpler interface → lower cognitive load on callers</li>
-<li>No external dependencies on hidden information → implementation can evolve without changing the interface or requiring caller changes</li>
-</ol>
-<p><strong>Critical distinction:</strong> private fields ≠ information hiding. Getter and setter methods expose a private field just as effectively as public access — the variable&#39;s nature and usage become part of the interface. True information hiding means the information is genuinely irrelevant to callers.</p>
-<p><strong>Information leakage</strong> is the inverse: a design decision that appears in multiple modules, creating a hidden dependency. Leakage can be explicit (the same format appears in the interface of two classes) or backdoor (two classes both understand the same file format without it appearing in either interface). Backdoor leakage is more dangerous because it is invisible.</p>
-<p><strong>Temporal decomposition</strong> is the most common cause of leakage: structuring modules to mirror execution order rather than knowledge ownership. A read-then-parse design for HTTP requests requires both classes to understand the request format — the order of operations has been imposed on the module structure, forcing knowledge to live in two places. Fix: structure modules around <em>what knowledge they own</em>, not <em>when they execute</em>.</p>
+<h2 id="designing-the-interface">Designing the Interface</h2>
+<p>Several practical rules follow from the deep-modules / information-hiding framing (Ousterhout chs. 6–9).</p>
+<p><strong>Push specialisation away from general-purpose modules.</strong> Over-specialisation is the single greatest cause of complexity. UI abstractions (cursors, selections) leaking into a text class make the text class shallower and tied to its current use case. The sweet spot is &quot;somewhat general-purpose&quot; — functionality covering today&#39;s needs with an interface not tied to today&#39;s specific use. Push specialisation either <em>upward</em> (feature code owns all special-purpose logic) or <em>downward</em> (device drivers hide device-specific logic from a generic OS core).</p>
+<p><strong>Different layer, different abstraction.</strong> A well-designed layered system changes abstraction with each layer. Adjacent layers with similar abstractions are a decomposition problem. <strong>Pass-through methods</strong> (one method that just calls another with the same signature) make classes shallower and create cross-layer dependencies — a red flag. Decorators often fall into the same trap: before creating a decorator, ask whether the functionality could be added to the underlying class or made standalone.</p>
+<p><strong>Pass-through variables</strong> force every intermediary method to know about a variable only the deepest one uses. Solution: a <strong>context object</strong> holds application-global state in one object, passed to constructors. Imperfect but better than global variables or long parameter chains.</p>
+<p><strong>Pull complexity downwards.</strong> When a module encounters unavoidable complexity, absorb it internally rather than exporting to callers. A module has more callers than developers — a simple interface matters more than a simple implementation. Anti-patterns: throwing exceptions for conditions the module could handle; exporting configuration parameters callers can&#39;t reason about.</p>
+<p><strong>Combine or split: which?</strong> Subdivision creates its own complexity (more interfaces, more management code, separated things hard to see together). Code belongs together when it shares information, is used bidirectionally, overlaps conceptually, or can&#39;t be understood in isolation. Always separate general-purpose mechanism from special-purpose code; the mechanism should know nothing about specific uses. Length alone is rarely a reason to split a method — depth matters more. <strong>Conjoined methods</strong> (if you must read both to understand either, the split was wrong) are the red flag for over-splitting.</p>
 <blockquote>
-<p><strong>Alignment:</strong> Ousterhout&#39;s information hiding and Newman&#39;s anti-patterns (implementation coupling, concept leakage) are the same idea at different scales. Newman (→ <a href="../concepts/coupling.html">Coupling</a>) applies information hiding to service API design: no service should depend on another&#39;s internal implementation. Ousterhout applies it to class interface design: no caller should depend on the implementation choices inside a class. The principle is scale-invariant.</p>
+<p><strong>Synthesis (Ousterhout vs Clean Code):</strong> Robert Martin argues functions should be &lt; 10 lines. Ousterhout disagrees explicitly: &quot;don&#39;t sacrifice depth for length.&quot; More functions = more interfaces = more cognitive load. The two rules conflict; the wiki sides with Ousterhout because the metric is shipped code complexity, not aesthetic minimalism per function.</p>
 </blockquote>
-<h2>General-Purpose Modules (Ousterhout)</h2>
-<p>Over-specialisation is identified as the single greatest cause of complexity (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 6). A special-purpose API leaks the concerns of its callers down into the module — UI abstractions (cursors, selections) appear in a text class, making the text class shallower and tying it to its current use case.</p>
-<p><strong>Sweet spot: &quot;somewhat general-purpose&quot;</strong> — functionality for today&#39;s needs, but an interface not tied to today&#39;s specific use. General-purpose interfaces are simpler, deeper, produce less code overall, and result in better information hiding because upper-layer concerns stay in the upper layer.</p>
-<p><strong>Push specialisation upwards or downwards</strong> to keep lower layers general:</p>
-<ul>
-<li>Upward: UI/feature code at the top of the stack owns all special-purpose logic; modules below it remain general</li>
-<li>Downward: device driver model — a generic interface (<code>read block</code>, <code>write block</code>) hides device-specific logic in drivers; the OS core remains oblivious to specific devices</li>
-</ul>
-<p><strong>Calibration questions for generality:</strong></p>
-<ol>
-<li>What is the simplest interface that covers all my current needs? (fewer methods with same capability = more general)</li>
-<li>How many situations will this method be used? (single-use method = red flag)</li>
-<li>Is this API easy to use for current needs? (if you need lots of wrapper code, you&#39;ve gone too far)</li>
-</ol>
-<blockquote>
-<p><strong>Alignment:</strong> Ousterhout&#39;s specialisation critique is the code-level version of the service decomposition principle in <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>: a service that exists only to satisfy one caller, and whose interface mirrors the caller&#39;s specific workflow, is a shallow service. The same information-hiding principle applies.</p>
-</blockquote>
-<h2>Different Layer, Different Abstraction (Ousterhout)</h2>
-<p>A well-designed layered system changes abstraction with each layer. Adjacent layers with similar abstractions indicate decomposition problems (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 7).</p>
-<p><strong>Pass-through methods</strong> — methods that do nothing except call another method with the same or similar signature — make classes shallower (add interface cost with no benefit) and create cross-layer dependencies. Red Flag: Pass-Through Method. Fix: expose the lower-level class directly, redistribute responsibilities, or merge classes. Exception: dispatchers and multiple implementations of the same interface are legitimate (same layer, distinct functionality, same signature).</p>
-<p><strong>Decorators</strong> encourage API duplication across layers and are often too shallow. Before creating a decorator: can the functionality be added to the underlying class directly? Can it be merged with an existing decorator? Can it be standalone? The Java I/O <code>BufferedInputStream</code> wrapper class should simply have been built into <code>FileInputStream</code>.</p>
-<p><strong>Interface vs. implementation:</strong> if a class&#39;s interface closely mirrors its implementation representation, the class is probably shallow. Example: a text class whose internal representation is lines of text but whose <em>interface</em> is character-oriented (<code>insert(position, string)</code>, <code>delete(start, end)</code>) encapsulates line splitting/joining complexity — the interface is genuinely different from, and simpler than, the implementation.</p>
-<p><strong>Pass-through variables</strong> — variables passed down through many methods that only the deepest method uses — force all intermediaries to know about the variable&#39;s existence. Solution: a <strong>context object</strong> stores all application-global state in one object, passed to constructors and held as an instance variable. One context per system instance enables multiple instances and simplifies testing; variables should be immutable to avoid thread-safety issues. The context object is far from ideal but is better than the alternatives (global variables, long parameter chains).</p>
-<h2>Pull Complexity Downwards (Ousterhout)</h2>
-<p>When a module encounters unavoidable complexity, it should absorb it internally rather than exporting it to callers (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 8). A module has more callers than developers; a simple interface matters more than a simple implementation.</p>
-<p><strong>Anti-patterns that push complexity up:</strong></p>
-<ul>
-<li>Throwing exceptions for uncertain conditions rather than handling them</li>
-<li>Exporting configuration parameters to avoid making internal decisions; users often can&#39;t determine good values; the module can often compute a better value automatically</li>
-</ul>
-<p><strong>When to pull down:</strong> (a) the complexity is closely related to the module&#39;s core function; (b) pulling it down simplifies callers; (c) pulling it down simplifies the interface. If pulling something down just moves UI-specific concerns into a lower-level module, it creates information leakage without reducing overall complexity.</p>
-<blockquote>
-<p><strong>Alignment:</strong> This is the code-level equivalent of the &quot;smart endpoints, dumb pipes&quot; principle in event-driven architecture: push complexity into the service (smart endpoint) rather than into the infrastructure (dumb pipe). At the service level, it also aligns with the information hiding principle — services should absorb complexity so that consumers don&#39;t need to understand it.</p>
-</blockquote>
-<h2>Better Together or Better Apart? (Ousterhout)</h2>
-<p>The fundamental decomposition question at every level — functions, classes, services (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 9). The goal is to reduce overall system complexity, not to minimise individual component size.</p>
-<p><strong>Subdivision creates its own complexity:</strong> more interfaces to learn; more management code; separation makes related things harder to see together; potential duplication.</p>
-<p><strong>Indications that code belongs together:</strong> it shares information; it is used together bidirectionally; the pieces overlap conceptually (belong to a common category); you can&#39;t understand one without the other.</p>
-<p><strong>When to combine:</strong> shared information (HTTP read+parse); simplifies the interface (merging removes intermediate exposures the caller didn&#39;t need); eliminates duplication.</p>
-<p><strong>When to separate:</strong> always separate general-purpose mechanism from special-purpose code. The general-purpose mechanism should know nothing about specific uses.</p>
-<p><strong>Splitting methods:</strong> length alone is rarely a good reason to split; developers split too much. A long method of sequential independent blocks may be fine. Two legitimate splits: (a) extracting a general-purpose subtask that can stand alone; (b) splitting into two distinct public methods when the original combined unrelated responsibilities. Red Flag: Conjoined Methods — if you must read both methods together to understand either one, the split was wrong.</p>
-<p><strong>Explicit disagreement with Clean Code:</strong> Robert Martin argues functions should be &lt; 10 lines. Ousterhout: depth is more important than length; &quot;don&#39;t sacrifice depth for length.&quot; More functions = more interfaces = more cognitive load.</p>
-<h2>Coupling</h2>
+<h2 id="coupling">Coupling</h2>
 <p><strong>Afferent coupling (Ca)</strong>: number of external components that depend on a given component (fan-in). High Ca → the component is widely used; changes are risky.</p>
 <p><strong>Efferent coupling (Ce)</strong>: number of external components a given component depends on (fan-out). High Ce → the component is fragile; it is affected by changes in many other places.</p>
 <p><strong>Robert Martin&#39;s derived metrics</strong> (package-level):</p>
@@ -406,7 +381,7 @@
 <li><em>Instability (I)</em>: Ce / (Ca + Ce). I = 0 → stable (hard to change); I = 1 → unstable (easy to change).</li>
 <li><em>Distance from Main Sequence (D)</em>: |A + I − 1|. Ideal components live near the Main Sequence where abstractness and instability are balanced. High D → <em>Zone of Pain</em> (concrete and stable — hard to change) or <em>Zone of Uselessness</em> (abstract and unstable — nothing depends on it).</li>
 </ul>
-<h2>Connascence</h2>
+<h2 id="connascence">Connascence</h2>
 <p>Connascence (Meilir Page-Jones) generalises coupling: two components are connascent if a change to one requires a change to the other to maintain correctness. The stronger the connascence, the tighter the coupling.</p>
 <p><strong>Static connascence</strong> (compile-time; weaker; preferred):</p>
 <ul>
@@ -434,11 +409,10 @@
 <li><em>Rule of Degree</em>: convert strong forms of connascence into weaker forms (e.g., refactor a magic constant into a named constant — CoM → CoN).</li>
 <li><em>Rule of Locality</em>: as the distance between software elements increases, use weaker forms of connascence. Strong coupling that is fine within a class becomes a code smell between packages, and an architectural defect across service boundaries.</li>
 </ul>
-<h2>Connascence and Architecture Quanta</h2>
+<h2 id="connascence-and-architecture-quanta">Connascence and Architecture Quanta</h2>
 <p>The <a href="../concepts/architecture-quantum.html">Architecture Quantum</a> concept builds directly on connascence: synchronous connascence defines quantum boundaries. Services with strong dynamic connascence (e.g., connascence of values across a distributed transaction) form a single quantum; services decoupled via asynchronous messaging can be separate quanta.</p>
-<h2>Information Hiding and Service Coupling (Newman)</h2>
-<p>Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 1) grounds microservice design in Parnas&#39; 1971 information hiding principle: stable module <em>interfaces</em> hide volatile <em>internals</em>, so internal changes do not propagate to consumers. When applied to services, this produces the rule that no service should depend on another&#39;s internal implementation — only on its public API.</p>
-<p>Newman introduces a four-type coupling taxonomy specific to distributed service boundaries:</p>
+<h2 id="coupling-at-the-service-boundary">Coupling at the Service Boundary</h2>
+<p>The metrics above (Ca/Ce, A/I/D, connascence) measure structural coupling — what static analysis can see. Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 1) adds four operational coupling types that static analysis misses:</p>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -448,31 +422,31 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>Implementation coupling</strong></td>
-<td>Service A depends on service B&#39;s internal structure (e.g., calls into B&#39;s DB directly)</td>
+<td><strong>Implementation</strong></td>
+<td>Service A depends on service B&#39;s internals (e.g., calls B&#39;s DB directly)</td>
 <td>Most dangerous; violates information hiding entirely</td>
 </tr>
 <tr>
-<td><strong>Temporal coupling</strong></td>
-<td>A can only function when B is available at the same time; synchronous calls introduce this</td>
+<td><strong>Temporal</strong></td>
+<td>A only functions when B is simultaneously available; synchronous calls create this</td>
 <td>Reduces robustness and independent deployability</td>
 </tr>
 <tr>
-<td><strong>Deployment coupling</strong></td>
-<td>A and B must be deployed together; negates the core benefit of microservices</td>
+<td><strong>Deployment</strong></td>
+<td>A and B must be deployed together</td>
 <td>Eliminated by independent deployability</td>
 </tr>
 <tr>
-<td><strong>Domain coupling</strong></td>
-<td>A needs information from B&#39;s domain to do its work; unavoidable but should be minimised</td>
-<td>Acceptable in small doses</td>
+<td><strong>Domain</strong></td>
+<td>A needs information from B&#39;s domain to do its work</td>
+<td>Unavoidable but should be minimised</td>
 </tr>
 </tbody></table></div>
-<p>This taxonomy complements the structural coupling metrics (afferent/efferent, connascence) with operational coupling concerns that are invisible to static analysis tools. A service pair can have low structural coupling but high temporal coupling if they make synchronous calls.</p>
+<p>Two services can score well on structural coupling and still be tightly temporally coupled if they synchronously call each other. The full picture requires both lenses.</p>
 <blockquote>
-<p><strong>Contradiction:</strong> The FOSA connascence model and Martin metrics are static, compile-time measures. Newman&#39;s taxonomy adds runtime and deployment-time coupling dimensions that these metrics cannot capture.</p>
+<p><strong>Contradiction:</strong> The FOSA connascence model and Martin metrics are compile-time measures. Newman&#39;s taxonomy adds runtime and deployment-time dimensions that structural metrics cannot capture. Both are needed.</p>
 </blockquote>
-<h2>Modularity Maturity Index (MMI)</h2>
+<h2 id="modularity-maturity-index-mmi">Modularity Maturity Index (MMI)</h2>
 <p>Dr. Carola Lilienthal (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 4) developed the MMI from 300+ architecture reviews as an empirical, 0-10 measure of architectural technical debt grounded in cognitive science rather than purely formal metrics.</p>
 <p><strong>Three cognitive principles:</strong></p>
 <div class="table-wrapper"><table>
@@ -534,7 +508,7 @@
 <blockquote>
 <p><strong>Alignment:</strong> Lilienthal&#39;s modularity principle (chunking, 45%) maps directly to the cohesion hierarchy and LCOM metric discussed above. The hierarchy principle maps to layering and component hierarchy concepts in <a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a>. Farley (ch. 3 of same book) provides the complementary question: <em>how to build</em> for high MMI scores (design for testability → produces the five sustainable attributes that MMI measures).</p>
 </blockquote>
-<h2>Advanced Structural Metrics (von Zitzewitz)</h2>
+<h2 id="advanced-structural-metrics-von-zitzewitz">Advanced Structural Metrics (von Zitzewitz)</h2>
 <p>Alexander von Zitzewitz (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 9) provides a deeper layer of structural metrics that extend the basic coupling measures (Ca/Ce) to system-level propagation analysis. The central claim: without a metrics-based feedback loop, 80% of nontrivial systems exceeding 100K LoC end as Big Balls of Mud.</p>
 <p><strong>ACD, CCD, and Propagation Cost:</strong></p>
 <ul>
@@ -591,7 +565,7 @@ PageRank algorithm applied to the class dependency graph. Identifies the most-tr
 <blockquote>
 <p><strong>Alignment:</strong> These metrics provide the quantitative foundation that Lilienthal&#39;s MMI (above) uses in its tooling-driven assessment. The fitness function thresholds (ML ≥ 75%, Relative Cyclicity ≤ 4%/0%, SDI in low hundreds) make the MMI&#39;s scoring criteria explicit and CI-enforceable.</p>
 </blockquote>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -624,7 +598,15 @@ PageRank algorithm applied to the class dependency graph. Identifies the most-tr
 <td>Lilienthal (ch. 4): Modularity Maturity Index — cognitive science grounding (chunking/hierarchy/schema); MMI 0-10 score; two debt types (implementation vs design); architecture erosion as a continuous risk; Farley (ch. 3): testability as the practical driver of all five design attributes; TDD as architectural feedback; von Zitzewitz (ch. 9): ACD/CCD/Propagation Cost, Relative Cyclicity, SDI, Maintainability Level, LCOM4, change history metrics — a complete CI-enforceable structural fitness function suite</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Aim for deep modules with simple interfaces hiding complex implementations.</strong> The Unix I/O API is the lodestar; Java I/O wrapper chains are the warning.</li>
+<li><strong>Information hiding is the technique; getters and setters are not.</strong> A field exposed through accessor methods is still part of the interface. Hide design decisions, not just data.</li>
+<li><strong>Push complexity downward, never upward.</strong> A module has more callers than developers. Absorb avoidable complexity inside the module rather than exporting it to every caller.</li>
+<li><strong>Coupling has structural and operational dimensions.</strong> Static metrics (Ca/Ce, A/I/D, connascence) miss temporal, deployment, and domain coupling. Use both lenses.</li>
+<li><strong>Modularity is measurable, and it erodes by default.</strong> Enforce thresholds (zero package cycles, PC &lt; 20%, ML ≥ 75%) as fitness functions in CI. Without active enforcement, 80% of nontrivial systems decay into Big Balls of Mud.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/software-complexity.html">Software Complexity</a> — Ousterhout&#39;s three complexity symptoms (change amplification, cognitive load, unknown unknowns) that deep modules and information hiding directly address</li>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — quantum boundaries are determined by synchronous connascence</li>

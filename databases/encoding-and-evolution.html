@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,29 @@
       <h1>Encoding and Evolution</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../databases/index.html">database</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/databases.html">databases</a></li><li><a class="tag-chip" href="../tags/encoding.html">encoding</a></li><li><a class="tag-chip" href="../tags/serialisation.html">serialisation</a></li><li><a class="tag-chip" href="../tags/schema-evolution.html">schema-evolution</a></li><li><a class="tag-chip" href="../tags/compatibility.html">compatibility</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Data needs to be encoded to cross process boundaries — written to disk, sent over a network, or passed between services. The choice of encoding format determines how much data you can evolve over time without breaking things. This matters because <strong>data outlives code</strong>: a database may contain records written years ago by a version of the code that no longer exists.</p>
-<h2>Language-Specific Serialisation</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#language-specific-serialisation">Language-Specific Serialisation</a></li><li><a href="#human-readable-formats">Human-Readable Formats</a></li><li class="toc-sub"><a href="#json-and-xml">JSON and XML</a></li><li><a href="#binary-encodings">Binary Encodings</a></li><li class="toc-sub"><a href="#messagepack">MessagePack</a></li><li class="toc-sub"><a href="#apache-thrift-facebook">Apache Thrift (Facebook)</a></li><li class="toc-sub"><a href="#protocol-buffers-protobuf-google">Protocol Buffers (Protobuf, Google)</a></li><li class="toc-sub"><a href="#apache-avro">Apache Avro</a></li><li><a href="#schema-evolution-rules">Schema Evolution Rules</a></li><li><a href="#dataflow-modes">Dataflow Modes</a></li><li class="toc-sub"><a href="#through-databases">Through Databases</a></li><li class="toc-sub"><a href="#rest-vs-soap-vs-rpc">REST vs SOAP vs RPC</a></li><li class="toc-sub"><a href="#through-services-restgrpc">Through Services (REST/gRPC)</a></li><li class="toc-sub"><a href="#through-async-message-passing">Through Async Message Passing</a></li><li><a href="#format-selection-guide">Format Selection Guide</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Data needs to be encoded to cross process boundaries — written to disk, sent over a network, or passed between services. The choice of encoding format determines how much data you can evolve over time without breaking things. This matters because <strong>data outlives code</strong>: a database may contain records written years ago by a version of the code that no longer exists.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Data outlives code; choose the encoding accordingly.</strong> A value written today may be read by code five years from now. The encoding format must survive schema changes over the data&#39;s full retention horizon.</li>
+<li><strong>Two compatibility directions, both required.</strong> Backward (new code reads old data) and forward (old code reads new data). Rolling deployments need both simultaneously. Schema-aware encodings (Protobuf, Thrift, Avro) handle this by design; JSON requires application-level discipline.</li>
+<li><strong>Never use language-specific serialisation across processes.</strong> Java&#39;s <code>Serializable</code>, Python&#39;s <code>pickle</code>, Ruby&#39;s <code>Marshal</code> are convenient but language-locked, security-vulnerable (instantiation enables RCE), and have no versioning story.</li>
+<li><strong>Field tags are the schema evolution mechanism in Protobuf/Thrift.</strong> Never change a field tag — it&#39;s the field&#39;s identity in the binary. Add new fields with new tags as optional; remove fields by marking deprecated, never reusing the tag number. Required fields can never be safely removed.</li>
+<li><strong>Avro encodes no tags; reader/writer schema resolution does the work.</strong> Most compact, but requires the writer&#39;s schema available at decode time — drives the Confluent Schema Registry pattern for Kafka.</li>
+<li><strong>RPC&#39;s &quot;local call illusion&quot; is fundamentally flawed.</strong> Network calls can time out, may be received without acknowledged, can&#39;t pass pointers, can&#39;t share memory. Modern RPC frameworks (gRPC) acknowledge these differences rather than hiding them.</li>
+<li><strong>Format selection follows use case.</strong> Public REST APIs → JSON; internal gRPC → Protobuf; Kafka streams → Avro + schema registry; long-lived data lake → Parquet or Avro. JSON for interop; binary for size and schema enforcement.</li>
+</ul>
+<h2 id="language-specific-serialisation">Language-Specific Serialisation</h2>
 <p>Most languages provide built-in serialisation (Java&#39;s <code>Serializable</code>, Ruby&#39;s <code>Marshal</code>, Python&#39;s <code>pickle</code>). These are convenient for transient use, but have deep problems for cross-system or long-lived data:</p>
 <ul>
 <li><strong>Language-locked</strong>: reading data in another language is very difficult.</li>
@@ -319,8 +340,8 @@
 <li><strong>Poor performance</strong>: Java&#39;s built-in serialisation is notoriously slow and bloated.</li>
 </ul>
 <p><strong>Rule</strong>: never use language-specific serialisation for data stored durably or exchanged across processes.</p>
-<h2>Human-Readable Formats</h2>
-<h3>JSON and XML</h3>
+<h2 id="human-readable-formats">Human-Readable Formats</h2>
+<h3 id="json-and-xml">JSON and XML</h3>
 <p>Ubiquitous, human-readable, language-independent. Used for REST APIs, config files, event logs.</p>
 <p><strong>Limitations</strong>:</p>
 <ul>
@@ -331,10 +352,10 @@
 </ul>
 <p><strong>CSV</strong>: even simpler but deeply ambiguous (commas in values, escaping rules, no types).</p>
 <p>JSON with schema validation (JSON Schema, OpenAPI) addresses the schema concern but not the binary or space concerns.</p>
-<h2>Binary Encodings</h2>
-<h3>MessagePack</h3>
+<h2 id="binary-encodings">Binary Encodings</h2>
+<h3 id="messagepack">MessagePack</h3>
 <p>Binary encoding of JSON. Same data model, smaller encoding — saves ~20% vs JSON. No schema required. Rarely used; JSON&#39;s tooling ubiquity usually wins.</p>
-<h3>Apache Thrift (Facebook)</h3>
+<h3 id="apache-thrift-facebook">Apache Thrift (Facebook)</h3>
 <p>Uses <strong>field tags</strong> (integers) instead of field names in the binary encoding. Three formats:</p>
 <ul>
 <li><strong>BinaryProtocol</strong>: straightforward binary, moderately compact.</li>
@@ -342,7 +363,7 @@
 <li><strong>DenseProtocol</strong>: experimental.</li>
 </ul>
 <p>Schema defined in an IDL (Interface Definition Language). Code generation produces typed readers/writers in each language.</p>
-<h3>Protocol Buffers (Protobuf, Google)</h3>
+<h3 id="protocol-buffers-protobuf-google">Protocol Buffers (Protobuf, Google)</h3>
 <p>Very similar to Thrift CompactProtocol. Field tags are the primary schema mechanism. More widely adopted outside Facebook. Used by Google internally and as gRPC&#39;s wire format.</p>
 <p><strong>Field tags for evolution</strong>:</p>
 <ul>
@@ -351,7 +372,7 @@
 <li><strong>Remove fields</strong>: mark deprecated, never reuse the tag number.</li>
 <li><strong>Required fields</strong>: can never be safely removed — avoid required.</li>
 </ul>
-<h3>Apache Avro</h3>
+<h3 id="apache-avro">Apache Avro</h3>
 <p>Avro is the most compact binary encoding because it <strong>has no field tags</strong> in the encoded data. Instead, schema resolution happens by matching the <strong>writer&#39;s schema</strong> against the <strong>reader&#39;s schema</strong> at decode time.</p>
 <ul>
 <li>The encoding is just values, in the order defined by the writer&#39;s schema.</li>
@@ -360,7 +381,7 @@
 </ul>
 <p><strong>Schema registry</strong>: since the writer&#39;s schema is required to decode, Avro encoders embed a schema version ID (fingerprint) in the file/message. A schema registry stores schema versions; decoders fetch the writer&#39;s schema on demand.</p>
 <p>Used in: Hadoop ecosystem (Avro files), Kafka (with Confluent Schema Registry), Parquet (uses Avro schemas).</p>
-<h2>Schema Evolution Rules</h2>
+<h2 id="schema-evolution-rules">Schema Evolution Rules</h2>
 <p>The two compatibility directions every encoding format must handle:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -394,9 +415,9 @@
 <li>Change a field&#39;s data type in an incompatible way.</li>
 <li>Change a field tag (Thrift/Protobuf only — breaks field identity).</li>
 </ul>
-<h2>Dataflow Modes</h2>
+<h2 id="dataflow-modes">Dataflow Modes</h2>
 <p>The same compatibility concerns arise differently depending on how data flows between systems.</p>
-<h3>Through Databases</h3>
+<h3 id="through-databases">Through Databases</h3>
 <p>The database is a long-lived store: a value written today may be read by code five years from now. This is the most demanding evolution scenario.</p>
 <ul>
 <li><strong>Schema migrations</strong> (<code>ALTER TABLE</code>) are often slow and risky on large tables — some require zero-downtime strategies (expand-contract pattern).</li>
@@ -404,7 +425,7 @@
 <li>Data written by old code may be read by new code (backward compat) and vice versa during rolling deploys (forward compat).</li>
 </ul>
 <p>See: <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> for the expand/contract pattern.</p>
-<h3>REST vs SOAP vs RPC</h3>
+<h3 id="rest-vs-soap-vs-rpc">REST vs SOAP vs RPC</h3>
 <p><strong>REST</strong> is not a protocol but a design philosophy building on HTTP: simple data formats, URLs as resource identifiers, HTTP features (caching, authentication, content negotiation). Associated with microservices. RESTful APIs use OpenAPI/Swagger for description. No code generation required.</p>
 <p><strong>SOAP</strong> is an XML-based protocol designed to be independent of HTTP (unlike REST, which leverages HTTP). Comes with WS-* standards for features, WSDL for description, code generation tooling. Vendor interoperability is poor. Falling out of favour except in large enterprises.</p>
 <p><strong>RPC fundamental problem</strong>: RPC tries to make a network call look like a local function call (location transparency). This abstraction is fundamentally flawed — a network call is not like a local call:</p>
@@ -416,18 +437,18 @@
 <li>Different programming language types must translate.</li>
 </ul>
 <p>Modern RPC frameworks (gRPC/Protobuf, Thrift, Finagle) acknowledge these differences rather than hiding them. They provide futures/promises for async calls and explicit retry policies.</p>
-<h3>Through Services (REST/gRPC)</h3>
+<h3 id="through-services-restgrpc">Through Services (REST/gRPC)</h3>
 <p>Services exchange data via API calls. Multiple versions of client and server code coexist:</p>
 <ul>
 <li><strong>REST</strong>: versioning via URL (<code>/v1/</code>, <code>/v2/</code>) or <code>Accept</code> header. JSON is common — liberal in what you accept (ignore unknown fields), conservative in what you send.</li>
 <li><strong>gRPC</strong>: Protocol Buffers enforces schema. Forward and backward compatibility rules of Protobuf apply. Server can add new optional fields; clients ignore unknown fields.</li>
 </ul>
 <p><strong>Service versioning policy</strong>: maintain n-1 backward compatibility — new server must serve old clients. Deprecation window for removing old fields.</p>
-<h3>Through Async Message Passing</h3>
+<h3 id="through-async-message-passing">Through Async Message Passing</h3>
 <p>Events in a message broker (Kafka, RabbitMQ) can be consumed long after they were produced. The encoding is chosen once at produce time and must remain decodable by all future consumers.</p>
 <p>This makes Avro + schema registry a natural choice for Kafka: the schema version is recorded with each message; consumers fetch the writer&#39;s schema by version ID.</p>
 <p><strong>Key concern</strong>: if an event represents a business fact (order placed, payment made), it may be replayed years later for audit or reprocessing. The encoding must survive schema evolution over that period. Using field tags (Protobuf) or reader/writer schema resolution (Avro) is safer than JSON for long-lived event stores.</p>
-<h2>Format Selection Guide</h2>
+<h2 id="format-selection-guide">Format Selection Guide</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -462,7 +483,7 @@
 <td>Schema evolution, efficient analytics reads</td>
 </tr>
 </tbody></table></div>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -479,7 +500,7 @@
 <td>API-focused: OpenAPI Specification (OAS) for REST, Protobuf for gRPC, schema-first design; compatibility as API governance concern</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../databases/data-models.html">Data Models</a> — the data model determines what needs to be encoded</li>
 <li><a href="../concepts/api-design.html">Api Design</a> — encoding and versioning are central API design decisions</li>

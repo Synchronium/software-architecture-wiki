@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,22 +316,26 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A broadcast protocol delivers a message from one sender to a group of processes. The internet only offers point-to-point (unicast) communication, so multicast must be built on top of it — the challenge being that both senders and receivers can crash at any time. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
-<h2>The Hierarchy</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-hierarchy">The Hierarchy</a></li><li class="toc-sub"><a href="#best-effort-broadcast">Best-Effort Broadcast</a></li><li class="toc-sub"><a href="#reliable-broadcast-eager">Reliable Broadcast (Eager)</a></li><li class="toc-sub"><a href="#gossip-broadcast">Gossip Broadcast</a></li><li class="toc-sub"><a href="#total-order-broadcast-atomic-broadcast">Total Order Broadcast (Atomic Broadcast)</a></li><li><a href="#why-the-hierarchy-matters">Why the Hierarchy Matters</a></li><li><a href="#connection-to-consensus">Connection to Consensus</a></li><li><a href="#related-pages">Related Pages</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A broadcast protocol delivers a message from one sender to a group of processes. The internet only offers point-to-point (unicast) communication, so multicast must be built on top of it — the challenge being that both senders and receivers can crash at any time. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
+<h2 id="the-hierarchy">The Hierarchy</h2>
 <p>Protocols are ordered from weakest to strongest guarantees:</p>
-<h3>Best-Effort Broadcast</h3>
+<h3 id="best-effort-broadcast">Best-Effort Broadcast</h3>
 <p>Guarantees delivery to all non-faulty processes <strong>if the sender doesn&#39;t crash</strong>. If the sender fails mid-broadcast, some processes may never receive the message.</p>
 <p><strong>Implementation</strong>: send the message to all processes one by one over reliable links.</p>
-<h3>Reliable Broadcast (Eager)</h3>
+<h3 id="reliable-broadcast-eager">Reliable Broadcast (Eager)</h3>
 <p>Guarantees delivery to all non-faulty processes <strong>even if the sender crashes</strong>. Achieved by having every process re-broadcast the message when it first receives it.</p>
 <p><strong>Cost</strong>: O(N²) messages for a group of N processes — each of N processes retransmits to N-1 others.</p>
-<h3>Gossip Broadcast</h3>
+<h3 id="gossip-broadcast">Gossip Broadcast</h3>
 <p>A probabilistic approach to reliable broadcast. Each process retransmits to a random <strong>subset</strong> (e.g., 2) of processes rather than all. Message count is O(N log N) — manageable even for large groups.</p>
 <p><strong>Trade-off</strong>: not a deterministic guarantee — a message <em>can</em> fail to reach a process. With well-tuned parameters this probability is negligible. Useful when N is too large for eager reliable broadcast.</p>
-<h3>Total Order Broadcast (Atomic Broadcast)</h3>
+<h3 id="total-order-broadcast-atomic-broadcast">Total Order Broadcast (Atomic Broadcast)</h3>
 <p>A reliable broadcast that additionally guarantees all processes receive all messages in the <strong>same order</strong>. This is the gold standard for replication consistency.</p>
 <p><strong>Cost</strong>: requires consensus. A fault-tolerant total order broadcast protocol is equivalent to consensus — you cannot implement one without the other. As a result, total order broadcast is unavailable during network partitions (CAP applies).</p>
-<h2>Why the Hierarchy Matters</h2>
+<h2 id="why-the-hierarchy-matters">Why the Hierarchy Matters</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -365,21 +376,21 @@
 <li><strong>CRDTs</strong> use reliable broadcast (or even gossip + anti-entropy). Order doesn&#39;t matter because the merge operation is commutative and associative. → strong eventual consistency without consensus.</li>
 <li><strong>Dynamo-style stores</strong> use best-effort broadcast + anti-entropy (read repair, Merkle tree synchronization) as an approximation of reliable broadcast.</li>
 </ul>
-<h2>Connection to Consensus</h2>
+<h2 id="connection-to-consensus">Connection to Consensus</h2>
 <p>Total order broadcast and consensus are formally equivalent (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>):</p>
 <ul>
 <li><strong>Consensus → Total order broadcast</strong>: use the consensus output to order messages.</li>
 <li><strong>Total order broadcast → Consensus</strong>: broadcast the proposed value; the first value delivered is the consensus result.</li>
 </ul>
 <p>This equivalence means total order broadcast inherits the FLP impossibility result: it cannot be solved deterministically in an asynchronous system with even one crashed process. In practice, algorithms like Raft use partial synchrony (timeouts) to work around this.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/crdts.html">Crdts</a> — CRDTs avoid total order broadcast; use commutative merge instead</li>
 <li><a href="../distributed/replication.html">Replication</a> — state machine replication uses total order broadcast (Raft)</li>
 <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a> — consensus ↔ total order broadcast equivalence</li>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — broadcast choice determines consistency model achievable</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11) — best-effort, reliable, gossip, total order broadcast; consensus requirement; relationship to CRDTs.</li>
 </ul>

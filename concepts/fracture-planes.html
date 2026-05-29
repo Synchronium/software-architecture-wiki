@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,21 +309,25 @@
       <h1>Fracture Planes</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/decomposition.html">decomposition</a></li><li><a class="tag-chip" href="../tags/monolith.html">monolith</a></li><li><a class="tag-chip" href="../tags/teams.html">teams</a></li><li><a class="tag-chip" href="../tags/boundaries.html">boundaries</a></li><li><a class="tag-chip" href="../tags/flow.html">flow</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/migration.html">migration</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#types-of-monolith">Types of Monolith</a></li><li><a href="#the-eight-fracture-planes">The Eight Fracture Planes</a></li><li class="toc-sub"><a href="#1-business-domain-bounded-context-primary">1. Business Domain Bounded Context (primary)</a></li><li class="toc-sub"><a href="#2-regulatory-compliance">2. Regulatory Compliance</a></li><li class="toc-sub"><a href="#3-change-cadence">3. Change Cadence</a></li><li class="toc-sub"><a href="#4-team-location">4. Team Location</a></li><li class="toc-sub"><a href="#5-risk">5. Risk</a></li><li class="toc-sub"><a href="#6-performance-isolation">6. Performance Isolation</a></li><li class="toc-sub"><a href="#7-technology-use-sparingly">7. Technology (use sparingly)</a></li><li class="toc-sub"><a href="#8-user-personas">8. User Personas</a></li><li><a href="#migration-prioritisation-newman">Migration Prioritisation (Newman)</a></li><li><a href="#combining-fracture-planes">Combining Fracture Planes</a></li><li><a href="#relationship-to-other-concepts">Relationship to Other Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A <strong>fracture plane</strong> is a natural seam in a software system that allows it to be split cleanly into two or more parts — analogous to the natural cleavage planes stonemasons exploit when splitting stone. Team Topologies uses the term to describe where to draw software responsibility boundaries that enable autonomous, cognitively bounded teams (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 6).</p>
 <p>The primary goal: find splits that produce parts that can be <em>owned and evolved independently by a single team</em>, reducing inter-team dependencies and improving flow.</p>
 <p><strong>Litmus test</strong>: <em>Could we, as a team, effectively consume or provide this subsystem as a service?</em> If yes, it is a candidate fracture plane.</p>
-<h2>Why It Matters</h2>
-<p>Most problems in delivering software arise from unclear or wrong responsibility boundaries between teams. Conway&#39;s law predicts that poorly placed boundaries will produce tightly coupled systems. Fracture planes provide a vocabulary for deliberately choosing boundaries that align team cognitive load with software structure.</p>
+<h2 id="why-it-matters">Why It Matters</h2>
+<p>Most problems in delivering software arise from unclear or wrong responsibility boundaries between teams. Conway&#39;s Law predicts that poorly placed boundaries will produce tightly coupled systems. Fracture planes provide a vocabulary for deliberately choosing boundaries that align team cognitive load with software structure.</p>
 <p>Crucially, fracture planes apply equally to initial system design and to splitting existing monoliths.</p>
-<h2>Types of Monolith</h2>
+<h2 id="types-of-monolith">Types of Monolith</h2>
 <p>Two complementary taxonomies describe what kind of coupling exists before you choose a fracture plane.</p>
 <p><strong>Newman&#39;s deployment-oriented taxonomy</strong> (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 1):</p>
 <div class="table-wrapper"><table>
@@ -380,8 +391,8 @@
 <blockquote>
 <p>&quot;If you have microservices but you wait and do end-to-end testing of a combination of them before a release, what you have is a distributed monolith.&quot; — Amy Phillips (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 6)</p>
 </blockquote>
-<h2>The Eight Fracture Planes</h2>
-<h3>1. Business Domain Bounded Context (primary)</h3>
+<h2 id="the-eight-fracture-planes">The Eight Fracture Planes</h2>
+<h3 id="1-business-domain-bounded-context-primary">1. Business Domain Bounded Context (primary)</h3>
 <p>Align software boundaries with <a href="../concepts/bounded-contexts.html">bounded contexts</a> — internally consistent business domain areas. This is the <em>preferred</em> fracture plane because it:</p>
 <ul>
 <li>Aligns technology with business language (ubiquitous language)</li>
@@ -390,22 +401,22 @@
 <li>Supports DDD practices (event storming, domain modelling)</li>
 </ul>
 <p>Most fracture planes should be of this type. Where business domain boundaries are unclear, DDD techniques help discover them.</p>
-<h3>2. Regulatory Compliance</h3>
+<h3 id="2-regulatory-compliance">2. Regulatory Compliance</h3>
 <p>Hard regulatory borders (PCI DSS for card data, GDPR for PII, HIPAA for health data) provide natural fracture planes. Isolating regulated subsystems:</p>
 <ul>
 <li>Limits the blast radius of compliance scope</li>
 <li>Enables the compliance team to be a focused, smaller group embedded with the subsystem</li>
 <li>Avoids forcing compliance overhead on unrelated parts of the system</li>
 </ul>
-<h3>3. Change Cadence</h3>
+<h3 id="3-change-cadence">3. Change Cadence</h3>
 <p>Parts of the system that need to change at very different frequencies should be separated. In a monolith, everything moves at the speed of the slowest part. Splitting by change cadence allows each part to evolve at the pace the business needs it to.</p>
-<h3>4. Team Location</h3>
-<p>Geographically distributed teams produce architecturally distributed systems (Conway&#39;s law again). If teams are in different time zones or buildings, the software boundaries should reflect that to avoid communication bottlenecks. Choose between full colocation, remote-first, or split along geographic lines.</p>
-<h3>5. Risk</h3>
+<h3 id="4-team-location">4. Team Location</h3>
+<p>Geographically distributed teams produce architecturally distributed systems (Conway&#39;s Law again). If teams are in different time zones or buildings, the software boundaries should reflect that to avoid communication bottlenecks. Choose between full colocation, remote-first, or split along geographic lines.</p>
+<h3 id="5-risk">5. Risk</h3>
 <p>Different parts of a system carry different risk profiles (regulatory compliance is a specific case). High-risk areas (rapid innovation, new customers) and low-risk areas (stable revenue-generating features) can evolve at different cadences with different quality gates when separated.</p>
-<h3>6. Performance Isolation</h3>
+<h3 id="6-performance-isolation">6. Performance Isolation</h3>
 <p>Subsystems with extreme peak performance requirements (e.g., annual tax submission spikes) should be isolated so they can scale independently without dragging the entire system into a complex scaling exercise.</p>
-<h3>7. Technology (use sparingly)</h3>
+<h3 id="7-technology-use-sparingly">7. Technology (use sparingly)</h3>
 <p>Technology-driven splits (front-end/back-end/data tier) are historically the <em>most common</em> but also the <em>least desirable</em> fracture planes — they reduce team autonomy, introduce handoff points, and optimise for technical specialisation rather than business flow. Use only when:</p>
 <ul>
 <li>The technology gap is genuinely large (embedded firmware vs. cloud backend vs. mobile)</li>
@@ -415,9 +426,9 @@
 <blockquote>
 <p><strong>Contradiction:</strong> Traditional &quot;layer team&quot; approaches (front-end, back-end, DBA) apply technology as the primary fracture plane. Team Topologies argues this is almost always wrong and produces the classic coupling and handoff bottlenecks. (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 6)</p>
 </blockquote>
-<h3>8. User Personas</h3>
+<h3 id="8-user-personas">8. User Personas</h3>
 <p>When a system serves distinct user groups with substantially different feature sets (admin vs. user, enterprise vs. free tier, expert vs. novice), splitting along persona lines focuses teams on a coherent customer experience and simplifies support.</p>
-<h2>Migration Prioritisation (Newman)</h2>
+<h2 id="migration-prioritisation-newman">Migration Prioritisation (Newman)</h2>
 <p>When decomposing an existing monolith, the domain model also reveals which bounded contexts are easier or harder to extract (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 2). Newman&#39;s two-axis prioritisation quadrant:</p>
 <ul>
 <li><strong>x-axis</strong>: value delivered by extracting this context as a service (aligned to migration goals)</li>
@@ -425,15 +436,15 @@
 </ul>
 <p><strong>High value, low difficulty</strong> → extract first. Functionality with no inbound dependencies (e.g., Invoicing in Newman&#39;s Music Corp example) can be proxied without modifying the monolith. <strong>High difficulty, low value</strong> → defer or avoid. Heavily coupled shared utilities (e.g., Notifications with many callers) should be extracted only after simpler wins build team capability.</p>
 <p>The prioritisation model is a living document: revisit and replan after each extraction because what looks hard often becomes easier, and vice versa.</p>
-<h2>Combining Fracture Planes</h2>
+<h2 id="combining-fracture-planes">Combining Fracture Planes</h2>
 <p>Real systems typically need a combination. The goal is not to find a single &quot;correct&quot; split but to identify fracture planes that together produce the most autonomous, cognitively bounded team structure. After splitting, check: are the resulting parts independently deployable? Does each part have a clear, single owning team? Is the cognitive load of each part within the capacity of one team?</p>
-<h2>Relationship to Other Concepts</h2>
+<h2 id="relationship-to-other-concepts">Relationship to Other Concepts</h2>
 <ul>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — the DDD concept that provides the primary fracture plane; bounded contexts are the natural split for stream-aligned teams</li>
 <li><a href="../concepts/cognitive-load.html">Cognitive Load</a> — fracture planes are chosen to keep each resulting part within one team&#39;s cognitive load</li>
 <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a> — fracture planes produce the software boundaries that stream-aligned teams own</li>
 <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a> — covers <em>how</em> to execute a split (strangler fig, branch by abstraction); fracture planes address <em>where</em> to split</li>
-<li><a href="../concepts/conways-law.html">Conways Law</a> — Conway&#39;s law predicts that team structure will converge on software structure; fracture planes make this deliberate</li>
+<li><a href="../concepts/conways-law.html">Conways Law</a> — Conway&#39;s Law predicts that team structure will converge on software structure; fracture planes make this deliberate</li>
 <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a> — the distributed monolith is the failure mode when microservices are created without correct fracture planes</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/james-gough.html">James Gough</a>, <a href="../authors/daniel-bryant.html">Daniel Bryant</a>, <a href="../authors/matthew-auburn.html">Matthew Auburn</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#introduction-the-conference-system-case-study">Introduction — The Conference System Case Study</a></li><li class="toc-sub"><a href="#chapter-1-api-design-modeling-exchanges">Chapter 1 — API Design: Modeling Exchanges</a></li><li class="toc-sub"><a href="#chapter-2-testing-apis">Chapter 2 — Testing APIs</a></li><li class="toc-sub"><a href="#chapter-3-api-gateways-ingress-traffic-management">Chapter 3 — API Gateways: Ingress Traffic Management</a></li><li class="toc-sub"><a href="#chapter-4-service-mesh-eastwest-traffic-management">Chapter 4 — Service Mesh: East–West Traffic Management</a></li><li class="toc-sub"><a href="#chapter-5-deploying-and-releasing-apis">Chapter 5 — Deploying and Releasing APIs</a></li><li class="toc-sub"><a href="#chapter-6-operational-security-threat-modeling">Chapter 6 — Operational Security: Threat Modeling</a></li><li class="toc-sub"><a href="#chapter-7-authentication-and-authorization">Chapter 7 — Authentication and Authorization</a></li><li class="toc-sub"><a href="#chapter-8-redesigning-applications-to-api-driven-architectures">Chapter 8 — Redesigning Applications to API-Driven Architectures</a></li><li class="toc-sub"><a href="#chapter-9-using-api-infrastructure-to-evolve-toward-cloud-platforms">Chapter 9 — Using API Infrastructure to Evolve Toward Cloud Platforms</a></li><li class="toc-sub"><a href="#chapter-10-wrap-up">Chapter 10 — Wrap-up</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/james-gough.html">James Gough</a>, <a href="../authors/daniel-bryant.html">Daniel Bryant</a>, <a href="../authors/matthew-auburn.html">Matthew Auburn</a>
 <strong>Published:</strong> 2022
 <strong>Slug:</strong> <code>mastering-api-architecture</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p><em>Mastering API Architecture</em> addresses the full lifecycle of API systems: how to design APIs, test them, expose them via gateways, secure internal service traffic with a service mesh, release them safely, secure them against threats, and evolve them toward cloud-native architectures. It is explicitly practical — each chapter is driven by a running conference system case study and includes ADR Guidelines to help readers make the key decisions.</p>
 <p>The book&#39;s central organising principle is the <strong>north–south / east–west traffic split</strong>: external ingress (north–south) is managed by an API gateway; internal service-to-service communication (east–west) is managed by a service mesh. These are treated as distinct architectural domains requiring distinct technologies, ownership models, and security postures. This clean separation is the book&#39;s strongest architectural contribution relative to other sources in the wiki.</p>
 <p>The authors are practitioners with experience at Thoughtworks, Red Hat, and in the API consultancy space. The tone is pragmatic and opinionated: they recommend OAuth2, OAS, and sidecar-based service meshes explicitly, and warn against building your own implementations of any of these.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>The fundamental architectural question for any internet-facing system is how to manage traffic: north–south (external → API gateway) vs east–west (internal → service mesh). (→ Intro, Ch 3, Ch 4)</li>
 <li>REST is the right default for external (north–south) APIs due to broad interoperability; gRPC is preferable for internal (east–west) APIs in high-traffic, controlled environments. (→ Ch 1)</li>
@@ -330,15 +341,15 @@
 <li>APIs are natural seams for evolving monolithic systems; the strangler fig pattern via an API gateway is the lowest-risk migration approach. (→ Ch 8)</li>
 <li>The industry is moving from zonal security architectures to zero trust; service mesh + network policies provide the technical foundation. (→ Ch 9)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Introduction — The Conference System Case Study</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="introduction-the-conference-system-case-study">Introduction — The Conference System Case Study</h3>
 <p>Introduces the running example: a legacy monolithic conference management system being evolved toward a microservices architecture. Establishes the C4 modelling approach (system context, container, component, code diagrams) and ADRs as the primary decision documentation tool.</p>
 <p>Key concept: <strong>north–south vs east–west traffic</strong>:</p>
 <ul>
 <li><em>North–south</em>: external clients → system over the internet. Requires strong identity checks, TLS, rate limiting. Managed by API gateway.</li>
 <li><em>East–west</em>: service-to-service within the infrastructure. Can use trusted identity (mTLS), managed by service mesh.</li>
 </ul>
-<h3>Chapter 1 — API Design: Modeling Exchanges</h3>
+<h3 id="chapter-1-api-design-modeling-exchanges">Chapter 1 — API Design: Modeling Exchanges</h3>
 <p>The API design chapter covers the major exchange formats and when to use each:</p>
 <p><strong>REST</strong> and the Richardson Maturity Model (RMM):</p>
 <ul>
@@ -356,7 +367,7 @@
 <blockquote>
 <p>See <a href="../concepts/api-design.html">Api Design</a></p>
 </blockquote>
-<h3>Chapter 2 — Testing APIs</h3>
+<h3 id="chapter-2-testing-apis">Chapter 2 — Testing APIs</h3>
 <p><strong>Test quadrant</strong> (Marick/Crispin): 2×2 grid of technology-facing vs business-facing, automated vs exploratory. Q1: automated unit tests. Q2: automated acceptance tests. Q3: exploratory manual tests. Q4: performance/security tests (tools-assisted).</p>
 <p><strong>Test pyramid</strong>: Unit tests (most, cheapest) → contract/service tests (middle) → end-to-end tests (fewest, most expensive). Violations (&quot;ice-cream cone&quot; anti-pattern) lead to slow, brittle test suites.</p>
 <p><strong>Contract testing</strong>: The definition of a valid interaction between consumer and producer.</p>
@@ -371,7 +382,7 @@
 <blockquote>
 <p>See <a href="../concepts/api-testing.html">Api Testing</a></p>
 </blockquote>
-<h3>Chapter 3 — API Gateways: Ingress Traffic Management</h3>
+<h3 id="chapter-3-api-gateways-ingress-traffic-management">Chapter 3 — API Gateways: Ingress Traffic Management</h3>
 <p>An API gateway sits at the network edge between consumers and backend services. It has:</p>
 <ul>
 <li>A <strong>control plane</strong> (routing rules, policies, telemetry configuration — operated by humans)</li>
@@ -404,7 +415,7 @@
 <blockquote>
 <p>See <a href="../concepts/api-gateway.html">Api Gateway</a></p>
 </blockquote>
-<h3>Chapter 4 — Service Mesh: East–West Traffic Management</h3>
+<h3 id="chapter-4-service-mesh-eastwest-traffic-management">Chapter 4 — Service Mesh: East–West Traffic Management</h3>
 <p>A service mesh manages all service-to-service communication: routing, reliability, observability, and security.</p>
 <p><strong>Control plane / data plane</strong> same as API gateway. Data plane is typically sidecar proxies (one per service instance).</p>
 <p><strong>Service mesh implementations have three generations</strong>:</p>
@@ -424,7 +435,7 @@
 <blockquote>
 <p>See <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a></p>
 </blockquote>
-<h3>Chapter 5 — Deploying and Releasing APIs</h3>
+<h3 id="chapter-5-deploying-and-releasing-apis">Chapter 5 — Deploying and Releasing APIs</h3>
 <p><strong>Deployment ≠ release</strong>: Deployment puts code in production as an idle process. Release activates it for users. Separating them enables risk reduction.</p>
 <p><strong>Feature flags</strong>: Code-level toggle (e.g., LaunchDarkly) enables deployment without activation. Warning: feature flags must be cleaned up; the Knight Capital incident ($460M loss) was partly caused by a reused flag.</p>
 <p><strong>API lifecycle</strong>: planned → beta → live → deprecated → retired. Consumers only need to track major version changes (minor and patch are backward-compatible).</p>
@@ -439,7 +450,7 @@
 <blockquote>
 <p>See <a href="../concepts/api-testing.html">Api Testing</a> for testing in production; <a href="../concepts/fitness-functions.html">Fitness Functions</a> for fitness function categories</p>
 </blockquote>
-<h3>Chapter 6 — Operational Security: Threat Modeling</h3>
+<h3 id="chapter-6-operational-security-threat-modeling">Chapter 6 — Operational Security: Threat Modeling</h3>
 <p><strong>Threat modeling</strong> is the architectural process for identifying, prioritising, and mitigating security threats before they reach production.</p>
 <p><strong>6-step process</strong>: (1) identify objectives, (2) gather information, (3) decompose the system (→ data flow diagram), (4) identify threats (STRIDE), (5) evaluate risk (DREAD), (6) validate.</p>
 <p><strong>STRIDE</strong> (threat categories):</p>
@@ -457,7 +468,7 @@
 <blockquote>
 <p>See <a href="../concepts/threat-modeling.html">Threat Modeling</a></p>
 </blockquote>
-<h3>Chapter 7 — Authentication and Authorization</h3>
+<h3 id="chapter-7-authentication-and-authorization">Chapter 7 — Authentication and Authorization</h3>
 <p><strong>OAuth2</strong>: token-based authorization framework (2012). Roles: resource owner, authorization server, client, resource server.</p>
 <p><strong>JWT (JSON Web Token)</strong>: RFC standard token format. JWS (signed, readable claims) vs JWE (encrypted claims). Key claims: iss, sub, aud, exp, nbf, iat, jti. Short-lived tokens (1–60 min) recommended.</p>
 <p><strong>OAuth2 grants</strong>:</p>
@@ -473,7 +484,7 @@
 <blockquote>
 <p>See <a href="../concepts/oauth2-and-authn.html">Oauth2 And Authn</a></p>
 </blockquote>
-<h3>Chapter 8 — Redesigning Applications to API-Driven Architectures</h3>
+<h3 id="chapter-8-redesigning-applications-to-api-driven-architectures">Chapter 8 — Redesigning Applications to API-Driven Architectures</h3>
 <p>APIs are natural seams (Michael Feathers&#39; term from <em>Working Effectively with Legacy Code</em>) — points where functionality is stitched together and where loosely coupled substitution is possible. This makes them ideal leverage points for evolving systems.</p>
 <p><strong>Strangler fig</strong>: introduce new API-backed services alongside the legacy application; gradually route traffic from legacy to new via the API gateway. The gateway provides location transparency — consumers are unaware of the migration happening behind it.</p>
 <p><strong>Facade vs adapter</strong>: Facade routes without transformation. Adapter transforms protocols (SOAP → REST). API gateways should remain facades; crossing into adapter territory couples the gateway to business logic.</p>
@@ -483,7 +494,7 @@
 <blockquote>
 <p>See <a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></p>
 </blockquote>
-<h3>Chapter 9 — Using API Infrastructure to Evolve Toward Cloud Platforms</h3>
+<h3 id="chapter-9-using-api-infrastructure-to-evolve-toward-cloud-platforms">Chapter 9 — Using API Infrastructure to Evolve Toward Cloud Platforms</h3>
 <p><strong>Six Rs of cloud migration</strong> (AWS framework):</p>
 <ul>
 <li><em>Retain</em>: do nothing now; communicate known EOL dates.</li>
@@ -499,11 +510,11 @@
 <blockquote>
 <p>See <a href="../concepts/zero-trust.html">Zero Trust</a></p>
 </blockquote>
-<h3>Chapter 10 — Wrap-up</h3>
+<h3 id="chapter-10-wrap-up">Chapter 10 — Wrap-up</h3>
 <p>Conway&#39;s Law applied to APIs: organisational communication structures mirror API design. &quot;If you have four groups working on a microservice system, you&#39;ll get four layers of APIs.&quot; Organisational design is as important as technical design.</p>
 <p><strong>Type 1 vs Type 2 decisions</strong> (Bezos): API gateway and service mesh selection are Type 1 (hard to reverse). Apply appropriate deliberation.</p>
 <p><strong>Emerging topics</strong>: AsyncAPI specification (standardising async API description), HTTP/3 over QUIC (addressing head-of-line blocking), platform-based mesh (service mesh integrated into cloud vendor&#39;s Kubernetes offering; watch Service Mesh Interface standard).</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;APIs are quick to build, tricky to design for future compatibility, and even harder to secure.&quot; (Ch 6)</p>
 </blockquote>
@@ -516,7 +527,7 @@
 <blockquote>
 <p>&quot;Feature flags are a good way of creating this separation [between deployment and release]. Once the migration is complete, the feature flag code should be removed completely.&quot; (Ch 5)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/api-design.html">Api Design</a></li>
 <li><a href="../concepts/api-gateway.html">Api Gateway</a></li>
@@ -532,7 +543,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li><li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../authors/james-gough.html">James Gough</a></li><li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li><li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li><li><a href="../concepts/zero-trust.html">Zero Trust</a></li></ul>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li><li><a href="../concepts/api-testing.html">API Testing</a></li><li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li><li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../authors/james-gough.html">James Gough</a></li><li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li><li><a href="../concepts/zero-trust.html">Zero Trust</a></li></ul>
       </aside>
     </main>
   </div>

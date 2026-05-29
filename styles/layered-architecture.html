@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#topology">Topology</a></li><li><a href="#physical-deployment-variants">Physical Deployment Variants</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#architecture-characteristics-ratings">Architecture Characteristics Ratings</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#quanta">Quanta</a></li><li><a href="#partitioning">Partitioning</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>The layered (n-tier) architecture organises code into horizontal technical layers — typically presentation, business, persistence, and database. Each layer has a specific technical role, and requests flow downward through the layers.</p>
 <p>Also known as: <em>n-tier architecture</em>, <em>multi-tier architecture</em>.</p>
 <p>The layered style is the natural outcome of technically-partitioned organisations (<a href="../concepts/conways-law.html">Conways Law</a>): UI developers, backend developers, rules developers, and DBAs map directly to the four standard layers. This is why it is the most common &quot;accidental architecture&quot; — teams that don&#39;t consciously choose a style tend to produce this one. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</p>
-<h2>Topology</h2>
+<h2 id="topology">Topology</h2>
 <pre><code>┌─────────────────────────┐
 │    Presentation Layer   │  (web/API, UI)
 ├─────────────────────────┤
@@ -328,14 +339,14 @@
 <p><strong>Open layers</strong>: a layer can be bypassed. Used for shared services, e.g., a shared utilities layer with audit/logging classes that any layer can call directly. Without an open layer, the business layer would need to route through the persistence layer to reach such utilities — unnecessary coupling. Failing to document which layers are open vs closed produces brittle, tightly coupled systems.</p>
 <p><strong>Architecture sinkhole anti-pattern</strong>: requests pass through every layer as simple pass-throughs with no business logic performed — pure object instantiation and forwarding with no added value. This wastes memory and degrades performance. Heuristic (the 80–20 rule): if ≤20% of requests are sinkholes, acceptable. If 80%+ are sinkholes, the layered architecture is wrong for this problem domain or all layers should be made open. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, <a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a>)</p>
 <p>The historical <em>fast-lane reader pattern</em> (early 2000s) allowed the presentation layer to bypass intermediate layers for simple data retrieval — a pragmatic workaround for the sinkhole problem, at the cost of isolation.</p>
-<h2>Physical Deployment Variants</h2>
+<h2 id="physical-deployment-variants">Physical Deployment Variants</h2>
 <p>Three variants are common:</p>
 <ol>
 <li>Presentation + business + persistence in one deployment unit; database layer as an external database.</li>
 <li>Presentation in its own deployment unit; business + persistence combined; separate external database.</li>
 <li>All four layers in a single deployment (including an embedded or in-memory database) — common for on-prem products delivered to customer sites.</li>
 </ol>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <ul>
 <li>Small, simple applications with a single domain and a limited team.</li>
 <li>Budget-constrained projects needing the simplest possible architecture.</li>
@@ -343,7 +354,7 @@
 <li>Brownfield migration starting point — legacy systems most commonly use this style.</li>
 <li>As a starting point while evaluating whether a different style is needed. If beginning as layered while assessing microservices, keep inheritance shallow and reuse minimal to preserve the ability to migrate. Do not let the layered structure calcify.</li>
 </ul>
-<h2>Architecture Characteristics Ratings</h2>
+<h2 id="architecture-characteristics-ratings">Architecture Characteristics Ratings</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -408,7 +419,7 @@
 <td>Large monolith makes isolation testing hard</td>
 </tr>
 </tbody></table></div>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>Extreme simplicity — universally understood by developers.</li>
@@ -423,11 +434,11 @@
 <li>The architecture sinkhole anti-pattern erodes performance.</li>
 <li>High MTTR: startup times of 2–15 minutes for large layered monoliths mean every incident has extended downtime. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</li>
 </ul>
-<h2>Quanta</h2>
+<h2 id="quanta">Quanta</h2>
 <p>Single quantum. All components share a single deployment boundary and a single set of architecture characteristics.</p>
-<h2>Partitioning</h2>
+<h2 id="partitioning">Partitioning</h2>
 <p>Technical (see <a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a>).</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -456,7 +467,7 @@
 <td>Evans&#39; original DDD framing: the domain layer is the only mandatory layer — it is where the model lives. The primary function of the other layers is to <strong>isolate</strong> the domain from UI, infrastructure, and application coordination concerns. Domain objects free of presentation and persistence responsibilities can be focused on expressing the model. Also describes the &quot;Smart UI&quot; as a deliberately non-layered alternative for simple, unsophisticated applications — valid in context, but incompatible with DDD and without a migration path to layered architecture. Warns against architectural frameworks that constrain domain design choices (ch. 4)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — layered is the canonical technically-partitioned style</li>
 <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — layered scores lowest on most modern characteristics</li>

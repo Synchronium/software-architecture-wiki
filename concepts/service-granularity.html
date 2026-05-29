@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#measuring-granularity">Measuring Granularity</a></li><li><a href="#granularity-disintegrators">Granularity Disintegrators</a></li><li class="toc-sub"><a href="#1-service-scope-and-function">1. Service Scope and Function</a></li><li class="toc-sub"><a href="#2-code-volatility">2. Code Volatility</a></li><li class="toc-sub"><a href="#3-scalability-and-throughput">3. Scalability and Throughput</a></li><li class="toc-sub"><a href="#4-fault-tolerance">4. Fault Tolerance</a></li><li class="toc-sub"><a href="#5-security">5. Security</a></li><li class="toc-sub"><a href="#6-extensibility">6. Extensibility</a></li><li><a href="#granularity-integrators">Granularity Integrators</a></li><li class="toc-sub"><a href="#1-database-transactions">1. Database Transactions</a></li><li class="toc-sub"><a href="#2-workflow-and-choreography">2. Workflow and Choreography</a></li><li class="toc-sub"><a href="#3-shared-code">3. Shared Code</a></li><li class="toc-sub"><a href="#4-data-relationships">4. Data Relationships</a></li><li><a href="#finding-the-right-balance">Finding the Right Balance</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p><strong>Granularity</strong> is the size of separately deployed services — what each service <em>does</em> and how much it does. It is distinct from <a href="../concepts/architectural-decomposition.html">modularity</a> (whether systems are broken into separate parts at all).</p>
 <blockquote>
 <p>&quot;Most issues and challenges within distributed systems are typically not related to modularity, but rather granularity.&quot; (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 7)</p>
@@ -319,43 +330,43 @@
 <li>Too coarse: large services are harder to test, deploy, and scale independently</li>
 <li>Too fine: services must communicate with each other to complete a single business transaction, creating latency, fault tolerance chains, and data consistency problems</li>
 </ul>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Granularity decisions are among the hardest in distributed architecture because they are highly context-dependent and drive significant downstream consequences (deployment, scaling, transaction management, security). The subjective nature of &quot;single responsibility&quot; means granularity debates within development teams tend toward opinion rather than analysis.</p>
 <p>The solution is to reason from objective <em>disintegrators</em> (reasons to split) and <em>integrators</em> (reasons to keep together) and to translate the resulting trade-offs into explicit business questions.</p>
-<h2>Measuring Granularity</h2>
+<h2 id="measuring-granularity">Measuring Granularity</h2>
 <p>Two approximate metrics:</p>
 <ul>
 <li><strong>Statement count</strong>: total source statements in a service; more objective than lines of code or class count because coding styles vary</li>
 <li><strong>Public operation count</strong>: number of distinct public entry points the service exposes</li>
 </ul>
 <p>Neither is perfect. Granularity is ultimately about what a service does, not how much code it contains.</p>
-<h2>Granularity Disintegrators</h2>
+<h2 id="granularity-disintegrators">Granularity Disintegrators</h2>
 <p>Six drivers for breaking a service into smaller pieces (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 7):</p>
-<h3>1. Service Scope and Function</h3>
+<h3 id="1-service-scope-and-function">1. Service Scope and Function</h3>
 <p>A service with weak cohesion — doing multiple unrelated things — is a candidate for splitting. A Notification Service that handles SMS, email, and postal letters has strong cohesion (all three relate to one thing: notifying a customer) and this driver alone does not justify splitting. A Customer Service that handles profile, preferences, and public comments has weaker cohesion (broader scope: &quot;customer&quot;) and is a better splitting candidate.</p>
 <p>The <strong>naming test</strong>: if you can&#39;t give a self-descriptive name to the &quot;leftover&quot; service after splitting, the remaining functions don&#39;t belong together and the split is probably wrong.</p>
-<h3>2. Code Volatility</h3>
+<h3 id="2-code-volatility">2. Code Volatility</h3>
 <p>Parts of a service that change at very different frequencies are candidates for isolation. Measuring change frequency from source control history provides an objective justification.</p>
 <p>Example: a Notification Service where postal letter handling changes weekly but SMS and email change every six months. As a single service, the weekly postal-letter deployment forces redeployment and retesting of the stable SMS and email functionality. Splitting isolates the volatile part.</p>
 <p>This is also called <strong>volatility-based decomposition</strong>.</p>
-<h3>3. Scalability and Throughput</h3>
+<h3 id="3-scalability-and-throughput">3. Scalability and Throughput</h3>
 <p>Parts of a service with dramatically different throughput demands should scale independently.</p>
 <p>Example: SMS notifications at 220,000/minute vs postal letters at 1/minute. As a single service, postal letter processing must scale unnecessarily with the SMS load, increasing cost and MTTS.</p>
-<h3>4. Fault Tolerance</h3>
+<h3 id="4-fault-tolerance">4. Fault Tolerance</h3>
 <p>If one part of a service is prone to fatal errors (e.g., out-of-memory conditions), isolating it prevents it from bringing down unrelated stable functionality.</p>
 <p><strong>Caveat</strong>: if the resulting separate services still call each other synchronously, fault tolerance is not improved. The functions must be genuinely independent for this driver to have value.</p>
-<h3>5. Security</h3>
+<h3 id="5-security">5. Security</h3>
 <p>Parts of a service with different security requirements (e.g., PCI data vs general profile data) can be isolated so that access control is enforced at the service boundary rather than only within the API request.</p>
-<h3>6. Extensibility</h3>
+<h3 id="6-extensibility">6. Extensibility</h3>
 <p>If the service context will continually expand with new variants (e.g., a Payment Service adding new payment methods over time), separating variants into individual services means new variants can be deployed and tested in isolation without redeploying existing ones.</p>
 <p><strong>Guidance</strong>: apply this driver only when continued expansion is expected or confirmed. Wait for a pattern to emerge before using extensibility as the primary split justification.</p>
-<h2>Granularity Integrators</h2>
+<h2 id="granularity-integrators">Granularity Integrators</h2>
 <p>Four drivers for keeping services together (or consolidating fine-grained services) (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 7):</p>
-<h3>1. Database Transactions</h3>
+<h3 id="1-database-transactions">1. Database Transactions</h3>
 <p>If an operation requires a single ACID transaction across multiple functions, those functions should live in the same service. Splitting them requires distributed transactions (sagas), which are significantly more complex and cannot guarantee the same data integrity guarantees.</p>
 <p>This is often the most decisive integrator: if &quot;the business requires all-or-nothing,&quot; consolidate.</p>
 <p>See <a href="../distributed/distributed-transactions.html">Distributed Transactions</a> and <a href="../patterns/saga.html">Saga</a>.</p>
-<h3>2. Workflow and Choreography</h3>
+<h3 id="2-workflow-and-choreography">2. Workflow and Choreography</h3>
 <p>As services become finer-grained, they must communicate more with each other to complete a business transaction. This creates three problems:</p>
 <ul>
 <li><strong>Fault tolerance</strong>: a chain of synchronous service calls means if any service in the chain fails, all callers fail. Breaking up a service for fault tolerance reasons achieves nothing if the resulting services are synchronously dependent.</li>
@@ -363,7 +374,7 @@
 <li><strong>Reliability/data integrity</strong>: if services A, B, C have already committed their data but service D fails, data is inconsistent and requires compensating transactions.</li>
 </ul>
 <p><strong>Rule of thumb</strong>: if &gt;70% of requests require multi-service workflows to complete, consider consolidation. If the remaining 30% of workflow-dependent requests include time-critical operations, consolidate regardless.</p>
-<h3>3. Shared Code</h3>
+<h3 id="3-shared-code">3. Shared Code</h3>
 <p>Frequently-changing shared domain functionality (not infrastructure utilities) across a set of services is an integrator. Each change to the shared library requires a coordinated upgrade of all dependent services.</p>
 <p>Conditions where shared code argues for consolidation:</p>
 <ul>
@@ -372,11 +383,11 @@
 <li>Bugs in the shared code require simultaneous updates to all services (cannot be versioned around)</li>
 </ul>
 <p>Note: infrastructure shared code (logging, authentication, monitoring) is NOT an integrator — all services use it, and it doesn&#39;t drive consolidation.</p>
-<h3>4. Data Relationships</h3>
+<h3 id="4-data-relationships">4. Data Relationships</h3>
 <p>If the data tables owned by different services have tight bounded-context dependencies (services must call each other on every operation to read data they don&#39;t own), the inter-service communication cost argues for consolidation.</p>
 <p>This is the integrator with the fewest trade-offs — table relationships are a concrete structural constraint, not a preference.</p>
 <p>See <a href="../concepts/data-decomposition.html">Data Decomposition</a>.</p>
-<h2>Finding the Right Balance</h2>
+<h2 id="finding-the-right-balance">Finding the Right Balance</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -435,7 +446,7 @@
 </tbody></table></div>
 <p>The architect&#39;s method: identify which drivers apply, translate the trade-off into a business question, and present it to the product owner or sponsor for resolution. Architecture decisions without business input are opinions; decisions with explicit business input are accountable choices.</p>
 <p><strong>Example trade-off statement</strong>: &quot;We want to break apart the service to isolate frequent code changes (better time-to-market), but in doing so we lose ACID transaction guarantees (data integrity risk). Which matters more given our business requirements?&quot;</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -456,7 +467,7 @@
 <td>Covers service communication patterns and distributed transaction complexity implicitly; granularity is treated as a consequence of other decisions</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a> — the prerequisite: breaking the monolith; granularity addresses how fine-grained the resulting services should be</li>
 <li><a href="../concepts/data-decomposition.html">Data Decomposition</a> — data granularity mirrors service granularity; they must be decided together</li>

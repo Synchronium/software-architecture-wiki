@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html" aria-current="page">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,16 +316,20 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/chaos-engineering.html">Chaos Engineering</a></p>
-<h2>Background</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#background">Background</a></li><li><a href="#core-positions">Core Positions</a></li><li><a href="#books">Books</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/chaos-engineering.html">Chaos Engineering</a></p>
+<h2 id="background">Background</h2>
 <p>Nora Jones joined the Chaos Engineering team at Netflix as an engineer and technical leader, and was responsible for significant architectural decisions about the chaos tooling. She studied Human Factors and Safety Systems at Lund University. She gave a keynote on Chaos Engineering at AWS re:Invent 2017 to over 40,000 in-person attendees and 20,000 streaming. Co-founder (with Casey Rosenthal) of the Chaos Engineering community.</p>
-<h2>Core Positions</h2>
+<h2 id="core-positions">Core Positions</h2>
 <ul>
 <li>Chaos Engineering is grounded in resilience engineering and the human factors / safety science tradition (Dekker, Hollnagel, Allspaw).</li>
 <li>Chaos Engineering must address sociotechnical systems — the human and organisational side is as important as the technical side.</li>
 <li>Chaos Engineering has moved from &quot;should we do this?&quot; to &quot;what&#39;s the best way to get started?&quot; — adoption is no longer a question; quality of practice is.</li>
 </ul>
-<h2>Books</h2>
+<h2 id="books">Books</h2>
 <h3><a href="../sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em> (2020)</h3>
 <p>Co-authored with Casey Rosenthal and fourteen contributing authors. The definitive text on the discipline, covering its origins, theoretical foundations in safety science and complexity theory, the Principles of Chaos Engineering, multi-company case studies, a Chaos Maturity Model, and advanced topics including security chaos engineering and continuous verification.</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,24 +309,28 @@
       <h1>Strangler Fig Pattern</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/migration.html">migration</a></li><li><a class="tag-chip" href="../tags/decomposition.html">decomposition</a></li><li><a class="tag-chip" href="../tags/monolith.html">monolith</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/incremental.html">incremental</a></li><li><a class="tag-chip" href="../tags/proxy.html">proxy</a></li><li><a class="tag-chip" href="../tags/ui-composition.html">ui-composition</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-three-steps">The Three Steps</a></li><li><a href="#http-proxy-implementation">HTTP Proxy Implementation</a></li><li><a href="#non-http-transports">Non-HTTP Transports</a></li><li><a href="#ui-composition">UI Composition</a></li><li><a href="#key-principles">Key Principles</a></li><li><a href="#limitations">Limitations</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>The <strong>Strangler Fig</strong> (Martin Fowler) is an incremental migration pattern where a new system grows around an existing one, gradually taking over its behaviour until the old system can be removed — analogous to the strangler fig tree that wraps a host tree and eventually replaces it. (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>)</p>
 <p>The pattern is the primary vehicle for safe, incremental microservice extraction. Its defining property: the old system continues to run throughout the migration; there is no moment where everything switches at once.</p>
-<h2>The Three Steps</h2>
+<h2 id="the-three-steps">The Three Steps</h2>
 <ol>
 <li><strong>Identify</strong> — choose a behaviour to migrate. Map it in the existing system; understand its inputs, outputs, and dependencies.</li>
 <li><strong>Implement</strong> — build the behaviour in the new service. Do not modify the monolith during this phase. The new service is developed independently and reaches production readiness before any traffic is redirected.</li>
 <li><strong>Redirect</strong> — move traffic to the new service. This is a deployment decision, not an implementation decision. Deployment ≠ release: the new service can be deployed (reachable in production) long before any traffic is sent its way.</li>
 </ol>
 <p>Return to step 1 for the next behaviour. The monolith shrinks one capability at a time.</p>
-<h2>HTTP Proxy Implementation</h2>
+<h2 id="http-proxy-implementation">HTTP Proxy Implementation</h2>
 <p>The most common implementation: an <strong>HTTP reverse proxy</strong> (NGINX, HAProxy, API gateway) sits in front of both the monolith and the new service. All inbound requests hit the proxy.</p>
 <ul>
 <li>Initially: proxy forwards all requests to the monolith</li>
@@ -328,7 +339,7 @@
 </ul>
 <p>The proxy is a <strong>seam</strong>: the monolith and the new service are never aware of each other; the routing decision lives outside both. This makes the migration reversible — redirect traffic back to the monolith simply by updating the proxy config.</p>
 <p>The proxy also separates <strong>deployment from release</strong>: the new service is deployed and tested in production at low traffic (or zero) before the redirect is applied.</p>
-<h2>Non-HTTP Transports</h2>
+<h2 id="non-http-transports">Non-HTTP Transports</h2>
 <p>The proxy concept generalises beyond HTTP:</p>
 <p><strong>FTP example (Homegate)</strong>: content delivery to the monolith came via FTP drops. Newman describes extracting this by intercepting at the FTP level — the new service subscribes to the same FTP drops and handles its own files, while the monolith continues handling the rest. The proxy is the FTP routing logic.</p>
 <p><strong>Message/event interception</strong>: for monoliths that consume from message queues or event streams, two approaches work:</p>
@@ -336,22 +347,22 @@
 <li><strong>Content-based router</strong>: a routing intermediary inspects each message and directs it to either the monolith or the new service based on message properties (type, topic, payload)</li>
 <li><strong>Selective consumption</strong>: the new service subscribes alongside the monolith but only processes messages relevant to the migrated capability; both services see all messages but act on different subsets</li>
 </ul>
-<h2>UI Composition</h2>
+<h2 id="ui-composition">UI Composition</h2>
 <p>When a monolith renders a full-page UI, a pure proxy-level redirect is not always possible — a user&#39;s page may contain widgets from both the monolith and new services simultaneously. Three decomposition approaches:</p>
 <p><strong>Page composition (vertical slices)</strong>: entire pages are redirected to either the monolith or a new service. The simplest form — routes map directly to services. Works when the UI can be decomposed along page boundaries without sharing layout.</p>
 <p><strong>Widget/component composition (micro frontends)</strong>: individual page components are served by different services. Requires an assembly layer (the page shell) that aggregates components from multiple services. ESI (Edge Side Includes) is one mechanism; JavaScript module federation is another. This approach enables teams to own their widget end-to-end without coordinating on full-page ownership.</p>
 <p><strong>Mobile (Spotify server-side configuration)</strong>: native mobile clients cannot be easily patched; the server tells the client what to render. Spotify used server-driven UI configuration to enable gradual feature migration without synchronised app releases.</p>
-<h2>Key Principles</h2>
+<h2 id="key-principles">Key Principles</h2>
 <p><strong>Deployment ≠ release</strong> (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>): a new service that is deployed to production but receiving no traffic has not been released. The rollout decision (redirect traffic) is separate from and later than the deployment decision. This separation is what makes the strangler fig safe.</p>
 <p><strong>Feature freeze during migration</strong>: while a behaviour is being migrated, adding new features to that behaviour in the monolith complicates the migration — the new service must keep pace with moving targets. Establish a feature freeze on migrating capabilities in the monolith while the new service is under development.</p>
 <p><strong>Reversibility</strong>: because the monolith continues to handle all other requests and because traffic is redirected via a proxy, the migration is reversible at any point. If the new service has problems, redirect traffic back to the monolith.</p>
-<h2>Limitations</h2>
+<h2 id="limitations">Limitations</h2>
 <ul>
 <li>Requires an interception layer (proxy, router, gateway) at the boundary — this is additional infrastructure</li>
 <li>Works well at the perimeter (public-facing HTTP, external message producers) but is harder to apply to deeply embedded internal behaviour with no clean inbound seam — for those, use <a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> instead</li>
 <li>UI composition can be complex when shared layout, session state, or authentication spans old and new systems</li>
 </ul>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -368,17 +379,18 @@
 <td>Mentions strangler fig as the primary pattern for safe incremental replacement of existing systems; positions it within the broader context of evolutionary architecture as a technique for guided change</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> — for extracting deeply embedded functionality with no clean external seam</li>
 <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a> — strangler fig as a tool for guided, incremental change</li>
 <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a> — the target state strangler fig migrations move toward</li>
 <li><a href="../concepts/fracture-planes.html">Fracture Planes</a> — where to split; strangler fig is how to execute the split</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — the bounded context is the unit of extraction in a strangler fig migration</li>
+<li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a> — decision guide: strangler fig vs branch by abstraction vs parallel run vs feature flag</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
+        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,21 +309,25 @@
       <h1>Team Topologies: Organising Business and Technology Teams for Fast Flow</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../sources/index.html">source</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/teams.html">teams</a></li><li><a class="tag-chip" href="../tags/organisational-design.html">organisational-design</a></li><li><a class="tag-chip" href="../tags/conways-law.html">conways-law</a></li><li><a class="tag-chip" href="../tags/cognitive-load.html">cognitive-load</a></li><li><a class="tag-chip" href="../tags/flow.html">flow</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/matthew-skelton.html">Matthew Skelton</a>, <a href="../authors/manuel-pais.html">Manuel Pais</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-7-team-interaction-modes">Chapter 7 — Team Interaction Modes</a></li><li class="toc-sub"><a href="#chapter-8-evolve-team-structures-with-organizational-sensing">Chapter 8 — Evolve Team Structures with Organizational Sensing</a></li><li class="toc-sub"><a href="#chapter-1-the-problem-with-org-charts">Chapter 1 — The Problem with Org Charts</a></li><li class="toc-sub"><a href="#chapter-2-conway39s-law-and-why-it-matters">Chapter 2 — Conway&#39;s Law and Why It Matters</a></li><li class="toc-sub"><a href="#chapter-5-the-four-fundamental-team-topologies">Chapter 5 — The Four Fundamental Team Topologies</a></li><li class="toc-sub"><a href="#chapter-6-choose-team-first-boundaries">Chapter 6 — Choose Team-First Boundaries</a></li><li class="toc-sub"><a href="#chapter-3-team-first-thinking">Chapter 3 — Team-First Thinking</a></li><li class="toc-sub"><a href="#chapter-4-static-team-topologies">Chapter 4 — Static Team Topologies</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/matthew-skelton.html">Matthew Skelton</a>, <a href="../authors/manuel-pais.html">Manuel Pais</a>
 <strong>Published:</strong> 2019
 <strong>Slug:</strong> <code>team-topologies</code></p>
-<h2>Overview</h2>
-<p>Team Topologies argues that software architecture and team organisation are not separate concerns — they are two sides of the same coin, bound together by Conway&#39;s law. The book&#39;s core thesis is that most delivery problems attributed to technology or process are actually organisational: wrong team shapes, too much cognitive load on individual teams, or poorly defined interaction modes between teams. Rather than prescribing a fixed org chart, Team Topologies provides a dynamic model: four fundamental team types and three interaction modes that can evolve as technical and organisational maturity changes.</p>
+<h2 id="overview">Overview</h2>
+<p>Team Topologies argues that software architecture and team organisation are not separate concerns — they are two sides of the same coin, bound together by Conway&#39;s Law. The book&#39;s core thesis is that most delivery problems attributed to technology or process are actually organisational: wrong team shapes, too much cognitive load on individual teams, or poorly defined interaction modes between teams. Rather than prescribing a fixed org chart, Team Topologies provides a dynamic model: four fundamental team types and three interaction modes that can evolve as technical and organisational maturity changes.</p>
 <p>The book is grounded in a humanistic premise — teams are the fundamental unit of delivery, not individuals — and makes cognitive load a first-class architectural concern. An organisation that ignores team cognitive load will produce delivery bottlenecks, poor quality, and low motivation regardless of its technical choices.</p>
-<p>It draws heavily on Conway&#39;s law and the reverse Conway maneuver, treating organisation design as a technical activity that must involve architects and engineers, not just HR and management.</p>
-<h2>Key Claims</h2>
+<p>It draws heavily on Conway&#39;s Law and the reverse Conway maneuver, treating organisation design as a technical activity that must involve architects and engineers, not just HR and management.</p>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Team structure is the first draft of the software architecture (Nygard); architecture cannot be designed in isolation from team design (→ ch. 2)</li>
 <li>Four fundamental team types — stream-aligned, platform, enabling, complicated-subsystem — cover all necessary organisational patterns (→ ch. 5)</li>
@@ -331,8 +342,8 @@
 <li>The reverse Conway maneuver should be applied before software is built, not after (→ ch. 2)</li>
 <li>Reorganisations driven by management convenience or headcount reduction actively destroy software delivery capability (→ ch. 2)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Chapter 7 — Team Interaction Modes</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-7-team-interaction-modes">Chapter 7 — Team Interaction Modes</h3>
 <p>Detailed treatment of the three interaction modes, each with explicit advantages, disadvantages, and appropriate constraints:</p>
 <p><strong>Collaboration</strong>: two teams work closely together with overlapping boundaries. Advantages: rapid learning, innovation at boundaries, useful when correct API boundary is unknown. Disadvantages: high cognitive load overhead (&quot;collaboration tax&quot;), blurs responsibility, slows delivery if prolonged. Constraint: each team should be in close collaboration with <em>at most one</em> other team at a time. When collaboration no longer brings learning benefits, transition to X-as-a-Service.</p>
 <p><strong>X-as-a-Service</strong>: one team provides; the other consumes with minimal interaction. Advantages: clear ownership, predictable delivery, scales to many simultaneous consumers, enables autonomy. Disadvantages: can slow innovation at the boundary; requires strong DevEx and product management from the providing team. Based on <strong>promise theory</strong> (Mark Burgess): semantic versioning is a promise not to break consumers — inter-team relationships are voluntary promises, not contractual obligations. Provides deeper alignment than contracts because teams <em>choose</em> to uphold them.</p>
@@ -373,9 +384,9 @@
 </tr>
 </tbody></table></div>
 <p><strong>Awkward interactions as diagnostic signal</strong>: if a team using X-as-a-Service mode must constantly escalate to the providing team, the API or service is poorly designed. If two teams in collaboration mode barely communicate, the wrong teams have been placed together or the boundary is too ambitious. Awkward interaction → fix the API or team boundary, not the people.</p>
-<p><strong>Architect role in Team Topologies</strong>: architects should primarily act as designers of team APIs and shapers of team-to-team interactions with Conway&#39;s law in mind. Requires both social and technical skills, and a broader organisational remit than is traditionally given.</p>
+<p><strong>Architect role in Team Topologies</strong>: architects should primarily act as designers of team APIs and shapers of team-to-team interactions with Conway&#39;s Law in mind. Requires both social and technical skills, and a broader organisational remit than is traditionally given.</p>
 <p><strong>Intermittent collaboration</strong> (Bernstein et al. research): groups that collaborated intermittently achieved nearly identical average quality to constantly-collaborating groups, while preserving solution variation that helped find best outcomes. Supports Team Topologies&#39; prescription for time-bounded, purposeful collaboration over permanent open collaboration.</p>
-<h3>Chapter 8 — Evolve Team Structures with Organizational Sensing</h3>
+<h3 id="chapter-8-evolve-team-structures-with-organizational-sensing">Chapter 8 — Evolve Team Structures with Organizational Sensing</h3>
 <p>Picks up from Ch 7 to describe <em>when</em> and <em>why</em> to change team topology, and how well-structured teams create organisational intelligence.</p>
 <p><strong>Discovery-to-establish pattern</strong>: the natural trajectory for a pair of teams is close collaboration (high uncertainty, learning) → limited collaboration → X-as-a-Service (established patterns, predictable delivery). This transition is expected to happen simultaneously across the organisation at different stages for different team pairs.</p>
 <p><strong>Three triggers for topology evolution</strong>:</p>
@@ -400,11 +411,11 @@
 <li>Healthy funding/financial practices: avoid CapEx/OpEx splits that harm flow; avoid project-based deadlines and large-batch budgeting</li>
 <li>Clarity of business vision: non-conflicting direction at human-relevant timescales</li>
 </ul>
-<h3>Chapter 1 — The Problem with Org Charts</h3>
+<h3 id="chapter-1-the-problem-with-org-charts">Chapter 1 — The Problem with Org Charts</h3>
 <p>Every organisation has three simultaneous structures (Pflaeging): the formal org chart (compliance), the informal influence network, and the value creation structure (how work actually happens). Org charts only capture the first. Decisions based solely on the org chart optimise locally and miss systemic bottlenecks.</p>
 <p>Team Topologies introduces four team types and three interaction modes as its core model. Cognitive load is introduced as the key constraint: teams spread too thin lose mastery, suffer context switching, and become delivery bottlenecks. Systems thinking — optimise for the whole flow — is the recommended alternative to local optimisation.</p>
-<h3>Chapter 2 — Conway&#39;s Law and Why It Matters</h3>
-<p>Conway&#39;s law is empirically well-supported beyond software (vehicle manufacturing, aircraft engine design, open-source studies by MacCormack et al.). Ruth Malan&#39;s modern formulation: <em>&quot;If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins.&quot;</em></p>
+<h3 id="chapter-2-conway39s-law-and-why-it-matters">Chapter 2 — Conway&#39;s Law and Why It Matters</h3>
+<p>Conway&#39;s Law is empirically well-supported beyond software (vehicle manufacturing, aircraft engine design, open-source studies by MacCormack et al.). Ruth Malan&#39;s modern formulation: <em>&quot;If the architecture of the system and the architecture of the organisation are at odds, the architecture of the organisation wins.&quot;</em></p>
 <p>Key extensions beyond the existing wiki treatment:</p>
 <ul>
 <li>Tool choices drive communication patterns (shared tools = collaboration signal; separate tools = independence signal)</li>
@@ -412,20 +423,20 @@
 <li>Organisation design is inherently technical work; architects need a say in team structure</li>
 <li>Reorganisations for management convenience destroy software delivery capability</li>
 </ul>
-<h3>Chapter 5 — The Four Fundamental Team Topologies</h3>
+<h3 id="chapter-5-the-four-fundamental-team-topologies">Chapter 5 — The Four Fundamental Team Topologies</h3>
 <p>Detailed treatment of each team type with expected behaviours. Stream-aligned teams: primary type; no dedicated Ops handoff; SRE is a special kind of stream-aligned team. Enabling teams: temporary, servant-like, avoid ivory tower, plan for their own extinction. Complicated-subsystem teams: only when specialist knowledge <em>drives</em> the need (not when sharing is convenient). Platform teams: self-service product with TVP principle; DevEx focus; fractal internally (composed of four team types at scale).</p>
 <p>Architecture team: most effective as a part-time enabling team. Ratio: 6:1 to 9:1 stream-aligned to other. Conversion guide: infrastructure → platform; component → platform/enabling/complicated-subsystem; DBA → enabling or platform; tooling → enabling or platform; support → stream-aligned with dynamic swarming.</p>
-<h3>Chapter 6 — Choose Team-First Boundaries</h3>
+<h3 id="chapter-6-choose-team-first-boundaries">Chapter 6 — Choose Team-First Boundaries</h3>
 <p>Fracture planes: natural seams where systems can be split to produce autonomous, cognitively bounded team ownership. Eight types: (1) business domain bounded context (primary); (2) regulatory compliance; (3) change cadence; (4) team location; (5) risk; (6) performance isolation; (7) technology (use sparingly); (8) user personas. Litmus test: &quot;Could we, as a team, effectively consume or provide this subsystem as a service?&quot;</p>
 <p>Six forms of monolith: application, joined-at-the-database, monolithic build, monolithic release, monolithic model, monolithic thinking. Distributed monolith: microservices with end-to-end batch testing before release.</p>
-<h3>Chapter 3 — Team-First Thinking</h3>
+<h3 id="chapter-3-team-first-thinking">Chapter 3 — Team-First Thinking</h3>
 <p>The team is the fundamental unit of delivery. Effective teams are small (5–9), stable, and long-lived — work flows to teams, not people to projects. Team size limits derive from Dunbar&#39;s number (deep trust limit ~15; mutual trust ~50; capability recognition ~150); organisations should scale via Dunbar-compatible groupings.</p>
 <p>Every software component must be owned by exactly one team. Shared ownership is no ownership.</p>
 <p>Cognitive load (Sweller): intrinsic (domain fundamentals — minimise), extraneous (environment overhead — eliminate), germane (value-add thinking — maximise). Software boundaries should be sized to team cognitive capacity, not vice versa. Domain complexity heuristics: 2–3 simple domains; max 1 complicated; max 1 complex (with no others). The Team API is the primary inter-team interface: code + versioning + docs + practices + communication + work visibility.</p>
-<h3>Chapter 4 — Static Team Topologies</h3>
+<h3 id="chapter-4-static-team-topologies">Chapter 4 — Static Team Topologies</h3>
 <p>Anti-patterns: ad hoc team design and shuffling team members (project-based staffing). Design for flow: cross-functional teams owning build, test, deploy, and operate — eliminating handoffs. DevOps emerged ~2009 to address dev/ops separation (&quot;wall of confusion&quot;).</p>
 <p>DevOps Topologies: no one-size-fits-all; context-dependent on technical maturity, org size, software scale, and engineering discipline. Feature teams require high engineering maturity and trust. Product teams need non-blocking self-service dependencies. SRE is a specialised pattern suited to high scale with a dynamic error-budget relationship between SRE and dev teams. The DevOps team anti-pattern: a permanent execution DevOps team becomes a hard dependency; should instead be a temporary enabling team that makes itself obsolete.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;Team assignments are the first draft of the architecture.&quot; — Michael Nygard (cited ch. 2)</p>
 </blockquote>
@@ -435,7 +446,7 @@
 <blockquote>
 <p>&quot;Requiring everyone to communicate with everyone else is a recipe for a mess.&quot; (ch. 2)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/conways-law.html">Conways Law</a> — primary concept page; extensively enriched by this source</li>
 <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a> — the four team types and three interaction modes</li>

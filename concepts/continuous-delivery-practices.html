@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#five-principles-of-continuous-delivery">Five Principles of Continuous Delivery</a></li><li><a href="#the-eight-cd-capabilities">The Eight CD Capabilities</a></li><li><a href="#key-empirical-findings">Key Empirical Findings</a></li><li class="toc-sub"><a href="#configuration-in-version-control-is-more-predictive-than-code">Configuration in Version Control Is More Predictive Than Code</a></li><li class="toc-sub"><a href="#developer-owned-test-automation">Developer-Owned Test Automation</a></li><li class="toc-sub"><a href="#trunk-based-development">Trunk-Based Development</a></li><li class="toc-sub"><a href="#loosely-coupled-architecture-is-the-biggest-cd-lever">Loosely Coupled Architecture Is the Biggest CD Lever</a></li><li><a href="#shift-left-security-devsecops">Shift-Left Security (DevSecOps)</a></li><li><a href="#lightweight-change-approval">Lightweight Change Approval</a></li><li><a href="#relationship-to-culture-and-people">Relationship to Culture and People</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Continuous delivery (CD) is the discipline of keeping software in a releasable state at all times — getting changes of all kinds into production safely, quickly, and sustainably. CD is not a single practice; it is a cluster of eight technical capabilities that, taken together, enable the four DORA delivery performance metrics (→ <a href="../concepts/four-key-metrics.html">Four Key Metrics</a>).</p>
 <p>The research basis: <em>Accelerate</em> (Forsgren, Humble, Kim, 2018) empirically validated, across four years and 23,000+ respondents, which practices predict high delivery performance. This page captures those findings and the non-obvious implications the data surfaced.</p>
-<h2>Five Principles of Continuous Delivery</h2>
+<h2 id="five-principles-of-continuous-delivery">Five Principles of Continuous Delivery</h2>
 <p>From Deming&#39;s quality management philosophy, applied to software delivery (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 4):</p>
 <ol>
 <li><strong>Build quality in</strong> (Deming&#39;s Point 3): cease dependence on inspection to achieve quality. Find and fix problems when they are cheapest to address — at the point of creation, not after handoff to a separate QA phase.</li>
@@ -321,7 +332,7 @@
 <li><strong>Relentlessly pursue continuous improvement</strong>: improvement is never finished. High performers distinguish themselves not by having fewer problems but by finding and fixing them faster.</li>
 <li><strong>Everyone is responsible</strong>: system-level outcomes (delivery performance, quality, security) require collaboration across development, operations, and security. Siloed ownership of any concern undermines the rest.</li>
 </ol>
-<h2>The Eight CD Capabilities</h2>
+<h2 id="the-eight-cd-capabilities">The Eight CD Capabilities</h2>
 <p>Accelerate identified eight technical capabilities as the primary drivers of continuous delivery performance (→ <a href="../sources/accelerate.html">Accelerate</a> Appendix A):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -363,8 +374,8 @@
 <td>Software always in a deployable state; fast feedback from production</td>
 </tr>
 </tbody></table></div>
-<h2>Key Empirical Findings</h2>
-<h3>Configuration in Version Control Is More Predictive Than Code</h3>
+<h2 id="key-empirical-findings">Key Empirical Findings</h2>
+<h3 id="configuration-in-version-control-is-more-predictive-than-code">Configuration in Version Control Is More Predictive Than Code</h3>
 <p>One of Accelerate&#39;s more surprising findings: storing system configuration and application configuration in version control is <em>more highly correlated</em> with delivery performance than storing application code (→ ch. 4). Reasons:</p>
 <ul>
 <li>Configuration changes are a leading cause of production failures (→ <a href="../operations/common-failure-causes.html">Common Failure Causes</a>)</li>
@@ -372,18 +383,18 @@
 <li>Auditability of configuration changes is as important as auditability of code changes</li>
 </ul>
 <p>Practical implication: version control adoption is not done when the code repository is set up. It is done when every environment-specific configuration file, infrastructure declaration, and build script is also tracked.</p>
-<h3>Developer-Owned Test Automation</h3>
+<h3 id="developer-owned-test-automation">Developer-Owned Test Automation</h3>
 <p>Tests predict IT performance only when developers (not a separate QA team or an outsourced contractor) create and maintain them (→ ch. 4). Two reasons:</p>
 <ol>
 <li><strong>Testability is designed in when developers write tests.</strong> Code written without tests is rarely testable after the fact. Developers who own the tests design systems with seams, interfaces, and dependency injection that enable testing.</li>
 <li><strong>Developers maintain tests they own.</strong> Tests created by a separate QA function are routinely allowed to rot — the team that could fix them is not the team responsible for them. Brittle, ignored tests are worse than no tests (they provide false confidence and are eventually disabled entirely).</li>
 </ol>
 <p>The corollary: <strong>test automation coverage is meaningless if the tests are not trusted.</strong> A reliable suite of 200 tests that the team acts on is more valuable than 2,000 tests that regularly produce false positives and are routinely overridden.</p>
-<h3>Trunk-Based Development</h3>
+<h3 id="trunk-based-development">Trunk-Based Development</h3>
 <p>Trunk-based development is defined empirically in Accelerate as: fewer than three active branches in the repository, branch lifetime shorter than one day, no code freeze periods (→ ch. 4). GitHub Flow (short-lived feature branches merging frequently to main) qualifies if branch lifetimes are kept short.</p>
 <p>The alternative — long-lived feature branches — creates integration debt. The longer a branch lives, the larger the merge conflict when it lands. Delayed integration delays feedback on whether the change actually works with the rest of the codebase.</p>
 <p>Trunk-based development enables CI: you cannot continuously integrate if integration only happens when feature branches are complete.</p>
-<h3>Loosely Coupled Architecture Is the Biggest CD Lever</h3>
+<h3 id="loosely-coupled-architecture-is-the-biggest-cd-lever">Loosely Coupled Architecture Is the Biggest CD Lever</h3>
 <p>In the 2017 Accelerate data, loosely coupled, well-encapsulated architecture was the <strong>single largest contributor to continuous delivery</strong> — larger than test automation, deployment automation, or any individual technical practice (→ ch. 5).</p>
 <p>Six measurable characteristics of a loosely coupled architecture:</p>
 <ul>
@@ -395,7 +406,7 @@
 <li>Can deploy during normal business hours with negligible downtime</li>
 </ul>
 <p>The implication: investing in test automation on a tightly coupled architecture yields diminishing returns. The coupling is the primary bottleneck. See <a href="../concepts/bounded-contexts.html">Bounded Contexts</a> and <a href="../comparisons/decomposition-strategy.html">Decomposition Strategy</a> for decomposition strategies that create loosely coupled boundaries.</p>
-<h2>Shift-Left Security (DevSecOps)</h2>
+<h2 id="shift-left-security-devsecops">Shift-Left Security (DevSecOps)</h2>
 <p>&quot;Shifting left&quot; on security means integrating security into the delivery lifecycle from design onward, rather than treating it as a downstream gate (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 6).</p>
 <p>Three elements of shift-left security:</p>
 <ol>
@@ -406,19 +417,19 @@
 <p><strong>The efficiency argument</strong>: high performers spend 50% less time remediating security issues than low performers. Security work done at design time is an order of magnitude cheaper than security work done post-production.</p>
 <p><strong>The capacity argument</strong>: the ratio in large companies is approximately 1 security engineer per 10 infrastructure engineers per 100 developers. At this ratio, manual security review of every deployment is structurally impossible when deployments are frequent. The only scalable model is to give developers the means to build security in — preapproved libraries, automated scanning in the pipeline, threat modelling as a design practice.</p>
 <p><strong>Shift-left security does not slow delivery.</strong> The Accelerate data found no tradeoff: high performers deploy more frequently <em>and</em> have fewer security incidents. See also <a href="../concepts/threat-modeling.html">Threat Modeling</a> for threat modelling practices.</p>
-<h2>Lightweight Change Approval</h2>
+<h2 id="lightweight-change-approval">Lightweight Change Approval</h2>
 <p>Accelerate&#39;s finding on change management is one of the most counterintuitive in the research: Change Approval Boards (CABs) are negatively correlated with tempo <em>and</em> stability — they make delivery slower without improving the change failure rate (→ ch. 2, ch. 7).</p>
 <p><strong>Why CABs fail</strong>: external reviewers lack the intimate knowledge of the system required to accurately assess the impact of complex changes. CAB review is &quot;risk management theatre&quot; — checking boxes so that when something fails, there is a documented process trail.</p>
 <p><strong>The high-performing alternative</strong>: peer review (pair programming or code review) combined with a fully automated deployment pipeline. The pipeline records what changed, from where, what tests ran, and who approved — satisfying audit requirements. A human expert who knows the code reviews the change itself.</p>
 <p>For regulated environments where change approval must be evidenced: record peer review approvals in the version control system (GitHub PR approvals) and treat the automated pipeline as the only mechanism for applying changes to production. The audit trail is the pipeline run.</p>
-<h2>Relationship to Culture and People</h2>
+<h2 id="relationship-to-culture-and-people">Relationship to Culture and People</h2>
 <p>Continuous delivery is not only a technical investment — it is an investment in people and culture (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 4, ch. 9, ch. 10):</p>
 <p><strong>Burnout</strong>: deployment pain (fear and anxiety when pushing code to production) is one of the five strongest predictors of burnout. CD reduces deployment pain by making releases routine rather than high-stakes events. High performers deploy more frequently <em>and</em> experience less deployment pain — frequency builds confidence.</p>
 <p><strong>Job satisfaction</strong>: automation of rote work (repetitive deployment tasks, manual regression testing) frees engineers for judgement-based work. Survey data shows DevOps technical practices are predictors of job satisfaction.</p>
 <p><strong>Culture</strong>: CD predicts more generative Westrum culture (→ <a href="../concepts/westrum-culture.html">Westrum Culture</a>). The causal mechanism: blameless postmortems are easier when deployment frequency is high and batch sizes are small — each failure is smaller in scope, easier to diagnose, and less consequential to attribute openly.</p>
 <p><strong>eNPS</strong>: high performers are 2.2× more likely to recommend their organisation as a great place to work. Delivery performance, Westrum culture, and Lean management together predict employee Net Promoter Score.</p>
 <p><strong>Virtuous cycle</strong>: CD → better products → higher job satisfaction + stronger org identity → generative culture → org performance → better hiring and retention.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -435,7 +446,7 @@
 <td>Deployment pipelines as fitness function automation infrastructure; CD as the operational foundation of evolutionary architecture; cycle time as a business differentiator; enterprise pipeline templates</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/four-key-metrics.html">Four Key Metrics</a> — the four DORA metrics are what CD practices improve; delivery frequency and lead time are direct CD measures</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the mechanical implementation of CD: pipeline stages, fitness function placement, zero-downtime deployment, release strategies</li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,24 +309,38 @@
       <h1>API Gateway</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/api.html">api</a></li><li><a class="tag-chip" href="../tags/gateway.html">gateway</a></li><li><a class="tag-chip" href="../tags/traffic-management.html">traffic-management</a></li><li><a class="tag-chip" href="../tags/security.html">security</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#control-plane-and-data-plane">Control Plane and Data Plane</a></li><li><a href="#why-use-an-api-gateway">Why Use an API Gateway?</a></li><li><a href="#gateway-vs-proxy-vs-load-balancer">Gateway vs Proxy vs Load Balancer</a></li><li><a href="#taxonomy-three-gateway-types">Taxonomy: Three Gateway Types</a></li><li><a href="#history">History</a></li><li><a href="#common-pitfalls">Common Pitfalls</a></li><li><a href="#failure-management">Failure Management</a></li><li><a href="#authentication-vs-authorisation-split">Authentication vs Authorisation Split</a></li><li><a href="#composition-caveat">Composition Caveat</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>API gateway is for north-south; service mesh is for east-west.</strong> Both, not either. Don&#39;t loop internal calls through the public gateway, and don&#39;t use a mesh ingress gateway as a full API gateway.</li>
+<li><strong>The gateway authenticates; services authorise.</strong> Centralise authentication mechanisms (OAuth2, JWT, API keys) at the edge. Authorisation is domain logic and stays with the services that own the resources.</li>
+<li><strong>Three gateway types match three use cases.</strong> Enterprise (Kong, Apigee — full lifecycle, monetisation, developer portal), microservices/micro (Ambassador, Traefik — IaC-native, self-service), service mesh ingress (Istio gateway — minimum viable, mesh-coupled).</li>
+<li><strong>Six justifications for using a gateway.</strong> Reduce coupling, simplify consumption, protect from abuse, observability, lifecycle management, monetisation. Without three or more of these, a plain reverse proxy suffices.</li>
+<li><strong>Composition has an availability cost.</strong> Multiplying upstream availabilities: three 99.9% services aggregated by the gateway give ~99.7%. Decide explicitly how to handle partial failures.</li>
+<li><strong>The dominant antipatterns are coupling traps.</strong> Gateway-as-ESB (business logic in plug-ins), gateway loopback (internal traffic over public path), turtles-all-the-way-down (hierarchical gateways), routing on request payloads. Keep the gateway a facade.</li>
+<li><strong>Fail-open vs fail-closed is an architectural decision.</strong> Financial systems need fail-closed; consumer services often want fail-open. Decide deliberately and document in an ADR.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>An API gateway is a management tool deployed at the edge of a system — between consumers and backend services — that acts as a single point of entry for external API traffic. It handles cross-cutting concerns that would otherwise need to be implemented in every backend service: authentication, <a href="../distributed/rate-limiting.html">rate limiting</a>, routing, observability, and more.</p>
 <p>An API gateway is the primary solution for managing <strong>north–south traffic</strong> (external → system). It is not the right tool for internal service-to-service communication — that is the domain of the <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>.</p>
-<h2>Control Plane and Data Plane</h2>
+<h2 id="control-plane-and-data-plane">Control Plane and Data Plane</h2>
 <p>Like a service mesh, an API gateway has two components:</p>
 <ul>
 <li><strong>Control plane</strong>: where operators define routes, policies, and telemetry configuration. Not on the critical path.</li>
 <li><strong>Data plane</strong>: where packets are actually routed, policies enforced, and telemetry emitted. On the critical path of every user request.</li>
 </ul>
 <p>These can be packaged together (simpler operation) or deployed separately (better isolation and scaling).</p>
-<h2>Why Use an API Gateway?</h2>
+<h2 id="why-use-an-api-gateway">Why Use an API Gateway?</h2>
 <p>Six capabilities that justify a gateway over a simpler proxy or load balancer (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 3):</p>
 <p><strong>1. Reduce coupling</strong> — acts as a facade or adapter between frontends and backends. Consumers call the gateway&#39;s stable API; backends can change location, language, or architecture without impacting consumers.</p>
 <p><strong>2. Simplify consumption</strong> — aggregate multiple backend API calls into a single consumer-facing call; translate protocols (SOAP → REST). Warning: aggregation that embeds business logic couples the gateway to the domain.</p>
@@ -376,7 +397,7 @@
 </tbody></table></div>
 <p>Enterprise API gateways support this full 10-stage lifecycle. Microservices gateways typically omit monetization and onboarding stages.</p>
 <p><strong>6. Monetization</strong> — account management, billing integration, consumer plan limits.</p>
-<h2>Gateway vs Proxy vs Load Balancer</h2>
+<h2 id="gateway-vs-proxy-vs-load-balancer">Gateway vs Proxy vs Load Balancer</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -448,7 +469,7 @@
 </tr>
 </tbody></table></div>
 <p>Guideline: use the simplest solution that meets your requirements. A reverse proxy suffices for simple routing; a load balancer adds multi-backend support; an API gateway is warranted when you need advanced cross-functional requirements.</p>
-<h2>Taxonomy: Three Gateway Types</h2>
+<h2 id="taxonomy-three-gateway-types">Taxonomy: Three Gateway Types</h2>
 <p>(→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 3)</p>
 <p><strong>Traditional enterprise API gateway</strong>: Full API lifecycle management, monetization, admin UI, developer portal, analytics. Often has a commercial bias (open core model). Requires dependent services (datastores) that must be run with high availability. Examples: Kong (enterprise), Apigee, WSO2, 3Scale.</p>
 <p><strong>Microservices / micro gateway</strong>: Lightweight; Kubernetes-native; self-service configuration via declarative code in the deployment pipeline. Optimised for developer agility, not APIM governance. Examples: Ambassador Edge Stack, Traefik, Tyk, Kong (open source).</p>
@@ -487,7 +508,7 @@
 <td>Canary routing</td>
 </tr>
 </tbody></table></div>
-<h2>History</h2>
+<h2 id="history">History</h2>
 <p>Understanding why the API gateway looks the way it does today requires knowing its evolution (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 3):</p>
 <ul>
 <li><strong>1990s — Hardware load balancers</strong>: F5, Cisco. Infrastructure-team-operated; focused on spreading HTTP load across web servers. Layer 4 (IP/port).</li>
@@ -496,12 +517,12 @@
 <li><strong>Early 2010s — First-generation API gateways</strong>: Kong, Apigee, WSO2, 3Scale. First tools targeted at developers, not just ops. Developer portals, API keys, lifecycle management. Layer 7 (HTTP header-based) routing. Reflected the rise of the API economy (Twilio, Stripe).</li>
 <li><strong>2015 onward — Second-generation (Kubernetes-native)</strong>: Ambassador, Contour, Traefik. Built on Envoy Proxy. Microservices-focused; declarative config; self-service; canary routing built in. &quot;Smart endpoints, dumb pipes&quot; philosophy.</li>
 </ul>
-<h2>Common Pitfalls</h2>
+<h2 id="common-pitfalls">Common Pitfalls</h2>
 <p><strong>API gateway loopback</strong>: routing internal service-to-service traffic back through the public gateway to avoid implementing service discovery. Results in: internally destined traffic leaving the network (security and cost), gateway becoming a bottleneck and single point of failure, operationally complex tracing. Fix: use a service mesh for east–west traffic.</p>
 <p><strong>Gateway as ESB</strong>: embedding business logic in gateway plug-ins (Groovy scripts in Zuul, Lua modules in Kong, Wasm in Envoy). Creates high coupling — service changes require coordinated gateway deployment. Fix: gateways should be facades, not orchestrators. Business logic belongs in services.</p>
 <p><strong>Turtles all the way down</strong>: hierarchical gateways where traffic passes through multiple gateway layers. Increases change coordination cost, adds latency at every hop, creates ownership ambiguity (&quot;which gateway owns tracing?&quot;). Fix: consolidate; separate concerns cleanly.</p>
 <p><strong>Routing on request payloads</strong>: deserialising request bodies to make routing decisions. Expensive (large payloads), tightly couples gateway config to the domain schema. Avoid: route on path, host, or headers only.</p>
-<h2>Failure Management</h2>
+<h2 id="failure-management">Failure Management</h2>
 <p>An API gateway is on the critical path of all user requests. Failure model considerations:</p>
 <ul>
 <li>Run multiple instances for high availability; load balancer in front of gateway instances.</li>
@@ -510,7 +531,7 @@
 <li>Run blameless post-mortems after every gateway incident.</li>
 <li>Test failover regularly — especially leader election and sticky session handling.</li>
 </ul>
-<h2>Authentication vs Authorisation Split</h2>
+<h2 id="authentication-vs-authorisation-split">Authentication vs Authorisation Split</h2>
 <p>A consistent pattern from practice: <strong>the gateway authenticates; individual services authorise</strong>.</p>
 <ul>
 <li><strong>Authentication</strong> (is this principal who they say they are?) is centralised at the gateway. Centralising authentication allows one place to implement and update different authentication mechanisms (sessions, JWT, API keys, OAuth2) without touching internal services.</li>
@@ -523,12 +544,12 @@
 <li><strong>Transparent token (JWT)</strong>: a signed JSON payload containing expiry, principal identity, and roles. Internal services validate the signature locally — no external call needed. Faster, but hard to revoke: a stolen JWT is valid until expiry.</li>
 </ul>
 <p><strong>API keys</strong>: a separate mechanism commonly used for public APIs (GitHub, Twitter). The gateway identifies the principal and their rate limits from the key without requiring a full OAuth2 flow.</p>
-<h2>Composition Caveat</h2>
+<h2 id="composition-caveat">Composition Caveat</h2>
 <p>When the gateway composes responses by calling multiple internal services, the <strong>availability of the composed endpoint decreases with each additional upstream call</strong>:</p>
 <pre><code>composed_availability = A₁ × A₂ × A₃ × ...
 </code></pre>
 <p>Three 99.9% services → composed availability ≈ 99.7%. Additionally, the composed response may be internally inconsistent if updates haven&#39;t propagated uniformly across all services at query time. The gateway must decide how to handle partial failures (return partial data, degrade gracefully, or fail the whole request).</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -549,7 +570,7 @@
 <td>Practical framing of gateway responsibilities: routing, composition (with availability caveat), translation (REST→gRPC, BFF/GraphQL), and auth/authz split (ch. 21)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — the east–west complement to the API gateway&#39;s north–south role</li>
 <li><a href="../concepts/api-design.html">Api Design</a> — the contracts the gateway enforces</li>

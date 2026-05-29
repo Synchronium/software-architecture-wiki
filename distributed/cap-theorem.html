@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A distributed system can provide at most two of the following three guarantees simultaneously:</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#limitations-of-cap">Limitations of CAP</a></li><li><a href="#pacelc-extension">PACELC Extension</a></li><li><a href="#kleppmann39s-critique-best-avoided">Kleppmann&#39;s Critique: &quot;Best Avoided&quot;</a></li><li><a href="#in-practice">In Practice</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A distributed system can provide at most two of the following three guarantees simultaneously:</p>
 <ul>
 <li><strong>C — Consistency</strong>: every read returns the most recent write (linearizability).</li>
 <li><strong>A — Availability</strong>: every request receives a response (not necessarily the most recent data).</li>
@@ -320,14 +331,14 @@
 <li><strong>CP systems</strong> stop accepting writes (or return errors) to preserve consistency.</li>
 <li><strong>AP systems</strong> continue serving stale data to preserve availability.</li>
 </ul>
-<h2>Limitations of CAP</h2>
+<h2 id="limitations-of-cap">Limitations of CAP</h2>
 <p>CAP is often misunderstood or overstated:</p>
 <ol>
 <li><strong>Availability in CAP</strong> means every request gets <em>some</em> response — even slow responses satisfy it. This is an extreme definition.</li>
 <li><strong>Consistency in CAP</strong> specifically means linearizability — many weaker but useful consistency models exist (→ <a href="../distributed/consistency-models.html">Consistency Models</a>).</li>
 <li>The partition/no-partition binary is too coarse; real systems face degraded links, not binary split-brain.</li>
 </ol>
-<h2>PACELC Extension</h2>
+<h2 id="pacelc-extension">PACELC Extension</h2>
 <p>PACELC (Daniel Abadi, 2012) extends CAP to cover <em>normal operation</em> (no partition):</p>
 <pre><code>If Partition:  choose A vs. C
 Else:          choose Latency vs. Consistency
@@ -339,7 +350,7 @@ Else:          choose Latency vs. Consistency
 <li>Spanner: <strong>PC/EC</strong> — prioritises consistency in both cases; achieves low latency via TrueTime (not by weakening consistency).</li>
 <li>DynamoDB (eventual): <strong>PA/EL</strong>; DynamoDB (strong reads): <strong>PC/EC</strong>.</li>
 </ul>
-<h2>Kleppmann&#39;s Critique: &quot;Best Avoided&quot;</h2>
+<h2 id="kleppmann39s-critique-best-avoided">Kleppmann&#39;s Critique: &quot;Best Avoided&quot;</h2>
 <p>Kleppmann (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) takes the strongest position of any source in this wiki: CAP theorem is &quot;best avoided as a tool for reasoning about systems.&quot; His arguments:</p>
 <ol>
 <li><strong>Narrow definition of consistency</strong>: CAP&#39;s &quot;C&quot; means only linearizability — one specific consistency model out of a spectrum. Causal consistency, read-your-writes, and monotonic reads are all distinct, useful models that CAP ignores.</li>
@@ -351,9 +362,9 @@ Else:          choose Latency vs. Consistency
 <blockquote>
 <p><strong>Contradiction:</strong> <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> also critiques CAP but treats it as a useful first approximation worth understanding. Kleppmann is more dismissive. Both recommend PACELC as the better operational model.</p>
 </blockquote>
-<h2>In Practice</h2>
+<h2 id="in-practice">In Practice</h2>
 <p>The binary framing dissolves at the edges. Systems offer tunable consistency per-operation (DynamoDB&#39;s <code>ConsistentRead</code>, Cassandra&#39;s per-query consistency levels). The PACELC framing better matches operational experience. CAP is still worth knowing as historical context and as a conversation shorthand — just not as an analytical tool.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -370,12 +381,12 @@ Else:          choose Latency vs. Consistency
 <td>&quot;Best avoided&quot; — too narrow, too coarse, PACELC is strictly better for reasoning about systems</td>
 </tr>
 </tbody></table></div>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10) — CAP and PACELC covered together; PACELC presented as the more useful mental model.</li>
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) — strongest critique of CAP theorem; introduces timeliness/integrity distinction as a better framework.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
 <li><a href="../distributed/replication.html">Replication</a></li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,40 +316,44 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A consistency model defines the guarantees a distributed system provides about the visibility and ordering of reads and writes across replicas. Choosing a model involves trading off correctness guarantees against performance and availability.</p>
-<h2>The Spectrum</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-spectrum">The Spectrum</a></li><li class="toc-sub"><a href="#linearizability-strong-consistency">Linearizability (Strong Consistency)</a></li><li class="toc-sub"><a href="#sequential-consistency">Sequential Consistency</a></li><li class="toc-sub"><a href="#causal-consistency">Causal Consistency</a></li><li class="toc-sub"><a href="#eventual-consistency">Eventual Consistency</a></li><li class="toc-sub"><a href="#strong-eventual-consistency">Strong Eventual Consistency</a></li><li><a href="#isolation-levels-transactions">Isolation Levels (Transactions)</a></li><li><a href="#replication-decisions-map-to-consistency-models">Replication Decisions Map to Consistency Models</a></li><li><a href="#causal-consistency-cops-implementation">Causal Consistency: COPS Implementation</a></li><li><a href="#cap-connection">CAP Connection</a></li><li><a href="#linearizability-precise-definition">Linearizability: Precise Definition</a></li><li><a href="#timeliness-vs-integrity-ddia39s-key-distinction">Timeliness vs Integrity (DDIA&#39;s Key Distinction)</a></li><li><a href="#safety-vs-liveness">Safety vs Liveness</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A consistency model defines the guarantees a distributed system provides about the visibility and ordering of reads and writes across replicas. Choosing a model involves trading off correctness guarantees against performance and availability.</p>
+<h2 id="the-spectrum">The Spectrum</h2>
 <p>Models are ordered from strongest (most correct, most expensive) to weakest (most available, most performant):</p>
-<h3>Linearizability (Strong Consistency)</h3>
+<h3 id="linearizability-strong-consistency">Linearizability (Strong Consistency)</h3>
 <p>Every operation appears to take effect instantaneously at some point between its invocation and response. All clients observe a single, consistent timeline — equivalent to a single-node system. Reads always return the most recent write.</p>
 <ul>
 <li>Requires reads to go through the leader and be confirmed by a quorum (or equivalent).</li>
 <li>Highest latency, lowest availability under partitions.</li>
 <li>Implemented in: etcd, ZooKeeper, Spanner, DynamoDB (strongly consistent reads).</li>
 </ul>
-<h3>Sequential Consistency</h3>
+<h3 id="sequential-consistency">Sequential Consistency</h3>
 <p>All clients observe operations in the same order, but that order need not align with real-time. One client&#39;s operations appear to all other clients in program order.</p>
 <ul>
 <li>Weaker than linearizability: no real-time guarantee.</li>
 <li>Used in some CPU memory models (x86 TSO), some distributed databases.</li>
 </ul>
-<h3>Causal Consistency</h3>
+<h3 id="causal-consistency">Causal Consistency</h3>
 <p>Operations that are causally related (one preceded the other) are observed in causal order by all clients. Concurrent (causally unrelated) operations may be observed in different orders by different clients.</p>
 <ul>
 <li>Proven to be the strongest consistency model compatible with availability + partition tolerance (COPS paper).</li>
 <li>Implemented with vector clocks or dependency tracking.</li>
 <li>Stronger than eventual; weaker than sequential.</li>
 </ul>
-<h3>Eventual Consistency</h3>
+<h3 id="eventual-consistency">Eventual Consistency</h3>
 <p>Given no new writes, all replicas will eventually converge to the same value. No guarantees on when convergence occurs or what intermediate states clients see.</p>
 <ul>
 <li>Maximum availability; lowest latency.</li>
 <li>Common in: DNS, Dynamo-style stores (Cassandra, DynamoDB default reads), CDN caches.</li>
 <li>Requires conflict resolution strategy (LWW, CRDTs, application-level merge).</li>
 </ul>
-<h3>Strong Eventual Consistency</h3>
+<h3 id="strong-eventual-consistency">Strong Eventual Consistency</h3>
 <p>A stronger variant of eventual consistency provided by CRDTs (→ <a href="../distributed/crdts.html">Crdts</a>): replicas that have received the same updates are in the same state <em>immediately</em> — no further reconciliation needed. The merge operation&#39;s commutativity, associativity, and idempotency guarantee this.</p>
 <p>Sits between eventual consistency and causal consistency on the spectrum.</p>
-<h2>Isolation Levels (Transactions)</h2>
+<h2 id="isolation-levels-transactions">Isolation Levels (Transactions)</h2>
 <p>For transactional systems, consistency is described in terms of isolation levels (weakest to strongest):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -369,7 +380,7 @@
 </tr>
 </tbody></table></div>
 <p>Full serializability is equivalent to executing transactions one at a time.</p>
-<h2>Replication Decisions Map to Consistency Models</h2>
+<h2 id="replication-decisions-map-to-consistency-models">Replication Decisions Map to Consistency Models</h2>
 <p>Vitillo makes this relationship concrete using Raft as the example (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -393,7 +404,7 @@
 </tbody></table></div>
 <p>The tradeoff: stronger consistency → more coordination → higher latency and lower availability. This is the practical expression of the PACELC theorem: even in the absence of partitions, consistency and latency trade off against each other.</p>
 <p>Note on leader reads: the leader cannot serve reads directly from local state without first confirming with a quorum that it is still the leader. A stale leader (partitioned from the majority) would otherwise serve stale reads. This confirmation step is what makes linearizable reads expensive.</p>
-<h2>Causal Consistency: COPS Implementation</h2>
+<h2 id="causal-consistency-cops-implementation">Causal Consistency: COPS Implementation</h2>
 <p>Vitillo describes COPS (Clusters of Order-Preserving Servers) as a reference implementation of causal+ consistency (causal consistency + conflict resolution via LWW, so concurrent writes always converge). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 11)</p>
 <p><strong>Key mechanism — dependency tracking</strong>:</p>
 <ul>
@@ -404,14 +415,14 @@
 </ul>
 <p><strong>Availability trade-off</strong>: a replica can fail after committing locally but before broadcasting. This causes data loss for that write. COPS accepts this tradeoff to avoid paying the latency of waiting for remote acknowledgment on the write path.</p>
 <p>COPS shows causal consistency can be implemented across geo-distributed clusters with low write latency and full availability under partitions — the strongest consistency model that can make both guarantees.</p>
-<h2>CAP Connection</h2>
+<h2 id="cap-connection">CAP Connection</h2>
 <p>The <a href="../distributed/cap-theorem.html">Cap Theorem</a> states that during a network partition, a system must choose between:</p>
 <ul>
 <li><strong>CP</strong>: Maintain consistency (linearizability), sacrifice availability.</li>
 <li><strong>AP</strong>: Maintain availability, sacrifice consistency (fall back to eventual).</li>
 </ul>
 <p>The PACELC extension adds: even when no partition exists, there is a latency/consistency tradeoff (L vs. C).</p>
-<h2>Linearizability: Precise Definition</h2>
+<h2 id="linearizability-precise-definition">Linearizability: Precise Definition</h2>
 <p>Kleppmann (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) gives the most precise definition: a system is linearizable if it behaves as though there is only one copy of data, and every operation takes effect atomically at some point between its invocation and completion.</p>
 <p>The key consequence: if one client reads a new value, all subsequent reads by any client must also return the new value or something newer. It is a <strong>recency guarantee</strong>, not a transaction isolation guarantee.</p>
 <p><strong>Linearizability is not the same as serializability</strong>:</p>
@@ -422,7 +433,7 @@
 <li>A system can be linearizable but not serializable (a single-object store with linearizable reads/writes but no multi-object transactions).</li>
 </ul>
 <p><strong>SSI is not linearizable</strong>: SSI reads from a consistent snapshot at transaction start — a past point in time. That snapshot may be stale relative to concurrent writes. This is intentional: the snapshot enables efficient reads without blocking.</p>
-<h2>Timeliness vs Integrity (DDIA&#39;s Key Distinction)</h2>
+<h2 id="timeliness-vs-integrity-ddia39s-key-distinction">Timeliness vs Integrity (DDIA&#39;s Key Distinction)</h2>
 <p>Kleppmann introduces a distinction that cuts through the &quot;consistency&quot; confusion (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12):</p>
 <ul>
 <li><strong>Timeliness</strong>: users observe the system in an up-to-date state. CAP&#39;s &quot;C&quot; (linearizability) is a strong timeliness guarantee. Read-after-write is a weaker timeliness guarantee. Violations of timeliness are &quot;eventual consistency.&quot;</li>
@@ -430,14 +441,14 @@
 </ul>
 <p><strong>Integrity is more important than timeliness.</strong> A credit card statement that&#39;s delayed by 24 hours is annoying (timeliness violation); one that&#39;s missing a transaction or has wrong totals is catastrophic (integrity violation). Many applications can tolerate weak timeliness but cannot tolerate integrity violations.</p>
 <p>Coordination-avoiding systems can maintain strong integrity without linearizability — via end-to-end operation IDs, idempotency, and deterministic derivation. See <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12.</p>
-<h2>Safety vs Liveness</h2>
+<h2 id="safety-vs-liveness">Safety vs Liveness</h2>
 <p>Kleppmann (following Lynch) distinguishes:</p>
 <ul>
 <li><strong>Safety properties</strong>: nothing bad ever happens. If violated, you can point to the exact moment. Example: linearizability, uniqueness constraint.</li>
 <li><strong>Liveness properties</strong>: something good eventually happens. Cannot require at every moment. Example: eventual consistency (eventually converges), termination.</li>
 </ul>
 <p>Distributed algorithms must always satisfy safety properties; liveness properties hold only under favourable conditions (no infinite failures, eventually synchronous network).</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -461,13 +472,13 @@
 <blockquote>
 <p><strong>Agreement</strong>: both sources identify causal consistency as the strongest consistency model compatible with availability + partition tolerance. Both treat linearizability as too expensive for most distributed use cases. Kleppmann&#39;s timeliness/integrity distinction is a significant clarifying addition.</p>
 </blockquote>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 10–11) — covers all models from linearizability through eventual; introduces PACELC and causal consistency (COPS).</li>
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 9) — precise linearizability definition; linearizability vs serializability distinction; safety vs liveness.</li>
 <li>(→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12) — timeliness vs integrity; coordination-avoiding systems.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a> — decision guide: which model for which scenario (locks, balances, feeds, multi-region); timeliness vs integrity distinction</li>
 <li><a href="../distributed/cap-theorem.html">Cap Theorem</a></li>
@@ -480,7 +491,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li><li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,20 +309,33 @@
       <h1>Data Models</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../databases/index.html">database</a>
-        <span class="page-updated">Updated 18<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/databases.html">databases</a></li><li><a class="tag-chip" href="../tags/data-models.html">data-models</a></li><li><a class="tag-chip" href="../tags/relational.html">relational</a></li><li><a class="tag-chip" href="../tags/document.html">document</a></li><li><a class="tag-chip" href="../tags/graph.html">graph</a></li><li><a class="tag-chip" href="../tags/query-languages.html">query-languages</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A data model determines how data is organised, how it can be queried, and what kind of relationships it can represent efficiently. The history of data models is a history of abstraction: each generation hides complexity behind a cleaner interface while trading off something else. The dominant models today are relational, document, and graph — each suited to different relationship structures.</p>
-<h2>Historical Progression</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#historical-progression">Historical Progression</a></li><li><a href="#relational-model">Relational Model</a></li><li><a href="#document-model">Document Model</a></li><li class="toc-sub"><a href="#nosql-data-modeling-access-pattern-driven-design">NoSQL Data Modeling: Access-Pattern-Driven Design</a></li><li><a href="#graph-model">Graph Model</a></li><li><a href="#network-model-historical">Network Model (Historical)</a></li><li><a href="#schema-on-write-vs-schema-on-read">Schema-on-Write vs Schema-on-Read</a></li><li><a href="#query-languages">Query Languages</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A data model determines how data is organised, how it can be queried, and what kind of relationships it can represent efficiently. The history of data models is a history of abstraction: each generation hides complexity behind a cleaner interface while trading off something else. The dominant models today are relational, document, and graph — each suited to different relationship structures.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Three dominant data models match three relationship structures.</strong> Relational for many-to-many (joins), document for one-to-many trees (nested entities), graph for arbitrary highly-connected data. Picking the wrong model creates expensive workarounds.</li>
+<li><strong>Relational won by hiding access paths.</strong> Codd&#39;s 1970 insight: programmers declare <em>what</em> they want; the optimiser decides <em>how</em> to retrieve it. CODASYL&#39;s manual graph navigation lost because schema changes meant rewriting application code.</li>
+<li><strong>NoSQL is more tightly coupled to access patterns than relational, not less.</strong> Without joins, data must be pre-joined at write time for expected reads. Changing the access pattern can require rebuilding the data model from scratch.</li>
+<li><strong>Single-table design</strong> (DynamoDB) deliberately denormalises by overloading partition+sort keys as type discriminators. One query retrieves a customer and their orders without joins — but the schema only fits the planned access patterns.</li>
+<li><strong>Schema-on-read is not schemaless.</strong> The schema is implicit in application code rather than enforced in the database. The trade-off is migration cost (DB alter vs application interpretation) vs validation guarantees.</li>
+<li><strong>Polyglot persistence is the modern reality.</strong> No single store fits every workload. Use relational for transactional core, document for content, graph for relationships, columnar for analytics — each where it fits.</li>
+</ul>
+<h2 id="historical-progression">Historical Progression</h2>
 <p><strong>Hierarchical model</strong> (1960s–70s): tree-structured records. One-to-many relationships were natural; many-to-many required duplication. Navigated by application code.</p>
 <p><strong>Network model / CODASYL</strong> (1970s): generalised hierarchical to allow records to have multiple parents. Relationships were implemented as explicit access paths (pointers). Programmers had to navigate the graph manually — changing the data model required changing application code.</p>
 <p><strong>Relational model</strong> (E.F. Codd, 1970): hid access path decisions behind a declarative query language. The optimizer chooses how to navigate the data; the programmer declares what they want. Won decisively by the mid-1980s and has dominated for 25–30 years.</p>
 <p><strong>NoSQL</strong> (2009–): not a specific technology. The name originated as a Twitter hashtag for a 2009 open-source database meetup; retroactively reinterpreted as &quot;Not Only SQL.&quot; Driven by: need for greater scalability, open-source preference, specialised query needs, desire for more dynamic schemas. <strong>Polyglot persistence</strong>: relational and non-relational stores coexist within one application, each used where it fits best.</p>
-<h2>Relational Model</h2>
+<h2 id="relational-model">Relational Model</h2>
 <p><strong>Origin</strong>: E.F. Codd, 1970. Beat the network model (CODASYL) by hiding access path decisions behind a declarative query language.</p>
 <p><strong>Structure</strong>: data organised into <strong>relations</strong> (tables) of <strong>tuples</strong> (rows) with a fixed schema. Relationships are expressed via foreign keys — references between rows in different tables. Joins reconstruct related data at query time.</p>
 <p><strong>Strengths</strong>:</p>
@@ -333,7 +353,7 @@
 </ul>
 <p><strong>Normalization rationale</strong>: store human-meaningful information (e.g., city names, industry names) in one place and reference it by ID. IDs never need to change even when the thing they refer to changes; duplicated text creates update anomalies. IDs have no meaning to humans and thus never need to change — only the display name does.</p>
 <p><strong>Used in</strong>: PostgreSQL, MySQL, Oracle, SQL Server, SQLite.</p>
-<h2>Document Model</h2>
+<h2 id="document-model">Document Model</h2>
 <p><strong>Structure</strong>: self-contained JSON or XML documents. A document typically stores a complete entity with all its related data nested — avoiding joins for the common case.</p>
 <p><strong>Strengths</strong>:</p>
 <ul>
@@ -353,7 +373,7 @@
 <blockquote>
 <p><strong>Open question:</strong> The relational vs. document debate has softened — PostgreSQL supports JSONB natively, and MongoDB added multi-document transactions. The boundary is increasingly a spectrum.</p>
 </blockquote>
-<h3>NoSQL Data Modeling: Access-Pattern-Driven Design</h3>
+<h3 id="nosql-data-modeling-access-pattern-driven-design">NoSQL Data Modeling: Access-Pattern-Driven Design</h3>
 <p>A critical misconception: NoSQL is often described as &quot;more flexible&quot; because it has no enforced schema. In practice, NoSQL stores are <strong>more tightly coupled to access patterns than relational databases</strong>, not less. Because NoSQL stores avoid joins, data must be pre-joined (denormalized) at write time for the expected read patterns. If the access pattern changes, the data model may need to be rebuilt from scratch.</p>
 <p><strong>DynamoDB as a concrete example</strong> (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 19):</p>
 <p>DynamoDB&#39;s primary abstraction is a table with items. Each item has a <strong>partition key</strong> (determines which partition/node holds the item) and an optional <strong>sort key</strong> (determines ordering within a partition, enabling range queries within the partition). The partition key defines the unit of scalability; the sort key defines the unit of queryability within a partition.</p>
@@ -385,7 +405,7 @@
 </ul>
 <p><strong>Note</strong>: DynamoDB&#39;s internal architecture (Raft-based, 3 replicas per partition, write acked at 2/3) is entirely different from the 1997 Dynamo paper (leaderless quorum). The name is historical, not architectural.</p>
 <p>The key takeaway: <strong>NoSQL requires identifying access patterns upfront and modeling data around them</strong>. Retrofitting different access patterns to an existing NoSQL schema is expensive.</p>
-<h2>Graph Model</h2>
+<h2 id="graph-model">Graph Model</h2>
 <p><strong>Structure</strong>: vertices (nodes, entities) and edges (relationships, arcs) — both with arbitrary properties.</p>
 <p><strong>Two main variants</strong>:</p>
 <ul>
@@ -415,9 +435,9 @@
 </ul>
 <p><strong>Query languages</strong>: Cypher (Neo4j, declarative pattern matching), SPARQL (RDF, triple-pattern queries), Gremlin (Apache TinkerPop, imperative traversal), Datalog (recursive rules, subset of Prolog).</p>
 <p><strong>Used in</strong>: Neo4j (social networks, fraud detection, knowledge graphs), Amazon Neptune, Datomic (triple-store with immutable history).</p>
-<h2>Network Model (Historical)</h2>
+<h2 id="network-model-historical">Network Model (Historical)</h2>
 <p>CODASYL (1970s) used a network model: records linked via explicit access paths (pointers). Programmers had to navigate the graph manually — changing the data model required changing application code. Relational won because it decoupled the query from the access path.</p>
-<h2>Schema-on-Write vs Schema-on-Read</h2>
+<h2 id="schema-on-write-vs-schema-on-read">Schema-on-Write vs Schema-on-Read</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -448,7 +468,7 @@
 </tr>
 </tbody></table></div>
 <p>Schema-on-read is not &quot;schemaless&quot; — there is an implicit schema assumed by the application. The schema is just not enforced by the database.</p>
-<h2>Query Languages</h2>
+<h2 id="query-languages">Query Languages</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -496,7 +516,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Declarative vs imperative</strong>: declarative queries (SQL, Cypher) tell the DB <em>what</em> data you want; the optimizer decides <em>how</em> to retrieve it. This enables indexing, parallel execution, and plan changes without touching application code. Imperative queries (MapReduce) give more control but forgo these optimizations.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -517,7 +537,7 @@
 <td>Frames the NoSQL modeling shift as <strong>solution domain modeling vs. problem domain modeling</strong>: relational normalisation models the <em>problem domain</em> (eliminate redundancy, support any query); NoSQL models the <em>solution domain</em> (optimise for actual access patterns, denormalise for reads). &quot;Table per use case&quot; is the practical heuristic. Trade-off: reads are fast; writes are slower; updates to duplicated data require application-level management. Also covers four NoSQL model types (key-value, document, wide column, graph) and notes that graph databases are the exception — inherently difficult to partition horizontally. (ch. 10)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../databases/storage-engines.html">Storage Engines</a> — data model determines how the engine must store and index data</li>
 <li><a href="../databases/transactions.html">Transactions</a> — ACID guarantees apply at the data model boundary</li>

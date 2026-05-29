@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,19 +309,23 @@
       <h1>Backpressure</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/backpressure.html">backpressure</a></li><li><a class="tag-chip" href="../tags/flow-control.html">flow-control</a></li><li><a class="tag-chip" href="../tags/stability.html">stability</a></li><li><a class="tag-chip" href="../tags/queueing.html">queueing</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#backpressure-vs-load-shedding">Backpressure vs Load Shedding</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#mechanisms">Mechanisms</a></li><li class="toc-sub"><a href="#bounded-queues-with-blocking-producers">Bounded queues with blocking producers</a></li><li class="toc-sub"><a href="#credit-based-flow-control">Credit-based flow control</a></li><li class="toc-sub"><a href="#blocking-io-as-implicit-backpressure">Blocking I/O as implicit backpressure</a></li><li class="toc-sub"><a href="#pull-based-stream-processing">Pull-based stream processing</a></li><li class="toc-sub"><a href="#async-channel-auto-scaling">Async channel + auto-scaling</a></li><li><a href="#when-backpressure-is-not-available">When Backpressure Is Not Available</a></li><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#backpressure-and-architecture-style">Backpressure and Architecture Style</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Backpressure is a flow-control mechanism in which a downstream component signals to an upstream producer that it cannot keep up, causing the producer to slow down rather than continue submitting work at its current rate. The signal can be explicit (a protocol message, a returned status) or implicit (a bounded queue refusing new entries). The defining property: load adjustment happens <em>upstream of</em> the bottleneck rather than at the bottleneck itself.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>A system without backpressure has only two states under overload: accept everything until something breaks, or reject at the boundary (load shedding). Backpressure adds a third option — propagate the slowdown upstream so producers experience the bottleneck before downstream components are overwhelmed. Without it, queues grow without bound, response times grow without bound (by Little&#39;s Law: L = λW, see <a href="../distributed/queueing-theory.html">Queueing Theory</a>), and the failure mode is typically a cascading collapse rather than graceful degradation (→ <a href="../operations/common-failure-causes.html">Common Failure Causes</a>).</p>
 <p>Nygard&#39;s framing in <a href="../sources/release-it.html">Release It</a>: &quot;Every failing system starts with a queue backing up somewhere.&quot; Backpressure is the architectural response to that observation.</p>
-<h2>Backpressure vs Load Shedding</h2>
+<h2 id="backpressure-vs-load-shedding">Backpressure vs Load Shedding</h2>
 <p>These are often conflated but solve different problems and apply at different boundaries.</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -351,7 +362,7 @@
 </tr>
 </tbody></table></div>
 <p>From <a href="../sources/release-it.html">Release It</a> ch. 5: &quot;Back pressure applies within a system boundary; Shed Load applies at the boundary.&quot; Both belong in a complete stability strategy.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -376,19 +387,19 @@
 <td>Kleppmann&#39;s stream processing chapters treat backpressure as a property of log-based brokers (Kafka): consumers track offsets and read at their own pace; the broker retains messages so a slow consumer doesn&#39;t lose data. Contrasts with AMQP/JMS where slow consumers cause broker memory pressure.</td>
 </tr>
 </tbody></table></div>
-<h2>Mechanisms</h2>
-<h3>Bounded queues with blocking producers</h3>
+<h2 id="mechanisms">Mechanisms</h2>
+<h3 id="bounded-queues-with-blocking-producers">Bounded queues with blocking producers</h3>
 <p>The canonical in-process pattern. Producer threads write to a <code>BlockingQueue</code>; when the queue is at capacity, the producer&#39;s <code>put()</code> call blocks until a consumer drains an element (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 4). The architectural effect: producer throughput is bounded by consumer throughput, never exceeding it.</p>
 <p><strong>Critical constraint:</strong> the queue <em>must be bounded</em>. An unbounded queue accepts work indefinitely while response time grows without bound. From <a href="../sources/release-it.html">Release It</a>: &quot;Unbounded queues mask the backlog: they accept work indefinitely, but response time grows without bound.&quot; This is Little&#39;s Law in action — see <a href="../distributed/queueing-theory.html">Queueing Theory</a>.</p>
-<h3>Credit-based flow control</h3>
+<h3 id="credit-based-flow-control">Credit-based flow control</h3>
 <p>The producer is granted a finite number of <em>credits</em> by the consumer; each submitted item consumes a credit; the consumer issues new credits as it drains work. TCP&#39;s sliding window is the classic example. Reactive Streams (Akka Streams, Project Reactor, RxJava) formalised this for application-level stream processing: subscribers signal demand to publishers via <code>request(n)</code>.</p>
-<h3>Blocking I/O as implicit backpressure</h3>
+<h3 id="blocking-io-as-implicit-backpressure">Blocking I/O as implicit backpressure</h3>
 <p>In synchronous request-response systems, a slow downstream service causes the caller&#39;s I/O to block. From <a href="../sources/release-it.html">Release It</a> ch. 4 and <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 11: this is the <em>cause</em> of cascading failures, but it is also a form of backpressure — the slow service is signalling overload to the caller. The problem is that the signal arrives via thread blocking, which has terrible failure characteristics (no timeout, no graceful degradation). Replace with explicit signals + <a href="../patterns/timeout.html">Timeout</a> + <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>.</p>
-<h3>Pull-based stream processing</h3>
+<h3 id="pull-based-stream-processing">Pull-based stream processing</h3>
 <p>Kafka-style log brokers retain messages on the broker side; consumers read at their own pace via offset tracking (→ <a href="../streams/stream-processing.html">Stream Processing</a>). The broker doesn&#39;t need to push messages or buffer them in memory per-consumer. Consumer slowness manifests as consumer lag — observable, bounded by retention, and not a threat to broker stability.</p>
-<h3>Async channel + auto-scaling</h3>
+<h3 id="async-channel-auto-scaling">Async channel + auto-scaling</h3>
 <p>Producer submits to a durable queue; a consumer pool auto-scales based on queue depth. Producer never blocks; consumer pool adjusts to match producer rate (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. on rate limiting). The queue depth is the backpressure signal — visible to the auto-scaler, not to the producer.</p>
-<h2>When Backpressure Is Not Available</h2>
+<h2 id="when-backpressure-is-not-available">When Backpressure Is Not Available</h2>
 <p>When propagating backpressure isn&#39;t possible (the upstream is an uncontrolled client, the protocol doesn&#39;t support it, the slowdown would itself be a failure), the alternatives degrade in this order:</p>
 <ol>
 <li><strong>Backpressure</strong> — slow down the upstream</li>
@@ -397,15 +408,15 @@
 <li><strong>Circuit breaker</strong> — stop calling a failing dependency entirely (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>)</li>
 </ol>
 <p>These are complementary, not alternative. A complete stability strategy uses all four at different boundaries.</p>
-<h2>Anti-patterns</h2>
+<h2 id="anti-patterns">Anti-patterns</h2>
 <p><strong>Unbounded queues.</strong> The most common backpressure mistake. Java&#39;s <code>LinkedBlockingQueue</code> defaults to <code>Integer.MAX_VALUE</code> — effectively unbounded. Memory grows; response time grows; the system appears healthy until it doesn&#39;t. Always set an explicit capacity.</p>
 <p><strong>Backpressure that propagates to the user.</strong> If backpressure ultimately blocks an end-user-facing request, the user experiences it as a slow page. Backpressure between async stages is fine; backpressure between sync request-handling threads and a queue means the user waits. Use load shedding at the user-facing edge instead.</p>
 <p><strong>Retries that defeat backpressure.</strong> A client that retries immediately on rejection turns load shedding into amplification: the rejected request comes back as additional load. Exponential backoff with jitter is the standard mitigation (→ <a href="../patterns/retry.html">Retry</a>).</p>
 <p><strong>Backpressure without observability.</strong> Queue depth is a leading indicator of capacity exhaustion. From <a href="../sources/release-it.html">Release It</a> ch. 17: &quot;watch queue depth as first indicator of performance degradation.&quot; If queue depth isn&#39;t monitored, backpressure is silent until it isn&#39;t.</p>
-<h2>Backpressure and Architecture Style</h2>
+<h2 id="backpressure-and-architecture-style">Backpressure and Architecture Style</h2>
 <p>Backpressure assumes upstream components can slow down. In synchronous architectures (REST chains, RPC), this means blocking — which is what causes cascading failures. In asynchronous architectures (event-driven, log-based messaging), it means producers continue at their natural rate and consumer lag accumulates as a tractable, observable quantity.</p>
 <p>This is one of several structural reasons why <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> and <a href="../streams/stream-processing.html">Stream Processing</a> handle variable load more gracefully than synchronous chains: backpressure is built into the substrate rather than retrofitted via stability patterns (→ <a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a>).</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — Little&#39;s Law, utilisation curves, why unbounded queues are pathological</li>
 <li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — the load-shedding side of the same problem</li>
@@ -416,8 +427,10 @@
 <li><a href="../concepts/messaging.html">Messaging</a> — message-based architectures naturally support backpressure</li>
 <li><a href="../streams/stream-processing.html">Stream Processing</a> — pull-based consumption as the canonical backpressure pattern</li>
 <li><a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a> — architectural decision that determines backpressure semantics</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — backpressure&#39;s role in the full stability pattern set</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — backpressure as the answer to &quot;queue depth growing without bound&quot;</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Every failing system starts with a queue backing up somewhere.&quot; — Nygard, <a href="../sources/release-it.html">Release It</a> ch. 8</p>
 </blockquote>
@@ -429,7 +442,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
+        <ul><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../streams/change-data-capture.html">Change Data Capture</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,28 @@
       <h1>Stream Processing</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../streams/index.html">stream</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/streaming.html">streaming</a></li><li><a class="tag-chip" href="../tags/kafka.html">kafka</a></li><li><a class="tag-chip" href="../tags/events.html">events</a></li><li><a class="tag-chip" href="../tags/windowing.html">windowing</a></li><li><a class="tag-chip" href="../tags/exactly-once.html">exactly-once</a></li><li><a class="tag-chip" href="../tags/stateful-processing.html">stateful-processing</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/databases.html">databases</a></li><li><a class="tag-chip" href="../tags/messaging.html">messaging</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Stream processing handles data as an unbounded sequence of events — not a bounded dataset processed offline, but a never-ending flow processed with low latency. The key abstraction is the <strong>event</strong>: a small, immutable, self-contained, timestamped record representing something that happened. Events are grouped into <strong>topics</strong> or <strong>streams</strong>. Stream processing is the online counterpart to batch processing; as Apache Flink&#39;s designers put it, &quot;batch is a special case of streaming.&quot;</p>
-<h2>Lambda and Kappa Architectures</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#lambda-and-kappa-architectures">Lambda and Kappa Architectures</a></li><li><a href="#kafka-production-mechanics">Kafka Production Mechanics</a></li><li><a href="#message-broker-taxonomy">Message Broker Taxonomy</a></li><li class="toc-sub"><a href="#amqpjms-style-brokers-rabbitmq-activemq">AMQP/JMS-Style Brokers (RabbitMQ, ActiveMQ)</a></li><li class="toc-sub"><a href="#log-based-message-brokers-kafka-amazon-kinesis-azure-event-hubs">Log-Based Message Brokers (Kafka, Amazon Kinesis, Azure Event Hubs)</a></li><li><a href="#stream-processing-use-cases">Stream Processing Use Cases</a></li><li class="toc-sub"><a href="#complex-event-processing-cep">Complex Event Processing (CEP)</a></li><li class="toc-sub"><a href="#stream-analytics">Stream Analytics</a></li><li class="toc-sub"><a href="#materialized-view-maintenance">Materialized View Maintenance</a></li><li class="toc-sub"><a href="#search-on-streams">Search on Streams</a></li><li><a href="#stateless-processing-topology-primitives">Stateless Processing Topology Primitives</a></li><li class="toc-sub"><a href="#transformation-operators">Transformation Operators</a></li><li class="toc-sub"><a href="#repartitioning-and-copartitioning">Repartitioning and Copartitioning</a></li><li class="toc-sub"><a href="#partition-assignment">Partition Assignment</a></li><li><a href="#windowing">Windowing</a></li><li class="toc-sub"><a href="#late-event-handling">Late Event Handling</a></li><li><a href="#event-time-vs-processing-time">Event Time vs Processing Time</a></li><li><a href="#reprocessing">Reprocessing</a></li><li><a href="#stateful-state-management">Stateful State Management</a></li><li class="toc-sub"><a href="#internal-state-stores">Internal State Stores</a></li><li class="toc-sub"><a href="#external-state-stores">External State Stores</a></li><li class="toc-sub"><a href="#effectively-once-processing">Effectively Once Processing</a></li><li><a href="#stream-joins">Stream Joins</a></li><li class="toc-sub"><a href="#stream-stream-join-window-join">Stream-Stream Join (Window Join)</a></li><li class="toc-sub"><a href="#stream-table-join-enrichment">Stream-Table Join (Enrichment)</a></li><li class="toc-sub"><a href="#table-table-join-materialized-view-maintenance">Table-Table Join (Materialized View Maintenance)</a></li><li><a href="#fault-tolerance-and-exactly-once">Fault Tolerance and Exactly-Once</a></li><li class="toc-sub"><a href="#microbatching-spark-streaming">Microbatching (Spark Streaming)</a></li><li class="toc-sub"><a href="#checkpointing-apache-flink">Checkpointing (Apache Flink)</a></li><li class="toc-sub"><a href="#exactly-once-semantics">Exactly-Once Semantics</a></li><li class="toc-sub"><a href="#rebuilding-state">Rebuilding State</a></li><li><a href="#heavyweight-vs-lightweight-stream-processing-frameworks">Heavyweight vs Lightweight Stream Processing Frameworks</a></li><li class="toc-sub"><a href="#heavyweight-frameworks">Heavyweight Frameworks</a></li><li class="toc-sub"><a href="#lightweight-frameworks">Lightweight Frameworks</a></li><li class="toc-sub"><a href="#framework-comparison">Framework Comparison</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-takeaways">Key Takeaways</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Stream processing handles data as an unbounded sequence of events — not a bounded dataset processed offline, but a never-ending flow processed with low latency. The key abstraction is the <strong>event</strong>: a small, immutable, self-contained, timestamped record representing something that happened. Events are grouped into <strong>topics</strong> or <strong>streams</strong>. Stream processing is the online counterpart to batch processing; as Apache Flink&#39;s designers put it, &quot;batch is a special case of streaming.&quot;</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>The log is the unifying primitive.</strong> Log-based brokers (Kafka) differ fundamentally from queue-based brokers (RabbitMQ): messages are retained and consumers track offsets, enabling fan-out, replay, and time-travel debugging that queues cannot offer.</li>
+<li><strong>Event time, not processing time.</strong> Watermarks bound how long the system waits for late events; windowing over event time is the only correct way to compute time-based aggregates on streams.</li>
+<li><strong>State is first-class.</strong> Stateful stream processing requires explicit state stores (RocksDB-backed, changelog-replicated). Stateless topology primitives compose simply; stateful operators introduce the partitioning and fault-tolerance problems that dominate production complexity.</li>
+<li><strong>Exactly-once is achievable but expensive.</strong> Idempotent producers + transactional APIs in Kafka, distributed snapshots in Flink, microbatching in Spark Streaming. Pick the framework whose fault-tolerance model matches your latency budget.</li>
+<li><strong>Reprocessing is a first-class feature.</strong> Replaying the log through a new processor lets you fix bugs, add views, and rebuild state from scratch — the architectural property that distinguishes the streams paradigm from databases.</li>
+<li><strong>Lambda architecture is an anti-pattern.</strong> Unified batch+stream (Flink, Beam) handles both historical replay and live events through one code path. Maintaining two pipelines for the same logic is duplicate work.</li>
+</ul>
+<h2 id="lambda-and-kappa-architectures">Lambda and Kappa Architectures</h2>
 <p>Gorton (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 15) frames the evolution from batch to stream with two named patterns:</p>
 <p><strong>Lambda architecture (2011):</strong> A hybrid incorporating both batch and stream processing:</p>
 <ul>
@@ -321,7 +341,7 @@
 <p>Lambda&#39;s downside: two separate processing stacks (batch and stream) for the same data must be maintained in sync — high operational cost.</p>
 <p><strong>Kappa architecture:</strong> Events are stored in an immutable log (Kafka); consumed and processed as a continuous stream without any separate batch layer. Simpler — one processing paradigm, one codebase. Reprocessing is handled by replaying the log from the beginning with a new consumer group. Now the dominant pattern for new stream processing systems.</p>
 <hr>
-<h2>Kafka Production Mechanics</h2>
+<h2 id="kafka-production-mechanics">Kafka Production Mechanics</h2>
 <p>Gorton (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 14) provides an operator-level view of Kafka that complements the architectural framing from other sources.</p>
 <p><strong>&quot;Dumb broker/smart clients&quot;</strong>: Kafka&#39;s broker is responsible only for durable, ordered, partitioned storage. All intelligence — offset tracking, consumer group coordination, semantic interpretation of keys — lives in the client libraries. This maximises broker throughput and makes the broker horizontally scalable without caring about consumer progress.</p>
 <p><strong>Producer async batching:</strong></p>
@@ -358,9 +378,9 @@
 </ul>
 <p><strong>Real-world scale — Slack:</strong> 1B+ messages/day on 16 brokers with 32 partitions per topic.</p>
 <hr>
-<h2>Message Broker Taxonomy</h2>
+<h2 id="message-broker-taxonomy">Message Broker Taxonomy</h2>
 <p>Two fundamentally different broker designs determine what stream processing guarantees are achievable.</p>
-<h3>AMQP/JMS-Style Brokers (RabbitMQ, ActiveMQ)</h3>
+<h3 id="amqpjms-style-brokers-rabbitmq-activemq">AMQP/JMS-Style Brokers (RabbitMQ, ActiveMQ)</h3>
 <ul>
 <li><strong>Message lifecycle</strong>: deleted after consumer acknowledgment.</li>
 <li><strong>Fan-out</strong>: multiple consumers require separate queues; broker copies messages.</li>
@@ -369,7 +389,7 @@
 <li><strong>Ordering risk</strong>: load balancing + redelivery = messages can arrive out of order at consumers.</li>
 </ul>
 <p>Suited for task queues where each message is a job to be processed exactly once by one worker.</p>
-<h3>Log-Based Message Brokers (Kafka, Amazon Kinesis, Azure Event Hubs)</h3>
+<h3 id="log-based-message-brokers-kafka-amazon-kinesis-azure-event-hubs">Log-Based Message Brokers (Kafka, Amazon Kinesis, Azure Event Hubs)</h3>
 <ul>
 <li><strong>Structure</strong>: partitioned append-only log per topic. Producers append; consumers track their offset.</li>
 <li><strong>Message retention</strong>: messages are never deleted by the broker (until log compaction or configurable retention period). Default retention ~7 days; disk buffer at full write speed ~11 hours.</li>
@@ -380,8 +400,8 @@
 </ul>
 <p><strong>Log compaction</strong>: Kafka can compact a log by keeping only the <strong>most recent value per key</strong>. Tombstones (null values) indicate deleted keys. After compaction, the log acts as a full snapshot of the key-value state — consumers can reconstruct a full database from a compacted log without a separate initial snapshot.</p>
 <p>This is the mechanism that makes CDC and event sourcing work at scale (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>).</p>
-<h2>Stream Processing Use Cases</h2>
-<h3>Complex Event Processing (CEP)</h3>
+<h2 id="stream-processing-use-cases">Stream Processing Use Cases</h2>
+<h3 id="complex-event-processing-cep">Complex Event Processing (CEP)</h3>
 <p>Queries are persistent (stored in the processor); events flow past and are matched against query patterns. Useful for:</p>
 <ul>
 <li>Fraud detection (pattern: charge followed by international charge within 30 minutes)</li>
@@ -389,15 +409,15 @@
 <li>Business rule matching (order followed by no shipping confirmation within 2 days)</li>
 </ul>
 <p>SQL-like languages for pattern matching; Esper, Drools, Apache Storm Trident.</p>
-<h3>Stream Analytics</h3>
+<h3 id="stream-analytics">Stream Analytics</h3>
 <p>Windowed aggregations over event streams: count events per minute, compute percentiles of response times, detect metric anomalies. Probabilistic data structures (HyperLogLog for distinct counts, t-digest for percentiles) enable approximate answers with bounded memory.</p>
-<h3>Materialized View Maintenance</h3>
+<h3 id="materialized-view-maintenance">Materialized View Maintenance</h3>
 <p>As events arrive, update a derived data store (search index, cache, analytics store) continuously. This extends the batch job output pattern to near-real-time. The event log is the source of truth; derived stores are rebuiltable from replay.</p>
-<h3>Search on Streams</h3>
+<h3 id="search-on-streams">Search on Streams</h3>
 <p>Elasticsearch <strong>percolator</strong>: store queries, flow documents past them — match documents against standing queries as they arrive. Used for alerts and notifications.</p>
-<h2>Stateless Processing Topology Primitives</h2>
+<h2 id="stateless-processing-topology-primitives">Stateless Processing Topology Primitives</h2>
 <p>The minimal event-driven microservice follows a consume-process-emit loop: consume an event from an input stream, apply processing logic, produce zero or more output events. (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 5)</p>
-<h3>Transformation Operators</h3>
+<h3 id="transformation-operators">Transformation Operators</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -429,10 +449,10 @@
 </tbody></table></div>
 <p><strong>Branching</strong>: route events to different output streams based on a condition (e.g., event type, error flag). Standard pattern: route unprocessable events to a dead-letter stream rather than dropping them.</p>
 <p><strong>Merging</strong>: consume from multiple input streams and emit to a single output stream. Only merge when a coherent unified schema for the merged domain can be defined.</p>
-<h3>Repartitioning and Copartitioning</h3>
+<h3 id="repartitioning-and-copartitioning">Repartitioning and Copartitioning</h3>
 <p><strong>Repartitioning</strong> produces a new event stream with a different partition count, event key, or partitioner algorithm. Required when the key must change to ensure data locality for downstream stateful processing, or when partition count needs increasing for parallelism.</p>
 <p><strong>Copartitioning</strong> is the special case where two streams are repartitioned to have the same partition count <em>and</em> the same partitioner algorithm. Copartitioned streams guarantee <strong>data locality</strong>: a consumer instance assigned partition N of stream A always holds partition N of stream B — the prerequisite for stateful streaming joins without cross-partition communication.</p>
-<h3>Partition Assignment</h3>
+<h3 id="partition-assignment">Partition Assignment</h3>
 <p>The partition assignor distributes partitions across consumer instances:</p>
 <ul>
 <li><strong>Round-robin</strong> (default): equitable distribution; copartitioned groups are kept together on the same instance</li>
@@ -440,7 +460,7 @@
 <li><strong>Custom</strong>: tailored to external signals (e.g., balanced by consumer lag)</li>
 </ul>
 <p>Stateless processor failures recover trivially: a new instance joins the consumer group and inherits the revoked partitions. No state restoration is needed.</p>
-<h2>Windowing</h2>
+<h2 id="windowing">Windowing</h2>
 <p>Time-based windowing groups events into finite sets for aggregation:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -471,7 +491,7 @@
 <td>User sessions</td>
 </tr>
 </tbody></table></div>
-<h3>Late Event Handling</h3>
+<h3 id="late-event-handling">Late Event Handling</h3>
 <p>How to handle late events is a <strong>business requirement</strong>, not an engineering default. Strategy options:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -498,7 +518,7 @@
 </tr>
 </tbody></table></div>
 <p>Key questions before choosing: How likely are late events? What is the business impact of dropping them? How much state can be retained while waiting? (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 6)</p>
-<h2>Event Time vs Processing Time</h2>
+<h2 id="event-time-vs-processing-time">Event Time vs Processing Time</h2>
 <p><strong>Processing time</strong>: when the event was received by the processor. Simple but non-deterministic — delays, retries, and restarts produce different results.</p>
 <p><strong>Event time</strong>: when the event actually occurred (embedded timestamp). Deterministic — replaying the same log produces the same result. <strong>Always prefer event timestamps</strong> for correctness.</p>
 <p><strong>The straggler problem</strong>: events arrive out of order (especially from mobile clients with intermittent connectivity). The processor must decide when a window is &quot;complete.&quot;</p>
@@ -515,7 +535,7 @@
 <blockquote>
 <p><strong>Contradiction</strong>: Bellemare (stream time, Kafka Streams) and DDIA / mainstream frameworks (watermarks, Flink/Spark/Beam) present two distinct mechanisms for tracking event time progress. Stream time is simpler operationally (no dedicated cluster) but less flexible for complex multi-input topologies. Watermarks provide finer-grained control and are better suited to large-scale cluster-based processing.</p>
 </blockquote>
-<h2>Reprocessing</h2>
+<h2 id="reprocessing">Reprocessing</h2>
 <p>Because event brokers retain immutable logs with per-consumer offsets, consumers can reset their offsets and replay the entire stream — re-running processing as if starting fresh. Steps for safe reprocessing (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 6):</p>
 <ol>
 <li><strong>Determine start point</strong>: stateful consumers should reprocess from the beginning of each subscribed stream (especially entity event streams)</li>
@@ -527,14 +547,14 @@
 <blockquote>
 <p><strong>Note</strong>: events that arrive late during near-real-time processing (marked as late by stream time / watermarks) may appear in the correct position when the stream is reprocessed from the beginning, because the intermittent network or producer delay that caused the lateness is no longer a factor.</p>
 </blockquote>
-<h2>Stateful State Management</h2>
+<h2 id="stateful-state-management">Stateful State Management</h2>
 <p>Most production microservices maintain state: running totals, aggregation windows, entity materializations, join buffers. (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 7)</p>
 <p>Two core abstractions:</p>
 <ul>
 <li><strong>Materialized state</strong> — a read-only projection rebuilt from an immutable source event stream</li>
 <li><strong>State store</strong> — a read-write store where the service writes intermediate computations and business state during processing</li>
 </ul>
-<h3>Internal State Stores</h3>
+<h3 id="internal-state-stores">Internal State Stores</h3>
 <p>Co-located with the microservice instance, most commonly via an embedded key/value store (RocksDB).</p>
 <p><strong>Performance</strong>: RocksDB on a local SSD achieves ~65μs random-access read latency (~15,400 req/s per thread). Adding even 1ms network latency (network-attached disk) drops this to ~939 req/s — a 16× throughput reduction.</p>
 <p><strong>Partition locality</strong>: each instance materializes only its assigned partitions; revoked partitions are dropped on rebalance. A <strong>global state store</strong> variant materializes all partitions to every instance — suitable for small, slowly-changing lookup/dimension tables but must not drive event-processing logic (would produce duplicate output).</p>
@@ -547,38 +567,38 @@
 <li>Full input stream replay — slowest; required if no changelog; all downstream output is reproduced</li>
 </ol>
 <p>Scalability is fully offloaded to the broker and compute cluster — each service scales by adjusting instance count.</p>
-<h3>External State Stores</h3>
+<h3 id="external-state-stores">External State Stores</h3>
 <p>Live outside the microservice container (relational databases, document stores, distributed key/value, geospatial search). Each microservice must maintain its own isolated state copy — sharing materialized state between microservices creates tight coupling and is an anti-pattern.</p>
 <p><strong>Full data locality advantage</strong>: all partitions queryable in one store, enabling relational joins, foreign-key lookups, and geospatial queries without partition locality constraints.</p>
 <p><strong>Race condition risk</strong>: multiple instances write to the same external store from independent stream times — instance A may attempt a join on data instance B has not yet written. Results are nondeterministic and non-reproducible.</p>
 <p><strong>Recovery</strong>: snapshot restore (most common; use the store&#39;s native backup; store consumer offsets inside the snapshot for exact offset recovery), or rebuild from source streams / changelogs (expensive due to network latency).</p>
 <p><strong>Rebuilding vs migrating</strong>: for complex state schema changes, rebuild from source streams (guaranteed correct). For simple additive changes, migration works but risks subtle errors not caught until much later.</p>
-<h3>Effectively Once Processing</h3>
+<h3 id="effectively-once-processing">Effectively Once Processing</h3>
 <p><strong>With broker transactions</strong> (Apache Kafka; Pulsar in progress): atomically commit consumer offsets + changelog updates + output events in a single transaction. Producer failure → broker rolls back; consumers skip uncommitted events. Strongest guarantee.</p>
 <p><strong>Without broker transactions — deduplication</strong>: producers assign events a <strong>dedupe ID</strong> (hash of key, values, and creation time — high-cardinality fields only). Consumers maintain a TTL-bounded, partition-local lookup of seen IDs. Expensive; only best-effort within the TTL window. (→ <a href="../distributed/idempotency.html">Idempotency</a>)</p>
 <p><strong>Without broker transactions — state store transactions</strong>: store consumer group offsets inside the state store; use the store&#39;s own transaction capability to atomically update state and offsets. Achieves effectively once <em>state updates</em> but not effectively once <em>event production</em> (output events remain at-least-once).</p>
-<h2>Stream Joins</h2>
+<h2 id="stream-joins">Stream Joins</h2>
 <p>Stream processors often need to combine data from multiple streams or tables.</p>
-<h3>Stream-Stream Join (Window Join)</h3>
+<h3 id="stream-stream-join-window-join">Stream-Stream Join (Window Join)</h3>
 <p>Both inputs are event streams. Maintain state of events within a time window, indexed by a correlation ID. When a matching event arrives on the other side, emit the joined record.</p>
 <p><em>Example</em>: Join user activity events with ad impression events within a 1-hour session window.</p>
 <p><strong>Challenge</strong>: time alignment — both sides must have compatible time windows, and stragglers may miss their match.</p>
-<h3>Stream-Table Join (Enrichment)</h3>
+<h3 id="stream-table-join-enrichment">Stream-Table Join (Enrichment)</h3>
 <p>One side is an event stream; the other is a slowly-changing database table. The processor maintains a <strong>local copy of the table</strong> (updated via CDC / changelog stream). For each incoming event, look up the local table copy.</p>
 <p><em>Example</em>: Enrich payment events with user profile data (name, country) from a user table.</p>
 <p>The local table copy is a derived view of the changelog. <strong>Time dependence</strong>: the enrichment uses the table version at the time the event arrived — a slowly changing dimension (SCD). For correct analysis, use a unique ID per table version.</p>
-<h3>Table-Table Join (Materialized View Maintenance)</h3>
+<h3 id="table-table-join-materialized-view-maintenance">Table-Table Join (Materialized View Maintenance)</h3>
 <p>Both inputs are changelog streams (from CDC). Maintain a materialized join view that updates as either side changes.</p>
 <p><em>Example</em>: Maintain a &quot;user timeline&quot; view by joining a users changelog with a posts changelog.</p>
-<h2>Fault Tolerance and Exactly-Once</h2>
+<h2 id="fault-tolerance-and-exactly-once">Fault Tolerance and Exactly-Once</h2>
 <p>Stream processors must handle node failures without losing or duplicating events.</p>
-<h3>Microbatching (Spark Streaming)</h3>
+<h3 id="microbatching-spark-streaming">Microbatching (Spark Streaming)</h3>
 <p>Collect events into ~1-second micro-batches; process each batch as a mini-batch job. Exactly-once within a batch via batch job semantics. Latency is bounded by batch interval.</p>
-<h3>Checkpointing (Apache Flink)</h3>
+<h3 id="checkpointing-apache-flink">Checkpointing (Apache Flink)</h3>
 <p>Periodically snapshot all operator state to durable storage. <strong>Barriers</strong>: special marker messages injected into the data stream by the Flink job manager; when all inputs to an operator have received a barrier on <strong>all input streams</strong>, take a snapshot of that operator&#39;s state to persistent storage (RocksDB by default) and echo the barrier downstream. The barrier carries an identifier representing its position in the source (e.g., Kafka offset N). Once the barrier reaches all sinks, the checkpoint is complete. On failure, the entire application is restarted, state is restored from the last complete checkpoint, and the source resumes from offset N+1. (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 15)</p>
 <p>Trade-off: large operator state → expensive checkpointing → throughput impact. <code>min-time-between-checkpoints</code> configuration prevents overlapping checkpoint cycles.</p>
 <p>Enables <strong>exactly-once semantics</strong> for stateful operators with low latency (seconds to minutes of state loss in worst case).</p>
-<h3>Exactly-Once Semantics</h3>
+<h3 id="exactly-once-semantics">Exactly-Once Semantics</h3>
 <p>At-least-once delivery (retry on failure) + idempotent writes = effectively-once. Two approaches:</p>
 <ol>
 <li><p><strong>Idempotent operations</strong>: include the message offset in the write; the downstream store rejects duplicate writes with the same offset. Works when the operation naturally supports this (e.g., upsert by message ID).</p>
@@ -586,23 +606,23 @@
 <li><p><strong>Atomic commit</strong>: write operator state and output in the same atomic transaction (Google Cloud Dataflow, VoltDB). True exactly-once but requires transactional storage.</p>
 </li>
 </ol>
-<h3>Rebuilding State</h3>
+<h3 id="rebuilding-state">Rebuilding State</h3>
 <p>Operator state (e.g., aggregation windows, join buffers) must survive failures. Options:</p>
 <ul>
 <li><strong>Remote datastore</strong> (Redis, Cassandra): state kept externally; reads on every operation → high latency.</li>
 <li><strong>Kafka-backed state</strong> (Samza, Kafka Streams): replicate state updates to a Kafka topic with log compaction. On recovery, rebuild state by replaying the compacted topic — fast because compaction keeps only latest values.</li>
 <li><strong>Recompute from input</strong>: if computation is fast, re-read input stream from last checkpoint offset. Trades CPU for eliminating external state storage.</li>
 </ul>
-<h2>Heavyweight vs Lightweight Stream Processing Frameworks</h2>
+<h2 id="heavyweight-vs-lightweight-stream-processing-frameworks">Heavyweight vs Lightweight Stream Processing Frameworks</h2>
 <p>(→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 11–12)</p>
-<h3>Heavyweight Frameworks</h3>
+<h3 id="heavyweight-frameworks">Heavyweight Frameworks</h3>
 <p><strong>Defining characteristics</strong>: (1) require an independent dedicated resource cluster (master nodes + worker executors + optional ZooKeeper for coordination); (2) use their own internal mechanisms for failure recovery, resource allocation, task distribution, and inter-instance communication. Examples: Apache Spark, Apache Flink, Apache Storm, Apache Heron; Apache Beam (common API that runs on multiple runtimes including Google Dataflow).</p>
 <p><strong>Deployment options</strong>: hosted service (managed, most expensive), dedicated full cluster (historical norm, hundreds/thousands of nodes), or CMS-integrated deployment (Kubernetes as cluster resource manager — Flink/Spark support this, making heavyweight jobs deploy like microservices).</p>
 <p><strong>Checkpointing for state</strong>: snapshots combining <em>operator state</em> (partitionId → offset mappings) and <em>key state</em> (key → state pairs) written atomically to durable external storage (HDFS or equivalent). On recovery, state is loaded from the checkpoint before any new events are processed.</p>
 <p><strong>Shuffle</strong>: cluster-internal communication between worker nodes (requires external shuffle service for dynamic scaling in Spark; Dataflow/Beam handles this transparently).</p>
 <p><strong>Limitations for EDM microservices</strong>: primarily designed for analytical workloads (ETL, window aggregations, anomaly detection); not designed for microservice-style deployment; JVM-only for most frameworks; not all frameworks support indefinite stream materialization (required for gating patterns and table-table joins).</p>
 <p><strong>Multitenancy</strong>: multiple isolated clusters (higher cost) vs namespacing with resource quotas (shared cluster; risk of resource starvation between teams).</p>
-<h3>Lightweight Frameworks</h3>
+<h3 id="lightweight-frameworks">Lightweight Frameworks</h3>
 <p><strong>Defining characteristic</strong>: no dedicated cluster — state management, scaling, and failure recovery are delegated entirely to the event broker and CMS. Applications deploy as individual microservices.</p>
 <p><strong>Shuffle</strong>: events are repartitioned into an <em>internal event stream</em> in the broker. Downstream instances consume from this stream independently, enabling the broker to serve as the inter-instance communication layer.</p>
 <p><strong>State and changelogs</strong>: internal state stores backed by compacted changelog streams in the event broker (see <a href="#stateful-state-management">Stateful State Management</a>). New/recovering instances load changelog to rebuild state before processing new events.</p>
@@ -614,7 +634,7 @@
 <li><strong>Apache Samza embedded mode</strong>: similar feature set; ZooKeeper coordination by default (can swap for Kubernetes); slightly behind Kafka Streams in feature completeness</li>
 </ul>
 <p><strong>Limitation</strong>: tightly coupled to Apache Kafka; not portable to other event brokers.</p>
-<h3>Framework Comparison</h3>
+<h3 id="framework-comparison">Framework Comparison</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -664,7 +684,7 @@
 <td>Stateful microservices, stream-table joins</td>
 </tr>
 </tbody></table></div>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -689,7 +709,7 @@
 <td>Operator-level Kafka framing: &quot;dumb broker/smart clients&quot; design philosophy; producer batching parameters (batch.size, linger.ms, acks=0/1/all, enable.idempotence); consumer commit timing for at-most-once vs at-least-once; semantic partitioning (hash key) and partition count constraints; consumer group mechanics (coordinator/leader/CooperativeStickyAssignor); ISR + min.insync.replicas durability model; compacted topics for GDPR tombstones; Slack scale data point (ch. 14). Lambda vs Kappa architecture distinction; batch vs stream latency comparison; Flink DataStream API, operator chaining, task slots/task managers, job manager HA, lazy execution; Flink barrier-based checkpointing detail (RocksDB backend, barrier propagation, recovery from offset N+1, min-time-between-checkpoints) (ch. 15)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — event log as the source of truth for stream processors; CDC as the bridge between databases and streams</li>
 <li><a href="../streams/batch-processing.html">Batch Processing</a> — batch is the bounded, offline version of the same computation model</li>
@@ -699,6 +719,14 @@
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — exactly-once semantics relate to linearizability and integrity guarantees</li>
 <li><a href="../distributed/backpressure.html">Backpressure</a> — pull-based consumption as the canonical backpressure mechanism; consumer lag as observable signal</li>
 <li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — Little&#39;s Law and percentile arithmetic for sizing stream-processing pipelines</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Choose log-based brokers (Kafka) when you need retention, replay, fan-out, or reprocessing.</strong> Choose queue-based brokers (RabbitMQ) when you need traditional point-to-point semantics with consumption-deletes-message behaviour.</li>
+<li><strong>Use event time and watermarks for time-based aggregations.</strong> Processing time is a convenience that gives wrong answers when events arrive late or out of order.</li>
+<li><strong>Make state explicit.</strong> Stateful operators need durable state stores (RocksDB + changelog), not in-process memory. Production failure usually traces back to state that was assumed to be ephemeral but actually wasn&#39;t.</li>
+<li><strong>Match the framework&#39;s fault-tolerance model to your latency budget.</strong> Microbatching (Spark Streaming) is high-latency, easy-to-reason-about. Checkpointing (Flink) is low-latency, more complex. Pick deliberately.</li>
+<li><strong>Reject the Lambda architecture.</strong> Maintaining batch and stream pipelines for the same logic is duplicate work and inevitable drift. Unified frameworks (Flink, Beam) handle both through one code path.</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>

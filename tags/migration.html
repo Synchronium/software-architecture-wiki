@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <meta name="description" content="9 pages tagged &quot;Migration&quot; in the Software Architecture wiki.">
+  <meta name="description" content="10 pages tagged &quot;Migration&quot; in the Software Architecture wiki.">
   <meta property="og:title" content="Migration — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="9 pages tagged &quot;Migration&quot; in the Software Architecture wiki.">
+  <meta property="og:description" content="10 pages tagged &quot;Migration&quot; in the Software Architecture wiki.">
   <title>Migration — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -209,8 +209,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -260,6 +264,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -269,6 +274,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -281,6 +287,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -295,13 +302,13 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content">
       
     <div class="tag-index-header">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../tags/index.html">Tags</a> <span class="sep">›</span> Migration</nav>
       <h1>Migration</h1>
-      <p class="tag-count">9 pages</p>
+      <p class="tag-count">10 pages</p>
     </div>
     <ul class="tag-index-list">
       <li class="tag-index-item">
@@ -333,6 +340,11 @@
         <a href="../concepts/fracture-planes.html">Fracture Planes</a>
         <span class="page-type-badge">concept</span>
         <p class="summary">Eight types of natural split points for monolith decomposition: business domain (primary), regulatory compliance, change cadence, team location, risk, performance, technology (sparingly), user personas; six forms of monolith; distributed monolith anti-pattern</p>
+      </li>
+      <li class="tag-index-item">
+        <a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a>
+        <span class="page-type-badge">comparison</span>
+        <p class="summary">Decision tree: where's the seam, is correctness the dominant risk, granularity, duration, parallel-run cost; pattern composition (service extraction, embedded capability extraction, database split, platform migration); database decomposition patterns; rollback as a feature</p>
       </li>
       <li class="tag-index-item">
         <a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a>

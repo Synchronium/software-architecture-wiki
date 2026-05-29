@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,8 +316,12 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Three protocols dominate modern API design. The choice matters early — it shapes client coupling, performance characteristics, caching behaviour, schema governance, and how the API evolves. The good news: the decision space is smaller than it looks.</p>
-<h2>Decision Summary</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#decision-summary">Decision Summary</a></li><li><a href="#detailed-comparison">Detailed Comparison</a></li><li><a href="#when-each-protocol-fits">When Each Protocol Fits</a></li><li class="toc-sub"><a href="#rest">REST</a></li><li class="toc-sub"><a href="#grpc">gRPC</a></li><li class="toc-sub"><a href="#graphql">GraphQL</a></li><li><a href="#mixing-protocols">Mixing Protocols</a></li><li><a href="#the-chatty-api-anti-pattern">The Chatty API Anti-Pattern</a></li><li><a href="#evolution-and-breaking-changes">Evolution and Breaking Changes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Three protocols dominate modern API design. The choice matters early — it shapes client coupling, performance characteristics, caching behaviour, schema governance, and how the API evolves. The good news: the decision space is smaller than it looks.</p>
+<h2 id="decision-summary">Decision Summary</h2>
 <p>The default rule (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> ch. 1): <strong>traffic type drives protocol choice</strong>.</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -337,7 +348,7 @@
 </tr>
 </tbody></table></div>
 <p>Override with explicit justification captured in an ADR (→ <a href="../concepts/adrs.html">Adrs</a>).</p>
-<h2>Detailed Comparison</h2>
+<h2 id="detailed-comparison">Detailed Comparison</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -426,8 +437,8 @@
 <td>Custom parsing of POST body</td>
 </tr>
 </tbody></table></div>
-<h2>When Each Protocol Fits</h2>
-<h3>REST</h3>
+<h2 id="when-each-protocol-fits">When Each Protocol Fits</h2>
+<h3 id="rest">REST</h3>
 <p>Use REST when:</p>
 <ul>
 <li>Consumers include third parties or unknown clients (you cannot control what they use to call you)</li>
@@ -437,7 +448,7 @@
 <li>You want broad ecosystem tooling without a build step</li>
 </ul>
 <p>Practical ceiling: REST&#39;s loose coupling is a strength for external APIs but a weakness internally — without schema enforcement, field-level type errors and silent missing fields surface only at runtime. Use consumer-driven contract tests (→ <a href="../concepts/api-testing.html">Api Testing</a>) to compensate.</p>
-<h3>gRPC</h3>
+<h3 id="grpc">gRPC</h3>
 <p>Use gRPC when:</p>
 <ul>
 <li>Both producer and consumer are internal, controlled services</li>
@@ -448,7 +459,7 @@
 <p>gRPC&#39;s schema rigidity is a feature, not a constraint, for east–west traffic — type errors are caught at compile time, and the schema is a single source of truth enforced across languages.</p>
 <p><strong>Do not</strong> expose raw gRPC to browser clients without a grpc-web translation layer. For browser-facing internal tools, REST or GraphQL is simpler.</p>
 <p><strong>Schema generation trap</strong>: generating <code>.proto</code> from OAS (or vice versa) seems attractive but is fragile. Adding a field that sorts alphabetically before existing ones shifts all subsequent field numbers in the generated <code>.proto</code>, silently breaking binary compatibility for all existing clients. Design REST and gRPC interfaces independently; record the decision in an ADR (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> ch. 1).</p>
-<h3>GraphQL</h3>
+<h3 id="graphql">GraphQL</h3>
 <p>Use GraphQL when:</p>
 <ul>
 <li>A mobile client or BFF (Backend for Frontend) needs to control exactly which fields it receives</li>
@@ -464,7 +475,7 @@
 <li>Security is more complex — query depth and complexity limits must be enforced to prevent abuse (→ <a href="../concepts/threat-modeling.html">Threat Modeling</a>)</li>
 </ul>
 <p>GraphQL works best as a <strong>facade</strong> layered over existing REST or gRPC services, not as the foundational API style for a new system.</p>
-<h2>Mixing Protocols</h2>
+<h2 id="mixing-protocols">Mixing Protocols</h2>
 <p>A single system can use all three:</p>
 <pre><code>External clients → REST (north-south)
          ↓
@@ -473,14 +484,14 @@
    Internal services ──→ GraphQL (mobile BFF layer)
 </code></pre>
 <p>This is common and appropriate. The key discipline: don&#39;t generate one from the other (they are independent contracts), and don&#39;t expose gRPC directly to external consumers.</p>
-<h2>The Chatty API Anti-Pattern</h2>
+<h2 id="the-chatty-api-anti-pattern">The Chatty API Anti-Pattern</h2>
 <p>Regardless of protocol, a fundamental design mistake is exposing fine-grained getter/setter-style operations (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5). Each round trip incurs network latency; many fine-grained calls compound this. Design resources around client use cases:</p>
 <ul>
 <li>Group related data into coarse-grained resources that can be fetched in one request</li>
 <li>Use <code>PATCH</code> for partial updates of known fields — not as a workaround for exposing individual setters</li>
 <li>GraphQL is not exempt: an N+1 query pattern does the same damage at the resolver level</li>
 </ul>
-<h2>Evolution and Breaking Changes</h2>
+<h2 id="evolution-and-breaking-changes">Evolution and Breaking Changes</h2>
 <p>All three protocols have the same fundamental rule: <strong>be conservative in what you emit, liberal in what you accept</strong> (Postel&#39;s Robustness Principle, →  <a href="../sources/release-it.html">Release It</a> ch. 14). The mechanisms differ:</p>
 <ul>
 <li><strong>REST</strong>: OAS + openapi-diff in CI catches breaking changes; Postel&#39;s Principle governs what &quot;breaking&quot; means</li>
@@ -488,7 +499,7 @@
 <li><strong>GraphQL</strong>: add fields freely; mark old fields <code>@deprecated</code>; removal is a breaking change requiring a major version</li>
 </ul>
 <p>In all cases: <strong>the implementation in production is the de facto spec</strong>, not the documentation. Any change that rejects previously accepted input — even malformed input — is a breaking change.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/api-design.html">Api Design</a> — full treatment of REST, gRPC, GraphQL design principles and patterns</li>
 <li><a href="../concepts/api-gateway.html">Api Gateway</a> — where protocol translation and enforcement live in the topology</li>

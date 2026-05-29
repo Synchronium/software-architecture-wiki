@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,35 +309,39 @@
       <h1>Stability Patterns</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/stability.html">stability</a></li><li><a class="tag-chip" href="../tags/resilience.html">resilience</a></li><li><a class="tag-chip" href="../tags/patterns.html">patterns</a></li><li><a class="tag-chip" href="../tags/release-it.html">release-it</a></li><li><a class="tag-chip" href="../tags/failure-modes.html">failure-modes</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#the-stability-pattern-set">The Stability Pattern Set</a></li><li class="toc-sub"><a href="#failure-arresting-patterns-catch-the-cascade">Failure-arresting patterns (catch the cascade)</a></li><li class="toc-sub"><a href="#load-handling-patterns-shape-the-input">Load-handling patterns (shape the input)</a></li><li class="toc-sub"><a href="#defensive-patterns-prepare-for-failure">Defensive patterns (prepare for failure)</a></li><li class="toc-sub"><a href="#architectural-patterns-avoid-the-failure-mode">Architectural patterns (avoid the failure mode)</a></li><li><a href="#how-the-patterns-compose">How the Patterns Compose</a></li><li><a href="#the-antipatterns-they-address">The Antipatterns They Address</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Stability patterns are a coherent set of design patterns whose purpose is to prevent small failures from cascading into system-wide outages. The term and most of the catalogue come from <a href="../sources/release-it.html">Release It</a> ch. 5. Each pattern is a &quot;crackstopper&quot; — it interrupts the propagation of fault → error → failure (Nygard&#39;s terminology) at a specific architectural boundary. The patterns are composable; a production-grade system uses several together.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Failure in a complex system isn&#39;t a single event — it&#39;s a propagation. A slow downstream service blocks a calling thread; blocked threads exhaust a connection pool; pool exhaustion causes upstream callers to block; the chain reaction terminates in cascading failure. Without explicit stability patterns at each layer, every dependency becomes a vector for outage propagation.</p>
 <p><a href="../sources/release-it.html">Release It</a> frames the problem as crack propagation in a brittle structure. Stability patterns are the structural reinforcements that arrest the cracks. The catalogue is roughly the union of the &quot;design for production&quot; tradition (Nygard, Allspaw, SRE) — practitioner knowledge accumulated from real outages, codified as named patterns.</p>
-<h2>The Stability Pattern Set</h2>
+<h2 id="the-stability-pattern-set">The Stability Pattern Set</h2>
 <p>Patterns with their own dedicated pages in this wiki are linked; the rest are summarised here for completeness. The dedicated pages have deeper treatment; this page is the navigation hub and shows how they compose.</p>
-<h3>Failure-arresting patterns (catch the cascade)</h3>
+<h3 id="failure-arresting-patterns-catch-the-cascade">Failure-arresting patterns (catch the cascade)</h3>
 <h4><a href="../patterns/timeout.html">Timeout</a> — bound every wait</h4>
 <p>Every blocking call (network I/O, lock acquisition, connection-pool checkout) must have a timeout. Without timeouts, a single slow downstream blocks the calling thread indefinitely — the dominant failure mode in production systems (<a href="../sources/release-it.html">Release It</a> ch. 4: blocked threads). Sizing rule from <a href="../sources/release-it.html">Release It</a>: derive from the dependency&#39;s P99.9 latency distribution.</p>
 <h4><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — stop calling a broken dependency</h4>
 <p>State machine (closed/open/half-open) that suspends calls to a failing dependency, preventing repeated failed calls from amplifying the problem. From <a href="../sources/release-it.html">Release It</a>: track fault <em>density</em> via a leaky bucket, not absolute count; log state changes for operations; scope is per-process.</p>
 <h4><a href="../patterns/bulkhead.html">Bulkhead</a> — isolate failure domains</h4>
 <p>Partition resources (thread pools, connection pools, instances) so failure in one partition cannot starve others. Cloud availability zones are infrastructure-level bulkheads. From <a href="../sources/release-it.html">Release It</a>: reserve a thread pool for critical callers (monitoring, admin) so that a flood of low-priority requests cannot starve operations that must succeed.</p>
-<h3>Load-handling patterns (shape the input)</h3>
+<h3 id="load-handling-patterns-shape-the-input">Load-handling patterns (shape the input)</h3>
 <h4>Shed Load (and <a href="../distributed/rate-limiting.html">Rate Limiting</a>)</h4>
 <p>When overloaded, refuse new requests rather than accepting them and failing slowly. Return 503 immediately; signal to the load balancer via health check. From <a href="../sources/release-it.html">Release It</a>: &quot;The cost of shedding a request is far lower than the cost of degraded service for all concurrent requests. Applied at the <strong>service edge</strong>.&quot;</p>
 <h4><a href="../distributed/backpressure.html">Backpressure</a> — propagate slowdown upstream</h4>
 <p>Within a system boundary, use bounded queues to create natural flow control. When a queue is full, the producer blocks — this is the signal to slow down. Distinct from load shedding (backpressure is internal; shed load is at the boundary). Unbounded queues mask the backlog and produce unbounded latency.</p>
 <h4>Handshaking — server signals readiness</h4>
 <p>Let the server tell callers whether it can accept work. HTTP: return 503 to the load balancer when health check is failing. From <a href="../sources/release-it.html">Release It</a>: &quot;an underused pattern — most systems accept connections until they are completely overwhelmed.&quot; Circuit Breaker is a stopgap when handshaking is not available downstream.</p>
-<h3>Defensive patterns (prepare for failure)</h3>
+<h3 id="defensive-patterns-prepare-for-failure">Defensive patterns (prepare for failure)</h3>
 <h4>Fail Fast — refuse requests we can&#39;t handle</h4>
 <p>Check resource availability <em>before</em> beginning work. If a required circuit breaker is open or a connection pool is exhausted, return an error immediately without consuming resources. Nygard&#39;s &quot;mise en place.&quot; Distinguish from Timeout: Fail Fast applies to incoming requests (don&#39;t start work you can&#39;t finish); Timeout applies to outgoing requests (bound your wait). Also distinguish system failures (503) from application failures (400).</p>
 <h4>Let It Crash — restart from clean state</h4>
@@ -339,14 +350,14 @@
 <p>Every mechanism that accumulates state must have a paired mechanism that recycles it. Purge old data programmatically; rotate logs and ship them off-server; bound all in-memory caches. &quot;Fiddling with production&quot; — SSHing in to clear caches or delete rows — is an availability risk. From <a href="../sources/release-it.html">Release It</a>: automate all steady-state maintenance.</p>
 <h4><a href="../patterns/retry.html">Retry</a> — recover from transient failures</h4>
 <p>Retry transient failures with exponential backoff and jitter. Prerequisite: idempotency (→ <a href="../distributed/idempotency.html">Idempotency</a>). Anti-pattern: retries that don&#39;t distinguish transient from permanent errors amplify cascades. Anti-pattern: retries without backoff/jitter create thundering herds.</p>
-<h3>Architectural patterns (avoid the failure mode)</h3>
+<h3 id="architectural-patterns-avoid-the-failure-mode">Architectural patterns (avoid the failure mode)</h3>
 <h4>Decoupling Middleware — async over sync</h4>
 <p>Choose between synchronous call-and-response (REST, RPC, gRPC) and asynchronous message-oriented middleware (Kafka, RabbitMQ, SQS) with awareness of structural consequences. Synchronous chains propagate backpressure and cascading failures; async middleware decouples in space and time. From <a href="../sources/release-it.html">Release It</a>: high switching cost — can&#39;t easily be retrofitted. See <a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a>.</p>
 <h4>Test Harnesses — simulate the unsimulable</h4>
 <p>A separate server (not a mock) that simulates out-of-spec failure modes real integration tests can&#39;t provoke: slow responses, garbled bytes, RST mid-stream, connection refused. From <a href="../sources/release-it.html">Release It</a>: &quot;Mocks verify &#39;does my code handle what I expect?&#39;; test harnesses verify &#39;does my code handle what I can&#39;t expect?&#39;&quot; Foundation for chaos engineering applied to integration points (→ <a href="../operations/chaos-engineering.html">Chaos Engineering</a>).</p>
 <h4>Governor — rate-limit automation</h4>
 <p>Automation (autoscalers, deployment systems, config management) can act on incorrect observations and amplify failures faster than humans can intervene. A Governor limits the <em>rate</em> of change asymmetrically: slow to make large changes, fast to detect alerts. The Reddit ZooKeeper incident (autoscaler shut down the fleet based on partial ZooKeeper data) and AWS S3 outage (typo removed too much capacity) illustrate the need. From <a href="../sources/release-it.html">Release It</a> ch. 5: U-shaped response curve; act quickly on small safe changes; slow down and require human confirmation for large changes.</p>
-<h2>How the Patterns Compose</h2>
+<h2 id="how-the-patterns-compose">How the Patterns Compose</h2>
 <p>The patterns are not alternatives. A production-grade integration point typically applies all of:</p>
 <ol>
 <li><strong><a href="../patterns/timeout.html">Timeout</a></strong> on the outgoing call</li>
@@ -368,7 +379,7 @@
 <li><strong>Test Harnesses</strong> to validate failure-mode handling</li>
 </ol>
 <p>The patterns are at different layers (per-call, per-component, per-system, per-organisation). A system that applies them only at one layer has known failure modes at the others.</p>
-<h2>The Antipatterns They Address</h2>
+<h2 id="the-antipatterns-they-address">The Antipatterns They Address</h2>
 <p><a href="../sources/release-it.html">Release It</a> ch. 4 catalogues the stability <em>antipatterns</em> the patterns above defend against:</p>
 <ul>
 <li><strong>Integration Points</strong> — every integration eventually fails (Timeout + Circuit Breaker + Decoupling Middleware)</li>
@@ -383,7 +394,7 @@
 <li><strong>Unbounded Result Sets</strong> — query returns more than expected (pagination, LIMIT)</li>
 </ul>
 <p>See <a href="../operations/common-failure-causes.html">Common Failure Causes</a> for the failure-mode catalogue. The patterns and antipatterns are duals: each pattern targets specific antipatterns.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -408,8 +419,9 @@
 <td>Google SRE adds the operational layer — load shedding at concurrent-request thresholds, &quot;roll back first, diagnose second,&quot; progressive rollouts as the canary form of stability — with explicit error-budget framing.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — decision guide: which pattern when, composition order, anti-pattern combinations</li>
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — the antipatterns side; what these patterns defend against</li>
 <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — testing whether the patterns actually work under failure</li>
 <li><a href="../operations/availability.html">Availability</a> — what stability patterns ultimately serve</li>
@@ -419,7 +431,7 @@
 <li><a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a> — decoupling middleware as a stability decision</li>
 <li><a href="../authors/michael-nygard.html">Michael Nygard</a> — author of the canonical catalogue</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Design failure modes deliberately. Without designed failure modes, cracks propagate unpredictably.&quot; — <a href="../sources/release-it.html">Release It</a> ch. 3</p>
 </blockquote>
@@ -431,7 +443,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

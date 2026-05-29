@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,14 +309,28 @@
       <h1>Evolutionary Architecture</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/evolutionary-architecture.html">evolutionary-architecture</a></li><li><a class="tag-chip" href="../tags/fitness-functions.html">fitness-functions</a></li><li><a class="tag-chip" href="../tags/coupling.html">coupling</a></li><li><a class="tag-chip" href="../tags/strangler-fig.html">strangler-fig</a></li><li><a class="tag-chip" href="../tags/cloud-migration.html">cloud-migration</a></li><li><a class="tag-chip" href="../tags/conways-law.html">conways-law</a></li><li><a class="tag-chip" href="../tags/testability.html">testability</a></li><li><a class="tag-chip" href="../tags/deployability.html">deployability</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#evolvability-as-a-meta-characteristic">Evolvability as a Meta-Characteristic</a></li><li><a href="#the-three-pillars">The Three Pillars</a></li><li><a href="#evolvability-by-architecture-style">Evolvability by Architecture Style</a></li><li><a href="#refactoring-vs-restructuring">Refactoring vs Restructuring</a></li><li><a href="#adaptation-vs-evolution">Adaptation vs Evolution</a></li><li><a href="#guidelines-for-building-evolvable-architectures">Guidelines for Building Evolvable Architectures</a></li><li><a href="#fitness-function-categories-for-api-systems">Fitness Function Categories for API Systems</a></li><li><a href="#hypothesis-driven-development">Hypothesis-Driven Development</a></li><li><a href="#api-layer-cake-antipattern">API Layer Cake (Antipattern)</a></li><li><a href="#major-antipatterns-evo-arch-ch-7">Major Antipatterns (evo-arch Ch 7)</a></li><li><a href="#apis-as-seams-api-arch-perspective">APIs as Seams (api-arch perspective)</a></li><li><a href="#strangler-fig-pattern">Strangler Fig Pattern</a></li><li><a href="#the-six-rs-of-cloud-migration">The Six Rs of Cloud Migration</a></li><li><a href="#type-1-vs-type-2-decisions">Type 1 vs Type 2 Decisions</a></li><li><a href="#when-to-build-evolutionary-architecture-and-when-not-to">When to Build Evolutionary Architecture (and When Not to)</a></li><li><a href="#form-follows-failure-nygard">Form Follows Failure (Nygard)</a></li><li><a href="#bad-layering-as-an-evolutionary-obstacle-nygard">Bad Layering as an Evolutionary Obstacle (Nygard)</a></li><li><a href="#decision-loop-speed-and-thrashing">Decision Loop Speed and Thrashing</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-takeaways">Key Takeaways</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Three pillars.</strong> Incremental change (<a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> make small changes safe), <a href="../concepts/fitness-functions.html">fitness functions</a> (objective automated governance), and appropriate coupling (matching coupling tightness to business necessity).</li>
+<li><strong>Inappropriate coupling is the root cause of non-evolvability.</strong> Most architectures fail to evolve because their coupling didn&#39;t match the change vector. The decoupling lever varies by axis: deployment, runtime, data, schema, organisational.</li>
+<li><strong>Evolvability varies by architecture style.</strong> Microservices (highest), event-driven (high), service-based (medium-high), down to Big Ball of Mud (none). The limiting factors are quantum size and the presence of cross-quantum transactions.</li>
+<li><strong>Migration follows established patterns.</strong> <a href="../patterns/strangler-fig.html">Strangler Fig</a> for external seams, <a href="../patterns/branch-by-abstraction.html">Branch By Abstraction</a> for embedded capabilities, <a href="../patterns/parallel-run.html">Parallel Run</a> for correctness verification. Big-bang rewrites have a high failure rate; the safe path is incremental.</li>
+<li><strong>Architecture decisions are reversible at different costs.</strong> Type 1 decisions (irreversible) warrant ADRs and extensive deliberation; Type 2 (reversible) deserve experimentation. Treating Type 2 decisions as Type 1 is the dominant antipattern.</li>
+<li><strong>Testability + deployability are the operational drivers.</strong> Farley&#39;s framing: an evolvable architecture is one whose individual components can be tested in isolation and deployed independently. TDD acts as real-time architectural feedback — code that&#39;s hard to test is poorly modularised.</li>
+<li><strong>Form follows failure.</strong> Architectural patterns emerge in response to specific past failures (Sidecar emerged because cross-cutting concerns kept breaking; Circuit Breaker because cascading failures kept recurring). Knowing the failure makes the pattern make sense.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <blockquote>
 <p>&quot;An evolutionary architecture supports guided, incremental change across multiple dimensions.&quot;
 — Ford, Parsons, Kua (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 1)</p>
@@ -321,7 +342,7 @@
 <li><strong>Multiple dimensions</strong> — not just code structure but also data, security, performance, operational, and compliance concerns evolve simultaneously</li>
 </ul>
 <p>Evolutionary architecture is not the same as &quot;agile architecture&quot; or &quot;emergent design.&quot; It requires deliberate upfront identification of the dimensions that matter and explicit fitness functions to govern those dimensions continuously.</p>
-<h2>Evolvability as a Meta-Characteristic</h2>
+<h2 id="evolvability-as-a-meta-characteristic">Evolvability as a Meta-Characteristic</h2>
 <p>Evolvability is not simply one more &quot;-ility&quot; alongside scalability and availability — it is a <strong>meta-characteristic</strong>: an architectural wrapper that protects all the other architectural characteristics as the system changes over time (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 1).</p>
 <p>The architectural bit-rot problem: architects design a system with deliberate characteristics (scalability, performance, security), then expose it to real-world development. Developers gradually erode those characteristics — bypassing layering for performance, adding tight coupling for convenience. Without active protection, the architecture degrades silently. Fitness functions are the protection mechanism.</p>
 <blockquote>
@@ -334,12 +355,12 @@
 <li><strong>Incremental</strong>: captures only one of the three pillars, not the governance aspect</li>
 <li><strong>Evolutionary</strong>: implies both the process (small guided changes) and the goal (fitness-tested improvement)</li>
 </ul>
-<h2>The Three Pillars</h2>
+<h2 id="the-three-pillars">The Three Pillars</h2>
 <p><em>Building Evolutionary Architectures</em> organises the discipline around three mutually reinforcing pillars (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 1):</p>
 <p><strong>1. Incremental change</strong> — the operational capability to make small, safe changes frequently. Enabled by <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>, automated fitness functions, and high test coverage. Measured by cycle time: <strong>v ∝ c</strong> (evolution speed is proportional to cycle time).</p>
 <p><strong>2. Fitness functions</strong> — the governance mechanism. Any mechanism that provides an objective, repeatable assessment of an architectural characteristic (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>). Includes automated tests, architectural checks, chaos engineering, monitoring alerts, and manual reviews. Fitness functions are identified upfront for each dimension and automated in the deployment pipeline.</p>
 <p><strong>3. Appropriate coupling</strong> — matching coupling tightness to business necessity. Inappropriate coupling (shared databases without schema ownership, shared libraries coupling microservices, vendor lock-in) is the primary cause of architectural non-evolvability. The architecture quantum (→ <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>) defines the scope of coupling that must be managed.</p>
-<h2>Evolvability by Architecture Style</h2>
+<h2 id="evolvability-by-architecture-style">Evolvability by Architecture Style</h2>
 <p>Evo-arch rates each major architecture style for evolvability based on coupling, quantum size, and independent deployability (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 4):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -391,17 +412,17 @@
 </tr>
 </tbody></table></div>
 <p><strong>Transactions as a constraint</strong>: two-phase commit across service boundaries effectively merges those services into a single quantum (the &quot;strong nuclear force&quot; of architecture). This is why service-based architectures — which support ACID transactions within coarse services — score lower on evolvability than microservices, which require saga/eventual consistency patterns instead.</p>
-<h2>Refactoring vs Restructuring</h2>
+<h2 id="refactoring-vs-restructuring">Refactoring vs Restructuring</h2>
 <p>A distinction the book introduces in Ch 6 that is often blurred: <strong>refactoring</strong> (Fowler&#39;s definition) changes internal structure without changing external behaviour — the same inputs produce the same outputs, and architectural characteristics are preserved. <strong>Restructuring</strong> changes the architectural characteristics themselves: you are not preserving the old behaviour, you are changing what the system optimises for.</p>
 <p>Fitness functions are the protection mechanism during restructuring: they continuously verify that the characteristics being preserved (performance, security, data integrity) remain intact as the internal structure changes. The GitHub Scientist pattern (Ch 3) is the canonical restructuring tool — it runs old and new code paths simultaneously, compares outputs, and guards against regressions without stopping production traffic.</p>
 <blockquote>
 <p>&quot;Refactoring means preserving external behaviour. Many architectural changes don&#39;t actually preserve external behaviour—they change priorities.&quot; (Ch 6)</p>
 </blockquote>
-<h2>Adaptation vs Evolution</h2>
+<h2 id="adaptation-vs-evolution">Adaptation vs Evolution</h2>
 <p>A further distinction from Ch 8: <strong>adaptation</strong> layers new behaviour alongside old — the original implementation is preserved and new capabilities are bolted on. Adaptation is sometimes necessary (feature flags, compatibility shims) but accumulates technical debt proportional to the number of adaptation cycles. Each adaptation cycle increases the number of parallel code paths.</p>
 <p><strong>Evolution</strong> changes the architecture <em>in situ</em>, protected by fitness functions. The end result is a system that continues to change without accumulating a legacy of outdated solutions. The goal of evolutionary architecture is to support evolution, not merely adaptation.</p>
 <p>Feature flags are an example of intentional, bounded adaptation: used temporarily during A/B experiments or incremental rollouts, then removed once the decision is resolved. The Knight Capital incident demonstrates what happens when temporary adaptations become permanent: the retained feature flag, reactivated on one un-updated server, cost $440M in 45 minutes.</p>
-<h2>Guidelines for Building Evolvable Architectures</h2>
+<h2 id="guidelines-for-building-evolvable-architectures">Guidelines for Building Evolvable Architectures</h2>
 <p>Practical guidelines from evo-arch Ch 6:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -447,7 +468,7 @@
 <td>Hide multiple API versions within the service; support no more than two simultaneously</td>
 </tr>
 </tbody></table></div>
-<h2>Fitness Function Categories for API Systems</h2>
+<h2 id="fitness-function-categories-for-api-systems">Fitness Function Categories for API Systems</h2>
 <p>Chapter 8 of <em>Mastering API Architecture</em> elaborates the fitness function categories specifically for API-based systems (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -486,7 +507,7 @@
 </tr>
 </tbody></table></div>
 <p>ADRs should document the initial fitness function decisions — what to measure, what threshold constitutes failure, and what pipeline stage the check runs in.</p>
-<h2>Hypothesis-Driven Development</h2>
+<h2 id="hypothesis-driven-development">Hypothesis-Driven Development</h2>
 <p>A technique enabled by evolutionary architecture that replaces requirements with experiments (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 3). Rather than gathering formal requirements and building features based on analyst judgement, teams frame new capabilities as hypotheses:</p>
 <blockquote>
 <p>&quot;If we make the sales images bigger, we hypothesize that it will lead to a 5% increase in sales for those items.&quot;</p>
@@ -497,10 +518,10 @@
 <blockquote>
 <p>&quot;Experiments should run long enough to yield significant results. Generally, it is preferable to find a measurable way to determine better outcomes rather than annoy users with things like pop-up surveys.&quot; (Ch 3)</p>
 </blockquote>
-<h2>API Layer Cake (Antipattern)</h2>
+<h2 id="api-layer-cake-antipattern">API Layer Cake (Antipattern)</h2>
 <p>The &quot;layered APIs&quot; or &quot;API layer cake&quot; pattern applies the classic enterprise tier model to APIs: Systems of Engagement (SoE) → Systems of Differentiation (SoD) → Systems of Record (SoR), based on Gartner&#39;s Pace-Layered Application Strategy (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8).</p>
 <p>This pattern has a poor track record for the same reasons as layered monoliths: it encourages shortcuts (presentation tier directly calls the datastore tier), leads to functionality duplication between layers, and creates a situation where any change to a business capability requires modifying multiple layers in lockstep. <strong>Generally avoid this pattern</strong> in favour of domain-oriented, highly cohesive APIs aligned to bounded contexts.</p>
-<h2>Major Antipatterns (evo-arch Ch 7)</h2>
+<h2 id="major-antipatterns-evo-arch-ch-7">Major Antipatterns (evo-arch Ch 7)</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -530,7 +551,7 @@
 </tr>
 </tbody></table></div>
 <p>See <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a> for the Reporting antipattern in depth.</p>
-<h2>APIs as Seams (api-arch perspective)</h2>
+<h2 id="apis-as-seams-api-arch-perspective">APIs as Seams (api-arch perspective)</h2>
 <p>Michael Feathers&#39; concept of a <strong>seam</strong> — a place where loosely coupled substitution is possible — applies directly to API boundaries (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8). An API is a seam because:</p>
 <ul>
 <li>The consumer depends on the contract (OAS, .proto), not the implementation</li>
@@ -538,7 +559,7 @@
 <li>The API gateway provides <strong>location transparency</strong>: the consumer calls a stable route regardless of where the backend is deployed</li>
 </ul>
 <p>Seams are why API-first design matters architecturally: a well-designed contract makes the implementation replaceable; a poorly designed one couples the consumer to implementation details and eliminates the seam.</p>
-<h2>Strangler Fig Pattern</h2>
+<h2 id="strangler-fig-pattern">Strangler Fig Pattern</h2>
 <p>The canonical pattern for migrating a legacy system to a new architecture without a full rewrite (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8):</p>
 <ol>
 <li><strong>Facade</strong>: deploy an API gateway or facade in front of the legacy system</li>
@@ -547,7 +568,7 @@
 <li><strong>Retire</strong>: decommission the legacy when it handles no traffic</li>
 </ol>
 <p><strong>Facade vs adapter</strong>: the gateway should act as a <strong>facade</strong> (routing transparently), not an <strong>adapter</strong> (transforming data models or business logic). Adapter logic in the gateway creates coupling between gateway configuration and domain schema.</p>
-<h2>The Six Rs of Cloud Migration</h2>
+<h2 id="the-six-rs-of-cloud-migration">The Six Rs of Cloud Migration</h2>
 <p>Framework for classifying migration decisions per component (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 9):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -589,13 +610,13 @@
 </tr>
 </tbody></table></div>
 <p>The strangler fig is the execution mechanism for Replatform and Refactor strategies.</p>
-<h2>Type 1 vs Type 2 Decisions</h2>
+<h2 id="type-1-vs-type-2-decisions">Type 1 vs Type 2 Decisions</h2>
 <p>Not all architectural decisions carry the same reversibility cost (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 8):</p>
 <ul>
 <li><strong>Type 1 (irreversible)</strong>: API gateway selection, service mesh adoption, exchange format (REST/gRPC), authentication framework. These create path dependencies across many consumers. Must be deliberate and documented in <a href="../concepts/adrs.html">Adrs</a>.</li>
 <li><strong>Type 2 (reversible)</strong>: deployment strategies, feature flag tooling, observability vendors. Can be changed without breaking consumer contracts; lighter process is appropriate.</li>
 </ul>
-<h2>When to Build Evolutionary Architecture (and When Not to)</h2>
+<h2 id="when-to-build-evolutionary-architecture-and-when-not-to">When to Build Evolutionary Architecture (and When Not to)</h2>
 <p>From Ch 8: evolutionary architecture is not appropriate in all contexts.</p>
 <p><strong>Build it when:</strong></p>
 <ul>
@@ -611,18 +632,18 @@
 <li>The system is deliberately sacrificial: MVP architectures exploring market viability should be designed to throw away. Martin Fowler coined the term; Twitter&#39;s first architecture is the canonical example. Replace when validated; do not invest in evolving something intended to be replaced.</li>
 <li>Short business horizon: if the company plans to close or pivot completely within a year, evolvability investment is waste.</li>
 </ul>
-<h2>Form Follows Failure (Nygard)</h2>
+<h2 id="form-follows-failure-nygard">Form Follows Failure (Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 16) draws on Henry Petroski&#39;s <em>The Evolution of Useful Things</em> to reframe how architectural evolution actually happens: &quot;Form follows failure, not function.&quot; Changes to design — of physical artifacts and software systems alike — are motivated more by what the prior version does poorly than by what it does well. Systems evolve through their failures; the initial design is rarely the driver of long-term shape.</p>
 <p>The practical implication: the most honest way to understand why a system looks the way it does is to study the failures and constraints it was designed to work around, not the stated requirements.</p>
-<h2>Bad Layering as an Evolutionary Obstacle (Nygard)</h2>
+<h2 id="bad-layering-as-an-evolutionary-obstacle-nygard">Bad Layering as an Evolutionary Obstacle (Nygard)</h2>
 <p>Standard layered architectures enforce vertical isolation (UI / domain / persistence) but tolerate — and encourage — horizontal coupling: &quot;god&quot; domain classes that everything touches, where any change requires a drilling expedition through all layers and produces commits touching <code>Foo</code>, <code>FooController</code>, <code>FooFragment</code>, <code>FooMapper</code>, <code>FooDTO</code>.</p>
 <p>The problem: one layer&#39;s decomposition dominates the others. When a new concept enters the domain, it casts shadows through every layer. This is not a layer isolation problem — it is a coupling problem in disguise.</p>
 <p><strong>Component-based decomposition</strong> (rotating the barriers 90 degrees): each component owns its full stack from storage through API/UI; components communicate only through narrow formal interfaces; components are substitutable independently. If components run in separate processes, this is microservices. If in the same process, it resembles &quot;self-contained systems.&quot;</p>
 <p>Each component boundary creates an option (→ Baldwin &amp; Clark&#39;s modular operators) to split, substitute, augment, or exclude the component independently.</p>
-<h2>Decision Loop Speed and Thrashing</h2>
+<h2 id="decision-loop-speed-and-thrashing">Decision Loop Speed and Thrashing</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 16) frames organisational adaptability as the rate of the decision loop: sense → decide → act → observe. Getting inside the competitor&#39;s decision loop (acting faster than they can react) is the decisive competitive advantage.</p>
 <p><strong>Thrashing</strong> is the failure mode of going too fast: action rate exceeds feedback rate, so each new direction is initiated before the prior one has been evaluated. Aviation calls this &quot;pilot-induced oscillation&quot; (porpoising). Fix: do not slow down delivery; instead, speed up the feedback side — build an experimentation platform to accelerate observation and decision, rather than deploying more build tooling.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -659,7 +680,7 @@
 <td>Farley (ch. 3): testability and deployability as the two operational drivers of evolutionary architecture; designing for testability produces the five sustainable design attributes (modularity, cohesion, SoC, abstraction, coupling); TDD as real-time architectural feedback; deployment pipeline scope = independently deployable unit; architectural descriptions as &quot;tourist maps&quot; — highlight landmarks, suppress irrelevant detail; do not over-engineer for hypothetical requirements, keep options open through testability and short deploy cycles.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/fitness-functions.html">Fitness Functions</a> — the governance mechanism that makes evolution safe</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — the automation mechanism for incremental change</li>
@@ -677,9 +698,17 @@
 <li><a href="../concepts/feature-flags.html">Feature Flags</a> — application-layer release control; deployment ≠ release at the code level</li>
 <li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — change cost as a compounding architectural property</li>
 </ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Build for evolution, not for the end state.</strong> The three pillars (incremental change, fitness functions, appropriate coupling) make change cheap; designing for an imagined future is usually wasted work.</li>
+<li><strong>Coupling decisions are evolvability decisions.</strong> Inappropriate coupling — coupling tighter than the change axis requires — is the dominant cause of non-evolvability. Loosen coupling along the axes that actually change.</li>
+<li><strong>Migration is incremental.</strong> Strangler fig for external seams, branch by abstraction for embedded capabilities, parallel run for correctness checks. Big bang rewrites have a high failure rate that doesn&#39;t drop with team experience.</li>
+<li><strong>Type 1 decisions deserve ADRs; Type 2 deserve experiments.</strong> Treating Type 2 (reversible) decisions as Type 1 (irreversible) is the dominant antipattern; teams over-deliberate on choices they could just try.</li>
+<li><strong>Testability and deployability are the operational drivers.</strong> If individual components can&#39;t be tested in isolation and deployed independently, the architecture is not evolvable regardless of style.</li>
+</ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../concepts/zero-trust.html">Zero Trust</a></li></ul>
+        <ul><li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li><li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/eventstorming.html">EventStorming</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li><li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../patterns/parallel-run.html">Parallel Run</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li><li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li><li><a href="../concepts/zero-trust.html">Zero Trust</a></li></ul>
       </aside>
     </main>
   </div>

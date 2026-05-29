@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Which stability pattern when; selection decision tree (outgoing call, incoming request, internal pipeline, system edge, automation, resource pooling);…">
+  <meta property="og:title" content="Stability Pattern Selection — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Which stability pattern when; selection decision tree (outgoing call, incoming request, internal pipeline, system edge, automation, resource pooling);…">
+  <title>Stability Pattern Selection — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html" aria-current="page">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Stability Pattern Selection</nav></div>
+      <h1>Stability Pattern Selection</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/stability.html">stability</a></li><li><a class="tag-chip" href="../tags/resilience.html">resilience</a></li><li><a class="tag-chip" href="../tags/patterns.html">patterns</a></li><li><a class="tag-chip" href="../tags/decision-guide.html">decision-guide</a></li><li><a class="tag-chip" href="../tags/failure-modes.html">failure-modes</a></li><li><a class="tag-chip" href="../tags/composition.html">composition</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-this-page">Why This Page</a></li><li><a href="#the-selection-decision-tree">The Selection Decision Tree</a></li><li class="toc-sub"><a href="#q1-is-this-an-outgoing-call-to-a-dependency">Q1: Is this an outgoing call to a dependency?</a></li><li class="toc-sub"><a href="#q2-is-this-an-incoming-request">Q2: Is this an incoming request?</a></li><li class="toc-sub"><a href="#q3-is-this-an-internal-pipeline-producer-consumer-pair">Q3: Is this an internal pipeline / producer-consumer pair?</a></li><li class="toc-sub"><a href="#q4-is-this-at-the-system-edge">Q4: Is this at the system edge?</a></li><li class="toc-sub"><a href="#q5-is-this-an-automation-system-autoscaler-deploy-bot-config-push">Q5: Is this an automation system (autoscaler, deploy bot, config push)?</a></li><li class="toc-sub"><a href="#q6-is-this-resource-pooling-threads-connections-memory">Q6: Is this resource pooling (threads, connections, memory)?</a></li><li><a href="#pattern-antipattern-matrix">Pattern × Antipattern Matrix</a></li><li><a href="#composition-order-build-the-defence-in-this-sequence">Composition Order: Build the Defence in This Sequence</a></li><li><a href="#composition-anti-patterns">Composition Anti-Patterns</a></li><li><a href="#layered-defence-across-the-stack">Layered Defence Across the Stack</a></li><li><a href="#when-to-skip-stability-patterns">When to Skip Stability Patterns</a></li><li><a href="#verifying-the-patterns">Verifying the Patterns</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Stability patterns compose at different boundaries.</strong> Timeout on the outgoing call, circuit breaker on sustained failure, retry on transient failure, bulkhead on resource isolation, fail fast on incoming requests when downstream is broken, handshaking with the load balancer, shed load at the edge, backpressure internally. A production-grade integration point uses all of them.</li>
+<li><strong>Each pattern defends against specific antipatterns.</strong> Choose patterns by which antipattern they prevent, not by which patterns are fashionable. The full pattern-vs-antipattern mapping is the design tool.</li>
+<li><strong>Pattern order matters.</strong> Timeouts come first — without them, every other pattern fails or behaves wrongly. Then bulkheads (so one failing dependency doesn&#39;t starve others). Then circuit breaker + retry. Then backpressure and load shedding at the edges.</li>
+<li><strong>One layer is not enough.</strong> Applying stability patterns only at the application layer leaves cascading failures across services. Applying them only at the infrastructure layer (mesh, gateway) leaves them at the application layer. Defence is layered.</li>
+<li><strong>The patterns serve different goals.</strong> Failure-arresting (catch the cascade) — timeout, circuit breaker, bulkhead. Load-shaping (manage the input) — shed load, backpressure, handshaking. Defensive (prepare for failure) — fail fast, let it crash, steady state, retry. Architectural (avoid the failure mode) — decoupling middleware, test harnesses, governor.</li>
+<li><strong>Patterns can interfere.</strong> Aggressive retries defeat backpressure. Long timeouts defeat circuit breakers. Bulkheads with shared underlying resources don&#39;t actually isolate. Composition needs deliberate design.</li>
+</ul>
+<h2 id="why-this-page">Why This Page</h2>
+<p><a href="../concepts/stability-patterns.html">Stability Patterns</a> is the navigation hub for the full pattern set. Each pattern has its own page with implementation detail. This page answers the <em>selection</em> question: given a specific situation, which patterns apply, in what order, and how do they compose?</p>
+<h2 id="the-selection-decision-tree">The Selection Decision Tree</h2>
+<p>Read top to bottom; each question&#39;s answer dictates which patterns apply.</p>
+<h3 id="q1-is-this-an-outgoing-call-to-a-dependency">Q1: Is this an outgoing call to a dependency?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>Always</strong>: <a href="../patterns/timeout.html">Timeout</a> — bound the wait at the dependency&#39;s P99.9 latency or below. Without this, no other pattern works correctly.</li>
+<li><strong>Always</strong>: <a href="../patterns/retry.html">Retry</a> with exponential backoff and jitter, but only for transient failures (network glitches, 503s with <code>Retry-After</code>, timeouts). Never blind retry on 4xx.</li>
+<li><strong>If the dependency can fail sustainably</strong>: <a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — stop calling when fault density crosses threshold. Track faults via leaky bucket, not absolute count.</li>
+<li><strong>If multiple dependencies share resources</strong> (thread pool, connection pool, sidecar): <a href="../patterns/bulkhead.html">Bulkhead</a> — partition resources per dependency. One failing dependency cannot starve others.</li>
+</ul>
+<h3 id="q2-is-this-an-incoming-request">Q2: Is this an incoming request?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>If downstream dependencies are broken or breakers are open</strong>: Fail Fast — check resource availability before starting work; return 503 immediately without consuming resources. Distinguish system failure (503) from application failure (400).</li>
+<li><strong>If the service is over capacity</strong>: Shed Load — return 503 at the edge; signal to the load balancer via health check. Cost of shedding is far lower than cost of degraded service for all concurrent requests.</li>
+<li><strong>If the inputs come from internal producers and rate exceeds capacity</strong>: <a href="../distributed/backpressure.html">Backpressure</a> — bounded queues with blocking producers, credit-based protocols, or pull-based consumption.</li>
+</ul>
+<h3 id="q3-is-this-an-internal-pipeline-producer-consumer-pair">Q3: Is this an internal pipeline / producer-consumer pair?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>Always</strong>: bounded queue with <a href="../distributed/backpressure.html">Backpressure</a>. Unbounded queues produce unbounded latency (Little&#39;s Law — see <a href="../distributed/queueing-theory.html">Queueing Theory</a>).</li>
+<li><strong>If producer must continue regardless</strong>: durable queue + auto-scaled consumer (load levelling, see <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</li>
+<li><strong>If consumer can be variable speed</strong>: pull-based consumption (Kafka-style); consumer lag becomes observable signal.</li>
+</ul>
+<h3 id="q4-is-this-at-the-system-edge">Q4: Is this at the system edge?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>Shed load</strong> at the edge — reject fast with 503; preserve CPU for requests that can succeed.</li>
+<li><strong>Rate limit</strong> per client (see <a href="../distributed/rate-limiting.html">Rate Limiting</a>) — sliding-window buckets, fail-open if the limiter itself is unavailable.</li>
+<li><strong>Handshaking</strong> with the load balancer — return 503 from health check when over capacity; the LB drains traffic from this instance.</li>
+</ul>
+<h3 id="q5-is-this-an-automation-system-autoscaler-deploy-bot-config-push">Q5: Is this an automation system (autoscaler, deploy bot, config push)?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>Governor pattern</strong> — rate-limit the <em>automation</em> asymmetrically. Slow for large changes, fast for alerts. Reddit&#39;s ZooKeeper-induced fleet shutdown is the cautionary tale.</li>
+<li><strong>Confirmation thresholds</strong> above which automation requires human approval.</li>
+</ul>
+<h3 id="q6-is-this-resource-pooling-threads-connections-memory">Q6: Is this resource pooling (threads, connections, memory)?</h3>
+<p>If <strong>yes</strong>:</p>
+<ul>
+<li><strong>Steady State</strong> — pair every state-accumulating mechanism with a recycling mechanism. Logs rotate; caches expire; in-memory state has TTLs. No &quot;fiddling with production&quot; to clear it.</li>
+<li><strong>Bounded everything</strong> — never use defaults like <code>LinkedBlockingQueue</code> with no capacity. The default is wrong almost everywhere.</li>
+</ul>
+<h2 id="pattern-antipattern-matrix">Pattern × Antipattern Matrix</h2>
+<p>The patterns map directly to the <a href="../operations/common-failure-causes.html">antipatterns</a> they defend against:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Antipattern</th>
+<th>Primary defence</th>
+<th>Secondary defence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Integration Points fail unexpectedly</td>
+<td><a href="../patterns/timeout.html">Timeout</a> + <a href="../patterns/circuit-breaker.html">Circuit Breaker</a></td>
+<td>Test harnesses (simulate failure modes)</td>
+</tr>
+<tr>
+<td>Chain Reactions (defect across replicas)</td>
+<td><a href="../patterns/bulkhead.html">Bulkhead</a></td>
+<td>Partition load across cells</td>
+</tr>
+<tr>
+<td>Cascading Failures (failure across layers)</td>
+<td><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> + <a href="../patterns/timeout.html">Timeout</a></td>
+<td>Decoupling middleware (async between layers)</td>
+</tr>
+<tr>
+<td>Blocked Threads</td>
+<td><a href="../patterns/timeout.html">Timeout</a> on every blocking call</td>
+<td>Proven concurrency primitives; immutable domain objects</td>
+</tr>
+<tr>
+<td>Self-Denial Attacks (marketing campaigns)</td>
+<td>Pre-autoscale; CDN warmup</td>
+<td>Mass emails in waves; no deep links bypassing CDN</td>
+</tr>
+<tr>
+<td>Scaling Effects (O(n²) communication)</td>
+<td>Replace P2P with pub/sub</td>
+<td>Cellular architecture</td>
+</tr>
+<tr>
+<td>Unbalanced Capacities</td>
+<td><a href="../patterns/bulkhead.html">Bulkhead</a> + Handshaking</td>
+<td>Stress-test both sides at 10× expected peak</td>
+</tr>
+<tr>
+<td>Dogpile (synchronised cache expiry)</td>
+<td>Clock slew; TTL jitter</td>
+<td>Increasing backoff after restarts</td>
+</tr>
+<tr>
+<td>Slow Responses</td>
+<td>Fail Fast on response-time threshold</td>
+<td>Self-monitoring with moving average</td>
+</tr>
+<tr>
+<td>Unbounded Result Sets</td>
+<td>Pagination; LIMIT clauses</td>
+<td>Test with production-sized data</td>
+</tr>
+</tbody></table></div>
+<p>If you can identify the antipattern, the defence is mechanical.</p>
+<h2 id="composition-order-build-the-defence-in-this-sequence">Composition Order: Build the Defence in This Sequence</h2>
+<p>When implementing stability patterns on a new service, apply them in this order. Each layer depends on the one before it:</p>
+<ol>
+<li><strong><a href="../patterns/timeout.html">Timeout</a> on every blocking call.</strong> Without this, every other pattern has corrupt inputs. This is the foundation.</li>
+<li><strong>Bounded queues everywhere.</strong> Without these, <a href="../distributed/backpressure.html">Backpressure</a> cannot propagate. Pick capacity from <code>(max_wait / mean_processing) × thread_count × 1.5</code> (Nygard&#39;s heuristic).</li>
+<li><strong><a href="../patterns/bulkhead.html">Bulkhead</a> to isolate failure domains.</strong> Per-dependency thread pool, per-tenant resource quota, per-rack failure domain. So that a problem with one doesn&#39;t starve the rest.</li>
+<li><strong><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> on sustained failures.</strong> Once dependencies have bounded resource usage, breakers detect sustained problems and stop calling.</li>
+<li><strong><a href="../patterns/retry.html">Retry</a> for transient failures.</strong> Exponential backoff with jitter; never blind-retry; obey <code>Retry-After</code>.</li>
+<li><strong>Fail Fast at the entry point</strong> when the breaker is open or pool is exhausted. Return 503 immediately; don&#39;t start work you can&#39;t finish.</li>
+<li><strong>Shed load at the system edge</strong> when capacity is exceeded. Fast rejection beats slow degradation.</li>
+<li><strong><a href="../distributed/backpressure.html">Backpressure</a> internally</strong> to slow producers when consumers fall behind.</li>
+<li><strong>Handshaking with the load balancer</strong> via health checks. Lame duck on shutdown.</li>
+<li><strong>Steady State</strong> — automate state recycling so humans never SSH in to &quot;clean things up.&quot;</li>
+<li><strong>Test Harnesses</strong> for simulating out-of-spec failures. Real integration tests verify expected behaviour; harnesses verify behaviour under conditions that real integration cannot provoke.</li>
+<li><strong>Governor</strong> on any automation that can act faster than humans. Reddit&#39;s ZooKeeper outage is the standard caution.</li>
+</ol>
+<p>Skipping a step doesn&#39;t disable the later steps — but it means the later patterns operate on degraded inputs. A circuit breaker without timeouts is decorative; backpressure without bounded queues is invisible.</p>
+<h2 id="composition-anti-patterns">Composition Anti-Patterns</h2>
+<p>These are pattern <em>combinations</em> that look reasonable but break.</p>
+<p><strong>Aggressive retry + backpressure.</strong> A client that retries immediately on rejection turns load shedding into amplification. Always pair retries with exponential backoff + jitter, and respect <code>Retry-After</code> headers.</p>
+<p><strong>Long timeout + circuit breaker.</strong> If the timeout is longer than the breaker&#39;s measurement window, the breaker never sees enough faults to trip — every call is &quot;still pending&quot; when the next measurement starts. Size the timeout shorter than the fault-counting window.</p>
+<p><strong>Bulkheads sharing underlying resources.</strong> Per-dependency thread pools that all check out from the same connection pool are not bulkheads — they&#39;re decorative. The bulkhead must be at the actual contended resource (connections, sockets, memory, CPU cores).</p>
+<p><strong>Retries that hide circuit-breaker state.</strong> Retrying through a circuit breaker that&#39;s open is just slow failure. Either fail fast on open, or retry at a layer that can fall back (cache, default value, alternative service).</p>
+<p><strong>Backpressure that reaches the user.</strong> If backpressure ultimately blocks an HTTP request thread, the user sees a slow page. Backpressure between async stages is fine; at the user boundary, prefer load shedding.</p>
+<p><strong>Circuit breaker scope errors.</strong> Per-instance breakers don&#39;t share state — when one instance opens, others continue calling. Per-cluster breakers share state but become a coordination problem. Pick deliberately; the choice affects how quickly the breaker reacts and how it recovers.</p>
+<p><strong>Fail Fast that returns wrong status codes.</strong> 503 (system overload) vs 500 (application error) vs 400 (bad input) — they trigger different client behaviour. Treating overload as 500 means clients don&#39;t back off; treating bad input as 503 means clients retry inappropriately.</p>
+<h2 id="layered-defence-across-the-stack">Layered Defence Across the Stack</h2>
+<p>Stability patterns operate at different layers; a single layer is rarely enough.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Patterns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Application code</td>
+<td><a href="../patterns/timeout.html">Timeout</a>, <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/retry.html">Retry</a>, Fail Fast</td>
+</tr>
+<tr>
+<td>Process / runtime</td>
+<td><a href="../patterns/bulkhead.html">Bulkhead</a> (thread pools), bounded queues, Steady State</td>
+</tr>
+<tr>
+<td>Sidecar / service mesh</td>
+<td><a href="../patterns/timeout.html">Timeout</a>, retry policy, circuit breaker, <a href="../patterns/bulkhead.html">Bulkhead</a> (connection pool isolation), mTLS</td>
+</tr>
+<tr>
+<td>API gateway</td>
+<td>Rate limiting, <a href="../distributed/rate-limiting.html">load shedding</a>, request validation, threat mitigation</td>
+</tr>
+<tr>
+<td>Load balancer</td>
+<td>Health checks, handshaking, lame duck draining, graceful rolling deploys</td>
+</tr>
+<tr>
+<td>Infrastructure</td>
+<td>Bulkheads via availability zones; cellular architecture; partition isolation</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Governor on automation; chaos engineering to verify the patterns work</td>
+</tr>
+</tbody></table></div>
+<p>A defence applied only at one layer has known failure modes at the others. The mesh handles east-west; the gateway handles north-south; application patterns handle business-logic-specific failure modes; infrastructure handles correlated failures.</p>
+<h2 id="when-to-skip-stability-patterns">When to Skip Stability Patterns</h2>
+<p>Stability patterns are not free. Each adds latency, complexity, and operational surface.</p>
+<p><strong>Single-process internal calls</strong> rarely need <a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — there&#39;s no network or independent process to fail. But they do need <a href="../patterns/timeout.html">Timeout</a> on any blocking operation (lock acquisition, queue checkout).</p>
+<p><strong>Idempotent read-only operations</strong> can skip <a href="../distributed/idempotency.html">Idempotency</a> discipline, but still need timeout + retry.</p>
+<p><strong>Strongly internal services with no external traffic</strong> can skip rate limiting and load shedding at the edge — but still need backpressure and bulkheads internally.</p>
+<p><strong>Pre-production environments</strong> can run with relaxed patterns to surface failures faster. Production needs the full set.</p>
+<h2 id="verifying-the-patterns">Verifying the Patterns</h2>
+<p>Implementing stability patterns is not the same as having them work. <a href="../operations/chaos-engineering.html">Chaos Engineering</a> is how you check — controlled fault injection to verify each pattern fires when it should.</p>
+<ul>
+<li><strong>Test harness</strong> simulates out-of-spec downstream behaviour (slow, garbled, RST mid-stream) that mocks can&#39;t.</li>
+<li><strong>Latency injection</strong> verifies timeouts trigger at the right boundary.</li>
+<li><strong>Instance termination</strong> verifies bulkheads contain failure and other instances absorb load.</li>
+<li><strong>Status code injection</strong> (FIT-style) verifies circuit breakers trip and recover.</li>
+<li><strong>Steady-state hypothesis</strong> verifies the system continues to meet its SLI under each fault.</li>
+</ul>
+<p>A stability pattern that hasn&#39;t been exercised hasn&#39;t been verified.</p>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>Canonical pattern catalogue and antipatterns (chs. 4–5); composition guidance; the &quot;crack propagation&quot; framing.</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Distributed-systems subset: timeout, retry, circuit breaker, bulkhead, idempotency. Practical, mechanism-focused.</td>
+</tr>
+<tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>Queueing-theoretic lens on the same patterns: utilisation curves, blocked threads, producer-consumer with bounded buffers.</td>
+</tr>
+<tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>Operational discipline around the patterns: error budgets gate aggressive retries; lame duck for graceful shutdown; load shedding at 503 thresholds.</td>
+</tr>
+<tr>
+<td><a href="../sources/chaos-engineering.html">Chaos Engineering</a></td>
+<td>The verification side: how to test that the patterns actually work under production conditions.</td>
+</tr>
+</tbody></table></div>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — the pattern set as a coherent whole</li>
+<li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — the antipatterns these patterns defend against</li>
+<li><a href="../distributed/backpressure.html">Backpressure</a> — flow control as a stability pattern</li>
+<li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — why unbounded queues and high utilisation break stability</li>
+<li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — load shedding and constant work as upstream resiliency</li>
+<li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/timeout.html">Timeout</a>, <a href="../patterns/retry.html">Retry</a>, <a href="../patterns/bulkhead.html">Bulkhead</a> — the individual patterns</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — verifying the patterns work</li>
+<li><a href="../operations/availability.html">Availability</a> — what stability patterns serve</li>
+<li><a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a> — decoupling middleware as a stability decision</li>
+<li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — the patterns are not free; cost-justify the investment</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

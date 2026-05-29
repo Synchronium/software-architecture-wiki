@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#structural-static-coupling">Structural (Static) Coupling</a></li><li><a href="#operational-runtime-coupling">Operational (Runtime) Coupling</a></li><li><a href="#contract-coupling">Contract Coupling</a></li><li><a href="#coupling-at-the-integration-style-level">Coupling at the Integration Style Level</a></li><li><a href="#coupling-and-architecture-quanta">Coupling and Architecture Quanta</a></li><li><a href="#managing-coupling">Managing Coupling</a></li><li><a href="#coupling-signals-in-practice-nygard">Coupling Signals in Practice (Nygard)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Coupling is the degree to which one component depends on another — such that a change to one requires a corresponding change in the other, or that the failure or unavailability of one affects the other&#39;s ability to function. Reducing coupling is one of the primary levers architects use to enable independent deployability, testability, and evolutionary change.</p>
 <p>Coupling is not a single dimension. Different sources isolate structural coupling, runtime coupling, deployment coupling, domain coupling, and contract coupling — each requiring different techniques to manage and each visible at different stages of the software lifecycle.</p>
-<h2>Structural (Static) Coupling</h2>
+<h2 id="structural-static-coupling">Structural (Static) Coupling</h2>
 <p>Structural coupling is measurable at compile time from the dependency graph.</p>
 <p><strong>Afferent coupling (Ca)</strong>: number of external components that depend on a given component (fan-in). High Ca → widely used; changes are risky and must preserve backward compatibility.</p>
 <p><strong>Efferent coupling (Ce)</strong>: number of external components a given component depends on (fan-out). High Ce → fragile; changes elsewhere propagate in.</p>
@@ -323,7 +334,7 @@
 <li><em>Distance from Main Sequence (D)</em>: |A + I − 1|. Components with high D fall into the <strong>Zone of Pain</strong> (concrete + stable = can&#39;t be changed) or <strong>Zone of Uselessness</strong> (abstract + unstable = nothing depends on it).</li>
 </ul>
 <p><strong>Connascence</strong> generalises structural coupling: two components are connascent if a change to one requires a change to the other to maintain correctness. Static connascence forms (Name, Type, Meaning, Position, Algorithm) are compile-time and preferred; dynamic connascence forms (Execution, Timing, Values, Identity) are runtime and stronger. The strength of connascence — combined with the distance between the coupled elements — determines the architectural cost of the coupling. See <a href="../concepts/modularity.html">Modularity</a> for the full taxonomy and Page-Jones&#39; and Weirich&#39;s rules.</p>
-<h2>Operational (Runtime) Coupling</h2>
+<h2 id="operational-runtime-coupling">Operational (Runtime) Coupling</h2>
 <p>Runtime coupling describes dependencies that only become visible when the system is running.</p>
 <p><strong>Newman&#39;s four coupling types</strong> (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 1), grounded in Parnas&#39; 1971 information hiding principle:</p>
 <div class="table-wrapper"><table>
@@ -363,12 +374,12 @@
 <li><em>Coordination</em>: orchestrated vs choreographed — orchestration centralises control coupling</li>
 </ul>
 <p>These three binary dimensions produce 2³ = 8 distinct distributed workflow patterns. See <a href="../patterns/saga.html">Saga</a> for the full taxonomy.</p>
-<h2>Contract Coupling</h2>
+<h2 id="contract-coupling">Contract Coupling</h2>
 <p>Contract coupling is the degree to which a component is constrained by the specification of the interface it consumes or produces (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 13).</p>
 <p><strong>Strict vs loose contracts</strong>: strict contracts require exact adherence to names, types, and ordering (gRPC/Protobuf). They give build-time verification but cascade breaking changes to all consumers. Loose contracts (plain JSON, REST additive fields) enable independent evolution at the cost of schema governance discipline.</p>
 <p><strong>Stamp coupling</strong> (over-specification): passing a large data structure where the consumer only needs a small part ties the consumer to the producer&#39;s full schema. Every change to unused fields becomes a potential breaking change. The rule: keep contracts at a &quot;need-to-know&quot; level. Stamp coupling can be used deliberately to carry workflow state in choreographed sagas — a legitimate trade-off.</p>
 <p>See <a href="../concepts/contracts.html">Contracts</a> for consumer-driven contracts as a mechanism to get loose coupling with contract fidelity guaranteed by tests.</p>
-<h2>Coupling at the Integration Style Level</h2>
+<h2 id="coupling-at-the-integration-style-level">Coupling at the Integration Style Level</h2>
 <p>At the integration level, the choice of integration style sets the baseline coupling between applications (→ <a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a> ch. 2):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -395,12 +406,12 @@
 </tr>
 </tbody></table></div>
 <p>See <a href="../concepts/integration-styles.html">Integration Styles</a> for decision criteria between styles.</p>
-<h2>Coupling and Architecture Quanta</h2>
+<h2 id="coupling-and-architecture-quanta">Coupling and Architecture Quanta</h2>
 <p><strong>Static coupling</strong> (shared databases, frameworks, messaging infrastructure) determines architecture quantum boundaries. Any shared coupling point collapses all services that depend on it into a single quantum — a shared database makes all its consumers one quantum even if they have separate codebases.</p>
 <p><strong>Dynamic coupling</strong> (runtime communication patterns) determines how independently quanta can operate. Synchronous calls merge operational characteristics; async messaging allows separate quanta to evolve and scale independently.</p>
 <p>2PC across quantum boundaries effectively merges them: both services share fate at the transaction boundary. This is why microservices require saga/eventual consistency patterns — preserving quantum independence requires abandoning distributed ACID.</p>
 <p>See <a href="../concepts/architecture-quantum.html">Architecture Quantum</a> for the full quantum model.</p>
-<h2>Managing Coupling</h2>
+<h2 id="managing-coupling">Managing Coupling</h2>
 <p><strong>Information hiding</strong> (Parnas, 1972): stable module interfaces should hide volatile internals so that internal changes do not propagate to consumers. Applied to classes: no caller should depend on implementation choices inside a class (→ <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 5). Applied to services: no service should depend on another&#39;s internal implementation — only its public API (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>). The principle is scale-invariant.</p>
 <p><strong>Temporal decomposition</strong> (Ousterhout, → <a href="../sources/a-philosophy-of-software-design.html">A Philosophy Of Software Design</a> ch. 5): a module design anti-pattern where structure mirrors execution order rather than knowledge ownership. When the same knowledge is needed at multiple execution points, temporal decomposition forces it into multiple modules, creating backdoor information leakage. Fix: structure modules around what knowledge they own, not when they execute.</p>
 <p><strong>Connascence rules</strong> (→ <a href="../concepts/modularity.html">Modularity</a>):</p>
@@ -419,11 +430,11 @@
 </ul>
 <p><strong>Orthogonal coupling</strong>: operational concerns (observability, security, rate limiting) are orthogonal to the business domain — not part of any bounded context, but needed by every service. Implementing them as sidecars rather than shared libraries keeps them out of the structural dependency graph (→ <a href="../concepts/reuse-patterns.html">Reuse Patterns</a>).</p>
 <p><strong>Fowler&#39;s First Law of Distributed Object Design</strong>: don&#39;t distribute your objects. In-process calls are orders of magnitude faster than remote calls. A local interface should be fine-grained (many small methods); a remote interface must be coarse-grained (few, chunky calls). You cannot have both for the same object. The solution is to cluster (run multiple copies of a single process) rather than split objects across processes. When a process boundary is unavoidable, isolate it with a <strong>Remote Facade</strong> (coarse-grained wrapper around fine-grained internal objects) and use a <strong>Data Transfer Object</strong> to bundle data for the crossing. Never expose fine-grained objects directly over a network (→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> ch. 7).</p>
-<h2>Coupling Signals in Practice (Nygard)</h2>
+<h2 id="coupling-signals-in-practice-nygard">Coupling Signals in Practice (Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 16) identifies two practical signals that indicate unaddressed coupling:</p>
 <p><strong>Coordinated deployments</strong>: if provider and consumer must be updated at the same time, the interface is not backward-compatible — a coupling contract failure. Resolution: rework the interface to be backward-compatible (see <a href="../concepts/api-design.html">Api Design</a>) or treat the new interface as a new route and leave the old one in place during consumer migration.</p>
 <p><strong>Concept leakage</strong>: when an upstream system&#39;s internal data-model concept is exported into downstream systems that have no need for it. Example: a &quot;price point&quot; concept (an internal mechanism for bulk repricing) propagated into every downstream feed, requiring every system to model a concept it needed only because the upstream data was incomplete. Resolution: flatten when publishing — downstream consumers should receive resolved values, not the upstream&#39;s internal model. Concept leakage creates semantic and operational coupling that resists future change far more than structural coupling does.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -464,7 +475,7 @@
 <td>Information hiding (ch. 5): design decisions embedded in implementation, invisible through interface; temporal decomposition as the primary cause of information leakage at the class level; private fields ≠ hidden information</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/modularity.html">Modularity</a> — connascence taxonomy; Ca/Ce/A/I/D metrics; Newman&#39;s operational coupling types in full detail</li>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — static and dynamic coupling as quantum boundary determinants</li>

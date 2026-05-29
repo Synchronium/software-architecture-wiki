@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,12 +316,16 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#the-10-step-process">The 10-Step Process</a></li><li class="toc-sub"><a href="#step-1-unstructured-exploration">Step 1 — Unstructured Exploration</a></li><li class="toc-sub"><a href="#step-2-timelines">Step 2 — Timelines</a></li><li class="toc-sub"><a href="#step-3-pain-points">Step 3 — Pain Points</a></li><li class="toc-sub"><a href="#step-4-pivotal-events">Step 4 — Pivotal Events</a></li><li class="toc-sub"><a href="#step-5-commands">Step 5 — Commands</a></li><li class="toc-sub"><a href="#step-6-policies">Step 6 — Policies</a></li><li class="toc-sub"><a href="#step-7-read-models">Step 7 — Read Models</a></li><li class="toc-sub"><a href="#step-8-external-systems">Step 8 — External Systems</a></li><li class="toc-sub"><a href="#step-9-aggregates">Step 9 — Aggregates</a></li><li class="toc-sub"><a href="#step-10-bounded-contexts">Step 10 — Bounded Contexts</a></li><li><a href="#two-phase-facilitation">Two-Phase Facilitation</a></li><li><a href="#facilitation-tips">Facilitation Tips</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>EventStorming is a low-tech, collaborative workshop for rapidly modeling a business process. A group of participants — ideally mixing engineers, domain experts, product owners, testers, UX designers, and support staff — brainstorm and organise domain events on a large paper surface, progressively enriching the model with commands, actors, policies, aggregates, and bounded context candidates.</p>
 <p>Created by Alberto Brandolini. (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 12)</p>
 <p><strong>The real value is the process, not the output</strong>: knowledge sharing, alignment of mental models, discovery of conflicts, and formulation of the ubiquitous language. The physical model is a useful artefact, but secondary.</p>
 <hr>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -349,7 +360,7 @@
 </tbody></table></div>
 <p><strong>Not suitable for</strong>: simple, sequential processes with no meaningful business logic or complexity — the collaboration overhead outweighs the benefit.</p>
 <hr>
-<h2>Prerequisites</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li><strong>Modeling space</strong>: a wall covered with butcher paper (preferred) or a large whiteboard</li>
 <li><strong>Sticky notes</strong>: multiple colours — orange (domain events), light blue (commands), small yellow (actors), purple (policies), green (read models), pink (external systems / pain points), large yellow (aggregates)</li>
@@ -359,38 +370,38 @@
 </ul>
 <p><strong>Group size</strong>: max 10 for in-person; max 5 for remote (remote reduces collaboration effectiveness — Brandolini recommends in-person only when circumstances permit). Tools: Miro for remote sessions.</p>
 <hr>
-<h2>The 10-Step Process</h2>
-<h3>Step 1 — Unstructured Exploration</h3>
+<h2 id="the-10-step-process">The 10-Step Process</h2>
+<h3 id="step-1-unstructured-exploration">Step 1 — Unstructured Exploration</h3>
 <p>All participants write domain events (things that have <em>happened</em> in the business domain) on orange sticky notes and add them to the surface. No ordering; duplicates allowed. Continue until the rate of new events slows significantly.</p>
 <p>Domain events are phrased in the past tense: &quot;Order Placed&quot;, &quot;Payment Confirmed&quot;, &quot;Shipment Dispatched&quot;.</p>
-<h3>Step 2 — Timelines</h3>
+<h3 id="step-2-timelines">Step 2 — Timelines</h3>
 <p>Organise events chronologically. Start with the happy path (successful scenario); add alternative paths (error cases, decision branches) as branches or parallel flows. Remove duplicates; fix incorrect events; add missing ones.</p>
-<h3>Step 3 — Pain Points</h3>
+<h3 id="step-3-pain-points">Step 3 — Pain Points</h3>
 <p>Identify bottlenecks, manual steps requiring automation, missing documentation, or gaps in domain knowledge. Mark with rotated (diamond-shaped) pink sticky notes. These are tracked throughout the session — as a facilitator, listen for concerns raised at any step and capture them as pain points.</p>
-<h3>Step 4 — Pivotal Events</h3>
+<h3 id="step-4-pivotal-events">Step 4 — Pivotal Events</h3>
 <p>Identify domain events that signal a significant change of context or phase. Mark with a vertical bar dividing the timeline. Pivotal events are <strong>potential bounded context boundaries</strong>.</p>
 <p>Example: &quot;Shopping Cart Initialized&quot; → &quot;Order Placed&quot; → &quot;Order Shipped&quot; → &quot;Order Delivered&quot; each represent a context change.</p>
-<h3>Step 5 — Commands</h3>
+<h3 id="step-5-commands">Step 5 — Commands</h3>
 <p>Add commands — the <em>causes</em> of domain events. Commands are phrased in the imperative: &quot;Submit Order&quot;, &quot;Approve Shipment&quot;. Write on light blue sticky notes; place before the events they trigger.</p>
 <p>If a command is executed by a specific actor (user persona), add a small yellow sticky with the actor&#39;s name to the command.</p>
-<h3>Step 6 — Policies</h3>
+<h3 id="step-6-policies">Step 6 — Policies</h3>
 <p>Identify automation policies: rules that automatically trigger a command when a domain event occurs. Write on purple sticky notes connecting events to commands. Include decision criteria when relevant (e.g., &quot;only for VIP customers&quot;).</p>
 <p>This step accounts for commands that have no human actor — they are triggered by the system reacting to events.</p>
-<h3>Step 7 — Read Models</h3>
+<h3 id="step-7-read-models">Step 7 — Read Models</h3>
 <p>For each command with an actor, identify the read model the actor uses to make their decision. A read model is data the actor views before issuing the command: a screen, a report, a notification. Write on green sticky notes; place before the commands.</p>
-<h3>Step 8 — External Systems</h3>
+<h3 id="step-8-external-systems">Step 8 — External Systems</h3>
 <p>Add external systems: systems outside the domain being explored that either execute commands (input) or are notified of events (output). Write on pink sticky notes. By the end of this step, all commands should be attributed to either an actor, a policy, or an external system.</p>
-<h3>Step 9 — Aggregates</h3>
+<h3 id="step-9-aggregates">Step 9 — Aggregates</h3>
 <p>Group related commands and the events they produce. An aggregate receives commands and produces events. Represented as large yellow sticky notes with commands on the left and events on the right. This step reveals transactional and consistency boundaries.</p>
-<h3>Step 10 — Bounded Contexts</h3>
+<h3 id="step-10-bounded-contexts">Step 10 — Bounded Contexts</h3>
 <p>Group related aggregates (those coupled through policies or representing closely related functionality) into bounded context candidates. These groupings form the starting point for bounded context boundary design.</p>
 <hr>
-<h2>Two-Phase Facilitation</h2>
+<h2 id="two-phase-facilitation">Two-Phase Facilitation</h2>
 <p>Khononov&#39;s preferred facilitation approach:</p>
 <p><strong>Phase 1 — Big Picture</strong> (steps 1–4 only): explore the full business domain at high level. Produces: a wide-angle view of the domain, a foundation for the ubiquitous language, and candidate bounded context boundaries.</p>
 <p><strong>Phase 2 — Process-Specific Sessions</strong> (all 10 steps): for each significant business process identified in phase 1, run a dedicated session. Produces: complete models (aggregates, commands, policies, bounded context candidates) for each process.</p>
 <hr>
-<h2>Facilitation Tips</h2>
+<h2 id="facilitation-tips">Facilitation Tips</h2>
 <ul>
 <li>Begin with a brief overview of the process, the business domain, and the colour legend — post the legend visibly for the duration</li>
 <li>Track group energy; ask questions to reignite slowing sessions; advance to the next step when a step stalls</li>
@@ -399,7 +410,7 @@
 <li>For remote sessions: use Miro; reduce group size to ~5; consider running multiple parallel sessions and merging results</li>
 </ul>
 <hr>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -421,7 +432,7 @@
 </tr>
 </tbody></table></div>
 <hr>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — EventStorming is the primary practical tool for building and validating the ubiquitous language</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — pivotal events reveal bounded context candidates; aggregates group into context candidates at step 10</li>

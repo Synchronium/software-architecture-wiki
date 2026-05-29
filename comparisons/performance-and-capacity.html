@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symptom → diagnosis → action playbook; three analytical lenses (Little's Law, utilisation curve, percentile arithmetic); capacity planning workflow;…">
+  <meta property="og:title" content="Performance and Capacity Decision Guide — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Symptom → diagnosis → action playbook; three analytical lenses (Little's Law, utilisation curve, percentile arithmetic); capacity planning workflow;…">
+  <title>Performance and Capacity Decision Guide — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html" aria-current="page">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../comparisons/index.html">Comparisons</a> <span class="sep">›</span> Performance and Capacity Decision Guide</nav></div>
+      <h1>Performance and Capacity Decision Guide</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../comparisons/index.html">comparison</a>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/performance.html">performance</a></li><li><a class="tag-chip" href="../tags/capacity.html">capacity</a></li><li><a class="tag-chip" href="../tags/queueing.html">queueing</a></li><li><a class="tag-chip" href="../tags/tail-latency.html">tail-latency</a></li><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li><li><a class="tag-chip" href="../tags/decision-guide.html">decision-guide</a></li><li><a class="tag-chip" href="../tags/slo.html">slo</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#why-this-page">Why This Page</a></li><li><a href="#symptom-diagnosis-action">Symptom → Diagnosis → Action</a></li><li class="toc-sub"><a href="#symptom-p99-spiking-under-load">Symptom: P99 spiking under load</a></li><li class="toc-sub"><a href="#symptom-average-is-fine-users-complain">Symptom: average is fine, users complain</a></li><li class="toc-sub"><a href="#symptom-cascading-failure-under-load">Symptom: cascading failure under load</a></li><li class="toc-sub"><a href="#symptom-queue-depth-growing-without-bound">Symptom: queue depth growing without bound</a></li><li class="toc-sub"><a href="#symptom-thundering-herd-dogpile">Symptom: thundering herd / dogpile</a></li><li class="toc-sub"><a href="#symptom-works-in-qa-fails-in-production">Symptom: works in QA, fails in production</a></li><li class="toc-sub"><a href="#symptom-slow-during-deploy-health-check-storm">Symptom: slow during deploy / health-check storm</a></li><li><a href="#the-three-analytical-lenses">The Three Analytical Lenses</a></li><li class="toc-sub"><a href="#lens-1-little39s-law">Lens 1: Little&#39;s Law</a></li><li class="toc-sub"><a href="#lens-2-utilisation-curve">Lens 2: Utilisation curve</a></li><li class="toc-sub"><a href="#lens-3-percentile-arithmetic">Lens 3: Percentile arithmetic</a></li><li><a href="#capacity-planning-workflow">Capacity Planning Workflow</a></li><li><a href="#avoid-these-capacity-antipatterns">Avoid These Capacity Antipatterns</a></li><li><a href="#when-performance-tuning-doesn39t-apply">When Performance Tuning Doesn&#39;t Apply</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Most performance failures are queueing failures.</strong> &quot;Slow database&quot; is a queue at the connection pool. &quot;Cascading failure&quot; is a queue at every blocked thread. &quot;Tail latency amplification&quot; is statistical consequence of queues in series. Diagnose at the queueing layer first.</li>
+<li><strong>Three results dominate the analysis.</strong> Little&#39;s Law (<code>L = λW</code>) sizes capacity. Utilisation curve (<code>W = S/(1−ρ)</code>) explains why response time bends hyperbolically past 70% utilisation. Percentile arithmetic explains why averages lie and why P99 of fan-out approaches P99.9 of one call.</li>
+<li><strong>Measure percentiles, not averages.</strong> P50, P95, P99, P99.9 with histogram-based aggregation (HdrHistogram, t-digest). Averaging percentiles across time windows is mathematically meaningless.</li>
+<li><strong>Set utilisation targets well below 100%.</strong> 60-80% for application servers; lower for shared infra. This is the <code>W = S/(1−ρ)</code> curve, not a safety margin.</li>
+<li><strong>The bottleneck is downstream, not at the door.</strong> Connection pools, downstream services, shared infra — the real ceiling. Sizing the front tier larger than the bottleneck just moves the queue upward.</li>
+<li><strong>Tail latency amplifies in fan-out.</strong> N parallel backend calls inflate user-visible latency to the P99.9 of a single call. Either reduce N (BFF aggregation, denormalisation) or attack the per-call tail.</li>
+</ul>
+<h2 id="why-this-page">Why This Page</h2>
+<p><a href="../distributed/queueing-theory.html">Queueing Theory</a> is the formal foundation. <a href="../distributed/backpressure.html">Backpressure</a> is the architectural response. <a href="../distributed/rate-limiting.html">Rate Limiting</a> is the boundary defence. This page is the <em>playbook</em> — given a symptom, which lens to use and what to do.</p>
+<h2 id="symptom-diagnosis-action">Symptom → Diagnosis → Action</h2>
+<p>The most common performance failures, mapped to the analytical lens that explains them.</p>
+<h3 id="symptom-p99-spiking-under-load">Symptom: P99 spiking under load</h3>
+<p><strong>Probable cause:</strong> utilisation curve. Response time <code>W = S/(1−ρ)</code> bends hyperbolically past 70%. At ρ=0.9, W is 10× service time; at ρ=0.99, 100×. The spike is the curve, not a bug.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Plot utilisation per resource (CPU, memory, thread pool, connection pool, queue depth).</li>
+<li>Identify which resource hits high utilisation first under load.</li>
+<li>That&#39;s the bottleneck.</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Reduce utilisation target (autoscale earlier; add capacity).</li>
+<li>Reduce per-request work (caching, pagination, async offload).</li>
+<li>Switch to a less-contended resource (offload from DB connections to cache).</li>
+<li>See <a href="../distributed/scalability.html">Scalability</a> for scale-out as the architectural fix.</li>
+</ul>
+<h3 id="symptom-average-is-fine-users-complain">Symptom: average is fine, users complain</h3>
+<p><strong>Probable cause:</strong> tail latency. Right-skewed distributions hide bad outliers behind a &quot;healthy&quot; mean.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Plot P50, P95, P99, P99.9. If P50 looks fine but P99 is 10×, you have a tail problem.</li>
+<li>Measure where the time is spent — instrument every blocking call.</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Reduce tail amplification: cut fan-out, parallelise less, hedge requests (issue the same call twice, take the first response).</li>
+<li>Attack the per-call tail: optimise the slow path, tune GC, increase per-instance capacity so individual calls don&#39;t queue.</li>
+<li>Set SLO on P99 or P99.9 (see <a href="../operations/monitoring.html">Monitoring</a>), not on mean.</li>
+</ul>
+<h3 id="symptom-cascading-failure-under-load">Symptom: cascading failure under load</h3>
+<p><strong>Probable cause:</strong> queues in series + missing timeouts + missing backpressure. Slow downstream blocks calling threads; pool exhaustion propagates upstream.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Trace the request through every layer. Find the first thread pool that starts blocking.</li>
+<li>Check whether each blocking call has a timeout (it should).</li>
+<li>Check whether queues between stages are bounded (they should be).</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Add <a href="../patterns/timeout.html">Timeout</a> on every blocking call (sized at dependency P99.9).</li>
+<li>Bound every queue. Default <code>LinkedBlockingQueue</code> capacity is wrong almost everywhere.</li>
+<li>Add <a href="../patterns/circuit-breaker.html">Circuit Breaker</a> for sustained downstream failure.</li>
+<li>Add <a href="../distributed/backpressure.html">Backpressure</a> between async stages.</li>
+<li>See <a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> for the full pattern composition.</li>
+</ul>
+<h3 id="symptom-queue-depth-growing-without-bound">Symptom: queue depth growing without bound</h3>
+<p><strong>Probable cause:</strong> arrival rate exceeds service rate. Little&#39;s Law: <code>L = λW</code>; if λ &gt; 1/S sustained, L grows linearly with time.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Plot arrival rate vs service rate over time. Is arrival sustainably higher?</li>
+<li>Plot queue depth over time. Linear growth = sustained overload.</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Increase consumer capacity (scale-out, optimise).</li>
+<li>Shed load at the producer: return 503; cost of rejection beats cost of unbounded latency (see <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</li>
+<li>Reject quickly at the queue boundary; never let it grow unbounded.</li>
+</ul>
+<h3 id="symptom-thundering-herd-dogpile">Symptom: thundering herd / dogpile</h3>
+<p><strong>Probable cause:</strong> synchronised demand from cache expiry, simultaneous restart, or cron-on-the-hour.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Check restart logs, cache TTLs, cron schedules for synchronisation.</li>
+<li>Plot request rate per second around incident time — look for sharp spikes.</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Random clock slew on cron jobs.</li>
+<li>TTL jitter on caches (<code>TTL ± random(20%)</code>).</li>
+<li>Exponential backoff on restart retries.</li>
+<li>Pre-warm caches before they expire (probabilistic early renewal).</li>
+<li>Constant work pattern: don&#39;t react to demand, just produce output continuously (see <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</li>
+</ul>
+<h3 id="symptom-works-in-qa-fails-in-production">Symptom: works in QA, fails in production</h3>
+<p><strong>Probable cause:</strong> scaling effects, O(n²) communication, or load behaviour absent at small scale.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Count point-to-point connections at production scale; if O(n²), expect cliff failures.</li>
+<li>Measure thread pools, connection pools at production load — do they saturate?</li>
+<li>Are queues that look fine in QA actually filling under real load?</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Replace P2P communication with pub/sub or message bus.</li>
+<li>Test at 10× expected peak load, not nominal.</li>
+<li>Use canary deployment (<a href="../patterns/progressive-delivery.html">Progressive Delivery</a>) to surface scaling effects before full rollout.</li>
+<li>Run chaos experiments at production load (<a href="../operations/chaos-engineering.html">Chaos Engineering</a>).</li>
+</ul>
+<h3 id="symptom-slow-during-deploy-health-check-storm">Symptom: slow during deploy / health-check storm</h3>
+<p><strong>Probable cause:</strong> instances marked unhealthy by health checks, taken out of pool, surviving instances overwhelmed.</p>
+<p><strong>Diagnose:</strong></p>
+<ul>
+<li>Check whether health check thresholds are too sensitive.</li>
+<li>Check whether all instances fail health checks simultaneously (mass-failure cascade).</li>
+<li>Check whether the load balancer drains gracefully.</li>
+</ul>
+<p><strong>Act:</strong></p>
+<ul>
+<li>Implement lame duck state — backend signals draining before shutdown.</li>
+<li>Mass-failure detection at the LB: if all instances fail, assume health check is broken; keep routing.</li>
+<li>Slow rolling deploy; one instance at a time; verify health before continuing.</li>
+</ul>
+<h2 id="the-three-analytical-lenses">The Three Analytical Lenses</h2>
+<h3 id="lens-1-little39s-law">Lens 1: Little&#39;s Law</h3>
+<p><code>L = λW</code> — average number in system = arrival rate × average time in system.</p>
+<p><strong>Use it to:</strong></p>
+<ul>
+<li>Size thread pools, connection pools, Lambda concurrency. Given target throughput λ and acceptable W, you need L concurrent in-flight requests&#39; worth of capacity.</li>
+<li>Diagnose unbounded queues. If λ exceeds service rate even briefly, L grows without bound; since L = λW with λ fixed, W grows without bound.</li>
+<li>Size listen queues: Nygard&#39;s heuristic <code>(max_wait_time / mean_processing_time + 1) × thread_count × 1.5</code>.</li>
+</ul>
+<h3 id="lens-2-utilisation-curve">Lens 2: Utilisation curve</h3>
+<p><code>W = S / (1−ρ)</code> — response time as a hyperbolic function of utilisation.</p>
+<p><strong>Use it to:</strong></p>
+<ul>
+<li>Set utilisation targets. At ρ=0.7, W is 3.3× service time; this is usually where to set the autoscale trigger.</li>
+<li>Explain to non-engineers why &quot;use the servers we already have, push them harder&quot; doesn&#39;t work. Response time triples between 50% and 75% utilisation; it doubles again between 75% and 87.5%.</li>
+<li>Pick warmup periods on auto-scaled fleets. New instances at ρ=0 attract too much traffic and oscillate.</li>
+</ul>
+<h3 id="lens-3-percentile-arithmetic">Lens 3: Percentile arithmetic</h3>
+<p>Right-skewed distributions; averages lie; percentiles tell the truth; can&#39;t average percentiles.</p>
+<p><strong>Use it to:</strong></p>
+<ul>
+<li>Define SLIs/SLOs on percentiles, not means (see <a href="../operations/monitoring.html">Monitoring</a>).</li>
+<li>Predict fan-out tail amplification: N parallel calls have request-level P99 = single-call P99.9 (approximately).</li>
+<li>Aggregate metrics correctly: use sketch data structures (HdrHistogram, t-digest, forward decay) that preserve the distribution.</li>
+</ul>
+<h2 id="capacity-planning-workflow">Capacity Planning Workflow</h2>
+<p>A repeatable process for sizing systems.</p>
+<ol>
+<li><strong>Define SLO.</strong> Target latency at P99 (or P99.9 if user-facing); target availability; acceptable error rate.</li>
+<li><strong>Measure service time S</strong> under low load (no queueing). This is the floor — you can&#39;t go below it.</li>
+<li><strong>Project arrival rate λ.</strong> Use historical data + growth + seasonality. Plan for peak, not average.</li>
+<li><strong>Pick utilisation target ρ.</strong> 60-80% for stateless application servers; 50-70% for stateful systems; lower for shared infra. The hyperbolic curve is your guide.</li>
+<li><strong>Compute concurrent in-flight L = λW</strong> at the target utilisation. Size pools accordingly.</li>
+<li><strong>Add headroom for tail amplification.</strong> If the request fans out to N backends, the effective per-instance load is higher than λ suggests.</li>
+<li><strong>Stress test at 10× expected peak.</strong> Find the actual breaking point. Set the alerting threshold below it.</li>
+<li><strong>Run chaos experiments</strong> (see <a href="../operations/chaos-engineering.html">Chaos Engineering</a>) to verify the system behaves under failure, not just under load.</li>
+</ol>
+<h2 id="avoid-these-capacity-antipatterns">Avoid These Capacity Antipatterns</h2>
+<p><strong>Sizing for average, not peak.</strong> Sizing for average means the system fails at peak. Almost all systems are oversubscribed at peak.</p>
+<p><strong>Linear scaling assumptions.</strong> Coordination costs (locking, consensus, cache coherency) become bottlenecks at scale (Amdahl&#39;s Law). Past a certain point, adding nodes makes things slower.</p>
+<p><strong>Running at high utilisation &quot;for efficiency.&quot;</strong> Efficient throughput is not the same as high utilisation. Past 70%, response time bends hyperbolically — the cost is latency, paid by every user.</p>
+<p><strong>Unbounded queues &quot;in case of bursts.&quot;</strong> Bursts are temporary; queues that grow during bursts produce latency that takes far longer to recover than the burst itself.</p>
+<p><strong>Per-service capacity planning without coordination.</strong> Each service sized to handle peak, but the <em>system</em> never sees peak in every service simultaneously. Cell-based architecture (one cell handles a slice of traffic) avoids the worst of this.</p>
+<p><strong>Adding capacity to fix a queueing problem.</strong> If the bottleneck is downstream, adding upstream capacity moves the queue, doesn&#39;t shrink it. Find the actual bottleneck first.</p>
+<p><strong>Mean-based SLOs.</strong> A service with P50=200ms and P99=3000ms has a healthy mean and an unhealthy user experience. Define SLOs at the percentile that matters.</p>
+<h2 id="when-performance-tuning-doesn39t-apply">When Performance Tuning Doesn&#39;t Apply</h2>
+<p>Performance tuning has scope. When the problem is elsewhere, tuning is wasted.</p>
+<p><strong>Architecture-bound performance:</strong> distributed monolith with synchronous chains, shared database with lock contention, fan-out into too many small services. The fix is architectural (<a href="../styles/microservices-architecture.html">Microservices Architecture</a> critique; <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>; <a href="../concepts/architecture-quantum.html">Architecture Quantum</a>), not parameter tuning.</p>
+<p><strong>Algorithm-bound performance:</strong> O(n²) query or worse. The fix is algorithmic; doubling hardware buys one more level of <code>n</code>.</p>
+<p><strong>Workload-bound performance:</strong> if the <em>demanded</em> throughput exceeds what&#39;s physically possible at any cost, the fix is workload reshaping — batching, deferral, partial results, async confirmation. See <a href="../comparisons/sync-vs-async-communication.html">Sync Vs Async Communication</a>.</p>
+<p><strong>Cost-bound performance:</strong> you could solve it with money, but the business won&#39;t fund the solution. The fix is documenting the trade-off (see <a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a>) and getting decision authority to accept the consequence.</p>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a></td>
+<td>The practitioner&#39;s guide to queueing in distributed systems — utilisation, queue depth, blocked threads, producer-consumer, application-server anatomy.</td>
+</tr>
+<tr>
+<td><a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a></td>
+<td>Canonical treatment of percentile arithmetic, tail latency amplification, the maths of why averages lie, sketch data structures for aggregation.</td>
+</tr>
+<tr>
+<td><a href="../sources/release-it.html">Release It</a></td>
+<td>The failure mechanism — every failing system starts with a queue backing up somewhere. Sizing heuristics; bounded queues; the cost of &quot;design for QA.&quot;</td>
+</tr>
+<tr>
+<td><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></td>
+<td>SLI/SLO discipline; percentile-based alerting; load shedding at 503 thresholds; &quot;high-variance services are user-unfriendly even when fast on average.&quot;</td>
+</tr>
+<tr>
+<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
+<td>Connects queueing to load levelling: durable queue + auto-scaled consumers absorbs producer bursts without overwhelming consumers.</td>
+</tr>
+</tbody></table></div>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — Little&#39;s Law, utilisation curve, percentile arithmetic</li>
+<li><a href="../distributed/backpressure.html">Backpressure</a> — flow control as the architectural response</li>
+<li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — load shedding and load levelling at boundaries</li>
+<li><a href="../distributed/scalability.html">Scalability</a> — scale-out as the architectural performance lever</li>
+<li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — timeouts, circuit breakers, bulkheads as performance protectors</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — selection guide for the patterns</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — percentile-based SLIs; burn-rate alerting</li>
+<li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — cascading failures from queueing collapse</li>
+<li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — verifying the system performs under failure</li>
+<li><a href="../patterns/timeout.html">Timeout</a>, <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../patterns/bulkhead.html">Bulkhead</a> — the protector patterns</li>
+<li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — performance is purchased with money; the trade-off is real</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,20 +316,24 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-core-reuse-tension">The Core Reuse Tension</a></li><li><a href="#the-four-reuse-techniques">The Four Reuse Techniques</a></li><li class="toc-sub"><a href="#1-code-replication">1. Code Replication</a></li><li class="toc-sub"><a href="#2-shared-library">2. Shared Library</a></li><li class="toc-sub"><a href="#3-shared-service">3. Shared Service</a></li><li class="toc-sub"><a href="#4-sidecar-service-mesh">4. Sidecar / Service Mesh</a></li><li><a href="#choosing-the-right-technique">Choosing the Right Technique</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Code reuse in distributed architectures is the practice of sharing functionality or data across multiple services. Unlike monolithic architectures — where all code shares the same process space — distributed architectures must choose an explicit mechanism for sharing, each with different coupling and operational trade-offs.</p>
-<h2>The Core Reuse Tension</h2>
+<h2 id="the-core-reuse-tension">The Core Reuse Tension</h2>
 <p>The fundamental reuse principle (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 8):</p>
 <blockquote>
 <p><strong>Reuse = abstraction + slow rate of change</strong></p>
 </blockquote>
 <p>Sharing code that changes frequently is an anti-pattern: every change to shared code requires all consumers to update simultaneously, creating a tight release coupling. The higher the rate of change in shared code, the weaker the argument for sharing it. Code that is stable and well-abstracted is safe to share; volatile code should not be.</p>
-<h2>The Four Reuse Techniques</h2>
-<h3>1. Code Replication</h3>
+<h2 id="the-four-reuse-techniques">The Four Reuse Techniques</h2>
+<h3 id="1-code-replication">1. Code Replication</h3>
 <p>Copy the code into each service that needs it.</p>
 <p><strong>When appropriate</strong>: small, stable utility code (date parsing, string formatting) where the code is unlikely to change and the cost of divergence is low.</p>
 <p><strong>Problems</strong>: divergence over time; bug fixes must be applied to all copies; difficult to audit which services have the latest version. Not appropriate for code that contains business logic or that changes with any regularity.</p>
-<h3>2. Shared Library</h3>
+<h3 id="2-shared-library">2. Shared Library</h3>
 <p>Extract shared code into a versioned library (JAR, npm package, NuGet package) that services declare as a dependency.</p>
 <p><strong>Key principle</strong>: <strong>fine-grained libraries are preferred over coarse-grained ones</strong>. A single monolithic &quot;utility&quot; library forces all services to take a dependency on everything, creating unnecessary coupling. Instead, decompose into fine-grained libraries by functional area (e.g., separate libraries for authentication helpers, domain validation, data formatting).</p>
 <p><strong>Versioning requirements</strong>:</p>
@@ -338,7 +349,7 @@
 </ul>
 <p><strong>Operational risk</strong>: a change to a shared library that all services depend on is a high-blast-radius change. A bug introduced into a widely-used shared library can break many services simultaneously.</p>
 <p><strong>Best for</strong>: stable, non-volatile domain code that multiple services share. Requires strong version discipline.</p>
-<h3>3. Shared Service</h3>
+<h3 id="3-shared-service">3. Shared Service</h3>
 <p>Extract shared functionality into a separate, independently deployed service that other services call at runtime.</p>
 <p><strong>When appropriate</strong>:</p>
 <ul>
@@ -381,12 +392,12 @@
 </tr>
 </tbody></table></div>
 <p>A shared service introduces a runtime dependency: if the shared service is unavailable, all consumers are affected. This is the primary downside relative to a shared library.</p>
-<h3>4. Sidecar / Service Mesh</h3>
+<h3 id="4-sidecar-service-mesh">4. Sidecar / Service Mesh</h3>
 <p>Deploy shared <strong>operational concerns</strong> (logging, monitoring, circuit-breaking, authentication) as a separate process co-located with each service rather than as a shared library.</p>
 <p><strong>Key constraint</strong>: sidecars should only handle <strong>operational concerns</strong> — they must not contain domain logic or business rules. This follows from the <strong>hexagonal architecture</strong> origin: operational concerns are orthogonal to business logic. Mixing them violates the separation of concerns that the sidecar pattern is designed to enforce.</p>
 <p><strong>Orthogonal coupling</strong>: operational concerns are orthogonal to the business domain — they are not part of the service&#39;s bounded context, but every service needs them. The sidecar addresses this by implementing these concerns as infrastructure rather than code, making them invisible to the service process. This is the key distinction from a shared library: a shared library becomes part of each service&#39;s dependency graph; a sidecar remains external.</p>
 <p>For full treatment see <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>.</p>
-<h2>Choosing the Right Technique</h2>
+<h2 id="choosing-the-right-technique">Choosing the Right Technique</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -416,7 +427,7 @@
 </tr>
 </tbody></table></div>
 <p>The decision tree: start with replication if the code is small and stable. Move to a shared library as soon as the code needs to evolve or is used by many services. Move to a shared service when versioning discipline breaks down or when the code is so volatile that library upgrade churn becomes a problem. Use sidecars for operational concerns only.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -437,7 +448,7 @@
 <td>Covers the sidecar pattern from an infrastructure perspective; see <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a></td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — the operational-concerns reuse mechanism; full trade-off analysis</li>
 <li><a href="../concepts/service-granularity.html">Service Granularity</a> — reuse decisions interact with granularity decisions; shared code is a granularity integrator</li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,28 @@
       <h1>Event Sourcing and CQRS</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../streams/index.html">stream</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/event-sourcing.html">event-sourcing</a></li><li><a class="tag-chip" href="../tags/cqrs.html">cqrs</a></li><li><a class="tag-chip" href="../tags/cdc.html">cdc</a></li><li><a class="tag-chip" href="../tags/immutability.html">immutability</a></li><li><a class="tag-chip" href="../tags/audit.html">audit</a></li><li><a class="tag-chip" href="../tags/derived-data.html">derived-data</a></li><li><a class="tag-chip" href="../tags/streaming.html">streaming</a></li><li><a class="tag-chip" href="../tags/ddd.html">ddd</a></li><li><a class="tag-chip" href="../tags/domain-model.html">domain-model</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
-<h2>Change Data Capture (CDC)</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#change-data-capture-cdc">Change Data Capture (CDC)</a></li><li><a href="#event-sourcing">Event Sourcing</a></li><li class="toc-sub"><a href="#commands-vs-events">Commands vs Events</a></li><li class="toc-sub"><a href="#properties">Properties</a></li><li class="toc-sub"><a href="#contrast-with-cdc">Contrast with CDC</a></li><li><a href="#cqrs-command-query-responsibility-segregation">CQRS — Command Query Responsibility Segregation</a></li><li><a href="#state-integral-of-event-stream">State = Integral of Event Stream</a></li><li><a href="#immutability-benefits-and-limits">Immutability: Benefits and Limits</a></li><li class="toc-sub"><a href="#benefits">Benefits</a></li><li class="toc-sub"><a href="#limits">Limits</a></li><li><a href="#write-path-and-read-path">Write Path and Read Path</a></li><li><a href="#end-to-end-event-streams">End-to-End Event Streams</a></li><li><a href="#correctness-without-coordination">Correctness Without Coordination</a></li><li class="toc-sub"><a href="#the-end-to-end-argument">The End-to-End Argument</a></li><li class="toc-sub"><a href="#uniqueness-constraints-without-distributed-transactions">Uniqueness Constraints Without Distributed Transactions</a></li><li class="toc-sub"><a href="#multi-partition-requests-without-distributed-transactions">Multi-Partition Requests Without Distributed Transactions</a></li><li class="toc-sub"><a href="#timeliness-vs-integrity">Timeliness vs Integrity</a></li><li><a href="#cqrs-in-the-ddd-context">CQRS in the DDD Context</a></li><li class="toc-sub"><a href="#projection-types">Projection Types</a></li><li class="toc-sub"><a href="#commands-and-read-models">Commands and Read Models</a></li><li class="toc-sub"><a href="#architectural-slices">Architectural Slices</a></li><li><a href="#event-sourced-domain-model-ddd-perspective">Event-Sourced Domain Model (DDD Perspective)</a></li><li class="toc-sub"><a href="#migrating-from-domain-model-to-event-sourced-domain-model">Migrating from Domain Model to Event-Sourced Domain Model</a></li><li><a href="#fowler39s-event-taxonomy-via-nygard">Fowler&#39;s Event Taxonomy (via Nygard)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Event sourcing and CQRS (Command Query Responsibility Segregation) are complementary patterns built on a common insight: an <strong>append-only log of immutable events</strong> is a more fundamental representation of system state than a mutable database. The mutable database is a <em>derived view</em> of the log — reconstructible by replaying events. &quot;The truth is the log. The database is a cache of the log.&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11)</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>The log is the source of truth; the database is a cache.</strong> State is the integral of an event stream; the changelog is its derivative. Given the log, you can reconstruct any historical state.</li>
+<li><strong>Event sourcing is application-level; CDC is database-level.</strong> Event sourcing produces domain-meaningful events as primary state; <a href="../streams/change-data-capture.html">Change Data Capture</a> produces row-change events as derived state. Both bridge the database/streaming gap but at different semantic depths.</li>
+<li><strong>CQRS separates the write model from the read models.</strong> The write path validates commands and produces events; multiple read paths derive specialised projections (SQL, search index, analytics store) from the same event log. Each read model is independently optimised; consistency between them is eventual.</li>
+<li><strong>Coordination-avoiding correctness is achievable.</strong> End-to-end operation IDs + idempotency + deterministic derivation give <em>integrity</em> without distributed transactions. Timeliness is sacrificed but recoverable; integrity is precious and must be preserved.</li>
+<li><strong>Immutability has limits.</strong> GDPR right-to-erasure conflicts with truly immutable logs (Datomic excision, Kafka tombstones); long-lived logs accumulate storage; schema evolution must remain backward-compatible forever.</li>
+<li><strong>Fowler&#39;s four-way taxonomy distinguishes related patterns.</strong> Event Notification, Event-Carried State Transfer, Event Sourcing, CQRS — same vocabulary, different architectural commitments. Confusing them creates expectations the implementation cannot meet.</li>
+</ul>
+<h2 id="change-data-capture-cdc">Change Data Capture (CDC)</h2>
 <p>CDC is the <strong>low-level</strong> version of this pattern: observe all changes made to a database and extract them as a stream. The source database remains the system of record; CDC makes its write log available to other systems. See <a href="../streams/change-data-capture.html">Change Data Capture</a> for the full treatment of log-based vs trigger-based vs query-based mechanisms, data-liberation strategies, and the schema-coupling trade-offs.</p>
 <p><strong>Problem solved</strong>: dual writes — when an application writes to a database and separately writes to a message broker, the two writes can fail independently, creating inconsistency. CDC eliminates the dual write: the database is the <strong>only</strong> write target, and the CDC mechanism reads the database&#39;s own write-ahead log to produce events.</p>
 <p><strong>How it works</strong>:</p>
@@ -323,22 +343,22 @@
 <p><strong>Tools</strong>: Debezium (MySQL, PostgreSQL, MongoDB, SQL Server), Maxwell (MySQL), Mongoriver (MongoDB), LinkedIn Databus.</p>
 <p><strong>Limitation</strong>: CDC operates at the database level — it captures rows and column changes, not the application-level meaning of the change. You see &quot;column X changed from A to B,&quot; not &quot;user Y cancelled their order.&quot;</p>
 <p><strong>Asynchrony</strong>: CDC is asynchronous, like replication. Consumers will see events with some lag. This is the same trade-off as read replicas — accept eventual consistency for the derived stores.</p>
-<h2>Event Sourcing</h2>
+<h2 id="event-sourcing">Event Sourcing</h2>
 <p>Event sourcing is the <strong>application-level</strong> version: the application deliberately records business events as the primary store, not a mutable state database.</p>
-<h3>Commands vs Events</h3>
+<h3 id="commands-vs-events">Commands vs Events</h3>
 <ul>
 <li><strong>Command</strong>: a request to do something. Can be validated and rejected. Example: &quot;place order for item X.&quot;</li>
 <li><strong>Event</strong>: an immutable fact — something that happened. Cannot be undone (only compensated). Example: &quot;order for item X was placed at timestamp T.&quot;</li>
 </ul>
 <p>Commands are validated against current state and, if valid, produce events. Events are appended to the event log. Read models are derived from the event log by replaying events.</p>
-<h3>Properties</h3>
+<h3 id="properties">Properties</h3>
 <ul>
 <li><strong>Multiple read views</strong>: the same event log can be projected into different read models for different purposes — a &quot;current state&quot; view, an &quot;order history&quot; view, a &quot;fraud analysis&quot; view, each optimised for its query pattern.</li>
 <li><strong>Richer information</strong>: a mutable database records only the current state. An event log records what happened — including cancelled items, failed attempts, intermediate states. This is valuable for analytics, debugging, and audit.</li>
 <li><strong>Deterministic replay</strong>: given the same event log and the same projection logic, you always get the same read model. This enables rebuilding read models from scratch, fixing projections after bugs, and &quot;time-travel&quot; debugging.</li>
 <li><strong>Natural audit trail</strong>: the event log is the audit log. Each event is an immutable fact, signed by the system that produced it.</li>
 </ul>
-<h3>Contrast with CDC</h3>
+<h3 id="contrast-with-cdc">Contrast with CDC</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -373,7 +393,7 @@
 <td>Requires application redesign</td>
 </tr>
 </tbody></table></div>
-<h2>CQRS — Command Query Responsibility Segregation</h2>
+<h2 id="cqrs-command-query-responsibility-segregation">CQRS — Command Query Responsibility Segregation</h2>
 <p>CQRS separates the <strong>write model</strong> (commands → events) from the <strong>read model</strong> (queries against materialized views).</p>
 <pre><code>Command → Validate → Event → Event Log
                                 ↓
@@ -394,7 +414,7 @@
 <li>Eventual consistency between write and read models. Application must handle &quot;you submitted a command, results will be visible shortly.&quot;</li>
 <li>Operational complexity: multiple stores to manage, sync to monitor.</li>
 </ul>
-<h2>State = Integral of Event Stream</h2>
+<h2 id="state-integral-of-event-stream">State = Integral of Event Stream</h2>
 <p>The relationship between events and state is mathematical:</p>
 <pre><code>State = ∫ (event stream) dt        [from t=0]
 Change stream = d(State) / dt
@@ -406,8 +426,8 @@ Change stream = d(State) / dt
 <li><strong>Stream processing</strong>: apply new events to an existing materialized view.</li>
 </ul>
 <p>The unified batch+stream model (Apache Flink, Apache Beam) exploits this — the same code path handles historical replay and live events.</p>
-<h2>Immutability: Benefits and Limits</h2>
-<h3>Benefits</h3>
+<h2 id="immutability-benefits-and-limits">Immutability: Benefits and Limits</h2>
+<h3 id="benefits">Benefits</h3>
 <ul>
 <li><strong>Debugging</strong>: see exactly what happened, in order, with all intermediate states visible.</li>
 <li><strong>Recovery</strong>: if a bug produces wrong data, replay from the event log through fixed code.</li>
@@ -415,13 +435,13 @@ Change stream = d(State) / dt
 <li><strong>Concurrency</strong>: immutable events need no locking — writers append, readers replay.</li>
 <li><strong>Multiple projections</strong>: different consumers can project the same event log differently.</li>
 </ul>
-<h3>Limits</h3>
+<h3 id="limits">Limits</h3>
 <ul>
 <li><strong>GDPR / privacy</strong>: true deletion is required for some data (personal data on erasure request). An immutable log cannot truly delete. Datomic supports &quot;excision&quot; (removing specific values while maintaining the rest of the log). Kafka log compaction can delete tombstoned keys. Neither is as clean as a simple <code>DELETE FROM</code>.</li>
 <li><strong>Storage</strong>: immutable logs grow without bound. Periodic snapshotting + trimming old events is needed for long-lived systems.</li>
 <li><strong>Schema evolution</strong>: event sourcing requires the event log to remain interpretable forever. Events written years ago by an old schema must still be processable — more demanding than database schema migration. Forward/backward compatible encoding (Avro, Protobuf) is essential (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>).</li>
 </ul>
-<h2>Write Path and Read Path</h2>
+<h2 id="write-path-and-read-path">Write Path and Read Path</h2>
 <p>From Kleppmann&#39;s Ch. 12 framing:</p>
 <ul>
 <li><strong>Write path</strong>: precomputed, eager — data is transformed and derived at write time. Example: search indexing (index the document on ingest).</li>
@@ -434,7 +454,7 @@ Change stream = d(State) / dt
 <li>Less precomputation → slower reads, faster writes, less storage.</li>
 </ul>
 <p>Event sourcing + CQRS explicitly separates these concerns, making the trade-off visible.</p>
-<h2>End-to-End Event Streams</h2>
+<h2 id="end-to-end-event-streams">End-to-End Event Streams</h2>
 <p>The event sourcing pattern can extend all the way to the client. Frameworks like React/Redux and Elm already manage client-side state as a stream of events (user interactions + server responses). Server-sent events and WebSockets push state changes from server to client. In this model:</p>
 <ul>
 <li>A user action on one device produces an event.</li>
@@ -443,12 +463,12 @@ Change stream = d(State) / dt
 <li>Client UI updates reactively.</li>
 </ul>
 <p>This is a natural extension of CQRS: the read model is the client-side state, and it is subscribed to the change stream rather than polled.</p>
-<h2>Correctness Without Coordination</h2>
+<h2 id="correctness-without-coordination">Correctness Without Coordination</h2>
 <p>From Kleppmann&#39;s Ch. 12: strong integrity guarantees can be achieved without distributed transactions or linearizability, by combining end-to-end idempotency with deterministic derivation. (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12)</p>
-<h3>The End-to-End Argument</h3>
+<h3 id="the-end-to-end-argument">The End-to-End Argument</h3>
 <p>The <strong>end-to-end argument</strong> (Saltzer, Reed &amp; Clark, 1984): TCP duplicate suppression, database transactions, and stream processor exactly-once semantics are each correct within their scope — but none is sufficient for application-level correctness. A network timeout leaves the client not knowing if the request was processed. Retry risks double-processing. Correctness must be enforced end-to-end, from origin client to ultimate storage.</p>
 <p><strong>Solution</strong>: assign a unique operation ID (UUID) at the request&#39;s origin. This ID flows with the request through all layers and is written to the database as a unique constraint. The database rejects duplicate IDs regardless of retries. This is more robust than 2PC: it works across heterogeneous services, survives network partitions, and requires no cross-service coordination.</p>
-<h3>Uniqueness Constraints Without Distributed Transactions</h3>
+<h3 id="uniqueness-constraints-without-distributed-transactions">Uniqueness Constraints Without Distributed Transactions</h3>
 <p>Uniqueness constraints (e.g., unique username, idempotent payment) can be enforced log-based:</p>
 <ol>
 <li><strong>Partition the event log by the constrained value</strong> (e.g., hash of username).</li>
@@ -456,7 +476,7 @@ Change stream = d(State) / dt
 <li>The processor applies first-write-wins: the first request for a value commits; subsequent requests for the same value are rejected asynchronously.</li>
 </ol>
 <p>No cross-partition coordination. Trade-off: rejection is async, not a synchronous error.</p>
-<h3>Multi-Partition Requests Without Distributed Transactions</h3>
+<h3 id="multi-partition-requests-without-distributed-transactions">Multi-Partition Requests Without Distributed Transactions</h3>
 <p>For operations that span multiple partitions (e.g., two-account transfer), a 3-step log-based approach avoids distributed transactions:</p>
 <ol>
 <li><strong>Log the request as a single message</strong> partitioned by request ID — the durable record of intent.</li>
@@ -464,7 +484,7 @@ Change stream = d(State) / dt
 <li><strong>Consumers process their partition&#39;s instructions</strong>, deduplicating by the original request ID.</li>
 </ol>
 <p>Each step is a deterministic derivation from immutable events. No coordinator required. Replay from the log recovers the correct state after any failure.</p>
-<h3>Timeliness vs Integrity</h3>
+<h3 id="timeliness-vs-integrity">Timeliness vs Integrity</h3>
 <p>Two distinct correctness properties that are commonly conflated:</p>
 <ul>
 <li><strong>Timeliness</strong>: whether reads reflect the most recent writes (what CAP&#39;s &quot;C&quot; and linearizability address).</li>
@@ -475,17 +495,17 @@ Change stream = d(State) / dt
 <p>&quot;Violations of timeliness are &#39;eventual consistency,&#39; whereas violations of integrity are &#39;perpetual inconsistency.&#39;&quot; (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 12)</p>
 </blockquote>
 <p>See also: <a href="../distributed/consistency-models.html">Consistency Models</a> for the full spectrum; <a href="../distributed/cap-theorem.html">Cap Theorem</a> for how timeliness vs integrity reframes the CAP debate.</p>
-<h2>CQRS in the DDD Context</h2>
+<h2 id="cqrs-in-the-ddd-context">CQRS in the DDD Context</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 8) situates CQRS within the domain model pattern: the domain model&#39;s aggregate is the write model (strongly consistent, single source of truth), and projections derived from domain events form the read models.</p>
-<h3>Projection Types</h3>
+<h3 id="projection-types">Projection Types</h3>
 <p><strong>Synchronous projection</strong> (simple): implemented as a catch-up subscription. After each command completes, the system updates the read model synchronously. The projection stores a checkpoint (e.g., a <code>processed_offset</code> column) representing the last event it processed. On startup, or after a crash, it reads from that checkpoint onwards — no events are missed or replayed twice. Strong consistency: reads immediately reflect recent writes.</p>
 <p><strong>Asynchronous projection</strong> (complex): implemented via a message bus subscription. The aggregate publishes domain events to a message broker; projections consume these events and update their read models independently. Eventual consistency: reads may lag behind writes. More fragile (broker failures, consumer lag) but decouples projection performance from command execution.</p>
-<h3>Commands and Read Models</h3>
+<h3 id="commands-and-read-models">Commands and Read Models</h3>
 <p>A nuance often missed: <strong>commands are not required to return nothing</strong>. The standard CQRS principle that commands and queries must be strictly separated applies to the <em>model</em>, not the method return type. After persisting an updated aggregate, the application layer can immediately query the strongly consistent write model and return data to the caller. This avoids forcing callers to do a subsequent query to get the new state.</p>
-<h3>Architectural Slices</h3>
+<h3 id="architectural-slices">Architectural Slices</h3>
 <p>CQRS (and other architectural patterns) apply <strong>per module</strong> within a bounded context, not at the bounded context boundary. A bounded context with multiple subdomains may use CQRS for its core subdomain module and a simpler transaction script + layered architecture for its supporting subdomain modules. This per-slice application of patterns prevents over-engineering simple modules with unnecessary infrastructure.</p>
 <hr>
-<h2>Event-Sourced Domain Model (DDD Perspective)</h2>
+<h2 id="event-sourced-domain-model-ddd-perspective">Event-Sourced Domain Model (DDD Perspective)</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 7) frames event sourcing as a tactical DDD pattern — the most advanced of the four business logic implementation patterns (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>). The <strong>event-sourced domain model</strong> uses event sourcing to manage aggregate state: instead of persisting current state, every change to an aggregate produces and persists a domain event.</p>
 <p><strong>Four-step operation cycle</strong>:</p>
 <ol>
@@ -512,12 +532,12 @@ Change stream = d(State) / dt
 <li>Architectural complexity: requires CQRS to build read models; see DDIA section above</li>
 </ul>
 <p><strong>When to use</strong>: core subdomains where deep insight, audit logs, or complex time-based analysis is genuinely needed. Not for supporting subdomains where simpler patterns suffice.</p>
-<h3>Migrating from Domain Model to Event-Sourced Domain Model</h3>
+<h3 id="migrating-from-domain-model-to-event-sourced-domain-model">Migrating from Domain Model to Event-Sourced Domain Model</h3>
 <p>The main challenge is the existing aggregate state: there is no event history to replay. Two approaches (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
 <p><strong>Generating past transitions</strong>: infer probable past events from current state and generate an approximate event stream. The generated stream can be projected back to the current state and verified. <em>Limitation</em>: intermediate state (e.g., how many times a contact was attempted before conversion) is irrecoverable.</p>
 <p><strong>Migration events</strong>: define an explicit <code>migrated-from-legacy</code> event containing the full current state. Projections must handle this event type permanently. <em>Advantage</em>: the absence of historical data is made explicit — no one mistakenly assumes the event stream is complete. <em>Disadvantage</em>: the legacy marker remains in the event store indefinitely.</p>
 <p>The migration event approach is generally preferred because it preserves epistemic honesty: it accurately represents what is and is not known about the aggregate&#39;s history.</p>
-<h2>Fowler&#39;s Event Taxonomy (via Nygard)</h2>
+<h2 id="fowler39s-event-taxonomy-via-nygard">Fowler&#39;s Event Taxonomy (via Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 16, citing Martin Fowler&#39;s &quot;What Do You Mean by &#39;Event-Driven&#39;?&quot;) identifies four distinct uses of the word &quot;event&quot; that are commonly conflated:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -550,7 +570,7 @@ Change stream = d(State) / dt
 </tbody></table></div>
 <p>The distinction matters: event notification only tells consumers <em>that</em> something happened; event-carried state transfer gives consumers <em>what</em> changed so they can avoid round-trips; event sourcing makes events the primary store of truth. Systems that use all three concepts often muddle them in the design.</p>
 <p><strong>Versioning caveat</strong> (Nygard): event format versioning is a long-horizon problem — a message sender communicates with a future (possibly not-yet-written) reader; a message reader receives a call from the distant past. Avoid closed formats (serialised objects, annotation-based mapping frameworks); use open, self-describing formats (JSON) and treat messages as data, not objects.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -579,7 +599,7 @@ Change stream = d(State) / dt
 <td>Fowler&#39;s four-way event taxonomy (notification vs state transfer vs event sourcing vs CQRS); versioning challenge of long-lived event formats; prefer open formats and treat messages as data not objects</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../streams/stream-processing.html">Stream Processing</a> — stream processors consume event logs to maintain derived state</li>
 <li><a href="../streams/batch-processing.html">Batch Processing</a> — batch reprocessing of event logs to rebuild read models</li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,16 +309,30 @@
       <h1>API Testing</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/testing.html">testing</a></li><li><a class="tag-chip" href="../tags/contract-testing.html">contract-testing</a></li><li><a class="tag-chip" href="../tags/api.html">api</a></li><li><a class="tag-chip" href="../tags/quality.html">quality</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#the-test-quadrant">The Test Quadrant</a></li><li><a href="#the-test-pyramid">The Test Pyramid</a></li><li><a href="#contract-testing">Contract Testing</a></li><li><a href="#component-testing">Component Testing</a></li><li><a href="#integration-testing">Integration Testing</a></li><li><a href="#end-to-end-testing">End-to-End Testing</a></li><li><a href="#testing-in-production">Testing in Production</a></li><li><a href="#test-scope-size-and-doubles-distributed-systems-perspective">Test Scope, Size, and Doubles (Distributed Systems Perspective)</a></li><li><a href="#formal-verification">Formal Verification</a></li><li><a href="#testing-event-driven-microservices">Testing Event-Driven Microservices</a></li><li class="toc-sub"><a href="#unit-testing-topology-functions">Unit Testing Topology Functions</a></li><li class="toc-sub"><a href="#integration-testing-for-edm">Integration Testing for EDM</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Consumer-driven contracts are the highest-leverage investment</strong> for internal API testing. The consumer defines the interactions it needs; the producer runs every consumer&#39;s tests as gates. Integration failures get caught at producer-change time, not after a consumer deploys.</li>
+<li><strong>The test pyramid is right; the ice-cream cone is wrong.</strong> Many unit tests, fewer integration tests, fewer end-to-end tests. Inverting this produces slow brittle suites that get run too infrequently to provide signal.</li>
+<li><strong>Scope and size are orthogonal.</strong> A narrow-scope test (one adapter) can be small (in-memory fake) or large (real downstream). Always write the smallest test for the desired scope.</li>
+<li><strong>Test double fidelity matters.</strong> Real implementation &gt; official fake &gt; stub &gt; mock. Mocks test interactions, not outcomes — use them last. Tests built on mocks can pass while the real integration is broken.</li>
+<li><strong>Pact + Pact Broker is the production-grade CDC setup.</strong> Generated JSON contracts, versioned, with <code>can-i-deploy</code> safety checks. Storing contracts in repos or shared filesystems instead is a common downgrade.</li>
+<li><strong>Formal verification (TLA+) catches what tests can&#39;t.</strong> For consensus protocols, distributed transactions, and migration procedures, model-checking is the only way to surface subtle correctness bugs across all reachable states.</li>
+<li><strong>User journey tests beat exhaustive E2E.</strong> One multi-step scenario (create → modify → cancel) covers more surface than the equivalent individual API tests, faster.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>API testing is the set of practices for verifying that APIs behave correctly: that they honour their contracts, handle failure cases, perform adequately under load, and integrate correctly with their consumers. In a distributed system, testing is more complex than in a monolith because failures happen across service boundaries that cannot be controlled by a single test.</p>
-<h2>The Test Quadrant</h2>
+<h2 id="the-test-quadrant">The Test Quadrant</h2>
 <p>The Marick/Crispin test quadrant organises tests along two axes: technology-facing vs business-facing, and automated vs exploratory (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 2):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -333,7 +354,7 @@
 </tr>
 </tbody></table></div>
 <p>All four quadrants are needed. Q1 and Q2 should be automated. Q3 and Q4 involve human judgment but should be tool-assisted.</p>
-<h2>The Test Pyramid</h2>
+<h2 id="the-test-pyramid">The Test Pyramid</h2>
 <pre><code>        ┌──────────────┐
         │  End-to-End  │  ← fewest; most expensive; most brittle
         ├──────────────┤
@@ -344,7 +365,7 @@
         └──────────────┘
 </code></pre>
 <p>Inverting the pyramid (many E2E, few unit tests) creates an &quot;ice-cream cone&quot; anti-pattern: slow, brittle test suites that run infrequently and provide poor signal.</p>
-<h2>Contract Testing</h2>
+<h2 id="contract-testing">Contract Testing</h2>
 <p>Contract testing is the most important testing investment for API-driven distributed systems. A contract defines a valid interaction between a consumer and a producer: the request shape, the response shape, and the expected status codes.</p>
 <p><strong>Why it matters</strong>: Integration failures typically manifest not as wrong logic but as contract violations — a field is renamed, a response body changes shape, a status code changes. Unit tests catch none of this; end-to-end tests catch it too late and too expensively.</p>
 <p><strong>Two approaches</strong>:</p>
@@ -366,7 +387,7 @@
 <li><strong>Centralised Git repository</strong>: visible, but without tooling it becomes a dumping ground — producers can have contracts pushed to them that they never agreed to.</li>
 <li><strong>Alongside the producer code</strong>: simple to start; the producer controls which contracts it accepts; harder to discover from outside the repo.</li>
 </ol>
-<h2>Component Testing</h2>
+<h2 id="component-testing">Component Testing</h2>
 <p>Component tests exercise multiple units together within a single service, without crossing service boundaries. They verify:</p>
 <ul>
 <li>Correct status codes for valid and invalid inputs</li>
@@ -375,12 +396,12 @@
 <li>Correct handling of empty datasets (200 with empty list vs 404)</li>
 </ul>
 <p>Component tests use stubs or mocks for external dependencies (databases, downstream services). They are faster and more isolated than integration tests but more comprehensive than unit tests.</p>
-<h2>Integration Testing</h2>
+<h2 id="integration-testing">Integration Testing</h2>
 <p>Integration tests verify behaviour across service boundaries. Two approaches:</p>
 <p><strong>Stub servers</strong>: pre-configured servers that return canned responses. Can be hand-rolled or generated from the OAS contract. Fast to run; may not match real service behaviour precisely.</p>
 <p><strong>Real dependencies</strong>: run actual dependency instances using containerization (e.g., Testcontainers in CI). Slower to start but provides higher confidence that the integration is correct. Preferred when the real behaviour of the dependency is difficult to simulate accurately.</p>
 <p>For external third-party dependencies (outside your organisation&#39;s domain), it is acceptable to stub these in integration and end-to-end tests.</p>
-<h2>End-to-End Testing</h2>
+<h2 id="end-to-end-testing">End-to-End Testing</h2>
 <p>End-to-end tests exercise complete user journeys across multiple real services. Key principles:</p>
 <ul>
 <li><strong>Use realistic payloads</strong>: tests that use small, artificial payloads miss failures caused by buffer limits or field validation on realistic data.</li>
@@ -390,14 +411,14 @@
 <li><strong>Security should be on</strong>: TLS and authentication must be active in E2E tests; turning them off makes the tests unrepresentative.</li>
 </ul>
 <p>End-to-end tests are the most expensive to create and maintain but provide the only evidence that all services integrate correctly from the user&#39;s perspective.</p>
-<h2>Testing in Production</h2>
+<h2 id="testing-in-production">Testing in Production</h2>
 <p>Chapter 5 of <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> extends the testing model into production via observability and progressive release strategies:</p>
 <ul>
 <li><strong>Canary releases</strong>: route 1–5% of traffic to new version; monitor SLIs; expand or rollback.</li>
 <li><strong>Traffic mirroring / dark launch</strong>: duplicate production traffic to new version; compare responses out-of-band.</li>
 <li>These are not replacements for pre-production testing — they are an additional safety net.</li>
 </ul>
-<h2>Test Scope, Size, and Doubles (Distributed Systems Perspective)</h2>
+<h2 id="test-scope-size-and-doubles-distributed-systems-perspective">Test Scope, Size, and Doubles (Distributed Systems Perspective)</h2>
 <p>Vitillo distinguishes two orthogonal dimensions that are often conflated (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 29):</p>
 <p><strong>Scope</strong> (what the test validates):</p>
 <ul>
@@ -421,7 +442,7 @@
 </ol>
 <p>Stubs and mocks offer the weakest resemblance to real behaviour. Tests built on them can pass while the real integration is broken. Contract tests (described above) are the recommended way to add confidence when using mocks for integration tests.</p>
 <p><strong>User journey tests</strong>: frame end-to-end tests as multi-step user scenarios (e.g., create order → modify → cancel) rather than isolated API calls. Fewer tests cover more surface area; a single journey test is typically faster than the equivalent individual tests split apart.</p>
-<h2>Formal Verification</h2>
+<h2 id="formal-verification">Formal Verification</h2>
 <p>Software tests can only cover failures developers can imagine. Formal specification languages allow properties to be verified algorithmically across all possible system states — including combinations of rare events that no human would test for.</p>
 <p><strong>TLA+</strong> is the most widely used formal specification language for distributed systems. Amazon uses it for S3 and DynamoDB; Microsoft uses it for Cosmos DB. A specification describes a system as a set of behaviours (sequences of states); the model checker exhaustively explores all reachable states and reports any violation with a full error trace. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 29)</p>
 <p>Two property types:</p>
@@ -431,35 +452,14 @@
 </ul>
 <p><strong>Example — dual-write migration bug</strong>: migrating from store X to store Y via a dual-write approach (write to both, read from X, then switch to Y) seems correct. TLA+ reveals two problems: (1) a crash between the two writes leaves stores inconsistent (liveness violation); (2) even with atomic dual-writes, concurrent writers can see writes in different orders, leaving stores in different states. The model checker returns the exact state sequence that produces each violation. Formal modeling catches this before a line of production code is written.</p>
 <p>Formal specification is not an alternative to testing — it&#39;s most valuable for the parts of the system most likely to have subtle correctness bugs that traditional tests cannot reach: consensus protocols, distributed transactions, migration procedures.</p>
-<h2>How Different Sources Treat It</h2>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>Source</th>
-<th>Perspective</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
-<td>Comprehensive treatment of API-specific testing. Introduces the Pact framework and consumer-driven contracts as the primary investment for distributed systems.</td>
-</tr>
-<tr>
-<td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
-<td>Frames testing around scope × size orthogonality, test double fidelity hierarchy, and formal verification (TLA+) for distributed correctness. Introduces user journey tests as an E2E minimisation strategy.</td>
-</tr>
-<tr>
-<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
-<td>Mentions fitness functions (ArchUnit, Chaos Monkey) as a mechanism for automated architecture governance; doesn&#39;t address API contract testing specifically.</td>
-</tr>
-</tbody></table></div>
-<h2>Testing Event-Driven Microservices (Bellemare)</h2>
+<h2 id="testing-event-driven-microservices">Testing Event-Driven Microservices</h2>
 <p>Event-driven microservices are modular and relatively easy to test because their I/O is well-defined: input comes from event streams or request-response APIs; output is written to output event streams or external state stores (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 15).</p>
-<h3>Unit Testing Topology Functions</h3>
+<h3 id="unit-testing-topology-functions">Unit Testing Topology Functions</h3>
 <p><strong>Stateless functions</strong> (filter, map, custom transformers): no persistent state required; test independently with boundary conditions (null, max values, edge cases). These are the easiest and most valuable unit tests to write.</p>
 <p><strong>Stateful functions</strong>: require a state store for the duration of the test — either a mock (fast, isolated) or a local implementation (higher fidelity, closer to integration testing). Mock when the store behaviour is simple and well-understood; use a real local store when the function depends on store-specific semantics (e.g., TTL, compaction).</p>
 <p><strong>Topology testing</strong>: frameworks provide topology-level test drivers that exercise the full processing pipeline without a live event broker. These allow injecting events with specific values, timestamps, or ordering (including out-of-order events) and asserting on output streams. Examples: Kafka Streams&#39; <code>TopologyTestDriver</code>, Spark&#39;s <code>MemoryStream</code>, Apache Flink and Beam built-in topology test utilities.</p>
 <p><strong>Schema evolution testing</strong>: pull the current and previous schema versions from the schema registry and run compatibility checks as part of the CI pipeline. Some setups generate schemas from code at compile time and compare them against the registry version automatically.</p>
-<h3>Integration Testing for EDM</h3>
+<h3 id="integration-testing-for-edm">Integration Testing for EDM</h3>
 <p><strong>Local integration testing</strong> — embed or containerize all dependencies:</p>
 <ul>
 <li><em>Embedded (JVM-only)</em>: start broker, schema registry, and microservice topology instances within the same JVM test runtime; fully controllable programmatically. Allows inducing broker outages, out-of-order events, partition reassignments.</li>
@@ -497,7 +497,7 @@
 <p><strong>Shared testing environment</strong> (anti-pattern): single broker shared by all teams; leads to a &quot;tragedy of the commons&quot; — abandoned event streams accumulate, data quality degrades, simultaneous load tests interfere with each other. Avoid as the primary strategy; use disposable environments instead.</p>
 <p><strong>Disposable environments</strong>: programmatically create an isolated cluster per microservice test run; populate with event data; run tests; tear down. Requires significant tooling investment (multicluster provisioning, event copying) but provides full isolation and exercises disaster recovery tooling as a side effect.</p>
 <p><strong>Production environment testing</strong>: run a new microservice instance against production streams with its own consumer group and output event streams. Good for smoke testing; risky for load/performance testing; requires strict cleanup of testing artifacts.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -507,18 +507,22 @@
 </thead>
 <tbody><tr>
 <td><a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a></td>
-<td>Contract testing (Pact), test pyramid, testing in production (canary, traffic mirror)</td>
+<td>Comprehensive treatment of API-specific testing. Introduces Pact and consumer-driven contracts as the primary investment for distributed systems; test pyramid; testing in production (canary, traffic mirror).</td>
 </tr>
 <tr>
 <td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
-<td>Scope × size orthogonality, test double fidelity hierarchy, formal verification (TLA+), user journey tests</td>
+<td>Frames testing around scope × size orthogonality; test double fidelity hierarchy; formal verification (TLA+) for distributed correctness; user journey tests as an E2E minimisation strategy.</td>
 </tr>
 <tr>
 <td><a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a></td>
-<td>EDM-specific: topology unit testing, stateful test strategies, local vs remote integration testing, event data sourcing strategies, shared-env anti-pattern</td>
+<td>EDM-specific: topology unit testing, stateful test strategies, local vs remote integration testing, event data sourcing strategies, shared-environment anti-pattern.</td>
+</tr>
+<tr>
+<td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
+<td>Mentions fitness functions (ArchUnit, Chaos Monkey) as a mechanism for automated architecture governance; doesn&#39;t address API contract testing specifically.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../reference/technology-glossary.html">Technology Glossary</a> — tool entries for Pact, Pact Broker, WireMock, Testcontainers, Gatling, K6</li>
 <li><a href="../concepts/api-design.html">Api Design</a> — the OAS contract that contract tests validate</li>

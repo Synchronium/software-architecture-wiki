@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Caching stores the result of an expensive operation (network call, database query, computation) closer to the consumer so that subsequent requests can be served without repeating the work. It is the single highest-leverage scalability technique for read-heavy workloads.</p>
-<h2>HTTP Caching</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#http-caching">HTTP Caching</a></li><li class="toc-sub"><a href="#server-cache-contract-response-headers">Server → Cache Contract (Response Headers)</a></li><li class="toc-sub"><a href="#cache-lifecycle-fresh-vs-stale">Cache Lifecycle: Fresh vs Stale</a></li><li class="toc-sub"><a href="#immutable-static-resources">Immutable Static Resources</a></li><li class="toc-sub"><a href="#consistency-trade-off">Consistency Trade-off</a></li><li><a href="#reverse-proxies-server-side-http-cache">Reverse Proxies (Server-Side HTTP Cache)</a></li><li><a href="#application-layer-caching">Application-Layer Caching</a></li><li class="toc-sub"><a href="#when-caching-helps">When Caching Helps</a></li><li class="toc-sub"><a href="#caching-pattern-taxonomy">Caching Pattern Taxonomy</a></li><li class="toc-sub"><a href="#side-cache-vs-inline-cache">Side Cache vs Inline Cache</a></li><li class="toc-sub"><a href="#eviction-and-expiration">Eviction and Expiration</a></li><li class="toc-sub"><a href="#local-in-process-cache">Local (In-Process) Cache</a></li><li class="toc-sub"><a href="#external-out-of-process-cache">External (Out-of-Process) Cache</a></li><li><a href="#related-pages">Related Pages</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Caching stores the result of an expensive operation (network call, database query, computation) closer to the consumer so that subsequent requests can be served without repeating the work. It is the single highest-leverage scalability technique for read-heavy workloads.</p>
+<h2 id="http-caching">HTTP Caching</h2>
 <p>HTTP caching applies to <strong>safe methods</strong> (GET, HEAD) — methods that don&#39;t alter server state. Unsafe methods (POST, PUT, DELETE) cannot be cached because the request <em>is</em> the side effect.</p>
-<h3>Server → Cache Contract (Response Headers)</h3>
+<h3 id="server-cache-contract-response-headers">Server → Cache Contract (Response Headers)</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -337,7 +348,7 @@
 <td>Version identifier for conditional requests</td>
 </tr>
 </tbody></table></div>
-<h3>Cache Lifecycle: Fresh vs Stale</h3>
+<h3 id="cache-lifecycle-fresh-vs-stale">Cache Lifecycle: Fresh vs Stale</h3>
 <ol>
 <li><strong>First request</strong>: cache misses, fetches from origin, stores response + headers.</li>
 <li><strong>Within TTL (fresh)</strong>: cache returns the stored response immediately — no network call.</li>
@@ -347,7 +358,7 @@
 </ul>
 </li>
 </ol>
-<h3>Immutable Static Resources</h3>
+<h3 id="immutable-static-resources">Immutable Static Resources</h3>
 <p>Static resources (JavaScript bundles, CSS, images) change rarely. Best practice:</p>
 <ul>
 <li>Set <code>Cache-Control: max-age=31536000, immutable</code> (1-year TTL, the HTTP spec maximum).</li>
@@ -355,9 +366,9 @@
 <li><strong>Atomic updates</strong>: the HTML index file references the new hashed URLs. A client either sees the old index (→ old JS/CSS URLs) or the new index (→ new JS/CSS URLs), but never a mix. This makes multi-file deployments atomic without any additional infrastructure.</li>
 </ul>
 <p>This is a practical instance of the <strong>CQRS</strong> pattern (→ <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>): the read path (GET) and write path (POST/PUT/DELETE) are treated differently. Reads are served from cache; writes go to origin and invalidate or version the cached resource.</p>
-<h3>Consistency Trade-off</h3>
+<h3 id="consistency-trade-off">Consistency Trade-off</h3>
 <p>HTTP caching trades consistency for performance. A client may serve a stale version for up to the TTL period even if the origin has updated. For static resources with URL versioning, staleness is bounded; for dynamic resources, it depends on the chosen TTL.</p>
-<h2>Reverse Proxies (Server-Side HTTP Cache)</h2>
+<h2 id="reverse-proxies-server-side-http-cache">Reverse Proxies (Server-Side HTTP Cache)</h2>
 <p>A <strong>reverse proxy</strong> is a server-side intermediary that intercepts all client-to-server traffic. Clients cannot distinguish the proxy from the origin server.</p>
 <p>As a cache, a reverse proxy is <strong>shared across all clients</strong> — far more effective than client-side caches, which are private per user.</p>
 <p>Additional capabilities of a reverse proxy:</p>
@@ -368,9 +379,9 @@
 <li><strong>Load balancing</strong>: distribute requests across multiple backend instances</li>
 </ul>
 <p>Common implementations: NGINX, HAProxy. In practice, most of these use cases have been commoditized by managed CDN services (→ <a href="../distributed/cdn.html">Cdn</a>).</p>
-<h2>Application-Layer Caching</h2>
+<h2 id="application-layer-caching">Application-Layer Caching</h2>
 <p>Application-layer caching sits between the application and the data store. A cache is a high-speed storage layer (typically in-memory) that buffers responses from an origin so that future requests can be served without repeating the work. It provides only best-effort guarantees — its state is disposable and can be rebuilt from the origin.</p>
-<h3>When Caching Helps</h3>
+<h3 id="when-caching-helps">When Caching Helps</h3>
 <p>Hit ratio is the fraction of requests served directly from the cache. It depends on:</p>
 <ul>
 <li><strong>Universe of cacheable objects</strong>: fewer distinct objects → higher hit ratio.</li>
@@ -380,7 +391,7 @@
 <p>Rule of thumb (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 2): handling <strong>80%+ of reads from cache</strong> extends database capacity dramatically — the database never sees the majority of traffic. This is the threshold worth designing toward for read-heavy workloads.</p>
 <p><strong>Caching is an optimisation, not a scalability substitute.</strong> The origin (data store) must survive at full traffic without the cache — just more slowly. If the cache becomes unavailable and the origin falls over, the system is fragile by design.</p>
 <p>Rule of thumb: the higher in the call stack that caching is applied, the more downstream resources are saved. Client-side HTTP caching (→ above) saves the most; application-layer caching in front of a database is next.</p>
-<h3>Caching Pattern Taxonomy</h3>
+<h3 id="caching-pattern-taxonomy">Caching Pattern Taxonomy</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -416,7 +427,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Cache-aside is the primary pattern in massively scalable systems</strong> because it is resilient to cache failure (a cache miss is handled gracefully without the cache being available), and it scales easily (Redis/memcached are simple distributed hash tables with no write-path coupling). Read-through/write-through simplify application logic but couple the write path to the cache (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 6).</p>
-<h3>Side Cache vs Inline Cache</h3>
+<h3 id="side-cache-vs-inline-cache">Side Cache vs Inline Cache</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -436,12 +447,12 @@
 <td>HTTP caching, CDN</td>
 </tr>
 </tbody></table></div>
-<h3>Eviction and Expiration</h3>
+<h3 id="eviction-and-expiration">Eviction and Expiration</h3>
 <p><strong>Eviction policy</strong>: when the cache is full, entries must be removed. Least Recently Used (LRU) is the most common — evict the entry that hasn&#39;t been accessed in the longest time.</p>
 <p><strong>TTL-based expiration</strong>: each cached object has a time-to-live. After the TTL, the object is stale. Trade-off: longer TTL → higher hit ratio but greater staleness risk.</p>
 <p><strong>Deferred expiry</strong>: rather than evicting an object the moment its TTL expires, the cache can serve the stale object and defer fetching a fresh one until the next request. If the origin is temporarily unavailable, this is more resilient than returning an error.</p>
 <p><strong>Cache invalidation is hard.</strong> TTL is a workaround, not a solution. To invalidate a query result precisely, every data change that could affect that query must trigger invalidation — which can span thousands of records. In practice, TTL is accepted as the trade-off.</p>
-<h3>Local (In-Process) Cache</h3>
+<h3 id="local-in-process-cache">Local (In-Process) Cache</h3>
 <p>A local cache is co-located with the application process — typically an in-memory hash table.</p>
 <p><strong>Advantages</strong>: no network call; lowest possible latency.</p>
 <p><strong>Disadvantages</strong>:</p>
@@ -450,7 +461,7 @@
 <li>Inconsistency: two instances may hold different versions of the same object simultaneously.</li>
 <li><strong>Thundering herd</strong>: when a cache is cold (process restart, new popular object), all instances simultaneously miss on the same key and hammer the origin. Mitigation: <strong>request coalescing</strong> — at any given time, at most one outstanding request per object per process. Subsequent requests for the same key wait for the first to complete and share the result.</li>
 </ul>
-<h3>External (Out-of-Process) Cache</h3>
+<h3 id="external-out-of-process-cache">External (Out-of-Process) Cache</h3>
 <p>An external cache is a dedicated, shared caching service — typically in-memory.</p>
 <p><strong>Advantages</strong>:</p>
 <ul>
@@ -464,7 +475,7 @@
 <li><strong>Cascading failure risk</strong>: if the external cache becomes unavailable, all clients simultaneously fall back to the origin. An origin sized for cached-hit traffic can be overwhelmed. Defence: keep a local in-process cache as a fallback layer; ensure the origin has load-shedding in place.</li>
 </ul>
 <p>Common implementations: <strong>Redis</strong> (supports partitioning and replication), <strong>Memcached</strong> (simpler, no replication). Both are available as managed services on AWS and Azure.</p>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/cdn.html">Cdn</a> — CDN extends HTTP caching to a geographically distributed overlay network</li>
 <li><a href="../distributed/http.html">Http</a> — HTTP/2 and HTTP/3 affect caching efficiency (connection reuse, multiplexing)</li>
@@ -474,7 +485,7 @@
 <li><a href="../reference/technology-glossary.html">Technology Glossary</a> — NGINX, CDN, Redis entries</li>
 <li><a href="../distributed/load-balancing.html">Load Balancing</a> — reverse proxies also serve as L7 load balancers; same infrastructure</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 14) — HTTP caching headers, fresh/stale lifecycle, immutable static resources, CQRS connection, reverse proxies.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 20) — application-layer caching: hit ratio, side vs inline cache, eviction, TTL, local vs external cache, thundering herd, cascading failure.</li>

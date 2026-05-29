@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,21 +309,35 @@
       <h1>Load Balancing</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li><li><a class="tag-chip" href="../tags/availability.html">availability</a></li><li><a class="tag-chip" href="../tags/networking.html">networking</a></li><li><a class="tag-chip" href="../tags/load-balancing.html">load-balancing</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A load balancer distributes requests across a pool of servers to increase capacity and availability. Clients interact with the load balancer&#39;s address; individual servers are invisible to them. This decoupling enables horizontal scaling (add more servers) and automatic failure handling (remove failed servers from the pool).</p>
-<h2>Availability Benefit</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#availability-benefit">Availability Benefit</a></li><li><a href="#dns-load-balancing">DNS Load Balancing</a></li><li><a href="#l4-load-balancing-transport-layer">L4 Load Balancing (Transport Layer)</a></li><li><a href="#l7-load-balancing-application-layer">L7 Load Balancing (Application Layer)</a></li><li><a href="#elasticity-autoscaling">Elasticity (Autoscaling)</a></li><li><a href="#service-discovery">Service Discovery</a></li><li><a href="#health-checks">Health Checks</a></li><li><a href="#lame-duck-state">Lame Duck State</a></li><li><a href="#subsetting">Subsetting</a></li><li><a href="#load-balancing-algorithms">Load Balancing Algorithms</a></li><li><a href="#client-side-load-balancing-sidecar">Client-Side Load Balancing (Sidecar)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A load balancer distributes requests across a pool of servers to increase capacity and availability. Clients interact with the load balancer&#39;s address; individual servers are invisible to them. This decoupling enables horizontal scaling (add more servers) and automatic failure handling (remove failed servers from the pool).</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>The nines add up for independent servers.</strong> Two 99% servers behind a balancer give 99.99% (1 − 0.01²). The maths is theoretical — correlated failures and slow failure detection erode the gain — but the principle drives every redundancy decision.</li>
+<li><strong>L4 vs L7 is a capability-vs-overhead trade.</strong> L4 (TCP-level, VIP + consistent hash) is fast but can&#39;t see HTTP; L7 (reverse proxy) terminates TLS, routes on headers, rate limits, but adds latency. Typical production stack: L4 in front to absorb DDoS, L7 behind for application routing.</li>
+<li><strong>Power of two choices beats actual load tracking.</strong> Polling backend load introduces oscillation (fresh server reports 0, gets hammered, reports overloaded, gets nothing). Picking two backends at random and routing to the less loaded is near-optimal with no coordination.</li>
+<li><strong>Sticky sessions create hotspots.</strong> Sessions vary in cost; consistent hashing on session ID concentrates the expensive ones on individual backends. Externalise session state instead.</li>
+<li><strong>Health checks have failure modes.</strong> Mass-failure of health endpoints (misconfigured <code>/health</code>) makes a naive balancer empty the pool entirely. Detect mass failure as &quot;checks unreliable&quot; rather than as &quot;everything down.&quot;</li>
+<li><strong>Lame duck state is the graceful-shutdown discipline.</strong> Backend signals &quot;draining&quot; via the health endpoint, completes in-flight requests, then exits. Zero-downtime rolling deploys without blue-green infrastructure.</li>
+<li><strong>DNS load balancing is for geographic steering, not failure handling.</strong> TTL caching and 512-byte reply limits prevent failure-aware fine-grained routing. EDNS0 client subnet extension reveals the actual client location to authoritative resolvers.</li>
+</ul>
+<h2 id="availability-benefit">Availability Benefit</h2>
 <p>With N independent servers behind a load balancer, the application is unavailable only when all servers are unavailable simultaneously. The probability of that is the product of each server&#39;s failure rate. As a rule of thumb: <strong>the nines of independent servers add up</strong>.</p>
 <p>Example: two servers each with 99% availability (two nines):</p>
 <pre><code>1 − (0.01 × 0.01) = 0.9999  →  99.99% (four nines)
 </code></pre>
 <p>Caveat: this is theoretical. In practice the load balancer doesn&#39;t remove failed servers instantly, failure rates may be correlated (e.g., a shared dependency fails), and surviving servers may not absorb the traffic spike when one is removed.</p>
-<h2>DNS Load Balancing</h2>
+<h2 id="dns-load-balancing">DNS Load Balancing</h2>
 <p>The simplest approach: add multiple server IP addresses to a DNS A record. Clients pick one when resolving the hostname.</p>
 <p><strong>Limitations</strong>:</p>
 <ul>
@@ -327,7 +348,7 @@
 <li>Recursive resolvers cache responses up to the TTL, so a single authoritative reply may be forwarded to thousands of users. This makes it impossible to control exactly how many users receive each reply. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 19)</li>
 </ul>
 <p><strong>Practical use</strong>: global traffic steering to different data centres or CDN clusters (global DNS load balancing). Not suitable for fine-grained, failure-aware routing within a data centre. Large-scale DNS load balancers integrate with global control systems to track capacity, health, and geographic distribution per resolver.</p>
-<h2>L4 Load Balancing (Transport Layer)</h2>
+<h2 id="l4-load-balancing-transport-layer">L4 Load Balancing (Transport Layer)</h2>
 <p>A Layer 4 load balancer operates at the TCP level. Clients open a TCP connection to the load balancer&#39;s <strong>virtual IP (VIP)</strong>; the load balancer forwards the packets to a backend server transparently via address translation.</p>
 <p>A VIP is not assigned to a specific network interface — it is shared across many load balancer instances. From the user&#39;s perspective it is a single stable IP regardless of how many backends sit behind it.</p>
 <p><strong>Connection assignment</strong>: consistent hashing on the connection 4-tuple (source IP/port, destination IP/port) ensures all packets in a connection go to the same server. Minimises disruption when servers are added or removed. The simpler <code>id(packet) mod N</code> formula causes almost all connections to remap when N changes (one backend added or removed) — consistent hashing avoids this. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 19)</p>
@@ -336,7 +357,7 @@
 <p><strong>Horizontal scaling</strong>: L4 load balancers can be scaled out using <strong>Anycast + ECMP</strong> (Equal-Cost Multi-Path). Multiple load balancer instances announce the same Anycast IP address to edge routers. Routers distribute packets across instances using equal-cost multi-path consistent hashing, keeping packets of a single connection on the same load balancer instance.</p>
 <p><strong>Limitation</strong>: operates at the byte level — no visibility into HTTP semantics. Cannot terminate TLS, route based on request headers, or rate-limit individual requests.</p>
 <p>Managed: AWS Network Load Balancer, Azure Load Balancer.</p>
-<h2>L7 Load Balancing (Application Layer)</h2>
+<h2 id="l7-load-balancing-application-layer">L7 Load Balancing (Application Layer)</h2>
 <p>A Layer 7 load balancer is an HTTP reverse proxy. It maintains two TCP connections — one with the client and one with a backend server — and routes individual HTTP requests between them.</p>
 <p><strong>Capabilities</strong>:</p>
 <ul>
@@ -349,7 +370,7 @@
 <p><strong>Sticky session caveat</strong>: sessions vary widely in cost. Stickiness concentrates expensive sessions on individual backends, creating hotspots.</p>
 <p><strong>Deployment pattern</strong>: L7 load balancers are typically deployed behind an L4 load balancer for internet-facing traffic. The L4 layer absorbs volumetric DDoS attacks (e.g., SYN floods) before traffic reaches the L7 layer.</p>
 <p>Common implementations: NGINX, HAProxy, Envoy.</p>
-<h2>Elasticity (Autoscaling)</h2>
+<h2 id="elasticity-autoscaling">Elasticity (Autoscaling)</h2>
 <p>Elasticity is the capability to dynamically provision new capacity as load grows and decommission it as load drops. It requires the load balancer to be integrated with application monitoring:</p>
 <ul>
 <li><strong>Scale-out trigger</strong>: policy fires when a metric (e.g., average CPU &gt; 70%) is exceeded across all instances — new replicas are started and added to the pool after a warmup period.</li>
@@ -358,7 +379,7 @@
 </ul>
 <p>AWS Auto Scaling Groups provide a canonical implementation: minimum and maximum instance counts bound the pool size; the load balancer maintains the minimum and never exceeds the maximum. A warmup period prevents new instances from being sent traffic before they are ready.</p>
 <p>(→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5)</p>
-<h2>Service Discovery</h2>
+<h2 id="service-discovery">Service Discovery</h2>
 <p>A load balancer needs to know which backend servers are available. Static configuration files are brittle. The standard approach:</p>
 <ol>
 <li>A fault-tolerant coordination service (etcd, ZooKeeper) maintains the live server list.</li>
@@ -366,22 +387,22 @@
 <li>When the server shuts down gracefully, it deregisters. If it crashes, the TTL expires and the coordination service removes it automatically.</li>
 </ol>
 <p>This mechanism underpins <strong>autoscaling</strong>: cloud providers provision new servers in response to load, which register themselves dynamically, and the load balancer discovers them without manual intervention.</p>
-<h2>Health Checks</h2>
+<h2 id="health-checks">Health Checks</h2>
 <p><strong>Passive health check</strong>: the load balancer infers health from real traffic. If a request times out or returns a non-retriable error (e.g., 503), the server is marked unhealthy and temporarily removed from the pool. No extra overhead — health detection piggybacks on real requests.</p>
 <p><strong>Active health check</strong>: servers expose a dedicated <code>/health</code> endpoint. The load balancer polls it periodically. The endpoint returns 200 OK if healthy, 5xx or timeout if not.</p>
 <p><strong>Graceful rolling deploys</strong>: a server signals unavailability before restart by returning 5xx from the health endpoint. The load balancer drains in-flight requests, then stops sending new ones. After restart, the server signals readiness and rejoins the pool. Zero-downtime deploys without a blue-green environment.</p>
 <p><strong>Watchdog pattern</strong>: a background thread within each server monitors local resource metrics (available memory, CPU, request queue depth). When a metric breaches a threshold, the watchdog deliberately crashes or restarts the server. This self-healing approach handles rare degraded states (e.g., slow memory leaks) without complex recovery logic in the main application.</p>
 <p><strong>Health check failure cascade</strong>: if a misconfigured health endpoint causes all servers to fail checks simultaneously, a naive load balancer empties the pool and takes the application down. A robust load balancer detects the mass-failure signal, treats the health checks as unreliable, and keeps routing traffic to the pool rather than removing all servers.</p>
-<h2>Lame Duck State</h2>
+<h2 id="lame-duck-state">Lame Duck State</h2>
 <p>Rather than stopping immediately when shutting down, a backend should enter <strong>lame duck state</strong>: it continues to accept connections and complete in-flight requests, but signals all connected clients to stop sending new requests. Inactive clients also receive the signal via periodic UDP health checks.</p>
 <p>Benefits: (1) avoids serving errors to requests that were in-flight when shutdown began; (2) enables clean rolling deploys without user-visible errors; (3) allows backends in warm-up phase (e.g., JIT compilation) to delay receiving traffic until performance is nominal. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 20)</p>
 <p>Shutdown sequence: receive SIGTERM → enter lame duck state → broadcast to clients → drain in-flight requests → exit cleanly.</p>
-<h2>Subsetting</h2>
+<h2 id="subsetting">Subsetting</h2>
 <p>In large systems, each client process maintains long-lived connections to a subset of backends (typically 20–100 rather than all). Benefits: bounds memory and CPU overhead for connection maintenance; reduces health-check traffic.</p>
 <p><strong>Random subsetting fails at scale</strong>: at a 10% subset size, the most loaded backend receives ~150% of the average and the least receives ~50%. To achieve uniform distribution with random subsetting, subset sizes of ~75% are needed — defeating the purpose.</p>
 <p><strong>Deterministic subsetting</strong>: divide client tasks into &quot;rounds&quot;; within each round, each backend is assigned to exactly one client. Different rounds use different random shuffles (so a failing backend&#39;s load spreads across different backend subsets, not the same N backends). Result: nearly perfectly uniform connection distribution, with at most a difference of 1 connection per backend.</p>
 <p>The subset size depends on: ratio of clients to backends; burst behaviour (clients with frequent large fan-outs need larger subsets). (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 20)</p>
-<h2>Load Balancing Algorithms</h2>
+<h2 id="load-balancing-algorithms">Load Balancing Algorithms</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -418,11 +439,11 @@
 </tbody></table></div>
 <p><strong>Power of two choices</strong> deserves emphasis. Tracking actual server load via polling introduces delay — a freshly joined server reports load 0 and gets hammered until the next poll; then it reports overloaded and receives nothing. The system oscillates. Randomly picking two servers and routing to the lesser-loaded one avoids this entirely: it requires no polling, naturally distributes load, and is mathematically near-optimal for most distributions. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 18)</p>
 <p><strong>Least-connections sinkhole pitfall</strong>: a fast-failing unhealthy backend appears to have few active requests (errors are cheap to return). The load balancer interprets this as &quot;lightly loaded&quot; and floods it with new requests, which also fail quickly, making the problem worse. Fix: count recent errors as active requests in the routing decision — a backend that is fast-failing will accumulate a high effective load and be bypassed. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 20)</p>
-<h2>Client-Side Load Balancing (Sidecar)</h2>
+<h2 id="client-side-load-balancing-sidecar">Client-Side Load Balancing (Sidecar)</h2>
 <p>When clients are internal (service-to-service calls), a dedicated load balancer is not required. Instead, each client runs a <strong>sidecar proxy</strong> that acts as a local L7 load balancer. The sidecar discovers available servers via the coordination service and routes outbound requests across them.</p>
 <p>Advantages: eliminates the load balancer as a single point of failure; removes the centralised bottleneck; polyglot — works regardless of service language.</p>
 <p>Disadvantages: every client needs a sidecar and the collection requires a control plane to manage configuration. This is the service mesh model. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -443,7 +464,7 @@
 <td>Multi-level approach: DNS geographic steering → VIP → datacenter internal. DNS: recursive resolver hides client IP; EDNS0 extension; TTL floor; 512-byte limit. VIP: consistent hashing; GRE encapsulation for cross-segment DSR (ch. 19). Datacenter: lame duck state for graceful shutdown; deterministic subsetting for uniform connection distribution; weighted round robin; least-connected sinkhole pitfall (ch. 20)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/dns.html">Dns</a> — DNS LB limitations; TTL propagation as the failure-detection barrier</li>
 <li><a href="../distributed/cdn.html">Cdn</a> — CDNs use global DNS LB for geographic traffic steering</li>
@@ -453,7 +474,7 @@
 <li><a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a> — client-side L7 load balancing via sidecar proxy</li>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — complementary pattern to load balancing for downstream resiliency</li>
 </ul>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 18) — DNS LB, L4, L7, service discovery, health checks, power of two choices.</li>
 <li>(→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 2) — load balancer as the stateless scale-out enabler; stateless services requirement; session state externalisation.</li>
@@ -461,7 +482,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li></ul>
+        <ul><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/scalability.html">Scalability</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/eric-evans.html">Eric Evans</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-17-bringing-the-strategy-together">Chapter 17 — Bringing the Strategy Together</a></li><li class="toc-sub"><a href="#chapter-16-large-scale-structure">Chapter 16 — Large-Scale Structure</a></li><li class="toc-sub"><a href="#chapter-15-distillation">Chapter 15 — Distillation</a></li><li class="toc-sub"><a href="#chapter-14-maintaining-model-integrity">Chapter 14 — Maintaining Model Integrity</a></li><li class="toc-sub"><a href="#chapter-13-refactoring-toward-deeper-insight">Chapter 13 — Refactoring Toward Deeper Insight</a></li><li class="toc-sub"><a href="#chapter-3-binding-model-and-implementation">Chapter 3 — Binding Model and Implementation</a></li><li class="toc-sub"><a href="#chapter-4-isolating-the-domain">Chapter 4 — Isolating the Domain</a></li><li class="toc-sub"><a href="#chapter-11-applying-analysis-patterns">Chapter 11 — Applying Analysis Patterns</a></li><li class="toc-sub"><a href="#chapter-12-relating-design-patterns-to-the-model">Chapter 12 — Relating Design Patterns to the Model</a></li><li class="toc-sub"><a href="#chapter-9-making-implicit-concepts-explicit">Chapter 9 — Making Implicit Concepts Explicit</a></li><li class="toc-sub"><a href="#chapter-10-supple-design">Chapter 10 — Supple Design</a></li><li class="toc-sub"><a href="#chapter-7-using-the-language-an-extended-example">Chapter 7 — Using the Language: An Extended Example</a></li><li class="toc-sub"><a href="#chapter-8-breakthrough">Chapter 8 — Breakthrough</a></li><li class="toc-sub"><a href="#chapter-5-a-model-expressed-in-software">Chapter 5 — A Model Expressed in Software</a></li><li class="toc-sub"><a href="#chapter-6-the-life-cycle-of-a-domain-object">Chapter 6 — The Life Cycle of a Domain Object</a></li><li class="toc-sub"><a href="#chapter-1-crunching-knowledge">Chapter 1 — Crunching Knowledge</a></li><li class="toc-sub"><a href="#chapter-2-communication-and-the-use-of-language">Chapter 2 — Communication and the Use of Language</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Author:</strong> <a href="../authors/eric-evans.html">Eric Evans</a>
 <strong>Published:</strong> 2003
 <strong>Slug:</strong> <code>domain-driven-design</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>Domain-Driven Design is the foundational text for a discipline that treats the domain model as the central artifact of software development. Evans argues that the real challenge in complex software is not technical but cognitive: developers must deeply understand the domain they are modelling, and that understanding must be expressed directly in the code, not in a separate layer of documentation. The book introduced the concepts of ubiquitous language, bounded contexts, aggregates, and strategic design that underpin most modern thinking about domain modelling and microservices.</p>
 <p>The book is structured in four parts: Part I establishes the core thesis (model, language, implementation must be unified); Part II covers the building blocks of model-driven design (entities, value objects, aggregates, repositories, domain services); Part III addresses how to deepen a model through refactoring, analysis patterns, and design patterns; Part IV covers strategic design (bounded contexts, distillation, large-scale structure).</p>
 <p>Where <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> (Khononov, 2021) provides a more systematic and accessible treatment aimed at practitioners, Evans&#39; original is exploratory and narrative — it argues from first principles through extended examples, particularly a cargo shipping system that runs through much of the book.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>The domain model and the implementation must be bound together; a model that does not directly shape code is not the model (→ ch. 1, ch. 3)</li>
 <li>Analysis models and design models are a failure mode: they diverge, and the knowledge encoded in the analysis model is lost when coding begins (→ ch. 3)</li>
@@ -332,8 +343,8 @@
 <li>Aggregates are the consistency boundary: all invariants of a cluster of objects must be enforced atomically; external objects hold references only to the aggregate root (→ ch. 6)</li>
 <li>Factories and repositories have complementary responsibilities: factories create new objects; repositories find and reconstitute existing ones (→ ch. 6)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Chapter 17 — Bringing the Strategy Together</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-17-bringing-the-strategy-together">Chapter 17 — Bringing the Strategy Together</h3>
 <p>The synthesis chapter ties together CONTEXT MAP, distillation (CORE DOMAIN), and large-scale structure as three complementary strategic tools.</p>
 <p><strong>The three tools are not substitutes</strong>: a CONTEXT MAP manages model integrity across bounded contexts; distillation focuses resources on the CORE; large-scale structure provides a comprehension vocabulary for the system as a whole. Each addresses a different dimension of complexity.</p>
 <p><strong>Combining structures and context maps</strong>: a large-scale structure can exist within one BOUNDED CONTEXT or span the entire CONTEXT MAP. The same layer terminology can be applied within a CONTEXT&#39;s model and across the global context map simultaneously. Legacy systems can be characterised by which layers their SERVICES cover rather than requiring structural change.</p>
@@ -342,7 +353,7 @@
 <p><strong>Who sets the strategy</strong>: two patterns — (1) emergent structure from application development (XP model: informal leaders, piecemeal growth); (2) customer-focused architecture team (collaborating peer, not ivory tower, feedback-driven, hands-on). Six essentials: decisions reach everyone, process absorbs feedback, plan allows evolution, architecture teams don&#39;t siphon the best talent, minimalism and humility, developers are generalists.</p>
 <p><strong>Beware the Master Plan</strong>: Christopher Alexander&#39;s critique of master plans — too rigid for natural change, too imprecise about local connections. Applies to software: a set of principles for piecemeal growth produces organic order; a master plan produces totalitarian order.</p>
 <p><strong>Epilogue and &quot;Looking Forward&quot;</strong>: five project postmortems showing that supple design facilitates long-term evolution. Key observation: &quot;The success of a design is not necessarily marked by its stasis. A deep model allows clear vision that can yield new insight, while a supple design facilitates ongoing change.&quot; The Evant case: four developers with a supple design delivered a major scaling capability that saved the company.</p>
-<h3>Chapter 16 — Large-Scale Structure</h3>
+<h3 id="chapter-16-large-scale-structure">Chapter 16 — Large-Scale Structure</h3>
 <p>The chapter introduces LARGE-SCALE STRUCTURE as an optional organising principle for systems too large to grasp from BOUNDED CONTEXTS and distillation alone. See <a href="../concepts/large-scale-structure.html">Large Scale Structure</a> for detailed treatment.</p>
 <p><strong>Motivating problem</strong>: even well-modularised systems have many packages with unclear relationships. Individual developers make locally reasonable but globally inconsistent decisions. Specialists in different MODULES cannot help each other. CI breaks down.</p>
 <p><strong>EVOLVING ORDER</strong>: do not impose large-scale structure up-front. Let it evolve with the application. An ill-fitting structure is worse than none. Less is more.</p>
@@ -354,7 +365,7 @@
 <li><em>PLUGGABLE COMPONENT FRAMEWORK</em>: distil ABSTRACT CORE interfaces; allow diverse implementations to substitute freely. Most mature and most restrictive pattern. Requires deep model and multiple prior applications. Downside: freezes CORE refactoring.</li>
 </ol>
 <p><strong>Refactoring toward a fitting structure</strong>: minimalism; communication and self-discipline (structure enters the UL); repeatedly restructured designs become supple (&quot;leather jacket&quot; analogy); distillation reduces the mass to restructure.</p>
-<h3>Chapter 15 — Distillation</h3>
+<h3 id="chapter-15-distillation">Chapter 15 — Distillation</h3>
 <p>Distillation separates the CORE DOMAIN from the mass of supporting complexity. See <a href="../concepts/core-domain.html">Core Domain</a> for detailed treatment.</p>
 <p><strong>CORE DOMAIN</strong>: the distinctive part of the model that differentiates the application and justifies the investment. Must be kept small. Apply top talent. Assign the deepest models and most supple designs here.</p>
 <p><strong>Who does the work</strong>: long-term developers accumulating domain knowledge matched with domain experts who know the business deeply. External expertise in a teaching/mentoring role is valuable. The CORE DOMAIN cannot be purchased and can rarely be outsourced — it requires accumulated understanding.</p>
@@ -369,7 +380,7 @@
 </ol>
 <p><strong>Generic subdomains</strong>: four implementation options (off-the-shelf, published model, outsourced, in-house). Generic doesn&#39;t mean reusable. Start first iterations on CORE, not supporting subdomains.</p>
 <p><strong>Choosing refactoring targets</strong>: pain-driven? Check if root is in CORE or CORE-to-supporting relationship. Refactoring freely? Focus on CORE first.</p>
-<h3>Chapter 14 — Maintaining Model Integrity</h3>
+<h3 id="chapter-14-maintaining-model-integrity">Chapter 14 — Maintaining Model Integrity</h3>
 <p>The chapter opens Part IV (Strategic Design) with the core problem: large systems inevitably contain multiple models, and without explicit mechanisms, they blur and corrupt each other. The answer is to make boundaries explicit and manage them deliberately.</p>
 <p><strong>BOUNDED CONTEXT</strong>: the scope within which a model is consistently defined. Every model applies within a specific context; the same term can legitimately mean different things in different contexts. Two problems when contexts blur: <em>duplicate concepts</em> (the same idea represented separately with no coordination — rounding error divergence) and <em>false cognates</em> (the same word meaning different things in different models — silent mismatch).</p>
 <p><strong>CONTINUOUS INTEGRATION</strong>: the practice that keeps a BOUNDED CONTEXT internally unified. Operates at two levels: (1) frequent merging and testing of code to prevent long-lived divergent branches; (2) exercising the UBIQUITOUS LANGUAGE in discussion, so conceptual divergence is noticed and corrected. &quot;Continuously merge the code and often exercise the domain model to make sure the model concept is still interpreted consistently.&quot;</p>
@@ -393,7 +404,7 @@
 <li><em>Open Host Service → Published Language</em>: if no industry standard exists, use the CORE DOMAIN as the basis for the interchange language.</li>
 </ul>
 <p><strong>The elephant parable</strong>: multiple groups (teams) touching an elephant (domain) from different sides may have different, partially valid models. Recognising you have different models — and drawing BOUNDED CONTEXT boundaries — is more valuable than pretending they are unified. Unification almost always requires a new model; minimalism (stripping incorrect features) matters more than comprehensiveness.</p>
-<h3>Chapter 13 — Refactoring Toward Deeper Insight</h3>
+<h3 id="chapter-13-refactoring-toward-deeper-insight">Chapter 13 — Refactoring Toward Deeper Insight</h3>
 <p>The chapter addresses what enables breakthroughs (ch. 8): not heroic events but a continuous, disciplined orientation toward finding deeper models.</p>
 <p><strong>Three practices for deepening the model</strong>:</p>
 <ol>
@@ -420,7 +431,7 @@
 <li><em>GoF design patterns applied at the domain level</em> (ch. 12): STRATEGY as Policy, COMPOSITE for genuine part-whole hierarchies.</li>
 <li><em>Formal systems</em>: existing formal notations for the domain can provide unambiguous vocabulary.</li>
 </ul>
-<h3>Chapter 3 — Binding Model and Implementation</h3>
+<h3 id="chapter-3-binding-model-and-implementation">Chapter 3 — Binding Model and Implementation</h3>
 <p>The chapter introduces <strong>MODEL-DRIVEN DESIGN</strong> as the central pattern of DDD: there is one model, and it is directly expressed in the code. The traditional alternative — an analysis model created before implementation, then translated into a design — fails for two reasons: (1) crucial discoveries always emerge during implementation, which the pure analysis phase misses; (2) once the model diverges from the code, maintaining any mapping between them becomes impractical, and the model is abandoned.</p>
 <p>Evans opens with two cautionary tales: a project that had a detailed, domain-expert-approved model on the wall but an ad hoc implementation that bore no relationship to it; and a legacy rewrite that similarly ended up bloated and model-less despite different origins. The end products were indistinguishable.</p>
 <p><strong>Model-Driven Design prescription</strong>: design the software to reflect the domain model in a literal way. Revisit the model to make it more naturally implementable while also making it reflect deeper domain insight. One model serves both analytical and design purposes. Changing code changes the model — its effects must ripple through the project accordingly.</p>
@@ -428,7 +439,7 @@
 <p><strong>PCB bus example</strong>: a procedural script approach (parse files, sort by name convention, insert rules) encodes the concept of &quot;bus&quot; only implicitly, through naming conventions and sort order. A model-driven approach creates explicit <code>Bus</code> and <code>Net</code> objects with an <code>assignedRules()</code> method — the concept is in the code, not in the procedure.</p>
 <p><strong>Letting the bones show</strong>: the user model and the implementation model should be the same, or the user is misled. The IE Favorites example: Favorites are actually files, but the UI presents them as a named list — characters illegal in filenames produce confusing error messages about &quot;filenames&quot; the user doesn&#39;t know about. Eliminating the misleading UI model and exposing the file-based model would be cleaner and more powerful.</p>
 <p><strong>Hands-On Modelers</strong>: programmers are modelers whether anyone likes it or not. Separating the modeler role from the programmer role produces ivory-tower architects whose insights never fully translate into code. Modelers who don&#39;t write code lose touch with implementation constraints; programmers who don&#39;t model refactor in ways that weaken the model. Every technical person must be involved in the model at some level.</p>
-<h3>Chapter 4 — Isolating the Domain</h3>
+<h3 id="chapter-4-isolating-the-domain">Chapter 4 — Isolating the Domain</h3>
 <p>Introduces LAYERED ARCHITECTURE as the structural prerequisite for MODEL-DRIVEN DESIGN. The key insight: domain code constitutes a small proportion of a software system but is disproportionately important. Mixing domain logic with UI, persistence, and infrastructure makes it invisible and fragile.</p>
 <p><strong>Four layers</strong>:</p>
 <ol>
@@ -441,18 +452,18 @@
 <p><strong>Smart UI anti-pattern</strong>: for simple applications with unsophisticated teams, deliberately embedding all business logic in the UI (Smart UI) can be practical — fast delivery, low overhead, simple maintenance. But it is incompatible with MODEL-DRIVEN DESIGN. There is no migration path from Smart UI to layered architecture — you must replace the application entirely. The choice must be made at the outset.</p>
 <p><strong>Transaction Script</strong> (Fowler): a middle path — separates UI from application but has no domain model. Limited complexity ceiling; not DDD, but not Smart UI either.</p>
 <p><strong>Frameworks</strong>: architectural frameworks should be used selectively to solve difficult problems; using all features of an intrusive framework can straitjacket domain design. Use the minimum framework needed to keep domain objects readable and expressive.</p>
-<h3>Chapter 11 — Applying Analysis Patterns</h3>
+<h3 id="chapter-11-applying-analysis-patterns">Chapter 11 — Applying Analysis Patterns</h3>
 <p>Analysis patterns (Fowler 1997) are &quot;groups of concepts that represent a common construction in business modelling.&quot; They are not off-the-shelf solutions — they provide starting points, vocabulary, and guidance on implementation consequences that would otherwise require expensive trial and error to discover.</p>
 <p><strong>How to use them</strong>: draw on analysis patterns as seeds for exploration, not as blueprints. Adapt liberally to your specific domain. Depart from the structural details when needed, but preserve the conceptual essence. Most importantly, preserve the <em>names</em> — if your model definitions evolve, update the names too, because the pattern vocabulary enriches the ubiquitous language.</p>
 <p><strong>Example — Account model</strong>: Fowler&#39;s Account pattern (Account → Entries → balance) applied to the interest-tracking application. Entries are immutable history records; balance is derived or cached. The pattern suggested separating accruals from payments cleanly, which became the breakthrough insight in ch. 9–10. The developers also explored Posting Rules (make cross-account dependencies explicit as named objects with defined firing modes — eager, account-based, posting-rule-based), which provided vocabulary for the nightly batch design. The final implementations departed from Fowler&#39;s details but preserved the essential concepts.</p>
 <p><strong>Analysis patterns vs framework/component reuse</strong>: analysis patterns are conceptual kits of model fragments, not code to copy. Their value is in the reasoning behind the model choices and the forewarning about downstream implementation consequences — experience carried from projects where the pattern was discovered the hard way.</p>
-<h3>Chapter 12 — Relating Design Patterns to the Model</h3>
+<h3 id="chapter-12-relating-design-patterns-to-the-model">Chapter 12 — Relating Design Patterns to the Model</h3>
 <p>GoF design patterns (Gamma et al. 1995) are motivated by technical problems. Some of them also correspond to genuine domain concepts — in those cases, the pattern can be applied at two levels simultaneously: as a technical design and as a conceptual model. These become <em>domain patterns</em>.</p>
 <p><strong>STRATEGY (a.k.a. Policy)</strong>: when the varying part of a process corresponds to a real business strategy or policy, factor it into an explicit STRATEGY object. The Routing Service example: <code>LegMagnitudePolicy</code> makes the concept of a routing policy explicit, gives it a name in the ubiquitous language, and makes the Routing Service unconditionally apply the policy. New policies (fastest, cheapest, prefer own transports) can be added without touching the service. The key shift from the GoF framing: the motivation is to <em>express a concept</em> (a domain policy), not just to substitute algorithms.</p>
 <p><strong>COMPOSITE</strong>: appropriate in the domain only when the domain genuinely has a part-whole hierarchy where parts are conceptually the same kind of thing as the whole. The Route example: a route is a movement from point to point; legs are movements from point to point; sub-routes are movements from point to point. Each level is genuinely a Route, so COMPOSITE fits the domain, not just the code structure.</p>
 <p><strong>FLYWEIGHT</strong>: a purely technical implementation choice for VALUE OBJECTS when there are many identical instances. It has no correspondence to the domain model — it&#39;s about memory efficiency, not domain concepts. Contrast with COMPOSITE, which expresses a domain relationship.</p>
 <p><strong>The test for applying a GoF pattern in the domain</strong>: does this pattern say something about the conceptual domain, or only about the technical solution? If the former, apply it — and let it enrich both design and model. If only the latter, apply it in the implementation layer but don&#39;t let it shape the model.</p>
-<h3>Chapter 9 — Making Implicit Concepts Explicit</h3>
+<h3 id="chapter-9-making-implicit-concepts-explicit">Chapter 9 — Making Implicit Concepts Explicit</h3>
 <p>The chapter asks: how do you actually find the deeper model? The answer is to recognise implicit concepts — ideas hinted at in discussion, lurking in awkward code, or buried in contradictions — and make them explicit in the model and design.</p>
 <p><strong>Four discovery techniques:</strong></p>
 <ol>
@@ -465,7 +476,7 @@
 <p><em>Explicit constraints</em>: constraints often emerge as implicit guard clauses on entity methods. When a constraint requires data that doesn&#39;t fit the host object, appears in multiple objects, or is prominent in domain discussions but hidden in procedural code, factor it into a named method or a separate object. Example: OverbookingPolicy as an explicit object (from ch. 1), not a guard clause in application code.</p>
 <p><em>Processes as domain objects</em>: if a process is something domain experts talk about, it belongs in the model — as a SERVICE if there&#39;s one way to carry it out, or as a STRATEGY object if there are multiple algorithms. The routing process in the shipping model is a domain concept, not a technical mechanism.</p>
 <p><em>Specification</em>: see <a href="../patterns/specification.html">Specification</a>. A predicate VALUE OBJECT that tests whether another object satisfies stated criteria. Three uses: validation (test an individual object), selection/querying (filter a collection or generate a database query), building to order (specify what a generator must produce). Specification keeps rules in the domain layer and works with REPOSITORIES via the <code>selectSatisfying(InvoiceSpecification)</code> pattern.</p>
-<h3>Chapter 10 — Supple Design</h3>
+<h3 id="chapter-10-supple-design">Chapter 10 — Supple Design</h3>
 <p>Supple design is design that is a pleasure to work with and inviting to change. It is the complement to deep modelling: a deep model provides the raw material; a supple design shapes it so clients can use it naturally and so it bends where it needs to bend.</p>
 <p>Six patterns for supple design (see <a href="../concepts/supple-design.html">Supple Design</a>):</p>
 <ol>
@@ -485,7 +496,7 @@
 <p><strong>Shares Math</strong> (extended example): applies all six patterns together. SharePie as an immutable VALUE OBJECT with closed operations allows complex loan distribution logic to be expressed declaratively. <code>shares.minus(payment)</code>, <code>shares.prorated(amount)</code> — code that reads like a conceptual definition of the transaction.</p>
 <p><strong>Declarative style</strong>: a design with intention-revealing interfaces, side-effect-free functions, and assertions naturally produces declarative client code. Full declarative design (code generation, rule engines) is harder — narrowly scoped frameworks that automate tedious parts (persistence, mapping) tend to deliver value; sweeping frameworks tend to constrain design.</p>
 <p><strong>Extended Specification</strong> (composite): Specifications can be combined with AND/OR/NOT to form complex rules from simple ones. Composite Specification closes the set of Specifications under logical operators. Subsumption (does Spec A imply Spec B?) enables requirements comparison — &quot;which chemicals now have more stringent handling requirements?&quot;</p>
-<h3>Chapter 7 — Using the Language: An Extended Example</h3>
+<h3 id="chapter-7-using-the-language-an-extended-example">Chapter 7 — Using the Language: An Extended Example</h3>
 <p>Walks through building a MODEL-DRIVEN DESIGN for a cargo shipping system, applying the Part II building blocks in combination. The primary value is seeing the design decisions in context rather than in isolation.</p>
 <p><strong>Entity/VO classification applied</strong>: Customer = Entity (existing ID from customer DB); Cargo = Entity (tracking ID auto-generated); HandlingEvent = Entity (identified by Cargo ID + completion time + type); Location = Entity (arbitrary internal ID); DeliveryHistory = Entity but identity derived from Cargo (owns it); DeliverySpecification = VO (hypothetical goal state, shareable); Role = VO (qualifies associations, no history).</p>
 <p><strong>Association design</strong>: constrain bidirectional associations to unidirectional where domain understanding supports it. Customer → Cargo direction dropped (cumbersome for repeat customers; use repository query instead). HandlingEvent → CarrierMovement retained (not the reverse, because business tracks cargo not carrier inventory). One circular reference (Cargo ↔ DeliveryHistory ↔ HandlingEvent) handled by replacing the collection with a database query — removes contention on the Cargo aggregate.</p>
@@ -494,7 +505,7 @@
 <p><strong>Anticorruption Layer (introduced)</strong>: when integrating with the Sales Management System, Evans introduces the ACL pattern (covered in depth in ch. 14): create a class whose job is to translate between the external model and our domain. Named <code>AllocationChecker</code>, not <code>SalesManagementInterface</code> — the name reflects <em>our</em> domain responsibility. This prevents the external model from leaking into and corrupting our domain design.</p>
 <p><strong>Enterprise Segment</strong>: a VALUE OBJECT that models how the business categorises cargo for yield management. Illustrates that enriching the domain model can clean up an integration problem rather than hardcoding it in application logic.</p>
 <p><strong>Modules</strong>: shows the contrast between partitioning by pattern (aggregates module, services module, repositories module) versus partitioning by domain concept (customers, operations, billing). The former has high coupling, low cohesion, and tells the story of what the developer was reading — not the story of the business.</p>
-<h3>Chapter 8 — Breakthrough</h3>
+<h3 id="chapter-8-breakthrough">Chapter 8 — Breakthrough</h3>
 <p>A first-person account of a breakthrough on a loan syndication system. The chapter&#39;s purpose is to describe what a breakthrough feels like, how to recognise it, and how to respond.</p>
 <p><strong>The context</strong>: a syndicated loan application, 4 months into development. The model assumed that each lender&#39;s share of a Loan was proportional to their share of the Facility. Complexity kept growing; subtle rounding errors couldn&#39;t be eliminated; requirements kept complicating the design.</p>
 <p><strong>The breakthrough insight</strong>: Loan shares and Facility shares are <em>independent</em>. They are both special cases of a general concept — <strong>shares</strong> — which can apply to any divisible value. The abstraction was named Share Pie. With this insight, the LoanAdjustment object became unnecessary; the LoanInvestment object (which domain experts never understood) disappeared; complex rounding logic stabilised; and domain experts immediately recognised the model.</p>
@@ -507,14 +518,14 @@
 <li>Don&#39;t be paralysed trying to manufacture a breakthrough. Make piecemeal improvements continuously.</li>
 <li>When a breakthrough appears, seize it — even if the timing is painful.</li>
 </ul>
-<h3>Chapter 5 — A Model Expressed in Software</h3>
+<h3 id="chapter-5-a-model-expressed-in-software">Chapter 5 — A Model Expressed in Software</h3>
 <p>Covers the tactical building blocks for encoding a domain model in objects: associations, entities, value objects, services, and modules.</p>
 <p><strong>Associations</strong>: every association in the model is a traversal direction in the code. The default — bidirectional — creates maintenance burden. Three rules: (1) constrain traversal to one direction where understanding supports it; (2) add qualifiers to reduce multiplicity (Country→President becomes Country→currentPresident); (3) eliminate non-essential associations entirely. Bidirectional associations between value objects make no sense.</p>
 <p><strong>Entities (Reference Objects)</strong>: defined by identity continuity, not attributes. Two persons with the same name are not the same person. Identity operations (sameness, uniqueness) must be explicit and domain-meaningful — not technical surrogates. Key question: does this object need to be found, or tracked over time? If so, it&#39;s an Entity. Example: assigned seating (entities — specific seats matter) vs general admission (no identity needed).</p>
 <p><strong>Value Objects</strong>: objects that describe things but carry no conceptual identity. Two $5 bills are interchangeable. Value objects should be <strong>immutable</strong>; business operations return new value objects rather than mutating existing ones. Design question — copying vs sharing: if many objects share a reference to a value object and one &#39;changes&#39; it (i.e., replaces its reference), does that affect the others? Immutability eliminates this concern entirely. Address example: is an address an entity or a value object? Depends on context — for a mail-order company it&#39;s a VO (attribute of a person); for a postal service tracking deliveries it&#39;s an entity.</p>
 <p><strong>Services</strong>: stateless domain operations that have no natural home in an entity or value object. Three characteristics: (1) the operation relates to a domain concept not natural to an entity or VO; (2) the interface is defined in terms of other domain model elements; (3) the operation is stateless. Services partition into three layers: <em>application services</em> (coordinate tasks, no domain rules), <em>domain services</em> (business logic crossing aggregate boundaries), <em>infrastructure services</em> (technical capabilities). Funds transfer example: a <code>transferFunds(amount, sourceAccount, destinationAccount)</code> operation doesn&#39;t belong to either account — it belongs to a <code>FundsTransferService</code>.</p>
 <p><strong>Modules (Packages)</strong>: cognitive chunking tools that are part of the model, not just a filing mechanism. Modules carry the same low-coupling/high-cohesion obligation as objects, but at the concept level — not just technical metrics. Module names enter the ubiquitous language. Infrastructure-driven packaging pitfalls: the J2EE 4-tier packaging convention (beans/, actions/, web/, dao/) splits a single domain concept (e.g., Loan) across four packages → anemic domain model, low cohesion.</p>
-<h3>Chapter 6 — The Life Cycle of a Domain Object</h3>
+<h3 id="chapter-6-the-life-cycle-of-a-domain-object">Chapter 6 — The Life Cycle of a Domain Object</h3>
 <p><strong>Aggregates</strong>: a cluster of associated objects treated as a unit for data changes. Every aggregate has a root entity (the only member the outside world holds references to) and a boundary (what is inside). Seven implementation rules:</p>
 <ol>
 <li>The root has global identity; internal entities have local identity (unique only within the aggregate).</li>
@@ -529,7 +540,7 @@
 <p><strong>Factories</strong>: encapsulate complex object creation. A factory should: (1) be an atomic operation that produces a complete, consistent object; (2) abstract to the type being created (not the concrete implementation); (3) enforce all invariants during construction. Three placement options: factory method on an aggregate root (natural when creation belongs to the root&#39;s responsibility), standalone factory (when no natural host exists), reconstitution factory (restores stored objects — does NOT assign new identity, applies all invariants). Entity factory vs value object factory: entity factories need to handle identity (assign new, or use existing for reconstitution); VO factories just return the right value.</p>
 <p><strong>Repositories</strong>: provide the illusion of an in-memory collection of all objects of a given type. Only aggregate roots that need direct access should have repositories (not every entity). Two query approaches: hard-coded queries for common cases; Specification-based queries for flexible criteria. Key principles: client ignores implementation details (the repository handles the translation); but the developer must understand the implementation (to avoid writing inefficient queries the repository silently translates into table scans); transaction control is left to the client. Relationship to factories: a factory creates <em>new</em> objects; a repository finds <em>existing</em> objects. Reconstitution from the database is a factory responsibility delegated from the repository.</p>
 <p><strong>Designing objects for relational databases</strong>: keep the object model and the relational model as close as possible — the impedance mismatch is a real cost. Avoid the temptation to design the relational schema and the objects independently and then patch them together with a translation layer.</p>
-<h3>Chapter 1 — Crunching Knowledge</h3>
+<h3 id="chapter-1-crunching-knowledge">Chapter 1 — Crunching Knowledge</h3>
 <p>The chapter opens with Evans&#39; account of building a PCB design tool without prior domain knowledge, and uses this to illustrate knowledge crunching — the iterative, collaborative distillation of domain knowledge into a working model.</p>
 <p>Five ingredients of effective modelling:</p>
 <ol>
@@ -542,7 +553,7 @@
 <p>The <strong>waterfall failure</strong>: knowledge trickles in one direction from business to analyst to developer; no feedback, no accumulation. The <strong>iterative failure without abstraction</strong>: features are built without understanding principles; the team never reaches the point where powerful new features emerge as corollaries to older ones.</p>
 <p><strong>Deep models</strong>: surface-level entities (nouns) are just the beginning. Business activities and rules are equally central. The overbooking example demonstrates this: a business policy buried as a guard clause in application code can be surfaced as an explicit <code>OverbookingPolicy</code> class. This makes the rule visible to domain experts, closes the feedback loop, and produces a more honest model.</p>
 <p><strong>Continuous learning</strong>: domains are complex; teams always know less than they should. Knowledge leaks when people leave. Explicit knowledge crunching and accumulated shared understanding counteract this.</p>
-<h3>Chapter 2 — Communication and the Use of Language</h3>
+<h3 id="chapter-2-communication-and-the-use-of-language">Chapter 2 — Communication and the Use of Language</h3>
 <p>The chapter defines and prescribes the <a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> in detail.</p>
 <p><strong>The language problem on projects</strong>: domain experts have their jargon; developers have their technical vocabulary; neither serves both needs. Without a common language, communication chains require translation at every step — and each translation is lossy. Schisms form silently as team members use the same terms differently without realising it.</p>
 <p><strong>The ubiquitous language as the solution</strong>: the domain model provides the backbone for a language that pervades all team communication. The vocabulary includes class and operation names, terms for explicit rules, names for context maps and large-scale structures, and pattern names. Model relationships form the combinatory grammar of the language.</p>
@@ -556,7 +567,7 @@
 <li>A document not written in the current ubiquitous language is already obsolete; if UL terms from a document don&#39;t appear in conversation and code, archive it</li>
 </ul>
 <p><strong>Explanatory models</strong>: separate teaching aids for conveying domain context to newcomers. They are deliberately not UML (to avoid confusion with the design model) and are not the authoritative model. They can present the domain in ways that complement the design model without being bound by it.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;Knowledge crunching is not a solitary activity. A team of developers and domain experts collaborate.&quot; (ch. 1)</p>
 </blockquote>
@@ -572,7 +583,7 @@
 <blockquote>
 <p>&quot;If the terms explained in a design document don&#39;t start showing up in conversations and code, the document is not fulfilling its purpose.&quot; (ch. 2)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a> — the UL pattern, primary concept from ch. 2</li>
 <li><a href="../concepts/model-driven-design.html">Model Driven Design</a> — the binding of model and implementation; one model for analysis and design (ch. 3)</li>

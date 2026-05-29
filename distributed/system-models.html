@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#communication-link-models">Communication Link Models</a></li><li><a href="#process-failure-models">Process Failure Models</a></li><li><a href="#timing-models">Timing Models</a></li><li><a href="#this-book39s-default-model">This Book&#39;s Default Model</a></li><li><a href="#relationship-to-real-protocols">Relationship to Real Protocols</a></li><li><a href="#partial-failure-scenarios-gorton39s-taxonomy">Partial Failure Scenarios (Gorton&#39;s Taxonomy)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A system model is a set of assumptions about what can and cannot happen in a distributed system — about how links behave, how processes fail, and how timing works. Models allow us to reason about algorithm correctness without getting lost in the complexity of real hardware and networks. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 6)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Every distributed algorithm makes implicit or explicit assumptions about the environment it runs in. Making those assumptions explicit — choosing a system model — determines which algorithms are applicable, what guarantees they can provide, and how they behave under failure. An algorithm proven correct under one model may fail catastrophically under another.</p>
-<h2>Communication Link Models</h2>
+<h2 id="communication-link-models">Communication Link Models</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -335,7 +346,7 @@
 </tr>
 </tbody></table></div>
 <p>These models stack: a reliable link can be built on top of a fair-loss link (by deduplicating at the receiver); an authenticated reliable link adds authentication on top of that. TCP implements reliable transmission; TLS adds authentication and integrity. (→ <a href="../distributed/tls.html">Tls</a>)</p>
-<h2>Process Failure Models</h2>
+<h2 id="process-failure-models">Process Failure Models</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -362,7 +373,7 @@
 </tbody></table></div>
 <p><strong>Byzantine tolerance</strong>: a system using the Byzantine model can tolerate up to ⌊(N-1)/3⌋ faulty processes and still operate correctly. This bound is a theoretical limit — Byzantine fault tolerance requires significantly more complexity and message overhead than crash-recovery algorithms.</p>
 <p>Byzantine models are outside the scope of standard distributed services. For software systems where a single organisation controls all nodes, crash-recovery is the appropriate model.</p>
-<h2>Timing Models</h2>
+<h2 id="timing-models">Timing Models</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -388,7 +399,7 @@
 </tr>
 </tbody></table></div>
 <p>The partially synchronous model is the standard for practical distributed algorithm design. Algorithms designed for this model assume that timing bounds eventually hold, even if they can be violated temporarily.</p>
-<h2>This Book&#39;s Default Model</h2>
+<h2 id="this-book39s-default-model">This Book&#39;s Default Model</h2>
 <p><em>Understanding Distributed Systems</em> designs algorithms for:</p>
 <ul>
 <li><strong>Fair-loss links</strong> (messages may be lost; retransmission eventually delivers)</li>
@@ -396,7 +407,7 @@
 <li><strong>Partial synchrony</strong> (timing bounds hold most of the time)</li>
 </ul>
 <p>This combination matches the real-world conditions of commodity cloud infrastructure: links can lose packets, servers crash and restart, and the network is usually fast but occasionally slow.</p>
-<h2>Relationship to Real Protocols</h2>
+<h2 id="relationship-to-real-protocols">Relationship to Real Protocols</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -426,7 +437,7 @@
 <td>Byzantine fault tolerance</td>
 </tr>
 </tbody></table></div>
-<h2>Partial Failure Scenarios (Gorton&#39;s Taxonomy)</h2>
+<h2 id="partial-failure-scenarios-gorton39s-taxonomy">Partial Failure Scenarios (Gorton&#39;s Taxonomy)</h2>
 <p>When a client sends a request to a server, the following outcomes can occur (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 3). Only the first two are easy to detect:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -468,7 +479,7 @@
 </tr>
 </tbody></table></div>
 <p>The last four scenarios look identical to the client: a timeout expires and there is no response. This is the core of the crash fault problem — the client cannot know whether the operation succeeded. The correct response (retry or not) depends entirely on whether the operation is idempotent (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/failure-detection.html">Failure Detection</a> — how processes detect failures in crash-recovery models</li>
 <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a> — FLP result; algorithms assuming partial synchrony; Two Generals&#39; Problem</li>

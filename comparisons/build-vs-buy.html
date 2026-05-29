@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html" aria-current="page">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>The Strategic Question</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-strategic-question">The Strategic Question</a></li><li><a href="#build-in-house-core-subdomains">Build In-House (Core Subdomains)</a></li><li><a href="#buy-or-adopt-generic-subdomains">Buy or Adopt (Generic Subdomains)</a></li><li class="toc-sub"><a href="#hidden-costs-of-buying">Hidden costs of buying</a></li><li><a href="#build-simple-supporting-subdomains">Build Simple (Supporting Subdomains)</a></li><li><a href="#evaluating-the-options-a-framework">Evaluating the Options: A Framework</a></li><li><a href="#the-platform-team-as-build-once-buy-internally">The Platform Team as &quot;Build Once, Buy Internally&quot;</a></li><li><a href="#subdomain-type-evolution-and-sourcing-reversals">Subdomain Type Evolution and Sourcing Reversals</a></li><li><a href="#intra-organisation-build-vs-reuse-vs-share">Intra-Organisation: Build vs Reuse vs Share</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="the-strategic-question">The Strategic Question</h2>
 <p>The build-vs-buy decision is fundamentally a strategic question, not a technical one: <strong>does this capability create competitive advantage?</strong> The answer determines not just the procurement route but the engineering investment, team assignment, and long-term ownership model.</p>
 <p>The Khononov subdomain taxonomy (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>) provides the primary framework. Subdomain type maps directly to the sourcing decision:</p>
 <div class="table-wrapper"><table>
@@ -341,7 +352,7 @@
 </tr>
 </tbody></table></div>
 <p>This taxonomy makes the decision tractable: the question is not &quot;can we build it?&quot; (almost always yes) but &quot;should we invest our best engineers in building it?&quot; The answer is yes only for core subdomains — capabilities where superior execution is genuinely differentiated.</p>
-<h2>Build In-House (Core Subdomains)</h2>
+<h2 id="build-in-house-core-subdomains">Build In-House (Core Subdomains)</h2>
 <p>Core subdomains are where the company does something <em>differently</em> from its competitors. They are:</p>
 <ul>
 <li><strong>Emergent</strong> — never finished; continuously evolving with the business</li>
@@ -358,13 +369,13 @@
 <p><strong>The in-house imperative is not about pride.</strong> It is about the fact that a competitor who buys the same solution you use cannot be outcompeted on that dimension.</p>
 </blockquote>
 <p><strong>Signals that a subdomain is core</strong>: the business is still discovering what it wants to optimise; the domain logic is complex and full of business invariants; it changes frequently in ways that reflect market learning.</p>
-<h2>Buy or Adopt (Generic Subdomains)</h2>
+<h2 id="buy-or-adopt-generic-subdomains">Buy or Adopt (Generic Subdomains)</h2>
 <p>Generic subdomains are problems that are genuinely complex but already solved. Authentication, authorisation, encryption, billing, accounting, payroll, email delivery, SMS — these are hard problems with excellent existing solutions.</p>
 <p>Khononov&#39;s argument (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 1): the existing solution is almost always <strong>more reliable, more secure, and cheaper</strong> than a bespoke implementation. A specialist vendor or open-source project has invested years of accumulated expertise, security audits, and edge-case handling that a bespoke implementation must replicate from scratch.</p>
 <p><strong>Buy</strong> (commercial SaaS/vendor): appropriate when the problem requires ongoing specialist investment the organisation cannot sustain — compliance, security tooling, payment processing. Operational burden offloaded to the vendor.</p>
 <p><strong>Adopt open-source</strong>: appropriate when the problem is well-understood, the open-source solution has sufficient community and maturity, and the organisation has the capability to operate it. Lower licensing cost but carries operational and upgrade responsibility.</p>
 <p><strong>Heuristic</strong>: &quot;Is it simpler to hack a quick implementation than to integrate an external solution?&quot; If yes, it is probably a <strong>supporting</strong> subdomain (not generic) — genuinely generic problems have mature external solutions that are worth the integration cost.</p>
-<h3>Hidden costs of buying</h3>
+<h3 id="hidden-costs-of-buying">Hidden costs of buying</h3>
 <p>Buying is not free:</p>
 <ul>
 <li><strong>Integration complexity</strong>: every external system requires an integration point, usually an <a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a> (ACL) to protect the internal domain model from the vendor&#39;s data model.</li>
@@ -374,7 +385,7 @@
 <li><strong>Loss of control</strong>: outages, pricing changes, and product discontinuations are outside the organisation&#39;s control.</li>
 </ul>
 <p>The ACL pattern is the primary mitigant for vendor lock-in: translating the vendor&#39;s model at the boundary keeps the vendor&#39;s concepts out of the internal domain. If the ACL is well-maintained, switching vendors requires rewriting the ACL — not the domain.</p>
-<h2>Build Simple (Supporting Subdomains)</h2>
+<h2 id="build-simple-supporting-subdomains">Build Simple (Supporting Subdomains)</h2>
 <p>Supporting subdomains have simple logic — typically CRUD operations, ETL transformations, or basic data management — that supports the core but provides no competitive advantage. No mature off-the-shelf solution exists (otherwise they&#39;d be generic subdomains), but the simplicity means the build cost is low.</p>
 <p>Supporting subdomains:</p>
 <ul>
@@ -384,7 +395,7 @@
 <li>Should not receive the same investment as core subdomains</li>
 </ul>
 <p><strong>Anti-pattern</strong>: applying domain model and full DDD tactical patterns to a supporting subdomain. Over-engineering supporting subdomains diverts engineering capacity from the core and produces unnecessary complexity (→ <a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a>).</p>
-<h2>Evaluating the Options: A Framework</h2>
+<h2 id="evaluating-the-options-a-framework">Evaluating the Options: A Framework</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -443,7 +454,7 @@
 <td>Medium</td>
 </tr>
 </tbody></table></div>
-<h2>The Platform Team as &quot;Build Once, Buy Internally&quot;</h2>
+<h2 id="the-platform-team-as-build-once-buy-internally">The Platform Team as &quot;Build Once, Buy Internally&quot;</h2>
 <p>Team Topologies (→ <a href="../sources/team-topologies.html">Team Topologies</a>) introduces the <strong>platform team</strong> as a third option alongside vendor buy and pure in-house build: build a capability once internally as a self-service platform product, then make it available to all stream-aligned teams.</p>
 <p>This is &quot;buy internally&quot; — stream-aligned teams consume a platform service rather than building their own. The platform team invests in operational concerns (provisioning, scaling, monitoring) so that consuming teams can treat them as commodity capabilities.</p>
 <p>Platform teams are the appropriate home for generic and some supporting capabilities that are:</p>
@@ -453,7 +464,7 @@
 <li>Stable enough to be productised for internal self-service</li>
 </ul>
 <p>The critical constraint: the platform must be genuinely self-service. A platform that requires the platform team&#39;s involvement for every use is a bottleneck, not a platform.</p>
-<h2>Subdomain Type Evolution and Sourcing Reversals</h2>
+<h2 id="subdomain-type-evolution-and-sourcing-reversals">Subdomain Type Evolution and Sourcing Reversals</h2>
 <p>Subdomain types are not permanent. All six transitions are possible (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>). Each transition has direct sourcing implications:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -488,7 +499,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>Evolutionary implication</strong>: sourcing decisions must be revisited as business strategy changes. Building evolutionary architectures (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>) recommends designing for replaceability — particularly at vendor integration points — so that a sourcing reversal does not require rewriting the entire domain. The ACL pattern is the mechanism: a well-placed ACL makes vendor replacement a bounded change.</p>
-<h2>Intra-Organisation: Build vs Reuse vs Share</h2>
+<h2 id="intra-organisation-build-vs-reuse-vs-share">Intra-Organisation: Build vs Reuse vs Share</h2>
 <p>Within an organisation, the same build-vs-buy logic applies to code sharing decisions (→ <a href="../concepts/reuse-patterns.html">Reuse Patterns</a>):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -520,7 +531,7 @@
 </tr>
 </tbody></table></div>
 <p>The same principle applies: <strong>reuse = abstraction + slow rate of change</strong>. Code that changes frequently should not be shared — the coordination cost exceeds the benefit. Only stable, well-abstracted code is safe to share.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — core/generic/supporting subdomain taxonomy is the primary analytical tool for the build-vs-buy decision</li>
 <li><a href="../patterns/business-logic-patterns.html">Business Logic Patterns</a> — subdomain type determines implementation pattern; generic and supporting subdomains do not need domain model complexity</li>

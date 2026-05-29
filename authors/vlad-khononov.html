@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></p>
-<h2>Background</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#background">Background</a></li><li><a href="#core-positions">Core Positions</a></li><li><a href="#books">Books</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></p>
+<h2 id="background">Background</h2>
 <p>Vlad (Vladik) Khononov is a software engineer with over 20 years of industry experience, working for companies of various sizes in roles ranging from webmaster to chief architect. He lives in Northern Israel. He maintains an active media career as a public speaker, blogger, and author, and travels internationally consulting on domain-driven design, microservices, and software architecture.</p>
 <p>His first exposure to DDD came through Evans&#39;s Blue Book, which he found initially impenetrable (partly due to English being his third language). After several years of practice, DDD became a career-defining framework for him. He has spent over 10 years teaching DDD in-person and online, which informed both the book&#39;s structure and its emphasis on accessibility.</p>
-<h2>Core Positions</h2>
+<h2 id="core-positions">Core Positions</h2>
 <ul>
 <li>Software project failure is fundamentally a <strong>communication</strong> problem; DDD is the systematic solution.</li>
 <li>The <strong>subdomain type</strong> (core / generic / supporting) is the primary driver of implementation strategy — what tools to use, who to assign, whether to outsource.</li>
@@ -321,7 +332,7 @@
 <li>Tactical pattern choice (transaction script → active record → domain model → event-sourced domain model) must be driven by the <strong>complexity of the business logic</strong>, not developer preference.</li>
 <li>DDD is not just for large systems or complex domains — the strategic tools add value even in simpler contexts by aligning software design with business intent.</li>
 </ul>
-<h2>Books</h2>
+<h2 id="books">Books</h2>
 <h3><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> — <em>Learning Domain-Driven Design</em> (2022)</h3>
 <p>An accessible, complete introduction to DDD as a methodology — strategic design (domain analysis, bounded contexts, integration patterns) through tactical design (business logic implementation patterns), then DDD in practice (EventStorming, brownfield, evolution) and DDD relationships to microservices, EDA, and data mesh. The most thorough DDD source in this wiki. Evolved from an O&#39;Reilly report titled &quot;What Is Domain-Driven Design?&quot; (2019).</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>

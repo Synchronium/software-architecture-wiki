@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,28 @@
       <h1>Rate Limiting and Upstream Resiliency</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/rate-limiting.html">rate-limiting</a></li><li><a class="tag-chip" href="../tags/load-shedding.html">load-shedding</a></li><li><a class="tag-chip" href="../tags/upstream.html">upstream</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 28)</p>
-<h2>Load Shedding</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#load-shedding">Load Shedding</a></li><li><a href="#load-leveling">Load Leveling</a></li><li><a href="#rate-limiting">Rate Limiting</a></li><li class="toc-sub"><a href="#sliding-window-algorithm-single-process">Sliding Window Algorithm (Single Process)</a></li><li class="toc-sub"><a href="#distributed-implementation">Distributed Implementation</a></li><li><a href="#constant-work-pattern">Constant Work Pattern</a></li><li><a href="#client-side-adaptive-throttling">Client-Side Adaptive Throttling</a></li><li><a href="#request-criticality">Request Criticality</a></li><li><a href="#back-pressure">Back Pressure</a></li><li><a href="#governor-automation-rate-limiting">Governor (Automation Rate Limiting)</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 28)</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Three complementary techniques at different boundaries.</strong> Load shedding (reject at the edge with 503), load levelling (queue + auto-scale consumers), rate limiting (per-client caps with sliding-window buckets). Use all three; they solve different problems.</li>
+<li><strong>Shed load at the edge as early as possible.</strong> Rejecting fast preserves CPU for requests that can succeed. Slow rejection ties up resources at both ends — worse than refusal.</li>
+<li><strong>Bounded queues are not optional.</strong> Unbounded queues mask backlog and produce unbounded latency (Little&#39;s Law). Every queue in the system needs a hard cap; what happens at the cap (block, reject, fail-fast) is a design choice but the cap itself isn&#39;t.</li>
+<li><strong>Sliding-window buckets handle distributed rate limiting.</strong> Atomic counter increment in Redis-style stores; fail-open if the rate limiter itself is unavailable (you&#39;d rather over-serve than be down). Per-client and per-endpoint keys.</li>
+<li><strong>Constant work is antifragile.</strong> Periodic full-state dump (e.g., AWS Route 53 health checker dumps the entire health state every 2.5s) means failure of any individual node doesn&#39;t propagate. Self-healing by design.</li>
+<li><strong>The Governor pattern rate-limits automation, not callers.</strong> Automation can act faster than humans can intervene; cap the rate of change asymmetrically (slow for large changes, fast for alerts). Reddit&#39;s ZooKeeper-induced fleet shutdown is the cautionary tale.</li>
+</ul>
+<h2 id="load-shedding">Load Shedding</h2>
 <p>When a server is at capacity, it should reject excess requests immediately rather than queueing them — queued requests under overload only delay the inevitable and consume resources needed to serve the requests already in-flight.</p>
 <p><strong>Implementation</strong>: maintain a counter of concurrent requests currently being processed. When the counter exceeds a configured threshold (approximating the server&#39;s capacity), return HTTP 503 (Service Unavailable) immediately without processing the request.</p>
 <p><strong>Priority ordering</strong>: rather than rejecting arbitrary requests, prefer to reject:</p>
@@ -319,14 +339,14 @@
 <li><strong>Oldest requests first</strong>: requests that have been waiting longest are the most likely to have already timed out on the caller&#39;s side — completing them wastes resources on a result that will be discarded.</li>
 </ul>
 <p><strong>Limitation</strong>: load shedding is not free. Even a rejected request may require a TLS handshake and partial header parsing before it can be refused. Under extreme load, the cost of rejecting requests can itself become the bottleneck.</p>
-<h2>Load Leveling</h2>
+<h2 id="load-leveling">Load Leveling</h2>
 <p>Load leveling introduces a messaging channel between clients and the service to absorb burst traffic. The channel acts as a buffer: producers write into it at whatever rate they arrive; the consumer reads from it at its own sustainable pace.</p>
 <pre><code>[Clients] → [Message Channel / Queue] → [Service]
                  (smooths spikes)
 </code></pre>
 <p>This is well-suited to workloads where clients do not require a prompt response (batch processing, async workflows, background jobs). If the service falls behind consistently, the backlog grows — leading to the problems described in <a href="../concepts/messaging.html">Messaging</a>. Load leveling is typically combined with auto-scaling: when the backlog grows, new instances are added to drain it.</p>
 <p>Load leveling is not a substitute for rate limiting; it shifts when the work is done, not whether it is done.</p>
-<h2>Rate Limiting</h2>
+<h2 id="rate-limiting">Rate Limiting</h2>
 <p>Rate limiting (throttling) enforces quotas on how much of a resource a given caller can consume within a time interval. Common quota dimensions: requests per second, bytes per minute, concurrent connections. Quotas are typically scoped to an API key, user ID, or IP address.</p>
 <p>When a request exceeds the quota, return <strong>HTTP 429 (Too Many Requests)</strong> with:</p>
 <ul>
@@ -340,7 +360,7 @@
 <li>Partial DDoS mitigation (reduces impact, but economies of scale are the only full defence — a shared gateway absorbs attacks across all services behind it).</li>
 </ul>
 <p><strong>Rate limiting ≠ load shedding</strong>: load shedding is based on the <em>local</em> state of one process (concurrent requests in this instance); rate limiting is based on the <em>global</em> state of the system (total requests per API key across all instances). Global state requires coordination between instances.</p>
-<h3>Sliding Window Algorithm (Single Process)</h3>
+<h3 id="sliding-window-algorithm-single-process">Sliding Window Algorithm (Single Process)</h3>
 <p>A naive implementation (per-request timestamp list) has unbounded memory. A practical approximation: divide time into fixed-duration buckets; store a counter per bucket per API key.</p>
 <pre><code>Time →  [12:00 bucket: 7] [12:01 bucket: 3]
                     ↑
@@ -348,14 +368,14 @@
 </code></pre>
 <p>To check the quota for a given moment, compute a weighted sum of the counters of all buckets that overlap the sliding window, where each bucket&#39;s weight is proportional to its overlap fraction. This approximation becomes more accurate with smaller bucket granularity.</p>
 <p>Storage requirement: only the buckets that the window can currently overlap — typically 2 counters per API key for a 1-minute window with 1-minute buckets.</p>
-<h3>Distributed Implementation</h3>
+<h3 id="distributed-implementation">Distributed Implementation</h3>
 <p>With multiple service instances, each process cannot rely on its own local bucket counters — quotas must be enforced globally. Approaches:</p>
 <ol>
 <li><strong>Shared data store</strong>: each request increments the bucket counter in a shared store (Redis) using an atomic get-and-increment (or compare-and-swap). Avoids lost updates without full transactions.</li>
 <li><strong>Batched flushing</strong>: each process accumulates updates in memory and flushes to the shared store asynchronously at intervals. Reduces load on the store at the cost of reduced accuracy (some over-quota requests may slip through between flushes).</li>
 <li><strong>Fail open on store unavailability</strong>: if the rate-limiting store is unreachable, continue serving requests based on the last known state rather than blocking all traffic. Temporarily breaching a quota is a better outcome than a service-wide outage.</li>
 </ol>
-<h2>Constant Work Pattern</h2>
+<h2 id="constant-work-pattern">Constant Work Pattern</h2>
 <p>The constant work pattern eliminates multi-modal behaviour by ensuring that the system performs the same amount of work per time unit regardless of current load, configuration changes, or fault conditions.</p>
 <p><strong>Problem it solves</strong>: when the amount of work is proportional to what changed (e.g., push one update message per changed configuration setting), a batch update affecting many settings simultaneously creates a spike of update messages that can overwhelm the data plane. Rare large-batch events exercise code paths that are rarely tested and can trigger bugs.</p>
 <p><strong>Solution</strong>: instead of pushing individual deltas, the control plane periodically dumps the <em>full</em> state to a file in a scalable store (S3, Azure Blob Storage). The data plane periodically reads the full dump, regardless of whether anything changed.</p>
@@ -371,7 +391,7 @@ Data plane:    reads full dump every N seconds (same work, always)
 </ul>
 <p>The tradeoff: constant work is more expensive than minimal work (always reading/writing the full state). It is worth the cost in data planes where reliability and predictability are paramount.</p>
 <p>The pattern is closely related to static stability (→ <a href="../distributed/control-plane-data-plane.html">Control Plane Data Plane</a>): the data plane continues operating even when the control plane is unavailable, using the last full dump.</p>
-<h2>Client-Side Adaptive Throttling</h2>
+<h2 id="client-side-adaptive-throttling">Client-Side Adaptive Throttling</h2>
 <p>When a backend starts rejecting quota-exceeded requests, even rejections consume backend resources. If enough requests are being rejected, the backend can become overloaded processing rejections alone. Client-side throttling solves this by making the client self-regulate before requests even reach the network. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 21)</p>
 <p>Each client tracks two values over a trailing window (e.g., two minutes):</p>
 <ul>
@@ -383,7 +403,7 @@ Data plane:    reads full dump every N seconds (same work, always)
 </code></pre>
 <p>where K=2 by default. Locally rejected requests still increment <code>requests</code>, which increases the throttling probability over time. The system reaches equilibrium at roughly one rejection per accepted request at the backend. Setting K lower (e.g., 1.1) makes the client more aggressive; higher values are more permissive. The decision is entirely local — no coordination required.</p>
 <p><strong>vs load shedding</strong>: load shedding is server-side; adaptive throttling is client-side. They complement each other: adaptive throttling prevents backends from drowning in rejected work; load shedding protects against requests that slip through.</p>
-<h2>Request Criticality</h2>
+<h2 id="request-criticality">Request Criticality</h2>
 <p>When a system must shed load, not all requests are equally important. Assigning criticality levels allows overloaded services to reject unimportant traffic first, preserving capacity for the highest-value requests. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 21)</p>
 <p>Google&#39;s four-level model (from highest to lowest):</p>
 <div class="table-wrapper"><table>
@@ -424,11 +444,11 @@ Data plane:    reads full dump every N seconds (same work, always)
 <blockquote>
 <p><strong>Open question</strong>: four levels is Google&#39;s answer to the trade-off between expressive power and operational complexity. Fewer levels is simpler; more levels adds precision at the cost of harder-to-reason-about interactions.</p>
 </blockquote>
-<h2>Back Pressure</h2>
+<h2 id="back-pressure">Back Pressure</h2>
 <p>Back pressure is the <strong>intra-system</strong> counterpart to Shed Load — see <a href="../distributed/backpressure.html">Backpressure</a> for the full treatment. Within a service (across components that share a deployment boundary), use <strong>bounded queues</strong> to create natural flow control. When a queue is full, the producer blocks — this is the signal to slow production, not to drop messages. (→ <a href="../sources/release-it.html">Release It</a> ch. 5)</p>
 <p>Unbounded queues mask backlog: they accept work indefinitely, but response time grows without bound. Little&#39;s Law: <code>L = λW</code> — if arrival rate (λ) exceeds processing rate, average response time (W) grows without limit (see <a href="../distributed/queueing-theory.html">Queueing Theory</a>). A bounded queue makes this visible immediately.</p>
 <p>Distinction: <strong>Back pressure applies within a system boundary</strong> (between internal components); <strong>Shed Load applies at the system boundary</strong> (to callers crossing the network edge).</p>
-<h2>Governor (Automation Rate Limiting)</h2>
+<h2 id="governor-automation-rate-limiting">Governor (Automation Rate Limiting)</h2>
 <p>Nygard&#39;s Governor pattern extends rate limiting from external API callers to <strong>internal automation</strong> — autoscalers, deployment systems, configuration management, service discovery. (→ <a href="../sources/release-it.html">Release It</a> ch. 5)</p>
 <p>Automation can observe partial or incorrect state and take drastic action faster than humans can respond. The Reddit ZooKeeper incident (ch. 4) is the canonical example: an autoscaler read partial ZooKeeper data, concluded too many servers were running, and shut them all down.</p>
 <p>A Governor:</p>
@@ -439,7 +459,7 @@ Data plane:    reads full dump every N seconds (same work, always)
 <li>Creates an <strong>opportunity for human intervention</strong> before an automated action becomes a catastrophe.</li>
 </ul>
 <p>The Governor does not prevent automation — it prevents automation from acting at machine speed on potentially incorrect observations.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — downstream resiliency counterpart (timeout, retry, circuit breaker)</li>
 <li><a href="../patterns/bulkhead.html">Bulkhead</a> — fault isolation by user/tenant partitioning</li>
@@ -448,12 +468,14 @@ Data plane:    reads full dump every N seconds (same work, always)
 <li><a href="../distributed/control-plane-data-plane.html">Control Plane Data Plane</a> — constant work as a control plane propagation strategy; static stability</li>
 <li><a href="../concepts/messaging.html">Messaging</a> — load leveling relies on a message channel; backlog risk</li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — rate limiting and shed load in the full stability pattern set</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — rate limiting&#39;s role in the layered defence</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — rate limiting as the response to queue depth growth</li>
 <li><a href="../concepts/api-gateway.html">Api Gateway</a> — rate limiting is typically implemented at the gateway for north–south traffic</li>
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — load pressure and cascading/metastable failures that these patterns prevent</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li></ul>
+        <ul><li><a href="../concepts/api-gateway.html">API Gateway</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li></ul>
       </aside>
     </main>
   </div>

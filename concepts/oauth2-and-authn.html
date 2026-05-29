@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,23 +309,37 @@
       <h1>OAuth2 and Authentication</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 13<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/security.html">security</a></li><li><a class="tag-chip" href="../tags/oauth2.html">oauth2</a></li><li><a class="tag-chip" href="../tags/jwt.html">jwt</a></li><li><a class="tag-chip" href="../tags/oidc.html">oidc</a></li><li><a class="tag-chip" href="../tags/authn.html">authn</a></li><li><a class="tag-chip" href="../tags/authz.html">authz</a></li><li><a class="tag-chip" href="../tags/api.html">api</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#api-keys">API Keys</a></li><li><a href="#oauth2-roles">OAuth2 Roles</a></li><li><a href="#json-web-tokens-jwt">JSON Web Tokens (JWT)</a></li><li><a href="#oauth2-grant-types">OAuth2 Grant Types</a></li><li class="toc-sub"><a href="#authorization-code">Authorization Code</a></li><li class="toc-sub"><a href="#authorization-code-pkce">Authorization Code + PKCE</a></li><li class="toc-sub"><a href="#client-credentials">Client Credentials</a></li><li class="toc-sub"><a href="#device-authorization">Device Authorization</a></li><li><a href="#scopes">Scopes</a></li><li><a href="#oidc-openid-connect">OIDC — OpenID Connect</a></li><li><a href="#refresh-tokens">Refresh Tokens</a></li><li><a href="#saml-20">SAML 2.0</a></li><li><a href="#token-validation-at-the-api-gateway">Token Validation at the API Gateway</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>OAuth2 is authorisation, OIDC is authentication.</strong> OAuth2 lets a client get scoped access to a resource server; OIDC adds the ID token to assert <em>who</em> the user is. Treating them interchangeably is the most common implementation error.</li>
+<li><strong>ID tokens are never access tokens.</strong> Different <code>aud</code> claims (client vs resource server), different lifetimes, different semantics. Mixing them creates real privilege-escalation paths.</li>
+<li><strong>Match the grant to the client type.</strong> Authorization Code for server-side web apps; Authorization Code + PKCE for SPAs and mobile (public clients); Client Credentials for M2M; Device for input-constrained devices. Implicit grant is deprecated.</li>
+<li><strong>Access tokens are short-lived; refresh tokens rotate.</strong> 1-60 minute access token lifetimes limit theft damage; refresh tokens issued one-at-a-time with dual-use detection (revoke the family if a rotated token is reused).</li>
+<li><strong>API keys aren&#39;t OAuth2 substitutes.</strong> They can&#39;t represent user delegation. If a third party calls on behalf of a user, an API key forces credential sharing — the exact problem OAuth2 solves. Use Authorization Code or Client Credentials instead.</li>
+<li><strong>Scopes are coarse-grained authorisation.</strong> &quot;Can write orders&quot; is appropriate; &quot;can write order #12345 owned by user 456&quot; is RBAC/ABAC inside the service. Don&#39;t try to express resource-level access via scopes.</li>
+<li><strong>The API gateway is the canonical validation point.</strong> Signature check, claim validation (iss/aud/exp/nbf), scope enforcement, forward validated claims as trusted headers. Offloads crypto from every service and ensures consistent enforcement.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>OAuth2 is an authorisation framework (RFC 6749) that allows a client to obtain limited access to a resource server on behalf of a resource owner, without sharing credentials. It is the foundation for API authentication and authorisation in modern distributed systems. OIDC (OpenID Connect) extends OAuth2 with an identity layer, enabling authentication as well as authorisation.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>APIs cannot be secured by network perimeters alone — in cloud and mobile environments, requests arrive from untrusted networks. OAuth2 provides a standard, auditable mechanism for verifying who is calling and what they are permitted to do, without embedding credentials in every service.</p>
-<h2>API Keys</h2>
+<h2 id="api-keys">API Keys</h2>
 <p>API keys are a non-standard authentication mechanism commonly used for system-to-system calls or public API access (e.g. GitHub, Stripe). They are simpler than OAuth2 but provide no user delegation mechanism (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 7).</p>
 <p><strong>Security requirements for API keys</strong>: An API key must be cryptographically random — generated by a CSPRNG — and long enough to be unguessable. The typical standard is 32 characters (256 bits). Short or deterministic keys are vulnerable to enumeration.</p>
 <p><strong>Don&#39;t mix keys and users</strong>: When a third-party application uses an API key to call a service on behalf of a user, the service has no way to verify who the actual user is — it only knows the application&#39;s identity. Accepting both an API key (application identity) and user credentials (user identity) as separate inputs forces the user to share credentials with the third party, which is the problem OAuth2 was designed to solve. The correct answer is OAuth2 Client Credentials (for system-only calls) or Authorization Code (when acting on behalf of a user).</p>
 <p><strong>Avoid HTTP Basic</strong>: HTTP Basic sends credentials with every request. If a third-party application asks to access an API on a user&#39;s behalf, HTTP Basic requires handing over the username and password to that third party — exactly the credential-sharing problem OAuth2 eliminates. Do not permit HTTP Basic access to external APIs.</p>
-<h2>OAuth2 Roles</h2>
+<h2 id="oauth2-roles">OAuth2 Roles</h2>
 <p>(→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 7)</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -345,7 +366,7 @@
 </tr>
 </tbody></table></div>
 <p>The authorization server and resource server are logically separate; in practice they may be operated by the same product (e.g. Keycloak, Auth0) but they serve different functions.</p>
-<h2>JSON Web Tokens (JWT)</h2>
+<h2 id="json-web-tokens-jwt">JSON Web Tokens (JWT)</h2>
 <p>JWTs are the standard token format for OAuth2 (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 7). They consist of three base64url-encoded parts: header, payload, signature.</p>
 <p><strong>Two forms</strong>:</p>
 <div class="table-wrapper"><table>
@@ -415,9 +436,9 @@
 </tbody></table></div>
 <p><strong>Token lifetime</strong>: access tokens should be short-lived — 1 to 60 minutes — to limit the damage from token theft. Shorter lifetimes require more frequent token refresh but reduce the window of exposure if a token is compromised. Long-lived assertions have greater risk of theft or replay (NIST Digital Identity Guidelines).</p>
 <p><strong>Subject (<code>sub</code>) claim</strong>: should be a stable, unique identifier such as a UUID — not an email address or username, which users change over time. Consistency of the <code>sub</code> value is required for reliable user tracking across sessions.</p>
-<h2>OAuth2 Grant Types</h2>
+<h2 id="oauth2-grant-types">OAuth2 Grant Types</h2>
 <p>Grant types define the flow by which a client obtains tokens. The correct grant depends on the nature of the client and whether a user is present (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 7):</p>
-<h3>Authorization Code</h3>
+<h3 id="authorization-code">Authorization Code</h3>
 <p>For confidential clients (server-side web apps) where client secrets can be kept private. Flow:</p>
 <ol>
 <li>Client redirects user to AS with <code>response_type=code</code></li>
@@ -425,7 +446,7 @@
 <li>Client exchanges code for access token via back-channel request (code never exposed in browser)</li>
 </ol>
 <p>This is the most secure flow for user-facing web applications.</p>
-<h3>Authorization Code + PKCE</h3>
+<h3 id="authorization-code-pkce">Authorization Code + PKCE</h3>
 <p>For public clients — SPAs and mobile apps — where a client secret cannot be kept private. PKCE (Proof Key for Code Exchange, RFC 7636) replaces the client secret:</p>
 <ol>
 <li>Client generates a <code>code_verifier</code> (random string) and a <code>code_challenge</code> (SHA-256 hash)</li>
@@ -433,10 +454,10 @@
 <li>Code verifier is sent with the token exchange — AS verifies the hash matches</li>
 </ol>
 <p>PKCE prevents authorization code interception attacks. It should be used by all public clients; the implicit grant (which skips the code exchange) is deprecated.</p>
-<h3>Client Credentials</h3>
+<h3 id="client-credentials">Client Credentials</h3>
 <p>For machine-to-machine (M2M) communication where no user is involved. The client authenticates directly with the AS using its client ID and secret and receives an access token for the system&#39;s own identity — not on behalf of any user.</p>
 <p>This is the correct grant for service-to-service API calls in east–west traffic. Tokens should be cached and reused until near-expiry to avoid unnecessary AS load.</p>
-<h3>Device Authorization</h3>
+<h3 id="device-authorization">Device Authorization</h3>
 <p>For devices with limited input capabilities (IoT, smart TVs, CLIs). Flow:</p>
 <ol>
 <li>Device requests a device code and user code from AS</li>
@@ -444,7 +465,7 @@
 <li>Device polls the AS until the user has authenticated</li>
 </ol>
 <p>This grant is not common in typical API architectures but is important for IoT gateway scenarios.</p>
-<h2>Scopes</h2>
+<h2 id="scopes">Scopes</h2>
 <p>Scopes are strings that represent permissions requested by the client. They are:</p>
 <ul>
 <li>Defined by the resource server (e.g. <code>read:orders</code>, <code>write:payments</code>)</li>
@@ -453,7 +474,7 @@
 <li>Included in the token; enforced by the API gateway or resource server</li>
 </ul>
 <p>Scopes provide <strong>coarse-grained authorisation</strong> — they are suitable for broad capability grants (&quot;can write orders&quot;) but not for fine-grained resource-level access (&quot;can write order 12345 owned by user 456&quot;). Fine-grained access control requires RBAC or ABAC logic inside the service.</p>
-<h2>OIDC — OpenID Connect</h2>
+<h2 id="oidc-openid-connect">OIDC — OpenID Connect</h2>
 <p>OIDC adds an identity layer on top of OAuth2 (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 7). The key addition is the <strong>ID token</strong> — a JWT that asserts identity (who the user is), as distinct from the access token (what the user is permitted to do).</p>
 <p>Critical rule: <strong>ID tokens must never be used as access tokens</strong>, and access tokens must never be used as ID tokens. The audiences (<code>aud</code> claims) differ:</p>
 <ul>
@@ -461,7 +482,7 @@
 <li>Access token <code>aud</code>: the resource server</li>
 </ul>
 <p>OIDC also defines standard claims for user identity: <code>name</code>, <code>email</code>, <code>phone_number</code>, <code>address</code>, <code>picture</code>, and others. The <code>/userinfo</code> endpoint allows clients to fetch these claims separately.</p>
-<h2>Refresh Tokens</h2>
+<h2 id="refresh-tokens">Refresh Tokens</h2>
 <p>Refresh tokens are long-lived credentials that allow a client to obtain new access tokens without re-authenticating the user. They are:</p>
 <ul>
 <li>Stored server-side or in a secure client store</li>
@@ -469,9 +490,9 @@
 <li>Subject to <strong>rotation</strong> — the AS issues a new refresh token with each use and invalidates the old one</li>
 </ul>
 <p><strong>Dual-use detection</strong>: if an AS receives a refresh token that has already been rotated (indicating it has been stolen and used by an attacker), it should immediately revoke the entire token family and require the user to re-authenticate.</p>
-<h2>SAML 2.0</h2>
+<h2 id="saml-20">SAML 2.0</h2>
 <p>SAML 2.0 is an older XML-based standard for enterprise SSO, commonly found in corporate identity providers (Active Directory Federation Services, Okta, Ping). The <strong>SAML 2.0 Profile for OAuth2</strong> extension allows a SAML assertion to be used as an OAuth2 grant — enabling a client to exchange a SAML assertion for an OAuth2 access token. This is the standard integration pattern when an existing enterprise IdP must be connected to a modern OAuth2-based API platform.</p>
-<h2>Token Validation at the API Gateway</h2>
+<h2 id="token-validation-at-the-api-gateway">Token Validation at the API Gateway</h2>
 <p>The API gateway is the canonical enforcement point for token validation in north–south traffic (→ <a href="../concepts/api-gateway.html">Api Gateway</a>). It should:</p>
 <ol>
 <li>Validate the JWT signature using the AS&#39;s JWKS endpoint (cached with periodic refresh)</li>
@@ -481,7 +502,7 @@
 </ol>
 <p>This offloads cryptographic validation from every service and ensures consistent enforcement at the perimeter.</p>
 <p>For east–west traffic (service-to-service), the service mesh handles mutual TLS identity (<a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>), but the Client Credentials grant is still used to carry application-level identity and scopes.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -494,7 +515,7 @@
 <td>Comprehensive treatment of OAuth2, JWT, OIDC, all grant types, and refresh token security. Emphasises gateway enforcement and the ID token / access token distinction.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/api-gateway.html">Api Gateway</a> — enforces token validation and scope checking at the perimeter</li>
 <li><a href="../concepts/threat-modeling.html">Threat Modeling</a> — OAuth2 mitigates STRIDE S (Spoofing) and E (Elevation of Privilege)</li>

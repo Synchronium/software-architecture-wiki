@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,10 +316,14 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#topology">Topology</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#architecture-characteristics-ratings">Architecture Characteristics Ratings</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#quanta">Quanta</a></li><li><a href="#partitioning">Partitioning</a></li><li><a href="#domainarchitecture-isomorphism">Domain/Architecture Isomorphism</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>The microkernel (plug-in) architecture consists of a minimal core system that provides base functionality and a registry of plug-in components that extend or customise that core. The core system handles only the common, stable behaviour; all variable or optional behaviour is pushed into plug-ins. (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>)</p>
 <p>Also known as: <em>plug-in architecture</em>.</p>
-<h2>Topology</h2>
+<h2 id="topology">Topology</h2>
 <pre><code>┌────────────────────────────────────────┐
 │              Core System               │
 │  ┌──────────────────────────────────┐  │
@@ -333,7 +344,7 @@
 <p><strong>Remote plug-ins</strong>: plug-ins can be deployed as standalone services accessed via REST or messaging — better decoupling and async support. Trade-off: the architecture becomes distributed in implementation but is still <strong>a single quantum</strong> because all requests must route through the monolithic core first. Also adds failure risk: if a remote plug-in is down, the request cannot complete (unlike a monolithic plug-in).</p>
 <p><strong>Plug-in registry</strong>: maps a feature key to the plug-in reference. Ranges from a simple HashMap within the core, to a configuration file, to a service-discovery tool (Apache ZooKeeper, Consul). Each entry contains the plug-in name, data contract, and access protocol details.</p>
 <p><strong>Contracts and adapters</strong>: plug-ins implement a standard interface defined by the core. Third-party plug-ins that don&#39;t conform to the standard contract are wrapped in an adapter — the core&#39;s plug-in invocation code remains clean and contract-consistent regardless of plug-in source.</p>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <ul>
 <li>Systems requiring user- or tenant-level customisation (insurance products, white-label SaaS, IDE-like tools).</li>
 <li>Applications with a stable core and rapidly-evolving peripheral features.</li>
@@ -341,7 +352,7 @@
 <li>Business applications with jurisdiction- or client-specific rules: insurance claims processing (per-state rules as plug-ins), US tax preparation (1040 form as core; each additional form/worksheet as a plug-in).</li>
 <li>Performance tuning: removing unused plug-ins makes the application run faster (e.g., Wildfly/JBoss with clustering, caching, messaging removed).</li>
 </ul>
-<h2>Architecture Characteristics Ratings</h2>
+<h2 id="architecture-characteristics-ratings">Architecture Characteristics Ratings</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -406,7 +417,7 @@
 <td>Plug-ins can be tested in isolation</td>
 </tr>
 </tbody></table></div>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>Highest customisability of all monolithic styles — the right choice when the problem domain is &quot;stable core, variable extensions.&quot;</li>
@@ -420,13 +431,13 @@
 <li>Plug-in contract design is critical and hard to change once external plug-ins depend on it.</li>
 <li>If the core becomes too large, the architecture degrades toward a monolith.</li>
 </ul>
-<h2>Quanta</h2>
+<h2 id="quanta">Quanta</h2>
 <p>Single quantum. The core system and all plug-ins share the same deployment boundary and operational characteristics.</p>
-<h2>Partitioning</h2>
+<h2 id="partitioning">Partitioning</h2>
 <p><strong>Unique</strong>: the only architecture style that can be <strong>both technically and domain partitioned</strong>. The core is often technically partitioned (layered internally); the plug-ins correspond to domain variations or product variants (per-jurisdiction insurance rules, per-tax-form worksheets). Which partitioning applies is determined by the specific design of core vs plug-ins.</p>
-<h2>Domain/Architecture Isomorphism</h2>
+<h2 id="domainarchitecture-isomorphism">Domain/Architecture Isomorphism</h2>
 <p>This style is highly suited to problem domains that are inherently &quot;core + plugins&quot;: browser extensions, VS Code, Eclipse, WordPress, insurance product configuration, ERP systems with client-specific extensions.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -443,7 +454,7 @@
 <td>Earlier (2015) treatment — establishes plug-in registry concept (name, data contract, access protocol), adapter pattern for third-party plug-ins, and embeddability of microkernel within other styles; content superseded and expanded by FOSA</td>
 </tr>
 </tbody></table></div>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — always a single quantum; why this constrains scalability</li>
 <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical Vs Domain Partitioning</a> — plug-ins are domain-partitioned even though the core may be technically structured</li>

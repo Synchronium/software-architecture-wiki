@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,12 +316,16 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#evolving-order">Evolving Order</a></li><li><a href="#the-four-patterns">The Four Patterns</a></li><li class="toc-sub"><a href="#system-metaphor">SYSTEM METAPHOR</a></li><li class="toc-sub"><a href="#responsibility-layers">RESPONSIBILITY LAYERS</a></li><li class="toc-sub"><a href="#knowledge-level">KNOWLEDGE LEVEL</a></li><li class="toc-sub"><a href="#pluggable-component-framework-most-mature">PLUGGABLE COMPONENT FRAMEWORK (most mature)</a></li><li><a href="#how-restrictive-should-a-structure-be">How Restrictive Should a Structure Be?</a></li><li><a href="#refactoring-toward-a-fitting-structure">Refactoring Toward a Fitting Structure</a></li><li><a href="#who-sets-the-structure">Who Sets the Structure?</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A large-scale structure is a language that lets you discuss and understand a system in broad strokes. A set of high-level concepts or rules — or both — establishes a pattern of design for an entire system, allowing the role of each individual part to be understood without detailed knowledge of the whole (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 16).</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>BOUNDED CONTEXTS prevent corruption but do not themselves make a system comprehensible as a whole. Distillation focuses attention on the CORE DOMAIN but doesn&#39;t explain how supporting elements relate to each other or to the CORE. On large projects, without an overarching principle developers cannot make design decisions that are consistent with each other; specialists in different modules cannot help each other; Continuous Integration breaks down.</p>
 <p>A large-scale structure is optional — it should only be imposed when costs and benefits favour it, and when a fitting structure can actually be found. An ill-fitting structure is worse than none.</p>
-<h2>Evolving Order</h2>
+<h2 id="evolving-order">Evolving Order</h2>
 <p>The primary rule: <strong>let the structure evolve with the application</strong>. Up-front architectural impositions become straitjackets. Developers dumb down the application to fit the structure, or subvert it, producing no structure at all.</p>
 <p>The structure must be:</p>
 <ul>
@@ -324,12 +335,12 @@
 <li>Allowed to change completely as understanding deepens</li>
 </ul>
 <p>&quot;Large-scale structure should be applied when a structure can be found that greatly clarifies the system without forcing unnatural constraints on model development. Less is more.&quot;</p>
-<h2>The Four Patterns</h2>
-<h3>SYSTEM METAPHOR</h3>
+<h2 id="the-four-patterns">The Four Patterns</h2>
+<h3 id="system-metaphor">SYSTEM METAPHOR</h3>
 <p>A concrete analogy that captures team imagination and leads thinking in a useful direction. The classic example: &quot;firewall&quot; in networking. When a metaphor fits, it shapes design decisions consistently across teams and BOUNDED CONTEXTS; it becomes a reference point in discussions more concrete than the model itself.</p>
 <p>Use when a genuine metaphor presents itself. Don&#39;t force one — XP&#39;s &quot;naive metaphor&quot; (using the domain model itself as the system metaphor) conflates the concept and should be retired. If no metaphor presents itself, the UBIQUITOUS LANGUAGE is sufficient.</p>
 <p>Risk: all metaphors carry baggage; overextended metaphors lead the design astray.</p>
-<h3>RESPONSIBILITY LAYERS</h3>
+<h3 id="responsibility-layers">RESPONSIBILITY LAYERS</h3>
 <p>Partition the domain model by broad responsibility categories that correspond to natural domain strata. Objects, AGGREGATES, and MODULES are assigned so each fits within exactly one layer. Layer dependencies flow downward: upper layers depend on lower; lower layers are independent of upper.</p>
 <p>Characteristics of good layers:</p>
 <ul>
@@ -347,26 +358,26 @@
 </ul>
 <p>Keep layering to 4–5 layers maximum. More layers recreate the complexity the structure was meant to solve.</p>
 <p><strong>Effect on design decisions</strong>: once layers are adopted, design choices that violate the layering must be refactored. Example: an attribute encoding a decision-making policy on a Capability-layer entity violates the structure; it must be extracted into the Decision Support layer as an explicit Policy object.</p>
-<h3>KNOWLEDGE LEVEL</h3>
+<h3 id="knowledge-level">KNOWLEDGE LEVEL</h3>
 <p>A group of objects that describes how another group of objects should behave. Separates the <em>meta level</em> (Knowledge Level: rules, types, long-standing policies) from the <em>operations level</em> (base level: day-to-day operational objects). Based on the REFLECTION pattern from POSA (Buschmann et al. 1996), applied to the domain layer rather than the technical infrastructure.</p>
 <p>Used when roles and relationships between ENTITIES must be customised at installation or runtime. The operations-level objects reference knowledge-level objects for their rules; the knowledge-level objects describe the structure and constraints of the operations level.</p>
 <p>Unlike RESPONSIBILITY LAYERS, dependencies in KNOWLEDGE LEVEL run <em>bidirectionally</em> between levels. It can coexist with most other large-scale structures as an additional dimension of organisation.</p>
 <p>Employee payroll example: EmployeeType (Knowledge Level) constrains Employee (Operations Level) by associating it with a Retirement Plan and a Payroll. A superuser configures the Knowledge Level; ordinary users work with the Operations Level. This separation allows policy to be explicit without overconstrained or underconstrained base objects.</p>
 <p>Use sparingly — it adds indirection and makes system behaviour harder to understand if the Knowledge Level itself becomes complex.</p>
-<h3>PLUGGABLE COMPONENT FRAMEWORK (most mature)</h3>
+<h3 id="pluggable-component-framework-most-mature">PLUGGABLE COMPONENT FRAMEWORK (most mature)</h3>
 <p>Distill an ABSTRACT CORE of interfaces and interactions; create a framework that allows diverse implementations to be freely substituted. Any application uses those components strictly through the ABSTRACT CORE&#39;s interfaces. The central hub operates within a SHARED KERNEL; individual components may be in separate BOUNDED CONTEXTS.</p>
 <p>Requires precision in interface design and a deep model to capture the necessary behaviour in the ABSTRACT CORE. Only viable after multiple applications have already been implemented in the same domain. Downside: freezes CORE refactoring — the ABSTRACT CORE cannot be changed without changing all components&#39; protocols.</p>
 <p>SEMATECH CIM Framework example: defined abstract interfaces for semiconductor MES domain (Process Machine, Lot Movement); required all applications to implement a hosting protocol. Allowed thousands of developers to build interoperable components independently.</p>
-<h2>How Restrictive Should a Structure Be?</h2>
+<h2 id="how-restrictive-should-a-structure-be">How Restrictive Should a Structure Be?</h2>
 <p>Ranges from loose (SYSTEM METAPHOR) to restrictive (PLUGGABLE COMPONENT FRAMEWORK). The most important contribution is conceptual coherence and insight into the domain. Resist the temptation to build frameworks that regiment the implementation of the structure. &quot;Each structural rule should make development easier.&quot;</p>
-<h2>Refactoring Toward a Fitting Structure</h2>
+<h2 id="refactoring-toward-a-fitting-structure">Refactoring Toward a Fitting Structure</h2>
 <ul>
 <li><strong>Minimalism</strong>: keep simple and lightweight; don&#39;t attempt to be comprehensive</li>
 <li><strong>Communication and self-discipline</strong>: the structure&#39;s terminology must enter the UBIQUITOUS LANGUAGE; the entire team must follow it</li>
 <li><strong>Restructuring yields supple design</strong>: models that have been structurally transformed repeatedly become easier to transform again — like a leather jacket that softens with wear</li>
 <li><strong>Distillation lightens the load</strong>: removing GENERIC SUBDOMAINS and COHESIVE MECHANISMS from the CORE leaves less to restructure; supporting elements should be designed to fit cleanly within the structure</li>
 </ul>
-<h2>Who Sets the Structure?</h2>
+<h2 id="who-sets-the-structure">Who Sets the Structure?</h2>
 <p>Two patterns Evans observed:</p>
 <ol>
 <li><em>Emergent structure</em>: self-disciplined teams with good communication; informal leaders (often the coach); organic order from EVOLVING ORDER</li>
@@ -374,7 +385,7 @@
 </ol>
 <p>Six essentials for strategic design decision making: decisions reach everyone → process absorbs feedback → plan allows evolution → architecture teams don&#39;t siphon the best talent → minimalism and humility → developers are generalists, objects are specialists.</p>
 <p><strong>Beware the Master Plan</strong> (Christopher Alexander&#39;s critique): master plans create totalitarian, not organic, order. They are too rigid and too imprecise at the same time. The analogy to software: a set of principles for piecemeal growth produces order that adapts to circumstances; a master plan produces order that constrains them.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -387,7 +398,7 @@
 <td>Originating treatment (ch. 16–17): large-scale structure as optional complement to bounded contexts and distillation; four patterns (System Metaphor, Responsibility Layers, Knowledge Level, Pluggable Component Framework); Evolving Order; who sets strategy; six essentials</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/core-domain.html">Core Domain</a> — large-scale structure clarifies the CORE DOMAIN&#39;s position in the whole; the structure itself may be part of the CORE</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — large-scale structure typically spans multiple BOUNDED CONTEXTS; one structure can organise the entire CONTEXT MAP</li>

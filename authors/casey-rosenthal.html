@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html" aria-current="page">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,17 +316,21 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/chaos-engineering.html">Chaos Engineering</a></p>
-<h2>Background</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#background">Background</a></li><li><a href="#core-positions">Core Positions</a></li><li><a href="#books">Books</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/chaos-engineering.html">Chaos Engineering</a></p>
+<h2 id="background">Background</h2>
 <p>Casey Rosenthal built and managed the Chaos Engineering team at Netflix for three years, simultaneously managing the Traffic Engineering team. He is one of the originators of the formal discipline of Chaos Engineering and co-author of the Principles of Chaos Engineering (principlesofchaos.org). He founded Chaos Community Day (2015) and co-authored the O&#39;Reilly book with Nora Jones. He studied Human Factors and Safety Systems at Lund University in Sweden.</p>
-<h2>Core Positions</h2>
+<h2 id="core-positions">Core Positions</h2>
 <ul>
 <li>Chaos Engineering is a <em>science</em> (Popperian falsifiability), not a techne: experiments form and test hypotheses about system behaviour.</li>
 <li>Complex systems are nonlinear and incomprehensible in full by any single person; failures emerge from unanticipated interactions, not individual mistakes.</li>
 <li>Chaos Engineering is a management tool as much as a technical one: Chaos Monkey aligns an organisation toward a shared resilience goal while remaining loosely coupled as to how teams achieve it.</li>
 <li>Complexity is irreducible — accidental complexity accrues perpetually; essential complexity is the price of features and safety properties.</li>
 </ul>
-<h2>Books</h2>
+<h2 id="books">Books</h2>
 <h3><a href="../sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em> (2020)</h3>
 <p>The definitive text on the discipline, co-authored with Nora Jones and fourteen contributing authors. Covers the Netflix origin story, complexity theory foundations, the Principles of Chaos Engineering, multi-company case studies (Slack, Google, Microsoft, LinkedIn, Capital One), a Chaos Maturity Model, and emerging frontiers including security chaos and continuous verification.</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>

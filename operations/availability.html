@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,21 +309,35 @@
       <h1>Availability</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/measurement.html">measurement</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#the-nines">The Nines</a></li><li><a href="#request-success-rate-availability">Request-Success-Rate Availability</a></li><li><a href="#availability-vs-reliability-vs-resiliency">Availability vs Reliability vs Resiliency</a></li><li><a href="#techniques-for-high-availability">Techniques for High Availability</a></li><li><a href="#availability-and-dependencies">Availability and Dependencies</a></li><li><a href="#redundancy">Redundancy</a></li><li><a href="#mtbf-mttr-rpo-and-rto">MTBF, MTTR, RPO, and RTO</a></li><li><a href="#planned-vs-unplanned-downtime">Planned vs Unplanned Downtime</a></li><li><a href="#the-100-availability-trap-sre">The 100% Availability Trap (SRE)</a></li><li><a href="#slas-slos-slis">SLAs, SLOs, SLIs</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#design-for-production">Design for Production</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>100% is always the wrong target</strong> (SRE). Past user-perceptible thresholds, additional nines waste engineering capacity that could go to features. Define the SLO by user impact, not technical aspiration.</li>
+<li><strong>The nines table makes the trade-off concrete.</strong> 99.9% = 8h 46m/year; 99.99% = 52 min/year; 99.999% = 5 min 35s/year. Each additional nine roughly 10× the engineering cost. Negotiate with the table in hand.</li>
+<li><strong>MTBF and MTTR are the two levers; MTTR matters more.</strong> At hyperscale MTBF approaches zero — failure is constant. Recovery speed is the active lever. Allspaw&#39;s argument; SRE operationalises it.</li>
+<li><strong>Availability is achieved by redundancy + failure isolation, not by preventing failure.</strong> Multiple availability zones, bulkheads, shuffle sharding, cellular architecture. Designing failures out is more expensive and less effective than designing for failure.</li>
+<li><strong>Dependency chaining destroys availability.</strong> A service with 99.9% availability that depends on five other 99.9% services has an upper bound of ~99.5%. Reduce dependency depth, isolate fault domains, accept degraded responses (<a href="../patterns/circuit-breaker.html">Circuit Breaker</a>).</li>
+<li><strong>Availability is a financial decision.</strong> A 5-minute monthly release window for 5 years costs roughly $900K (300 min × $3K/min). A $50K zero-downtime deployment investment returns 18× (<a href="../sources/release-it.html">Release It</a>). See <a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a>.</li>
+<li><strong>Tyranny of the nines is the dominant antipattern.</strong> Specifying availability without specifying <em>what for</em>. Negotiate per-feature: does the entire system need five nines, or only the transaction core?</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p><strong>Availability</strong> is the percentage of time a system is operational and able to serve requests. It is defined as:</p>
 <pre><code>Availability = Uptime / (Uptime + Downtime)
 </code></pre>
 <p><strong>Uptime</strong> is the time the system can serve requests; <strong>downtime</strong> is the time it cannot. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 1)</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>At scale, failures are inevitable. Every component — nodes, disks, network links, third-party services — has a non-zero probability of failing. The more components a system has, and the more operations it performs, the more frequently failures occur. Availability is the metric that captures how well a system absorbs these failures without impacting users.</p>
-<h2>The Nines</h2>
+<h2 id="the-nines">The Nines</h2>
 <p>Availability is conventionally expressed in &quot;nines&quot; — the number of nines in the percentage:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -360,7 +381,7 @@
 </tbody></table></div>
 <p>Three nines (99.9%) is typically considered acceptable to users. Four nines and above is considered <strong>highly available</strong>. Each additional nine reduces allowable downtime by roughly 10×.</p>
 <p>Note that these are aggregate figures — meeting five nines means the system can be down for at most 5 minutes over an entire year, including all planned maintenance.</p>
-<h2>Request-Success-Rate Availability</h2>
+<h2 id="request-success-rate-availability">Request-Success-Rate Availability</h2>
 <p>For globally distributed services, time-based availability is often misleading: if a service is &quot;partially up&quot; somewhere in the world at all times (due to multi-region deployment and fault isolation), the time-based metric is nearly always 100%, even during significant impairment.</p>
 <p>Google therefore defines availability as a <strong>request success rate</strong> (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 3):</p>
 <pre><code>Availability = successful requests / total requests
@@ -369,7 +390,7 @@
 <blockquote>
 <p><strong>Contradiction:</strong> The time-based formula (uptime / total time) is the conventional industry definition and is embedded in most SLAs. The request-success-rate formula is strictly superior for multi-region services but requires instrumented request counting, which is not always available in simpler systems.</p>
 </blockquote>
-<h2>Availability vs Reliability vs Resiliency</h2>
+<h2 id="availability-vs-reliability-vs-resiliency">Availability vs Reliability vs Resiliency</h2>
 <p>These terms are related but distinct:</p>
 <ul>
 <li><strong>Availability</strong>: the percentage of time the system serves requests (a metric).</li>
@@ -377,7 +398,7 @@
 <li><strong>Resiliency</strong>: the ability to continue functioning in the presence of failures, and to recover quickly (a design quality).</li>
 </ul>
 <p>Resiliency is the primary means of achieving high availability. A resilient system degrades gracefully when components fail, rather than going completely down.</p>
-<h2>Techniques for High Availability</h2>
+<h2 id="techniques-for-high-availability">Techniques for High Availability</h2>
 <ul>
 <li><strong>Redundancy</strong>: replicate components so a single failure doesn&#39;t create a SPOF (→ <a href="../distributed/replication.html">Replication</a>).</li>
 <li><strong>Fault isolation</strong>: contain failures so they don&#39;t cascade (→ <a href="../patterns/bulkhead.html">Bulkhead</a>, <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>).</li>
@@ -385,12 +406,12 @@
 <li><strong>Static stability</strong>: continue operating with degraded data (e.g., serving stale DNS entries) rather than failing hard when a dependency is unavailable (→ <a href="../distributed/dns.html">Dns</a>).</li>
 <li><strong>Graceful degradation</strong>: return a reduced response rather than an error when a downstream is impaired.</li>
 </ul>
-<h2>Availability and Dependencies</h2>
+<h2 id="availability-and-dependencies">Availability and Dependencies</h2>
 <p>A system&#39;s availability is bounded by its dependencies. If service A depends on service B, and B has 99.9% availability, A can be at most 99.9% available — even if A itself never fails. For a chain of N services each with 99.9% availability:</p>
 <pre><code>Effective availability = 0.999^N
 </code></pre>
 <p>With N = 10: 0.999^10 ≈ 99%. This is why minimising synchronous dependencies and applying patterns like circuit breakers and bulkheads is critical in microservices architectures.</p>
-<h2>Redundancy</h2>
+<h2 id="redundancy">Redundancy</h2>
 <p>Redundancy — replicating functionality or state across multiple nodes — is the primary mechanism for eliminating single points of failure. When one node fails, the others absorb the load.</p>
 <p><strong>Four prerequisites for redundancy to actually improve availability</strong> (Marc Brooker):</p>
 <ol>
@@ -402,7 +423,7 @@
 <p><strong>Correlation is the critical constraint</strong>: redundancy only improves availability when redundant components cannot fail for the same reason at the same time. If servers share a power feed, a rack, or a data centre, correlated failures eliminate the benefit of redundancy.</p>
 <p><strong>Availability Zones (AZs)</strong>: cloud providers replicate infrastructure across multiple independent data centres within a region, cross-connected with high-speed links. AZs are far enough apart to minimise correlated failure risk, but close enough that <strong>synchronous replication protocols (Raft, chain replication) work without significant latency penalties</strong>. Deploying stateless services across multiple AZs is the baseline for high availability.</p>
 <p><strong>Multi-region</strong>: to survive a full region failure, replicate across regions. Cross-region latency is high enough that <strong>only asynchronous replication</strong> is practical. Multi-region deployments are also driven by legal compliance requirements (data residency laws) more often than by failure probability. The effort is substantial — consider carefully whether the failure scenario justifies it.</p>
-<h2>MTBF, MTTR, RPO, and RTO</h2>
+<h2 id="mtbf-mttr-rpo-and-rto">MTBF, MTTR, RPO, and RTO</h2>
 <p>Eoin Woods (→ <a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a> ch. 7) provides a complementary measurement framework for availability:</p>
 <p><strong>MTBF (Mean Time Between Failures)</strong>: measures how often the system fails (reliability). Hard to measure accurately — only estimable after many real failures have occurred. Alternative: collect failure data from similar systems in the same organisation and use as a proxy. Can only be estimated via reliability models (which are not very useful for software failures) until you have production data.</p>
 <p><strong>MTTR (Mean Time to Recover)</strong>: measures how long recovery from a failure takes. Allspaw (2010): MTTR is more important than MTBF for most system types — a system that recovers quickly can tolerate more frequent failures than one that fails rarely but takes hours to restore. <strong>Key advantage</strong>: MTTR can be designed for, estimated, and tested during development — unlike MTBF, you can measure it before the first real failure.</p>
@@ -411,14 +432,14 @@
 <blockquote>
 <p><strong>Tyranny of the nines antipattern:</strong> A single availability percentage is too simplistic — mode and timing of failure matter as much as frequency. &quot;5 nines&quot; (99.999% = 1 second/day) is so close to 100% as to be nearly meaningless as a design target. Instead, use failure scenarios to understand what business continuity actually requires, then set RPO and RTO targets per failure type and calculate the resulting availability.</p>
 </blockquote>
-<h2>Planned vs Unplanned Downtime</h2>
+<h2 id="planned-vs-unplanned-downtime">Planned vs Unplanned Downtime</h2>
 <p>Both count toward downtime:</p>
 <ul>
 <li><strong>Planned</strong>: deployments, maintenance windows, schema migrations.</li>
 <li><strong>Unplanned</strong>: crashes, network partitions, cascading failures.</li>
 </ul>
 <p><strong>Continuous deployment</strong> (deploy without downtime via rolling updates, blue/green, canary) is the primary technique for eliminating planned downtime. (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
-<h2>The 100% Availability Trap (SRE)</h2>
+<h2 id="the-100-availability-trap-sre">The 100% Availability Trap (SRE)</h2>
 <p>The SRE book argues explicitly that 100% is the wrong reliability target for almost any software system (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1, 3):</p>
 <ol>
 <li>Users cannot distinguish between 100% and 99.999% availability — other components in the path (ISP, home network, device) collectively fall below 99.999% anyway.</li>
@@ -429,14 +450,14 @@
 <blockquote>
 <p><strong>Contradiction:</strong> This argument applies to services where some unavailability is acceptable. Safety-critical systems (pacemakers, anti-lock brakes, nuclear controls) are explicitly excluded by the SRE book itself. For regulated systems, the cost-benefit calculus is different.</p>
 </blockquote>
-<h2>SLAs, SLOs, SLIs</h2>
+<h2 id="slas-slos-slis">SLAs, SLOs, SLIs</h2>
 <ul>
 <li><strong>SLI (Service Level Indicator)</strong>: the measured metric (e.g., request success rate).</li>
 <li><strong>SLO (Service Level Objective)</strong>: the target (e.g., 99.9% of requests succeed).</li>
 <li><strong>SLA (Service Level Agreement)</strong>: the contract with consequences for breach (e.g., credits if SLO is missed).</li>
 </ul>
 <p>Availability is the most common SLI. SLOs should be set based on what users actually need, not what sounds impressive — a tighter SLO means more investment in redundancy and on-call response.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/replication.html">Replication</a> — primary mechanism for eliminating SPOFs and achieving redundancy</li>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — prevents cascading failures from degrading availability</li>
@@ -453,13 +474,14 @@
 <li><a href="../operations/data-integrity.html">Data Integrity</a> — data integrity has orthogonal requirements to uptime; a service can be 100% available yet have significant data corruption</li>
 <li><a href="../operations/incident-management.html">Incident Management</a> — structured incident response reduces MTTR, the primary lever for improving availability under failure</li>
 <li><a href="../operations/automation.html">Automation</a> — automated failover and recovery reduce MTTR faster than human-driven processes can</li>
+<li><a href="../comparisons/cost-vs-availability.html">Cost Vs Availability</a> — decision guide for the availability-vs-cost trade-off; the nines table with money attached</li>
 </ul>
-<h2>Design for Production</h2>
+<h2 id="design-for-production">Design for Production</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 1) adds a perspective complementary to the technical treatment above: availability is not primarily a technical goal but a <strong>financial and organisational</strong> one.</p>
 <p><strong>Availability decisions are financial decisions</strong>: a 5-minute release window once a month for 5 years costs roughly $900,000 (300 minutes × $3,000/minute typical e-commerce loss). A $50,000 investment in a zero-downtime deployment pipeline returns 18× with no optimistic assumptions. Most engineers optimise development cost; the organisation&#39;s interests demand optimising operational cost over the system&#39;s lifespan.</p>
 <p><strong>&quot;Design for QA&quot; vs &quot;design for production&quot;</strong>: systems designed to pass QA are optimised for the test environment — a clean, controlled world of preconditions. Production is hostile: user behaviour is unpredictable, dependencies fail in partial or slow ways, configuration changes have delayed effects, and load spikes arrive without warning. Passing QA tells you almost nothing about how a system will behave after 12 months of production operation.</p>
 <p><strong>The integration of availability concerns into design</strong> (not just operations): the connection pool exhaustion in the airline case study (→ <a href="../sources/release-it.html">Release It</a> ch. 2) was an availability failure that could only be fixed at design time — by choosing a pool implementation that validates connections, adding timeouts, and using deep health checks. Operations could mitigate incidents; the design determined the blast radius and recovery complexity.</p>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Three nines are typically considered acceptable by users, and anything above four is considered to be highly available.&quot; (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 1)</p>
 </blockquote>
@@ -468,7 +490,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li><li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li><li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../distributed/failure-detection.html">Failure Detection</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-information-flow-is-the-core-mechanism">Why Information Flow Is the Core Mechanism</a></li><li><a href="#measuring-westrum-culture">Measuring Westrum Culture</a></li><li><a href="#what-westrum-culture-predicts">What Westrum Culture Predicts</a></li><li><a href="#how-to-improve-culture">How to Improve Culture</a></li><li><a href="#westrum-and-failure">Westrum and Failure</a></li><li><a href="#relation-to-bureaucracy">Relation to Bureaucracy</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Ron Westrum&#39;s typology (1988, revised 2014) classifies organisations by how they process information. Originally developed to predict safety outcomes in high-tempo, high-consequence environments (aviation, healthcare), it has been validated by Forsgren, Humble, and Kim as a predictor of software delivery performance and organisational performance (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 3).</p>
 <p>Three types, forming a continuum:</p>
 <div class="table-wrapper"><table>
@@ -358,7 +369,7 @@
 <td>Implemented</td>
 </tr>
 </tbody></table></div>
-<h2>Why Information Flow Is the Core Mechanism</h2>
+<h2 id="why-information-flow-is-the-core-mechanism">Why Information Flow Is the Core Mechanism</h2>
 <p>Westrum&#39;s insight: organisational culture predicts how information flows. Good information flow has three characteristics:</p>
 <ol>
 <li>It answers the questions the receiver needs answered</li>
@@ -366,11 +377,11 @@
 <li>It is presented so the receiver can use it effectively</li>
 </ol>
 <p>High-tempo, high-consequence environments (aviation, healthcare, tech organisations) depend on good information flow for safe and effective operation. Pathological and bureaucratic cultures distort information — people hoard it for political reasons, withhold it to protect turf, or massage it to look better. These distortions cause failures.</p>
-<h2>Measuring Westrum Culture</h2>
+<h2 id="measuring-westrum-culture">Measuring Westrum Culture</h2>
 <p>Measured using Likert-type questions (1–7 scale, strongly disagree to strongly agree) derived from Westrum&#39;s typology. Respondents rate agreement with statements about how information is treated in their organisation. Statistical validation (discriminant validity, convergent validity, internal consistency) confirms the measure is both valid and reliable. (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 3, ch. 13)</p>
 <p>Score = mean of responses across all culture questions. Higher = more generative.</p>
 <p>2016 State of DevOps data: 31% pathological, 48% bureaucratic, 21% generative.</p>
-<h2>What Westrum Culture Predicts</h2>
+<h2 id="what-westrum-culture-predicts">What Westrum Culture Predicts</h2>
 <p>Validated by Accelerate research:</p>
 <ul>
 <li><strong>Software delivery performance</strong> (lead time, deployment frequency, MTTR) — positively predicted by generative culture</li>
@@ -379,7 +390,7 @@
 <li><strong>Change failure rate</strong> — strongly correlated (follows the delivery performance construct)</li>
 </ul>
 <p>Google&#39;s &quot;Project Aristotle&quot; (2-year, 200+ interviews, 180+ teams) found the same pattern independently: team dynamics matter more than individual skills; psychological safety — the right to raise concerns without fear — is the top predictor of team performance. This aligns with Westrum&#39;s generative culture.</p>
-<h2>How to Improve Culture</h2>
+<h2 id="how-to-improve-culture">How to Improve Culture</h2>
 <p>Key finding from Accelerate: <strong>culture follows practice.</strong> Implementing continuous delivery and Lean management practices drives culture toward the generative end of the continuum. The causal direction is: practices → culture → performance, not culture → practices.</p>
 <p>This parallels John Shook&#39;s experience at the NUMMI plant (Lean manufacturing): &quot;The way to change culture is not to first change how people think, but instead to start by changing how people behave—what they do.&quot; Behaviour precedes belief. Start with practices, not &quot;culture change programmes.&quot;</p>
 <p>Drivers of generative culture (empirically validated):</p>
@@ -387,12 +398,12 @@
 <li><strong>Continuous delivery</strong> (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</li>
 <li><strong>Lean management</strong> (visual management, WIP limits, lightweight change approval) (→ <a href="../sources/accelerate.html">Accelerate</a> ch. 7)</li>
 </ul>
-<h2>Westrum and Failure</h2>
+<h2 id="westrum-and-failure">Westrum and Failure</h2>
 <p>How organisations respond to failure is the most diagnostic signal. Pathological: find a &quot;throat to choke&quot; — blame and punish the person responsible. But in complex adaptive systems, accidents are emergent, not the fault of any individual. Stopping the investigation at &quot;human error&quot; is dangerous. Generative: failure leads to inquiry — what did our information flows fail to deliver? What can we change so that people have better or more timely information?</p>
 <p>This maps directly to blameless postmortems and psychological safety — both associated with high-performing engineering organisations.</p>
-<h2>Relation to Bureaucracy</h2>
+<h2 id="relation-to-bureaucracy">Relation to Bureaucracy</h2>
 <p>Westrum&#39;s bureaucratic culture is not inherently bad. As Mark Schwartz notes: bureaucracy&#39;s goal is fairness through consistent rules — formulated by domain experts. The problem is a rule-oriented culture where following the rules matters more than achieving the mission. Well-designed rules in a generative culture become automations and guardrails, not blockers.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/cognitive-load.html">Cognitive Load</a> — generative cultures reduce the extraneous cognitive load imposed by fear, politics, and information hiding</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — CD practices are the primary driver of culture improvement per Accelerate</li>

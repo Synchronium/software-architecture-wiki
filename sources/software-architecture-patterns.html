@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,13 +316,17 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Author:</strong> <a href="../authors/mark-richards.html">Mark Richards</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#introduction">Introduction</a></li><li class="toc-sub"><a href="#chapter-1-layered-architecture">Chapter 1 — Layered Architecture</a></li><li class="toc-sub"><a href="#chapter-2-event-driven-architecture">Chapter 2 — Event-Driven Architecture</a></li><li class="toc-sub"><a href="#chapter-3-microkernel-architecture">Chapter 3 — Microkernel Architecture</a></li><li class="toc-sub"><a href="#chapter-4-microservices-architecture-pattern">Chapter 4 — Microservices Architecture Pattern</a></li><li class="toc-sub"><a href="#chapter-5-space-based-architecture">Chapter 5 — Space-Based Architecture</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Author:</strong> <a href="../authors/mark-richards.html">Mark Richards</a>
 <strong>Published:</strong> 2015
 <strong>Slug:</strong> <code>software-architecture-patterns</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>An early, concise reference (O&#39;Reilly, ~60 pages) covering five fundamental architecture patterns with explicit characteristic ratings. Preceded <em>Fundamentals of Software Architecture</em> (2020) by five years and established Richards&#39;s characteristic-rating framework — the same framework later expanded and formalised in FOSA. The five patterns covered (layered, event-driven, microkernel, microservices, space-based) are a subset of the eight styles in FOSA.</p>
 <p>The book&#39;s primary contribution was to make architecture trade-offs <em>explicit</em> and <em>comparable</em>: each pattern is rated on six characteristics (agility, deployability, testability, performance, scalability, ease of development), enabling side-by-side comparison. This comparative approach was novel in 2015 and became the model for FOSA&#39;s more elaborate treatment.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Without a formal architecture, teams produce a big ball of mud — the de facto result of organisational Conway&#39;s Law pressure toward the layered style (→ ch. 1)</li>
 <li>Architecture patterns reveal the operational characteristics of an application without examining internals (→ Introduction)</li>
@@ -327,10 +338,10 @@
 <li>In microservices, copying shared utility logic across services (DRY violation) is acceptable to preserve deployment independence (→ ch. 4)</li>
 <li>A 2015 position that has since been superseded: inter-service data needs can be satisfied via a shared database rather than inter-service calls (→ ch. 4 — see Contradictions)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Introduction</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="introduction">Introduction</h3>
 <p>Architecture patterns define the basic characteristics and behaviour of an application — scalability potential, agility, deployability, performance ceiling. Understanding these allows architects to justify decisions with concrete trade-off analysis rather than intuition. The book presents five patterns with explicit ratings on six characteristics; an appendix provides a side-by-side comparison table.</p>
-<h3>Chapter 1 — Layered Architecture</h3>
+<h3 id="chapter-1-layered-architecture">Chapter 1 — Layered Architecture</h3>
 <p>The n-tier/layered architecture: four standard layers (presentation, business, persistence, database). Core concepts:</p>
 <ul>
 <li><strong>Layers of isolation</strong>: closed layers prevent changes from cascading up/down the stack. A UI framework change should not require touching the business layer. This isolation is the primary reason layered architecture is still recommended as a starting point.</li>
@@ -338,7 +349,7 @@
 <li><strong>Architecture sinkhole anti-pattern</strong>: requests pass through all layers with no logic performed in any — pure forwarding. 80/20 heuristic: ≤20% sinkholes is acceptable; &gt;20% signals wrong style or too many closed layers.</li>
 </ul>
 <p>See <a href="../styles/layered-architecture.html">Layered Architecture</a>.</p>
-<h3>Chapter 2 — Event-Driven Architecture</h3>
+<h3 id="chapter-2-event-driven-architecture">Chapter 2 — Event-Driven Architecture</h3>
 <p>Two topologies: mediator (central orchestrator, knows all steps) and broker (chain-based relay, no central control). Key design issues:</p>
 <ul>
 <li>Mediator implementation options scale with complexity: Spring Integration/Camel/Mule for simple routing; BPEL/Apache ODE for conditional multi-step workflows; jBPM/BPM engines for long-running processes with human interaction.</li>
@@ -347,7 +358,7 @@
 <li>Broker topology is generally easier to deploy than mediator because the mediator is tightly coupled to the processors it orchestrates — a change in a processor may require redeploying the mediator.</li>
 </ul>
 <p>See <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>.</p>
-<h3>Chapter 3 — Microkernel Architecture</h3>
+<h3 id="chapter-3-microkernel-architecture">Chapter 3 — Microkernel Architecture</h3>
 <p>Core system + plug-in modules. Key concepts:</p>
 <ul>
 <li><strong>Plug-in registry</strong>: maps feature key → plug-in reference. Contains name, data contract, and remote access protocol details. Ranges from a simple HashMap to a service-discovery tool.</li>
@@ -356,7 +367,7 @@
 <li>First-choice style for product-based applications with versioned releases and optional features.</li>
 </ul>
 <p>See <a href="../styles/microkernel-architecture.html">Microkernel Architecture</a>.</p>
-<h3>Chapter 4 — Microservices Architecture Pattern</h3>
+<h3 id="chapter-4-microservices-architecture-pattern">Chapter 4 — Microservices Architecture Pattern</h3>
 <p>Service components as the central concept (variable granularity: from a single module to a large portion of the application). Three topologies:</p>
 <ul>
 <li><strong>API REST-based</strong>: fine-grained services exposed through an API layer. Common in cloud-based single-purpose web services (Yahoo, Google, Amazon).</li>
@@ -369,7 +380,7 @@
 <blockquote>
 <p><strong>Contradiction / evolution of thinking:</strong> This 2015 edition recommends using a shared database to satisfy inter-service data needs rather than making inter-service calls (to avoid coupling). By 2020, <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> explicitly reverses this: shared databases are a primary cause of the distributed monolith anti-pattern and should be avoided. Both books are by the same author; the shared-database guidance in SAP reflects pre-microservices-maturity thinking and should not be followed today.</p>
 </blockquote>
-<h3>Chapter 5 — Space-Based Architecture</h3>
+<h3 id="chapter-5-space-based-architecture">Chapter 5 — Space-Based Architecture</h3>
 <p><strong>The core problem</strong>: conventional web apps form a triangle-shaped scaling topology — web servers (widest, easiest to scale), application servers (middle), database (narrowest, hardest to scale). Scaling out one layer just moves the bottleneck to the next. SBA dissolves the database from the hot path entirely by using in-memory replicated data grids within each processing unit.</p>
 <p>Key concepts:</p>
 <ul>
@@ -384,7 +395,7 @@
 </ul>
 <p>Characteristic ratings (SAP&#39;s 6-characteristic framework): agility → high; deployability → high; testability → low; performance → high; scalability → high; ease of development → low. Directionally consistent with FOSA&#39;s more granular 2020 ratings.</p>
 <p>See <a href="../styles/space-based-architecture.html">Space Based Architecture</a>.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;Architecture patterns help define the basic characteristics and behaviour of an application.&quot; (Introduction)</p>
 </blockquote>
@@ -394,7 +405,7 @@
 <blockquote>
 <p>&quot;This is a fairly common practice in most business applications implementing the microservices architecture pattern, trading off the redundancy of repeating small portions of business logic for the sake of keeping service components independent.&quot; (ch. 4)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
 <li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a></li>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,30 +309,44 @@
       <h1>Monitoring</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/monitoring.html">monitoring</a></li><li><a class="tag-chip" href="../tags/sli.html">sli</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/alerting.html">alerting</a></li><li><a class="tag-chip" href="../tags/dashboards.html">dashboards</a></li><li><a class="tag-chip" href="../tags/observability.html">observability</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#counters-vs-gauges">Counters vs Gauges</a></li><li><a href="#black-box-vs-white-box-monitoring">Black-Box vs White-Box Monitoring</a></li><li><a href="#metrics">Metrics</a></li><li><a href="#service-level-indicators-slis">Service-Level Indicators (SLIs)</a></li><li><a href="#service-level-objectives-slos">Service-Level Objectives (SLOs)</a></li><li><a href="#the-four-golden-signals">The Four Golden Signals</a></li><li><a href="#symptoms-vs-causes">Symptoms vs Causes</a></li><li><a href="#alert-quality-criteria">Alert Quality Criteria</a></li><li><a href="#monitoring-output-taxonomy-sre">Monitoring Output Taxonomy (SRE)</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#dashboards">Dashboards</a></li><li><a href="#economic-value-framing-nygard">Economic Value Framing (Nygard)</a></li><li><a href="#on-call">On-Call</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Monitoring tells you something is wrong; <a href="../operations/observability.html">Observability</a> tells you why.</strong> Monitoring is metric-driven and detects known failure modes; observability handles the cases you didn&#39;t anticipate. They&#39;re complementary, not alternatives.</li>
+<li><strong>Percentiles over averages.</strong> Response-time distributions are right-skewed; averages obscure tail behaviour. P50/P95/P99/P99.9 with histogram-based aggregation. The mean is for accountants.</li>
+<li><strong>Black-box and white-box monitoring serve different purposes.</strong> Black-box (probes from outside) catches what users experience; white-box (internal metrics) explains why. Both are required; neither suffices alone.</li>
+<li><strong>SLIs/SLOs replace naive thresholds.</strong> Define what good looks like (ratio of good events / valid events), then derive alerting from burn rate against the SLO error budget. Static threshold alerts page noisily; burn-rate alerts page meaningfully.</li>
+<li><strong>Tail latency amplifies in fan-out.</strong> A request that makes N parallel backend calls has its P99 driven by the P99.9 of each call. Design accounting for this — either reduce N (BFF aggregation) or attack the per-call tail.</li>
+<li><strong>Pre-aggregation has costs.</strong> Aggregating metrics on the client/agent reduces storage dramatically but destroys the ability to re-aggregate at finer granularity later. Keep raw events where the cost is justified.</li>
+<li><strong>Dashboards have types.</strong> SLO dashboards for managers, API dashboards for service owners, service dashboards for on-call. One dashboard for all audiences is one dashboard for none.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Monitoring is the practice of continuously tracking a system&#39;s health in production, primarily to detect failures that impact users and to trigger alerts to human operators. A secondary use is providing dashboards that give a high-level view of system health.</p>
-<h2>Counters vs Gauges</h2>
+<h2 id="counters-vs-gauges">Counters vs Gauges</h2>
 <p>Two fundamental metric types (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 10):</p>
 <ul>
 <li><strong>Counter</strong>: a monotonically increasing value (never decreases). Measures total events since process start — total requests served, total errors, total bytes written. Rate computation (<code>rate()</code>) is safe even across missed collection intervals, because the counter difference is still correct if a collection is skipped.</li>
 <li><strong>Gauge</strong>: a value that can go up or down — current queue depth, active connections, memory usage. Prone to missed events: if a queue empties and refills between two collection intervals, the gauge appears unchanged even though work was done.</li>
 </ul>
 <p>Prefer counters where possible. Alert on rates derived from counters rather than on gauge values directly.</p>
-<h2>Black-Box vs White-Box Monitoring</h2>
+<h2 id="black-box-vs-white-box-monitoring">Black-Box vs White-Box Monitoring</h2>
 <p><strong>Black-box monitoring</strong> observes a system from the outside without knowledge of its internals — e.g., periodically sending test requests from synthetic scripts (synthetics) to external API endpoints and recording latency and success. Deployed in the same regions as users. Catches issues invisible from within the service (DNS failures, connectivity problems, infrequently-exercised API paths).</p>
 <p><strong>White-box monitoring</strong> instruments the application itself to report on its internal behaviour — cache hit rates, repository response times, handler durations. Introduced by Etsy&#39;s statsd. Complements black-box monitoring: black-box catches symptoms, white-box helps identify root cause.</p>
-<h2>Metrics</h2>
+<h2 id="metrics">Metrics</h2>
 <p>A metric is a time series of raw measurements (samples), each a floating-point number with a timestamp. Metrics can be tagged with key-value labels (region, cluster, node), enabling slicing without pre-creating separate metrics — but every distinct label combination is a distinct metric, creating dimensionality challenges.</p>
 <p><strong>Pre-aggregation</strong>: time-series data is expensive to store and query at event granularity. Metrics are pre-aggregated at fixed periods (1 min, 5 min, 1 hour) into summary statistics (sum, average, percentiles). This can happen client-side (telemetry agent), server-side (telemetry service), or both. Trade-off: client-side pre-aggregation reduces cost dramatically but loses the ability to re-aggregate at finer granularity later.</p>
 <p>Metrics are stored in time-series data stores optimised for high-throughput, low-dimensional data (e.g., CloudWatch, Druid). They are the primary telemetry for alerting and dashboards; for debugging, see <a href="../operations/observability.html">Observability</a>.</p>
-<h2>Service-Level Indicators (SLIs)</h2>
+<h2 id="service-level-indicators-slis">Service-Level Indicators (SLIs)</h2>
 <p>An SLI measures one aspect of the level of service provided to users. Defined as a ratio:</p>
 <pre><code>SLI = good events / total events
 </code></pre>
@@ -345,7 +366,7 @@
 <p><strong>Standardise definitions</strong>: define reusable SLI templates specifying aggregation interval (e.g. &quot;averaged over 1 minute&quot;), aggregation region, measurement frequency, which requests are included, how data is acquired, and latency basis (e.g. &quot;time to last byte&quot;). Templates prevent reasoning from first principles for every SLI.</p>
 <p><strong>Percentiles over averages</strong>: response times are right-skewed and long-tailed. Averages hide the distribution and are easily distorted by outliers. Percentiles (P99, P99.9) are a better representation. Long-tail latencies disproportionately affect high-value users (those making the most requests), and their business impact is measurable — a 100 ms increase in load time can reduce conversion by 7%.</p>
 <p><strong>Little&#39;s Law and tail latency</strong>: if 1% of requests suddenly take 20s instead of 200ms, the thread pool must double just to handle that 1%. Tail latency degrades the average case and can cascade into resource exhaustion. See <a href="../distributed/queueing-theory.html">Queueing Theory</a> for the formal treatment of percentile arithmetic, tail latency amplification in fan-out designs, and why averages systematically lie about user experience.</p>
-<h2>Service-Level Objectives (SLOs)</h2>
+<h2 id="service-level-objectives-slos">Service-Level Objectives (SLOs)</h2>
 <p>An SLO defines the acceptable range for an SLI — the performance the service&#39;s users should expect when the service is functioning correctly. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 31)</p>
 <pre><code>Example: 99% of requests to endpoint X complete in &lt; 200 ms
          over a rolling 7-day window.
@@ -365,7 +386,7 @@
 <p><strong>Don&#39;t overachieve</strong>: users build on the actual performance they observe, not the stated SLO. A service that consistently exceeds its SLO causes users to over-depend on that level of reliability. When the service eventually regresses to its stated target, those users break. Google&#39;s Chubby lock service became so reliable that dependent teams assumed it would never fail; when it did, they had no fallback. SRE&#39;s fix: synthesize planned outages if Chubby has not naturally hit its SLO target in a quarter. This flushes out over-dependencies before they become production liabilities. The broader principle: operate close to your stated SLO, not far above it. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 4)</p>
 <p><strong>Internal vs external SLO</strong>: maintain a tighter internal target than the published SLA. This safety margin allows response to chronic problems before external breach, and accommodates reimplementations that trade performance for maintainability.</p>
 <p><strong>Chaos testing</strong>: periodically inject controlled failures into production to prevent dependencies from over-relying on behaviour that exceeds the documented SLA, and to validate that resiliency mechanisms work. (→ <a href="../operations/chaos-engineering.html">Chaos Engineering</a>, <a href="../operations/common-failure-causes.html">Common Failure Causes</a>, <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>)</p>
-<h2>The Four Golden Signals</h2>
+<h2 id="the-four-golden-signals">The Four Golden Signals</h2>
 <p>The SRE book&#39;s canonical monitoring framework for user-facing systems (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6): if you can only measure four metrics, measure these:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -397,13 +418,13 @@
 </tr>
 </tbody></table></div>
 <p>Saturation differs from the others: it is about predicting impending failure, not measuring current failure. A utilisation target is essential because many systems degrade before reaching 100% utilisation.</p>
-<h2>Symptoms vs Causes</h2>
+<h2 id="symptoms-vs-causes">Symptoms vs Causes</h2>
 <p>Alert on <strong>symptoms</strong> (what&#39;s broken from the user&#39;s perspective), not causes (why it&#39;s broken). Cause-based alerts generate noise — a CPU spike isn&#39;t actionable; a user-visible error rate is. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6)</p>
 <p>Causes are for debugging after an alert fires. White-box monitoring provides the cause-level detail needed to diagnose; black-box monitoring provides the symptom-level signal needed to alert.</p>
 <blockquote>
 <p><strong>One person&#39;s cause is another person&#39;s symptom</strong>: slow database reads are a symptom for the database SRE but a cause for the frontend SRE observing slow page loads. The distinction depends on which layer you&#39;re examining.</p>
 </blockquote>
-<h2>Alert Quality Criteria</h2>
+<h2 id="alert-quality-criteria">Alert Quality Criteria</h2>
 <p>Every alert that pages a human must satisfy these criteria (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 6):</p>
 <ol>
 <li><strong>Actionable</strong> — the on-call engineer can do something in response right now.</li>
@@ -412,7 +433,7 @@
 <li><strong>Novel</strong> — alerts that fire repeatedly for the same known condition should be resolved at the root cause or automated.</li>
 </ol>
 <p>Pages that fail these criteria cause fatigue, cause engineers to ignore pages, and mask real incidents. Alert volume is a proxy for operational health — rising alert counts should trigger investigation of root causes, not just faster response.</p>
-<h2>Monitoring Output Taxonomy (SRE)</h2>
+<h2 id="monitoring-output-taxonomy-sre">Monitoring Output Taxonomy (SRE)</h2>
 <p>The SRE book defines three — and only three — valid categories of monitoring output (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 1):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -442,7 +463,7 @@
 <blockquote>
 <p><strong>Contradiction:</strong> This taxonomy implies that dashboards are not monitoring output — they are tools for investigation <em>after</em> an alert fires. Nygard&#39;s economic framing below treats dashboards as first-class operational instruments. The SRE view is that proactive dashboard-watching is a form of toil; the Nygard view is that business-process dashboards have independent value for detecting degradation that SLOs may miss.</p>
 </blockquote>
-<h2>Alerts</h2>
+<h2 id="alerts">Alerts</h2>
 <p>Alerts are triggered when a monitored condition is met and route to automation (e.g., automated restart) or a human operator on call.</p>
 <p><strong>SLO-based alerting is preferred</strong>: CPU spikes are not actionable; an SLO breach is — it directly quantifies user impact.</p>
 <p><strong>Precision vs recall</strong>: precision = fraction of alerts that are real issues; recall = fraction of real issues that generate alerts. Improving one typically degrades the other.</p>
@@ -455,7 +476,7 @@
 </ul>
 <p>Multiple burn rate thresholds create tiered alerts: low burn rate → low-severity (investigate during business hours); high burn rate → page on-call immediately.</p>
 <p><strong>Alert runbooks</strong>: every alert should link to the relevant dashboards and a runbook listing what the operator should do. This reduces MTTM (mean time to mitigate).</p>
-<h2>Dashboards</h2>
+<h2 id="dashboards">Dashboards</h2>
 <p>Three dashboard types, each with a different audience:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -491,7 +512,7 @@
 <li>For metrics that are absent when no error occurs, emit 0 (not absence) — gaps confuse operators.</li>
 <li>Keep metrics per chart to a minimum; split metrics with very different ranges into separate charts.</li>
 </ul>
-<h2>Economic Value Framing (Nygard)</h2>
+<h2 id="economic-value-framing-nygard">Economic Value Framing (Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 10) reframes the purpose of monitoring: the two fundamental questions for system-wide transparency are not &quot;Is everything running?&quot; but:</p>
 <ol>
 <li><strong>Are users receiving a good experience?</strong></li>
@@ -511,7 +532,7 @@
 </ul>
 <p><strong>Sessions ≠ users</strong> (→ <a href="../sources/release-it.html">Release It</a> ch. 15): session count always overestimates actual concurrent users. A session is kept alive by a server-side timeout after the last request — the user may have left long before the session expires. Counting active sessions is the most important metric for app server health (it predicts RAM and CPU load), but it must not be confused with actual user count. Bots, scrapers, and cookieless clients also create sessions; their traffic is invisible to happy-path load tests.</p>
 <p>The economic framing makes it easy to decide what to monitor: if it doesn&#39;t affect user experience or economic value, it&#39;s lower priority.</p>
-<h2>On-Call</h2>
+<h2 id="on-call">On-Call</h2>
 <p>A healthy on-call rotation requires that developers are responsible for operating what they build — they have the context, and the incentive to reduce operational burden.</p>
 <p><strong>Key principles</strong>:</p>
 <ul>
@@ -532,7 +553,7 @@
 <li><strong>&quot;Give back the pager&quot;</strong>: if a service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets standards. Alert flap prevention: minimum duration (≥2 evaluation cycles) before an alert fires prevents transient collection failures from paging.</li>
 </ul>
 <p><strong>Incident psychology</strong>: stress hormones impair deliberate, rational cognition and promote habitual responses — exactly the wrong mode for complex incident handling. Reducing on-call stress through clear escalation paths, runbooks, and blameless postmortem culture enables the deliberate thinking complex incidents require. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 11)</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/observability.html">Observability</a> — observability extends monitoring with logs and traces for root cause diagnosis</li>
 <li><a href="../operations/availability.html">Availability</a> — SLOs operationalise availability targets</li>
@@ -541,12 +562,14 @@
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — postmortem categories; what burns error budgets</li>
 <li><a href="../distributed/rate-limiting.html">Rate Limiting</a> — upstream resiliency prevents load from burning error budgets</li>
 <li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — percentile arithmetic, tail latency amplification, why P99 is the right SLI</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — symptom-to-diagnosis decision tree using SLI signals</li>
+<li><a href="../comparisons/cost-vs-availability.html">Cost Vs Availability</a> — SLO-driven engineering and the cost trade-off</li>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — downstream resiliency; prevents cascading failure from burning error budgets</li>
 <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a> — health signals drive bake time gating; deployment events annotate dashboards</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

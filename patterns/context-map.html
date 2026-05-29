@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,18 +316,22 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#pattern-groups">Pattern Groups</a></li><li class="toc-sub"><a href="#1-cooperation-well-established-team-communication">1. Cooperation (well-established team communication)</a></li><li class="toc-sub"><a href="#2-customersupplier-upstreamdownstream-power-imbalance">2. Customer–Supplier (upstream–downstream, power imbalance)</a></li><li class="toc-sub"><a href="#3-separate-ways-no-collaboration">3. Separate Ways (no collaboration)</a></li><li><a href="#context-map">Context Map</a></li><li><a href="#model-translation-implementation-patterns">Model Translation: Implementation Patterns</a></li><li class="toc-sub"><a href="#stateless-translation-proxy">Stateless Translation (Proxy)</a></li><li class="toc-sub"><a href="#stateful-translation-aggregation">Stateful Translation (Aggregation)</a></li><li><a href="#integration-pattern-decision-guide">Integration Pattern Decision Guide</a></li><li><a href="#evans39-originating-integration-pattern-taxonomy">Evans&#39; Originating Integration Pattern Taxonomy</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Bounded contexts must integrate to form a working system. The manner of integration is driven by the relationship between the teams implementing those contexts. Domain-driven design defines six integration patterns, grouped by collaboration type, and the <strong>context map</strong> as the visualisation tool for plotting them.</p>
 <p>(→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 4)</p>
-<h2>Pattern Groups</h2>
-<h3>1. Cooperation (well-established team communication)</h3>
+<h2 id="pattern-groups">Pattern Groups</h2>
+<h3 id="1-cooperation-well-established-team-communication">1. Cooperation (well-established team communication)</h3>
 <p><strong>Partnership</strong>
 Teams integrate in an ad hoc, two-way manner. Either team can notify the other of API changes; both cooperate to resolve conflicts. No team dictates the contract. Requires: strong communication, frequent synchronisation, continuous integration. Not suitable for geographically distributed teams.</p>
 <p><strong>Shared Kernel</strong>
 Two or more bounded contexts share a limited overlapping model. The shared model must be consistent across all contexts; any change to it must trigger integration tests for all affected contexts. Scope should be minimised to only the integration contracts and data structures that cross context boundaries.</p>
 <p><em>When to use</em>: when duplication cost &gt; coordination cost. The more volatile the shared model, the higher the coordination cost — so shared kernels are most commonly applied to core subdomains, which change most often. Also used as a temporary step during gradual legacy decomposition.</p>
 <p><em>Trade-off</em>: violates the &quot;one team per bounded context&quot; principle. Justified as a pragmatic exception; scope discipline is essential.</p>
-<h3>2. Customer–Supplier (upstream–downstream, power imbalance)</h3>
+<h3 id="2-customersupplier-upstreamdownstream-power-imbalance">2. Customer–Supplier (upstream–downstream, power imbalance)</h3>
 <p><strong>Conformist</strong>
 The downstream accepts the upstream&#39;s model without modification. Justified when: the upstream model is an industry standard, or it is good enough for the downstream&#39;s needs, and the downstream can trade some autonomy for simplicity.</p>
 <p><strong>Anticorruption Layer (ACL)</strong>
@@ -335,7 +346,7 @@ The downstream translates the upstream model into its own model via an ACL. The 
 <p><strong>Open-Host Service</strong>
 The upstream decouples its internal implementation from a consumer-optimised public interface (the <strong>published language</strong>). Instead of each consumer building an ACL, the supplier does the translation once, for all consumers. The decoupling allows the upstream to evolve its implementation independently, and to simultaneously expose multiple published language versions during consumer migration.</p>
 <p><em>Relationship to ACL</em>: Open-Host Service is the supplier-side reversal of the consumer-side ACL. Both achieve the same goal (protecting models from each other); they differ in who does the translation.</p>
-<h3>3. Separate Ways (no collaboration)</h3>
+<h3 id="3-separate-ways-no-collaboration">3. Separate Ways (no collaboration)</h3>
 <p>Teams duplicate functionality rather than integrate. Justified when:</p>
 <ul>
 <li>Communication or political issues make collaboration impractical</li>
@@ -343,7 +354,7 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 <li>Model differences are so great that ACL cost exceeds duplication cost</li>
 </ul>
 <p><strong>Never use for core subdomains</strong> — duplication defeats the in-house, maximum-quality imperative for competitive functionality.</p>
-<h2>Context Map</h2>
+<h2 id="context-map">Context Map</h2>
 <p>A context map is a visual diagram of the system&#39;s bounded contexts and the integration patterns between them. It reveals:</p>
 <ul>
 <li><strong>High-level design</strong>: which contexts exist, what models they implement</li>
@@ -352,9 +363,9 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 </ul>
 <p><strong>Maintenance</strong>: introduce from the start of a project; update as contexts are added or modified. Best maintained as a shared artefact across teams. Can be managed as code using Context Mapper.</p>
 <p><strong>Limitation</strong>: one bounded context can have multiple integration patterns with another (e.g., partnership for some modules, ACL for others), making diagrams complex. Granularity is a judgement call.</p>
-<h2>Model Translation: Implementation Patterns</h2>
+<h2 id="model-translation-implementation-patterns">Model Translation: Implementation Patterns</h2>
 <p>The integration patterns above define <em>what</em> relationship exists between contexts. Model translation defines <em>how</em> that relationship is implemented in code. Two fundamental approaches (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 9):</p>
-<h3>Stateless Translation (Proxy)</h3>
+<h3 id="stateless-translation-proxy">Stateless Translation (Proxy)</h3>
 <p>The translation layer is a stateless proxy — it receives a request or event, translates it, and forwards the translated form. No state is accumulated between calls.</p>
 <p><strong>Synchronous integration (OHS/ACL)</strong>: implemented as an API gateway proxy or facade layer. Incoming requests from the upstream are translated into the downstream&#39;s model before passing to business logic. Outgoing requests to the upstream are translated from the downstream&#39;s model to the upstream&#39;s.</p>
 <p><strong>Asynchronous integration</strong>: implemented as a message proxy — a separate process subscribes to the upstream&#39;s events, translates each into the downstream&#39;s event schema, and publishes to a downstream-owned topic. This pattern also distinguishes between:</p>
@@ -362,12 +373,12 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 <li><strong>Private events</strong>: domain events for internal use only, not published to upstream/downstream consumers. Contain internal implementation details.</li>
 <li><strong>Public events</strong> (the published language): events explicitly designed for external consumers, defined in the Open-Host Service&#39;s published language. Schema-stable and consumer-friendly.</li>
 </ul>
-<h3>Stateful Translation (Aggregation)</h3>
+<h3 id="stateful-translation-aggregation">Stateful Translation (Aggregation)</h3>
 <p>Some translations cannot be done event-by-event because the downstream model requires aggregating or joining data from multiple sources. Two approaches:</p>
 <p><strong>Stream processing</strong>: a stateful stream processing job (e.g., Kafka Streams, Flink) joins multiple upstream event streams and emits a translated, denormalised event stream. This is appropriate when the upstream publishes granular events and the downstream needs an entity view.</p>
 <p><strong>Backend for Frontend (BFF)</strong>: a dedicated aggregating service (the BFF) collects data from multiple upstream bounded contexts and serves a model tailored to a specific consumer&#39;s needs. The BFF owns the aggregation state and provides a single API surface for the consumer.</p>
 <hr>
-<h2>Integration Pattern Decision Guide</h2>
+<h2 id="integration-pattern-decision-guide">Integration Pattern Decision Guide</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -400,7 +411,7 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 <td>Never Separate Ways</td>
 </tr>
 </tbody></table></div>
-<h2>Evans&#39; Originating Integration Pattern Taxonomy</h2>
+<h2 id="evans39-originating-integration-pattern-taxonomy">Evans&#39; Originating Integration Pattern Taxonomy</h2>
 <p>Evans (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 14) defines eight patterns covering the full range of inter-context relationships. These predate and underpin the six patterns in Khononov&#39;s treatment:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -446,7 +457,7 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 <li>Phasing out a legacy: iterate unit-by-unit; ACL shrinks as legacy usage decreases</li>
 <li>Open Host Service → Published Language: if no industry standard exists, use the CORE DOMAIN as the basis</li>
 </ul>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -463,7 +474,7 @@ The upstream decouples its internal implementation from a consumer-optimised pub
 <td>Six integration patterns with team collaboration framing; context map as both visualisation and organisational diagnostic tool; stateless vs stateful translation implementation detail (ch. 4, ch. 9)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a> — dedicated page for the ACL pattern: structure, when to use, vs Conformist, vs Open-Host Service, migration use</li>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — integration patterns describe how bounded contexts relate to each other</li>

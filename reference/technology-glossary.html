@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,53 +316,57 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>Short reference entries for tools mentioned across wiki sources. Each entry covers what the tool is and where it fits architecturally. For conceptual depth see the linked concept or pattern pages.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#api-gateways-and-proxies">API Gateways and Proxies</a></li><li class="toc-sub"><a href="#kong">Kong</a></li><li class="toc-sub"><a href="#ambassador-emissary-ingress">Ambassador / Emissary-Ingress</a></li><li class="toc-sub"><a href="#traefik">Traefik</a></li><li class="toc-sub"><a href="#apigee">Apigee</a></li><li class="toc-sub"><a href="#nginx">NGINX</a></li><li class="toc-sub"><a href="#haproxy">HAProxy</a></li><li class="toc-sub"><a href="#envoy-proxy">Envoy Proxy</a></li><li><a href="#service-meshes">Service Meshes</a></li><li class="toc-sub"><a href="#istio">Istio</a></li><li class="toc-sub"><a href="#linkerd">Linkerd</a></li><li class="toc-sub"><a href="#consul-connect">Consul Connect</a></li><li class="toc-sub"><a href="#cilium">Cilium</a></li><li><a href="#identity-and-security">Identity and Security</a></li><li class="toc-sub"><a href="#spiffe-spire">SPIFFE / SPIRE</a></li><li class="toc-sub"><a href="#opa-open-policy-agent">OPA (Open Policy Agent)</a></li><li class="toc-sub"><a href="#keycloak">Keycloak</a></li><li><a href="#testing">Testing</a></li><li class="toc-sub"><a href="#pact">Pact</a></li><li class="toc-sub"><a href="#pact-broker">Pact Broker</a></li><li class="toc-sub"><a href="#wiremock">WireMock</a></li><li class="toc-sub"><a href="#testcontainers">Testcontainers</a></li><li class="toc-sub"><a href="#gatling-jmeter-locust-k6">Gatling / JMeter / Locust / K6</a></li><li><a href="#deployment-and-release">Deployment and Release</a></li><li class="toc-sub"><a href="#argo-rollouts">Argo Rollouts</a></li><li class="toc-sub"><a href="#launchdarkly">LaunchDarkly</a></li><li class="toc-sub"><a href="#aws-appconfig-azure-app-configuration">AWS AppConfig / Azure App Configuration</a></li><li><a href="#observability">Observability</a></li><li class="toc-sub"><a href="#opentelemetry">OpenTelemetry</a></li><li class="toc-sub"><a href="#prometheus">Prometheus</a></li><li class="toc-sub"><a href="#grafana">Grafana</a></li><li class="toc-sub"><a href="#jaeger-zipkin">Jaeger / Zipkin</a></li><li class="toc-sub"><a href="#aws-x-ray">AWS X-Ray</a></li><li class="toc-sub"><a href="#elk-stack">ELK Stack</a></li><li class="toc-sub"><a href="#aws-cloudwatch">AWS CloudWatch</a></li><li class="toc-sub"><a href="#datadog">Datadog</a></li><li><a href="#async-api-standards">Async API Standards</a></li><li class="toc-sub"><a href="#asyncapi">AsyncAPI</a></li><li><a href="#databases-and-data-stores">Databases and Data Stores</a></li><li class="toc-sub"><a href="#redis-redis-cluster">Redis / Redis Cluster</a></li><li class="toc-sub"><a href="#mongodb">MongoDB</a></li><li class="toc-sub"><a href="#amazon-dynamodb">Amazon DynamoDB</a></li><li class="toc-sub"><a href="#apache-cassandra">Apache Cassandra</a></li><li class="toc-sub"><a href="#google-spanner">Google Spanner</a></li><li class="toc-sub"><a href="#cockroachdb">CockroachDB</a></li><li class="toc-sub"><a href="#flyway-liquibase">Flyway / Liquibase</a></li><li><a href="#api-design">API Design</a></li><li class="toc-sub"><a href="#openapi-swagger">OpenAPI / Swagger</a></li><li class="toc-sub"><a href="#grpc-gateway">grpc-gateway</a></li><li><a href="#code-quality-and-governance">Code Quality and Governance</a></li><li class="toc-sub"><a href="#github-scientist">GitHub Scientist</a></li><li class="toc-sub"><a href="#archunit">ArchUnit</a></li><li class="toc-sub"><a href="#jdepend">JDepend</a></li><li class="toc-sub"><a href="#sonarqube">SonarQube</a></li><li class="toc-sub"><a href="#context-mapper">Context Mapper</a></li><li><a href="#message-brokers-and-streaming">Message Brokers and Streaming</a></li><li class="toc-sub"><a href="#apache-kafka">Apache Kafka</a></li><li class="toc-sub"><a href="#kafka-streams">Kafka Streams</a></li><li class="toc-sub"><a href="#apache-flink">Apache Flink</a></li><li class="toc-sub"><a href="#apache-spark">Apache Spark</a></li><li class="toc-sub"><a href="#rabbitmq">RabbitMQ</a></li><li class="toc-sub"><a href="#debezium">Debezium</a></li><li class="toc-sub"><a href="#confluent-schema-registry">Confluent Schema Registry</a></li><li><a href="#infrastructure-and-orchestration">Infrastructure and Orchestration</a></li><li class="toc-sub"><a href="#docker">Docker</a></li><li class="toc-sub"><a href="#kubernetes">Kubernetes</a></li><li class="toc-sub"><a href="#terraform-pulumi">Terraform / Pulumi</a></li><li class="toc-sub"><a href="#chef-puppet-ansible">Chef / Puppet / Ansible</a></li><li class="toc-sub"><a href="#aws-lambda">AWS Lambda</a></li><li><a href="#coordination-services">Coordination Services</a></li><li class="toc-sub"><a href="#apache-zookeeper">Apache ZooKeeper</a></li><li class="toc-sub"><a href="#etcd">etcd</a></li><li><a href="#serialization-formats">Serialization Formats</a></li><li class="toc-sub"><a href="#protocol-buffers-protobuf">Protocol Buffers (Protobuf)</a></li><li class="toc-sub"><a href="#apache-avro">Apache Avro</a></li><li class="toc-sub"><a href="#apache-thrift">Apache Thrift</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>Short reference entries for tools mentioned across wiki sources. Each entry covers what the tool is and where it fits architecturally. For conceptual depth see the linked concept or pattern pages.</p>
 <hr>
-<h2>API Gateways and Proxies</h2>
-<h3>Kong</h3>
+<h2 id="api-gateways-and-proxies">API Gateways and Proxies</h2>
+<h3 id="kong">Kong</h3>
 <p>Open-source API gateway and API management platform built on NGINX and Lua. Available in two editions: open-source (micro gateway, Kubernetes-native, lightweight) and enterprise (full APIM with developer portal, analytics, and RBAC). Plugin ecosystem for authentication, rate limiting, and transformation. Uses the deck CLI for declarative configuration. (→ <a href="../concepts/api-gateway.html">Api Gateway</a>)</p>
-<h3>Ambassador / Emissary-Ingress</h3>
+<h3 id="ambassador-emissary-ingress">Ambassador / Emissary-Ingress</h3>
 <p>Kubernetes-native API gateway built on Envoy Proxy. Declarative configuration via CRDs. Self-service routing for developer teams. Supports canary routing and gRPC. Developed by Datawire. Part of the second-generation K8s-native gateway category. (→ <a href="../concepts/api-gateway.html">Api Gateway</a>)</p>
-<h3>Traefik</h3>
+<h3 id="traefik">Traefik</h3>
 <p>Kubernetes-native reverse proxy and load balancer. Automatic service discovery via Docker and Kubernetes labels. Supports HTTP, TCP, and UDP. Lighter feature set than full API gateways; suited to microservices ingress rather than enterprise API management. (→ <a href="../concepts/api-gateway.html">Api Gateway</a>)</p>
-<h3>Apigee</h3>
+<h3 id="apigee">Apigee</h3>
 <p>Google Cloud&#39;s enterprise API management platform. Full APIM feature set: developer portal, analytics, monetisation, API versioning governance. Designed for external API programs. Represents the traditional enterprise gateway category. (→ <a href="../concepts/api-gateway.html">Api Gateway</a>)</p>
-<h3>NGINX</h3>
+<h3 id="nginx">NGINX</h3>
 <p>Open-source high-performance web server and reverse proxy. Widely used as a software load balancer, HTTP cache, and TLS termination point. Commonly used as the underlying HTTP engine for other tools (Kong, OpenResty). Emerged in the early 2000s as an alternative to hardware load balancers.</p>
-<h3>HAProxy</h3>
+<h3 id="haproxy">HAProxy</h3>
 <p>Open-source TCP/HTTP load balancer and proxy. Extremely high performance; commonly used as a front-end load balancer. Not an API gateway — lacks application-layer features. Emerged alongside NGINX as a software alternative to hardware load balancers.</p>
-<h3>Envoy Proxy</h3>
+<h3 id="envoy-proxy">Envoy Proxy</h3>
 <p>High-performance, extensible L4/L7 proxy written in C++. The de facto data-plane proxy for service meshes (Istio, Consul Connect) and second-generation API gateways (Ambassador, Contour). Implements the xDS API — a control-plane protocol that allows dynamic configuration without restarts. Supports HTTP/2, gRPC, and advanced traffic management features. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
 <hr>
-<h2>Service Meshes</h2>
-<h3>Istio</h3>
+<h2 id="service-meshes">Service Meshes</h2>
+<h3 id="istio">Istio</h3>
 <p>Full-featured service mesh built on Envoy. Provides traffic management, mTLS, RBAC, and observability. Control plane components: Pilot (service discovery and routing), Citadel (certificate management), Galley (configuration validation). Historically complex to operate; simplified with the istiod merged control plane. Industry standard for enterprise Kubernetes deployments. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
-<h3>Linkerd</h3>
+<h3 id="linkerd">Linkerd</h3>
 <p>Lightweight, security-focused service mesh. Uses a Rust-based micro-proxy (not Envoy) for low overhead. Simpler operational model than Istio; fewer features but significantly lower complexity. CNCF graduated project. Good choice when operational simplicity is a priority. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
-<h3>Consul Connect</h3>
+<h3 id="consul-connect">Consul Connect</h3>
 <p>HashiCorp&#39;s service mesh capability within Consul. Uses Envoy as the data-plane proxy. Consul Intentions define service-to-service authorisation by service name (deny-all default + explicit allow rules). Integrates with HashiCorp Vault for certificate management. Works in hybrid cloud and bare-metal environments, not just Kubernetes. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
-<h3>Cilium</h3>
+<h3 id="cilium">Cilium</h3>
 <p>eBPF-based networking, observability, and security for Kubernetes. Uses Linux kernel eBPF to enforce network policies at the kernel level — potentially replacing the sidecar proxy for lower-overhead networking. Supports network policies, L7 visibility, and transparent encryption. Represents the emerging eBPF-based alternative to sidecar meshes. (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
 <hr>
-<h2>Identity and Security</h2>
-<h3>SPIFFE / SPIRE</h3>
+<h2 id="identity-and-security">Identity and Security</h2>
+<h3 id="spiffe-spire">SPIFFE / SPIRE</h3>
 <p><strong>SPIFFE</strong> (Secure Production Identity Framework for Everyone): a standard for workload identity. Defines the SVID (SPIFFE Verifiable Identity Document) — a cryptographic identity for a workload, independent of network address.</p>
 <p><strong>SPIRE</strong> (SPIFFE Runtime Environment): the reference implementation. Issues SVIDs to workloads after attesting their identity via node and workload attestors. Service meshes use SPIFFE/SPIRE as the identity foundation for mTLS. (→ <a href="../concepts/zero-trust.html">Zero Trust</a>)</p>
-<h3>OPA (Open Policy Agent)</h3>
+<h3 id="opa-open-policy-agent">OPA (Open Policy Agent)</h3>
 <p>General-purpose policy engine. Policies are written in the Rego language. Can enforce authorisation policies at the API gateway (input validation, scope checks), Kubernetes admission (prevent insecure pod configurations), and within service code. Part of the CNCF ecosystem. Complements service mesh service-to-service authorisation with fine-grained attribute-based access control. (→ <a href="../concepts/oauth2-and-authn.html">Oauth2 And Authn</a>)</p>
-<h3>Keycloak</h3>
+<h3 id="keycloak">Keycloak</h3>
 <p>Open-source Identity Provider and Authorization Server. Implements OAuth2, OIDC, and SAML 2.0. Supports user federation (LDAP, Active Directory), social login, and multi-tenancy. Common choice for self-hosted enterprise identity. (→ <a href="../concepts/oauth2-and-authn.html">Oauth2 And Authn</a>)</p>
 <hr>
-<h2>Testing</h2>
-<h3>Pact</h3>
+<h2 id="testing">Testing</h2>
+<h3 id="pact">Pact</h3>
 <p>Consumer-driven contract testing framework. Consumers write Pact tests that define the interactions they need from a producer; the Pact library generates a pact file (a JSON contract). The producer verifies against the pact file in its own test suite. Supports multiple languages. The de facto CDC tool for internal service-to-service API testing. (→ <a href="../concepts/api-testing.html">Api Testing</a>)</p>
-<h3>Pact Broker</h3>
+<h3 id="pact-broker">Pact Broker</h3>
 <p>Centralised store for pact files. Producers and consumers publish and fetch pact files via the Pact Broker API. Supports versioning, tagging (e.g., <code>production</code>), and can-i-deploy checks (verify no consumer will be broken by a proposed producer change). PactFlow is the managed SaaS version. (→ <a href="../concepts/api-testing.html">Api Testing</a>)</p>
-<h3>WireMock</h3>
+<h3 id="wiremock">WireMock</h3>
 <p>HTTP stub server. Records real API responses or hand-configures stub responses; replays them in tests. Used in integration and component testing to simulate downstream dependencies without running real services. Can be run as a Docker container in CI. (→ <a href="../concepts/api-testing.html">Api Testing</a>)</p>
-<h3>Testcontainers</h3>
+<h3 id="testcontainers">Testcontainers</h3>
 <p>Library for running Docker containers in JUnit (and other test framework) tests. Allows tests to start and stop real database, message broker, or service instances as part of the test lifecycle. Preferred over mock objects when real dependency behaviour matters — avoids mock/prod divergence. (→ <a href="../concepts/api-testing.html">Api Testing</a>)</p>
-<h3>Gatling / JMeter / Locust / K6</h3>
+<h3 id="gatling-jmeter-locust-k6">Gatling / JMeter / Locust / K6</h3>
 <p>Performance testing tools for load, stress, and soak testing:</p>
 <ul>
 <li><strong>Gatling</strong>: Scala/Kotlin DSL; high throughput simulation; good CI integration; HTML reports.</li>
@@ -365,59 +376,59 @@
 </ul>
 <p>All require production-like environments to produce meaningful results. Used in Q4 of the test quadrant. (→ <a href="../concepts/api-testing.html">Api Testing</a>)</p>
 <hr>
-<h2>Deployment and Release</h2>
-<h3>Argo Rollouts</h3>
+<h2 id="deployment-and-release">Deployment and Release</h2>
+<h3 id="argo-rollouts">Argo Rollouts</h3>
 <p>Kubernetes controller for progressive delivery. Implements canary deployments (traffic split by weight) and blue-green deployments natively as Kubernetes CRDs. Integrates with Prometheus, Datadog, and other metric providers for automated analysis — automatically roll back if SLIs degrade during a canary. Complements standard Kubernetes Deployment objects. (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
-<h3>LaunchDarkly</h3>
+<h3 id="launchdarkly">LaunchDarkly</h3>
 <p>Managed feature flag platform. SDK available in all major languages. Supports Boolean flags, multivariate flags, user targeting, and percentage rollouts. Audit trail for all flag changes. Used to decouple deployment from release. Risk: flag accumulation creates tech debt; flags should be cleaned up after migration is complete (Knight Capital warning). (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a>, <a href="../operations/manageability.html">Manageability</a>)</p>
-<h3>AWS AppConfig / Azure App Configuration</h3>
+<h3 id="aws-appconfig-azure-app-configuration">AWS AppConfig / Azure App Configuration</h3>
 <p>Managed dynamic configuration stores. Applications read configuration at runtime rather than only at deploy time, enabling config changes without redeployment. Supports versioning, validation, and gradual deployment of configuration changes. Foundational for feature flags and runtime behaviour control. (→ <a href="../operations/manageability.html">Manageability</a>)</p>
 <hr>
-<h2>Observability</h2>
-<h3>OpenTelemetry</h3>
+<h2 id="observability">Observability</h2>
+<h3 id="opentelemetry">OpenTelemetry</h3>
 <p>CNCF standard for telemetry instrumentation. Provides a unified API and SDK for emitting traces, metrics, and logs in a vendor-agnostic format. Replaces vendor-specific agents (Jaeger client, Zipkin client, etc.). Supported by all major observability backends (Datadog, Honeycomb, Grafana Tempo, Jaeger). The correct default choice for new instrumentation. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a>)</p>
-<h3>Prometheus</h3>
+<h3 id="prometheus">Prometheus</h3>
 <p>Open-source metrics collection and storage system. Pull-based: Prometheus scrapes metrics endpoints at a configured interval. PromQL for querying. Pairs with Grafana for dashboards. Standard for Kubernetes metrics. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a>)</p>
-<h3>Grafana</h3>
+<h3 id="grafana">Grafana</h3>
 <p>Visualisation and dashboarding platform. Multi-datasource: connects to Prometheus, Loki, Tempo, Elasticsearch, and others. Standard for operational dashboards. Grafana Labs also offers managed cloud services for the full LGTM stack (Loki, Grafana, Tempo, Mimir). (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a>)</p>
-<h3>Jaeger / Zipkin</h3>
+<h3 id="jaeger-zipkin">Jaeger / Zipkin</h3>
 <p>Distributed tracing backends. Receive spans from instrumented services, store them, and provide a UI for trace search and flame graphs. Both are CNCF projects. OpenTelemetry can export to both; Jaeger is the more actively developed of the two. Grafana Tempo is an increasingly popular alternative. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a>, <a href="../operations/observability.html">Observability</a>)</p>
-<h3>AWS X-Ray</h3>
+<h3 id="aws-x-ray">AWS X-Ray</h3>
 <p>AWS-native distributed tracing service. Instruments requests as they flow through Lambda, EC2, ECS, and other AWS services. Generates a service map from collected traces. Integrates natively with other AWS services without requiring a separate collector deployment. (→ <a href="../operations/observability.html">Observability</a>)</p>
-<h3>ELK Stack</h3>
+<h3 id="elk-stack">ELK Stack</h3>
 <p>Elasticsearch + Logstash + Kibana. The dominant open-source log aggregation stack. Logstash (or Beats agents) ship logs to Elasticsearch for indexing; Kibana provides search and visualisation. High-dimensionality data store suited to event logs. High operational cost at scale; OpenSearch is a community fork. (→ <a href="../operations/observability.html">Observability</a>)</p>
-<h3>AWS CloudWatch</h3>
+<h3 id="aws-cloudwatch">AWS CloudWatch</h3>
 <p>AWS-native monitoring and observability service. Collects metrics (pre-aggregated at ingestion time), logs (CloudWatch Logs), and supports log-based metrics (deriving a time series from event log counts). Also supports dashboards and alarms. Default telemetry sink for most AWS services. (→ <a href="../operations/monitoring.html">Monitoring</a>)</p>
-<h3>Datadog</h3>
+<h3 id="datadog">Datadog</h3>
 <p>SaaS monitoring and observability platform combining metrics, logs, distributed traces, and APM in a single product. Agent-based collection; supports OpenTelemetry ingestion as an alternative to vendor agents. Integrates with Argo Rollouts for automated canary metric evaluation. Popular enterprise choice for production observability across cloud workloads. (→ <a href="../operations/monitoring.html">Monitoring</a>, <a href="../operations/observability.html">Observability</a>)</p>
 <hr>
-<h2>Async API Standards</h2>
-<h3>AsyncAPI</h3>
+<h2 id="async-api-standards">Async API Standards</h2>
+<h3 id="asyncapi">AsyncAPI</h3>
 <p>Open specification for describing asynchronous APIs — event-driven, message-based, and streaming interfaces. Fills the same role for async APIs that OpenAPI fills for REST: defines channels, messages, bindings, and schemas in a machine-readable format that enables documentation, code generation, and validation. Supports a broad range of brokers and transports (Kafka, AMQP, MQTT, WebSockets, STOMP). An evolving standard — the primary candidate for standardising the documentation and governance of event-driven architectures. (→ <a href="../concepts/api-design.html">Api Design</a>, <a href="../streams/stream-processing.html">Stream Processing</a>)</p>
 <hr>
-<h2>Databases and Data Stores</h2>
-<h3>Redis / Redis Cluster</h3>
+<h2 id="databases-and-data-stores">Databases and Data Stores</h2>
+<h3 id="redis-redis-cluster">Redis / Redis Cluster</h3>
 <p>In-memory key-value store with optional persistence. <strong>Single-threaded event loop</strong> — all operations are serialised by one thread, avoiding locking overhead; throughput is limited to one CPU core per instance.</p>
 <p><strong>Persistence options</strong>: AOF (Append-Only File — logs every write operation; configurable fsync policy) and RDB snapshots (point-in-time dumps). Trade-off: AOF = durability, RDB = fast recovery.</p>
 <p><strong>Redis Cluster</strong>: horizontal sharding across multiple nodes. 16,384 hash slots divided across nodes. <strong>Gossip protocol</strong> for cluster state propagation. <strong>MOVED redirect</strong> — client queries wrong node → receives MOVED response with correct node address → client caches slot map. <strong>Hash tags</strong> (<code>{tag}</code> in key name) force multiple keys to the same hash slot — prerequisite for multi-key atomic operations. Maximum cluster size: 1,000 nodes. Replication is asynchronous by default; <code>WAIT</code> command forces synchronous replication to N replicas on demand. Custom election protocol can accept data loss for availability — Redis prioritises read/write availability during partitions.</p>
 <p>Redis MULTI/EXEC provides atomic batching but is <strong>not ACID</strong> — no isolation during command queuing, no rollback on command failure. (→ <a href="../distributed/consistency-models.html">Consistency Models</a>, <a href="../distributed/replication.html">Replication</a>)</p>
-<h3>MongoDB</h3>
+<h3 id="mongodb">MongoDB</h3>
 <p>Document database with BSON/JSON data model and schema-on-read (no enforced schema). Uses WiredTiger storage engine: document-level locking with OCC, write-ahead journaling, and transparent compression.</p>
 <p><strong>ACID transactions</strong>: available since v4.0 for multi-document operations using 2PC + snapshot isolation. Significant overhead vs single-document operations — intended as an escape hatch, not the primary access pattern.</p>
 <p><strong>Sharding</strong>: hash-based (uniform distribution) or range-based (range queries). Unit of movement is a 64MB <strong>chunk</strong>. <strong>Mongos</strong> (query router) routes client requests. <strong>Config servers</strong> (3-node Raft replica set) store cluster metadata. A <strong>balancer</strong> process migrates chunks to achieve even distribution.</p>
 <p><strong>Replication</strong>: Raft-based replica sets. Tunable write concerns (<code>w:1</code>, <code>w:majority</code>, <code>w:N</code>) and read preferences (<code>primary</code>, <code>primaryPreferred</code>, <code>secondary</code>, <code>nearest</code>). Causal consistency sessions support read-your-own-writes. Linearizable reads available via <code>readConcern: linearizable</code> at high latency cost. (→ <a href="../databases/transactions.html">Transactions</a>, <a href="../distributed/replication.html">Replication</a>)</p>
-<h3>Amazon DynamoDB</h3>
+<h3 id="amazon-dynamodb">Amazon DynamoDB</h3>
 <p>AWS-managed NoSQL key-value and document database. Two billing modes: <strong>on-demand</strong> (pay per request) and <strong>provisioned</strong> (pre-allocated RCU/WCU, up to 3,000 RCU / 1,000 WCU per partition).</p>
 <p><strong>Hotkey problem</strong>: each partition enforces a hard cap — popular keys can saturate their partition. Mitigation: random suffix on partition key (write sharding), or <strong>DAX</strong> (DynamoDB Accelerator, in-memory read cache with microsecond latency).</p>
 <p><strong>Global tables</strong>: multi-region active-active replication; last-writer-wins conflict resolution; 99.999% SLA. <strong>ACID transactions</strong> are scoped to a single region — do not span regions. 400KB item size limit.</p>
 <p><strong>Secondary indexes</strong>: <strong>LSI</strong> (Local Secondary Index, must be defined at table creation; shares partition key) and <strong>GSI</strong> (Global Secondary Index, can be added later; separate partition key). <strong>PartiQL</strong> for SQL-compatible queries. (→ <a href="../databases/data-models.html">Data Models</a>, <a href="../distributed/partitioning.html">Partitioning</a>)</p>
-<h3>Apache Cassandra</h3>
+<h3 id="apache-cassandra">Apache Cassandra</h3>
 <p>Wide-column distributed NoSQL database optimised for write-heavy, high-availability workloads. Uses consistent hashing for data distribution across a peer-to-peer ring — no single leader, any node can serve any request. Tunable consistency: N replicas, W write quorum, R read quorum; <code>R + W &gt; N</code> yields strong consistency. Designed to survive node and data-centre failures; multi-region active-active replication is native. Eventually consistent by default; not suited to workloads requiring cross-partition ACID transactions. (→ <a href="../distributed/replication.html">Replication</a>, <a href="../distributed/partitioning.html">Partitioning</a>, <a href="../distributed/consistency-models.html">Consistency Models</a>)</p>
-<h3>Google Spanner</h3>
+<h3 id="google-spanner">Google Spanner</h3>
 <p>Google&#39;s globally-distributed relational database providing external consistency — a form of linearizability — across geographic regions. Uses TrueTime, a GPS/atomic-clock API that bounds clock uncertainty, to assign globally ordered commit timestamps without coordination-round-trips. Supports ACID transactions and SQL across shards and regions. Cited as evidence that the CAP theorem&#39;s forced tradeoff is not inevitable when clock uncertainty is bounded. (→ <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>, <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>)</p>
-<h3>CockroachDB</h3>
+<h3 id="cockroachdb">CockroachDB</h3>
 <p>Open-source distributed SQL database inspired by Google Spanner. Uses Raft for per-range replication and multi-version concurrency control (MVCC) for serialisable isolation. Wire-compatible with the PostgreSQL protocol, reducing migration friction. Designed for geo-distribution and survivability; provides linearisable transactions without requiring specialised hardware. (→ <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>)</p>
-<h3>Flyway / Liquibase</h3>
+<h3 id="flyway-liquibase">Flyway / Liquibase</h3>
 <p>Database schema migration tools that version-control schema changes and apply them in order:</p>
 <ul>
 <li><strong>Flyway</strong>: SQL-first; migrations are versioned SQL files (e.g., <code>V2__add_column.sql</code>); schema history tracked in a metadata table. Simple and widely adopted.</li>
@@ -425,8 +436,8 @@
 </ul>
 <p>Both implement the expand/contract migration pattern for zero-downtime schema changes: the expansion migration adds new structures while keeping old ones; the contraction migration removes deprecated structures after all consumers have migrated. (→ <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>, <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
 <hr>
-<h2>API Design</h2>
-<h3>OpenAPI / Swagger</h3>
+<h2 id="api-design">API Design</h2>
+<h3 id="openapi-swagger">OpenAPI / Swagger</h3>
 <p>OpenAPI Specification (OAS) is the standard format for describing REST APIs (JSON/YAML). Swagger is the original tool ecosystem around OAS (SwaggerUI, SwaggerEditor, code generators). Core tooling:</p>
 <ul>
 <li><strong>Swagger UI / Redoc</strong>: render OAS as interactive documentation</li>
@@ -434,50 +445,50 @@
 <li><strong>openapi-diff</strong>: compare two OAS files and classify changes as breaking or backward-compatible; used in CI to prevent accidental breaking changes
 (→ <a href="../concepts/api-design.html">Api Design</a>)</li>
 </ul>
-<h3>grpc-gateway</h3>
+<h3 id="grpc-gateway">grpc-gateway</h3>
 <p>Reverse-proxy plugin for gRPC services that automatically generates a RESTful HTTP API from a gRPC <code>.proto</code> definition. Allows a single service to be exposed as both gRPC (for internal high-performance consumers) and REST (for external consumers). Annotation-based: REST routes are defined in the <code>.proto</code> file using Google API annotations. (→ <a href="../concepts/api-design.html">Api Design</a>)</p>
 <hr>
-<h2>Code Quality and Governance</h2>
-<h3>GitHub Scientist</h3>
+<h2 id="code-quality-and-governance">Code Quality and Governance</h2>
+<h3 id="github-scientist">GitHub Scientist</h3>
 <p>Ruby framework for holistic, continual fitness function–driven refactoring. Wraps old and new code paths in a <code>science</code> block: the old path (control) always determines the return value; the new path (candidate) runs at a configurable percentage of requests, with its result compared out-of-band and divergences logged. Randomises execution order to prevent order-dependent false positives. Used by GitHub to safely replace their shell-script Git merge implementation with libgit2 — running 1% of production merges through the new path for 4 days until zero divergences were observed for 24 hours. The pattern generalises to any language. (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>)</p>
-<h3>ArchUnit</h3>
+<h3 id="archunit">ArchUnit</h3>
 <p>Java library for writing unit tests against the architecture. Verifies layer rules, package dependencies, annotation usage, and naming conventions as JUnit tests. Runs in CI; fails the build on violation. Example: enforce that classes in <code>web</code> package do not import from <code>persistence</code>. (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>)</p>
-<h3>JDepend</h3>
+<h3 id="jdepend">JDepend</h3>
 <p>Java tool for measuring package-level dependency quality. Detects cyclic dependencies between packages. Lower abstraction, higher instability packages are architectural risk. Older tool; largely superseded by ArchUnit for rule enforcement but still useful for metrics. (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>)</p>
-<h3>SonarQube</h3>
+<h3 id="sonarqube">SonarQube</h3>
 <p>Code quality and security scanning platform. Tracks code smells, bugs, vulnerabilities, coverage, and duplication across codebases. Quality gates can block merges or deployments when thresholds are breached. Supports most major languages. (→ <a href="../concepts/fitness-functions.html">Fitness Functions</a>)</p>
-<h3>Context Mapper</h3>
+<h3 id="context-mapper">Context Mapper</h3>
 <p>Open-source DSL and tooling for Domain-Driven Design modelling. Bounded contexts, context maps, and integration patterns (Partnership, ACL, OHS, Conformist, Shared Kernel, Separate Ways) are defined in a structured <code>.cml</code> file that can be version-controlled alongside code. Generates PlantUML context map diagrams, service contracts, and Microservices DSL output from the same model. The recommended tool for maintaining a living context map. (→ <a href="../patterns/context-map.html">Context Map</a>, <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>)</p>
 <hr>
-<h2>Message Brokers and Streaming</h2>
-<h3>Apache Kafka</h3>
+<h2 id="message-brokers-and-streaming">Message Brokers and Streaming</h2>
+<h3 id="apache-kafka">Apache Kafka</h3>
 <p>Distributed log-based event streaming platform. Messages are organised into topics, partitioned for parallelism, and retained for a configurable duration — enabling consumer replay. Consumers track their own offset within a partition, decoupling producer and consumer throughput. Provides at-least-once delivery by default; exactly-once processing is achievable with idempotent producers and transactional APIs. The dominant platform for event-driven microservices and stream processing pipelines. (→ <a href="../streams/stream-processing.html">Stream Processing</a>, <a href="../concepts/messaging.html">Messaging</a>)</p>
-<h3>Kafka Streams</h3>
+<h3 id="kafka-streams">Kafka Streams</h3>
 <p>Client library for building stateful stream processing applications on top of Kafka. Processing topology is defined as a DAG of source, processor, and sink nodes. State stores (backed by RocksDB, changelog-replicated to Kafka for fault tolerance) enable stateful joins and aggregations. Runs inside the application process — no separate cluster required. Well-suited to stream processing that is tightly coupled to a single Kafka deployment. (→ <a href="../streams/stream-processing.html">Stream Processing</a>, <a href="../patterns/context-map.html">Context Map</a>)</p>
-<h3>Apache Flink</h3>
+<h3 id="apache-flink">Apache Flink</h3>
 <p>Distributed stateful stream processing framework for bounded (batch) and unbounded (streaming) data. Provides exactly-once processing via distributed snapshots using the Chandy–Lamport algorithm. Better suited than Kafka Streams for complex multi-source joins, event-time windowing at scale, and workloads that span multiple data sources. Widely used for data pipeline and CEP (complex event processing) workloads. (→ <a href="../streams/stream-processing.html">Stream Processing</a>)</p>
-<h3>Apache Spark</h3>
+<h3 id="apache-spark">Apache Spark</h3>
 <p>Distributed computing framework for large-scale batch processing. Builds a DAG of transformations applied lazily to resilient distributed datasets (RDDs) or DataFrames; in-memory execution avoids the repeated disk I/O of MapReduce. Also supports stream processing via Structured Streaming. The dominant batch processing framework for data engineering workloads. (→ <a href="../streams/batch-processing.html">Batch Processing</a>)</p>
-<h3>RabbitMQ</h3>
+<h3 id="rabbitmq">RabbitMQ</h3>
 <p>Open-source message broker implementing AMQP (Advanced Message Queuing Protocol). Routes messages via exchanges (direct, fanout, topic, headers) to queues, supporting point-to-point, publish/subscribe, and content-based routing patterns. Supports consumer acknowledgements, message persistence, dead-letter exchanges, and quorum queues (Raft-based replication for durability). A traditional MOM: messages are consumed and deleted, unlike Kafka&#39;s log-based retention model. (→ <a href="../concepts/messaging.html">Messaging</a>)</p>
-<h3>Debezium</h3>
+<h3 id="debezium">Debezium</h3>
 <p>Open-source change data capture (CDC) platform. Reads the database transaction log directly (binlog for MySQL, WAL for PostgreSQL, redo log for Oracle) and emits each row-level change as an event to Kafka. Enables data liberation: downstream consumers receive a real-time stream of changes without polling the database. The primary CDC mechanism for implementing the outbox pattern and for publishing data products in a data mesh. (→ <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>, <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>, <a href="../concepts/data-mesh.html">Data Mesh</a>)</p>
-<h3>Confluent Schema Registry</h3>
+<h3 id="confluent-schema-registry">Confluent Schema Registry</h3>
 <p>Central schema management service for Kafka event streams. Producers register Avro, Protobuf, or JSON Schema definitions before publishing; schemas are stored by subject (topic name) and version. Consumers fetch the schema at read time using a schema ID embedded in the message header. Enforces compatibility rules (backward, forward, full) on registration, preventing incompatible schema evolution from reaching consumers. The canonical governance mechanism for event contract management in Kafka ecosystems. (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>, <a href="../concepts/contracts.html">Contracts</a>)</p>
 <hr>
-<h2>Infrastructure and Orchestration</h2>
-<h3>Docker</h3>
+<h2 id="infrastructure-and-orchestration">Infrastructure and Orchestration</h2>
+<h3 id="docker">Docker</h3>
 <p>Container runtime and image format. Packages an application with its dependencies into an immutable, layered image that runs in an isolated process namespace on the host kernel. Provides environment reproducibility and is the standard packaging unit for cloud-native deployments. The Dockerfile is the build specification; images are content-addressed and stored in registries. (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
-<h3>Kubernetes</h3>
+<h3 id="kubernetes">Kubernetes</h3>
 <p>Container orchestration platform. Schedules containerised workloads across a cluster of nodes; manages service discovery, load balancing, rolling deployments, autoscaling, and storage. The control plane (API server, scheduler, controller manager, etcd) is separated from the data plane (kubelet, kube-proxy on worker nodes). The de facto infrastructure platform for microservices and cloud-native architectures. (→ <a href="../styles/microservices-architecture.html">Microservices Architecture</a>, <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>)</p>
-<h3>Terraform / Pulumi</h3>
+<h3 id="terraform-pulumi">Terraform / Pulumi</h3>
 <p>Infrastructure-as-code tools for declaring and provisioning cloud and on-premises resources:</p>
 <ul>
 <li><strong>Terraform</strong> (HashiCorp): declarative HCL-based DSL; plan/apply lifecycle with a drift-detection plan step before any change is applied; state stored in a backend (S3, Terraform Cloud, etc.); broad provider ecosystem across all major clouds.</li>
 <li><strong>Pulumi</strong>: uses general-purpose programming languages (TypeScript, Python, Go, C#) for infrastructure definition, enabling loops, abstractions, and testing; same declarative semantics under the hood.</li>
 </ul>
 <p>Both enable infrastructure changes to be reviewed, version-controlled, and promoted through the same pipeline as application code. (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
-<h3>Chef / Puppet / Ansible</h3>
+<h3 id="chef-puppet-ansible">Chef / Puppet / Ansible</h3>
 <p>Mutable configuration management tools for applying and maintaining server state:</p>
 <ul>
 <li><strong>Chef</strong>: Ruby DSL; recipes and cookbooks applied by a chef-client agent; client/server architecture.</li>
@@ -485,21 +496,21 @@
 <li><strong>Ansible</strong>: YAML playbooks; agentless (SSH-based); procedural execution order.</li>
 </ul>
 <p>All three produce mutable infrastructure — machines are patched in place, accumulating configuration history that is difficult to reproduce. This limitation motivates the immutable infrastructure approach (containers + IaC), where machines are replaced rather than modified. (→ <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>)</p>
-<h3>AWS Lambda</h3>
+<h3 id="aws-lambda">AWS Lambda</h3>
 <p>AWS&#39;s serverless compute service. Functions are deployed as code packages and invoked by events (API Gateway, SQS, SNS, S3, DynamoDB Streams, etc.); AWS manages all provisioning and scaling. Instances are frozen after execution and thawed on reuse; cold starts occur when no warm instance is available. Provisioned concurrency pre-warms instances at additional cost. Reserved concurrency caps the maximum simultaneous executions, protecting downstream dependencies from overload. (→ <a href="../distributed/serverless.html">Serverless</a>)</p>
 <hr>
-<h2>Coordination Services</h2>
-<h3>Apache ZooKeeper</h3>
+<h2 id="coordination-services">Coordination Services</h2>
+<h3 id="apache-zookeeper">Apache ZooKeeper</h3>
 <p>Distributed coordination service providing distributed locks, leader election, configuration distribution, and group membership via a hierarchical namespace of znodes. Implements Zab (ZooKeeper Atomic Broadcast) — a Paxos variant — for consensus. Widely used as the coordination backbone for distributed systems: Kafka used ZooKeeper for its controller until the KRaft protocol replaced it. Largely superseded by etcd in Kubernetes-native ecosystems. (→ <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>, <a href="../distributed/leader-election.html">Leader Election</a>)</p>
-<h3>etcd</h3>
+<h3 id="etcd">etcd</h3>
 <p>Strongly consistent, distributed key-value store implementing the Raft consensus algorithm. The backing store for Kubernetes cluster state (all API objects and configuration). Also used as a service registry, distributed lock provider, and feature flag store. Provides linearisable reads by default; supports range queries over keys. Written in Go; part of the CNCF ecosystem. (→ <a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a>, <a href="../distributed/leader-election.html">Leader Election</a>)</p>
 <hr>
-<h2>Serialization Formats</h2>
-<h3>Protocol Buffers (Protobuf)</h3>
+<h2 id="serialization-formats">Serialization Formats</h2>
+<h3 id="protocol-buffers-protobuf">Protocol Buffers (Protobuf)</h3>
 <p>Google&#39;s binary serialization format and interface definition language. Schemas are defined in <code>.proto</code> files; code is generated for multiple languages. More compact and faster to parse than JSON or XML. Requires the schema to decode (not self-describing). gRPC uses Protobuf as its default wire format. Forward and backward compatibility is maintained via field numbers — adding new fields with new numbers is safe; never reuse or remove field numbers. (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>, <a href="../concepts/contracts.html">Contracts</a>)</p>
-<h3>Apache Avro</h3>
+<h3 id="apache-avro">Apache Avro</h3>
 <p>Binary serialization format with first-class schema evolution support. Unlike Protobuf, Avro encodes no field tags in the binary data — the writer&#39;s schema (or its ID in a schema registry) must accompany the data to enable decoding, making schema management explicit. Schemas are defined in JSON. The preferred serialization format for Kafka event streams because of native Confluent Schema Registry integration and compact binary encoding. (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>, <a href="../concepts/contracts.html">Contracts</a>)</p>
-<h3>Apache Thrift</h3>
+<h3 id="apache-thrift">Apache Thrift</h3>
 <p>Facebook&#39;s binary serialization format and RPC framework. Similar to Protobuf: a Thrift IDL (<code>.thrift</code> files) generates code for multiple languages; field-number-based binary encoding enables forward/backward compatibility. Includes an RPC transport layer (unlike the core Protobuf library). Predates gRPC; less commonly chosen for new systems but still widely deployed in older distributed architectures. (→ <a href="../databases/encoding-and-evolution.html">Encoding And Evolution</a>)</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>

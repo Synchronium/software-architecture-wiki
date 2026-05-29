@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,16 +309,30 @@
       <h1>API Design</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/api.html">api</a></li><li><a class="tag-chip" href="../tags/rest.html">rest</a></li><li><a class="tag-chip" href="../tags/grpc.html">grpc</a></li><li><a class="tag-chip" href="../tags/graphql.html">graphql</a></li><li><a class="tag-chip" href="../tags/oas.html">oas</a></li><li><a class="tag-chip" href="../tags/versioning.html">versioning</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#the-core-exchange-format-decision">The Core Exchange Format Decision</a></li><li><a href="#rest">REST</a></li><li class="toc-sub"><a href="#url-resource-modeling">URL Resource Modeling</a></li><li class="toc-sub"><a href="#http-methods-safe-and-idempotent">HTTP Methods: Safe and Idempotent</a></li><li class="toc-sub"><a href="#status-codes">Status Codes</a></li><li class="toc-sub"><a href="#content-negotiation">Content Negotiation</a></li><li class="toc-sub"><a href="#practical-rest-design-guidelines">Practical REST Design Guidelines</a></li><li><a href="#non-breaking-vs-breaking-changes-nygard">Non-Breaking vs Breaking Changes (Nygard)</a></li><li><a href="#openapi-specification-oas">OpenAPI Specification (OAS)</a></li><li><a href="#grpc">gRPC</a></li><li class="toc-sub"><a href="#combining-rest-and-grpc-specifications">Combining REST and gRPC Specifications</a></li><li><a href="#graphql">GraphQL</a></li><li><a href="#api-first-design">API-First Design</a></li><li><a href="#serving-state-from-event-driven-microservices">Serving State from Event-Driven Microservices</a></li><li class="toc-sub"><a href="#internal-state-stores">Internal state stores</a></li><li class="toc-sub"><a href="#external-state-stores">External state stores</a></li><li class="toc-sub"><a href="#event-first-request-handling">Event-first request handling</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>The exchange format decision is architectural.</strong> REST for north-south (external, broad interoperability), gRPC for east-west (internal, controlled, polyglot), GraphQL for client-driven aggregation. Default to those mappings; override only with explicit ADR justification.</li>
+<li><strong>The implementation is the de facto spec.</strong> Once a service is live, its actual behaviour — including undocumented edge cases and bugs — is the real contract. Postel&#39;s Robustness Principle leaves no choice: keep accepting what you previously accepted.</li>
+<li><strong>Non-breaking changes are well-defined.</strong> Require a subset of previously required inputs, accept a superset, return a superset. Anything else is breaking and requires a major version bump.</li>
+<li><strong>API-first beats implementation-first.</strong> Design and agree the OAS contract before implementing either producer or consumer. Consumer teams use generated mocks; producer teams implement against the spec. Feedback at the contract stage is orders of magnitude cheaper than at implementation.</li>
+<li><strong>Never return bare arrays.</strong> Wrap collection responses in an object (<code>{ &quot;value&quot;: [...], &quot;@nextLink&quot;: &quot;...&quot; }</code>) from day one so pagination, metadata, and cursors can be added later without breaking consumers.</li>
+<li><strong>Combining REST and gRPC specs from one source is a trap.</strong> Auto-generating <code>.proto</code> from OAS assigns field numbers alphabetically — adding a new field reorders existing numbers and breaks binary compatibility. Design the two APIs independently and accept the duplication.</li>
+<li><strong>Status codes are the contract too.</strong> 401 ≠ 403; 4xx ≠ 5xx; never wrap an error inside a 200. Wrong status codes cause clients to retry the unretryable and not retry the retryable.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>API design is the process of defining the contract between a producer (service) and its consumers: the resources exposed, the operations available, the data formats used, the versioning strategy, and the error model. Getting the contract right matters disproportionately because APIs are harder to change than implementations — consumers build against the contract, and breaking it forces coordinated migration.</p>
-<h2>The Core Exchange Format Decision</h2>
+<h2 id="the-core-exchange-format-decision">The Core Exchange Format Decision</h2>
 <p>The most consequential API design decision is which exchange format to use. The book recommends a simple rule based on traffic type (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 1):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -338,9 +359,9 @@
 </tr>
 </tbody></table></div>
 <p>This is not a hard rule — it is a default that should be overridden only with explicit justification in an ADR (<a href="../concepts/adrs.html">Adrs</a>).</p>
-<h2>REST</h2>
+<h2 id="rest">REST</h2>
 <p>REST (Representational State Transfer) is an architectural style, not a protocol. Its constraints: stateless interactions, uniform interface, cacheable responses, layered system. The <strong>stateless</strong> constraint means every request must carry all context needed to process it — no session state is stored server-side between requests. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
-<h3>URL Resource Modeling</h3>
+<h3 id="url-resource-modeling">URL Resource Modeling</h3>
 <p>REST resources map to URL paths. The hierarchy should reflect the domain model:</p>
 <ul>
 <li><code>/products</code> — collection of products</li>
@@ -348,7 +369,7 @@
 <li><code>/products/42/reviews</code> — reviews belonging to a product</li>
 </ul>
 <p>Nesting is a balancing act: deep nesting makes URLs reflect relationships clearly but can make them brittle when relationships change. Keep nesting to 2–3 levels maximum. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
-<h3>HTTP Methods: Safe and Idempotent</h3>
+<h3 id="http-methods-safe-and-idempotent">HTTP Methods: Safe and Idempotent</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -397,7 +418,7 @@
 </tbody></table></div>
 <p><strong>Safe</strong>: does not modify server state. Safe implies idempotent, but not vice versa.
 <strong>Idempotent</strong>: applying multiple times has the same effect as applying once. <code>PUT /products/42</code> with the same body is idempotent; <code>POST /products</code> to create a product is not. For non-idempotent POST operations, use idempotency keys (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
-<h3>Status Codes</h3>
+<h3 id="status-codes">Status Codes</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -428,7 +449,7 @@
 </tr>
 </tbody></table></div>
 <p>Key distinction: <strong>401</strong> means the request is unauthenticated (send credentials); <strong>403</strong> means the request is authenticated but the principal lacks permission. Using these correctly reduces client-side debugging friction. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5)</p>
-<h3>Content Negotiation</h3>
+<h3 id="content-negotiation">Content Negotiation</h3>
 <p>Clients advertise accepted formats via <code>Accept</code> header; servers declare the actual format via <code>Content-Type</code>. This allows a single endpoint to serve JSON, XML, or other formats to different clients without URL changes.</p>
 <p><strong>Richardson Maturity Model (RMM)</strong> describes levels of REST adoption:</p>
 <div class="table-wrapper"><table>
@@ -461,7 +482,7 @@
 </tr>
 </tbody></table></div>
 <p>Level 2 is the practical target. Level 3 (HATEOAS) adds discoverability but significant complexity; the book does not recommend it for most APIs.</p>
-<h3>Practical REST Design Guidelines</h3>
+<h3 id="practical-rest-design-guidelines">Practical REST Design Guidelines</h3>
 <p><strong>Adopt an API standard early.</strong> REST is loose; a standard (e.g., Microsoft REST API Guidelines) provides rulings on pagination, filtering, naming, and errors before you build. Retrofitting consistency after multiple APIs are live is much more expensive.</p>
 <p><strong>Pagination</strong>: never return bare arrays for collection endpoints. A bare array (<code>[...]</code>) cannot be extended without a breaking change. Wrap in an object from the start:</p>
 <pre><code class="language-json">{ &quot;value&quot;: [...], &quot;@nextLink&quot;: &quot;{opaqueUrl}&quot; }
@@ -479,7 +500,7 @@
 <p><strong>Detecting breaking changes</strong>: run <code>openapi-diff</code> in CI; fail the build if the new OAS is not backward-compatible with the previous version. Prevents accidental breaking changes from reaching production without a conscious version bump.</p>
 <p><strong>Chatty API antipattern (Gorton):</strong> Exposing fine-grained getter/setter-style operations as HTTP APIs causes multiple round trips for a single logical operation, each incurring network latency. Use coarse-grained resources — <code>GET</code> the whole resource, <code>PUT</code> the updated resource. Use <code>PATCH</code> only for partial modifications of specific fields, not as a workaround for fine-grained exposure. In practice: design resources around client use cases, not server data models (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5).</p>
 <p><strong>Payload compression:</strong> HTTP <code>Accept-Encoding</code>/<code>Content-Encoding</code> headers enable gzip compression of request and response bodies. Compression can reduce bandwidth and latency by 50%+. The trade-off: CPU cycles for compression/decompression, typically small relative to the savings in transit time for large payloads (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 5).</p>
-<h2>Non-Breaking vs Breaking Changes (Nygard)</h2>
+<h2 id="non-breaking-vs-breaking-changes-nygard">Non-Breaking vs Breaking Changes (Nygard)</h2>
 <p>Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 14) frames API compatibility as a stack of layered agreements. A breaking change is any <em>unilateral</em> departure from a prior agreement. <strong>Postel&#39;s Robustness Principle</strong> — &quot;be conservative in what you do, be liberal in what you accept&quot; — defines the safe direction of change:</p>
 <p><strong>Always safe (non-breaking)</strong>:</p>
 <ul>
@@ -500,7 +521,7 @@
 <p><strong>Bump all routes together</strong>: when introducing a major version, bump all routes at the same time — even if only one changed. Forcing consumers to track which version number applies to which route fragment is an integration hazard.</p>
 <p><strong>Version translation in controllers</strong>: methods for the old API convert old objects to the current domain model on the way in and convert current objects back to the old format on the way out. Keeps business logic deduplicated; only the controller layer does translation.</p>
 <p><strong>Inbound + outbound contract testing</strong>: <em>inbound</em> tests exercise your own API against your understanding of the spec; <em>outbound</em> tests exercise your dependencies using <em>their</em> spec but <em>your</em> interpretation. Consumer-owned contract tests (written by the consuming team, not the implementing team) are more effective — the consumer discovers misunderstood edge cases the implementing team would miss. (→ <a href="../concepts/contracts.html">Contracts</a>)</p>
-<h2>OpenAPI Specification (OAS)</h2>
+<h2 id="openapi-specification-oas">OpenAPI Specification (OAS)</h2>
 <p>OAS (formerly Swagger) is a JSON/YAML format for describing REST APIs. It enables:</p>
 <ul>
 <li><strong>Code generation</strong>: generate client SDKs and server stubs from the spec.</li>
@@ -513,7 +534,7 @@
 <blockquote>
 <p><strong>Open question:</strong> How does OAS versioning integrate with the API lifecycle (planned → beta → live → deprecated → retired)? The book implies a 1:1 relationship between major version and lifecycle stage, but doesn&#39;t make this explicit.</p>
 </blockquote>
-<h2>gRPC</h2>
+<h2 id="grpc">gRPC</h2>
 <p>gRPC is a high-performance RPC framework using Protocol Buffers (.proto) as its interface definition language. Key properties:</p>
 <ul>
 <li><strong>Binary protocol over HTTP/2</strong>: lower overhead than JSON/HTTP/1.1; supports multiplexing and server push.</li>
@@ -523,7 +544,7 @@
 <li><strong>Bidirectional streaming</strong>: supports unary, server-streaming, client-streaming, and bidirectional RPC patterns.</li>
 </ul>
 <p>gRPC is appropriate for east–west traffic because: both producer and consumer are controlled, the schema rigidity is an asset (not a constraint), and the performance advantage matters at high call volumes. It is less appropriate for external APIs because: browser support requires grpc-web (a subset), and it is harder for third parties to adopt.</p>
-<h3>Combining REST and gRPC Specifications</h3>
+<h3 id="combining-rest-and-grpc-specifications">Combining REST and gRPC Specifications</h3>
 <p>A tempting approach is to generate <code>.proto</code> from an OAS (or vice versa) so a single service exposes both REST and gRPC from one source of truth. This is problematic:</p>
 <ul>
 <li>Generating <code>.proto</code> from OAS assigns field numbers alphabetically. Adding a new field that sorts before existing ones <strong>changes all subsequent field numbers</strong>, breaking binary compatibility for all existing clients.</li>
@@ -531,7 +552,7 @@
 <li>The two models have fundamentally different semantic contracts: REST exposes a resource model with loose coupling; gRPC exposes a method interface with tight coupling. Converting between them is semantically lossy.</li>
 </ul>
 <p>The recommended approach: <strong>design the REST API and the gRPC interface independently</strong>, allowing each to evolve on its own terms. Record the decision in an ADR. (→ <a href="../sources/mastering-api-architecture.html">Mastering Api Architecture</a> Ch 1)</p>
-<h2>GraphQL</h2>
+<h2 id="graphql">GraphQL</h2>
 <p>GraphQL is a query language for APIs where the client specifies exactly the data it needs. Key properties:</p>
 <ul>
 <li><strong>Client-driven queries</strong>: no over-fetching (fields not requested are not returned); no under-fetching (a single query can traverse multiple resources).</li>
@@ -539,19 +560,19 @@
 <li><strong>Single endpoint</strong>: all queries and mutations go to one endpoint (contrast with REST&#39;s resource-based routing).</li>
 </ul>
 <p>Best uses: mobile UIs (bandwidth-constrained; need exactly the right data), reporting/analytics (variable projections over the same data), and as a facade over multiple legacy services (hide backend complexity behind a clean query interface). Not recommended as a general-purpose API style — the caching story is weaker than REST, and schema governance requires discipline.</p>
-<h2>API-First Design</h2>
+<h2 id="api-first-design">API-First Design</h2>
 <p>API-first means designing and agreeing on the API contract (OAS document) before implementing either the producer or consumer. Benefits:</p>
 <ul>
 <li>Consumer and producer teams can work in parallel (consumer uses mocked server from OAS).</li>
 <li>Design feedback is cheaper at contract stage than at implementation stage.</li>
 <li>The contract becomes the source of truth for contract tests and gateway validation.</li>
 </ul>
-<h2>Serving State from Event-Driven Microservices</h2>
+<h2 id="serving-state-from-event-driven-microservices">Serving State from Event-Driven Microservices</h2>
 <p>Event-driven microservices often expose a request-response API alongside their event-processing logic (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 13).</p>
-<h3>Internal state stores</h3>
+<h3 id="internal-state-stores">Internal state stores</h3>
 <p>State is sharded by key across instances. The correct instance is found by applying the partitioner logic to the request key → partition ID → cross-reference consumer group partition assignments → target instance. A round-robin load balancer hits the right instance only <code>1/instanceCount</code> of the time; all other requests need a redirect.</p>
 <p>A <strong>smart load balancer</strong> pre-routes using partition assignments (derived from changelog or repartition streams), eliminating most redirects. Trade-off: the LB is coupled to the topology — renaming state stores or changing topology breaks routing. Deploy the smart LB as part of the microservice&#39;s deployable unit.</p>
-<h3>External state stores</h3>
+<h3 id="external-state-stores">External state stores</h3>
 <p>Any instance can serve the full domain (no partition sharding constraint). Instances can scale beyond partition count — extras don&#39;t process events but serve requests and act as failover standby. Two sub-patterns:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -572,12 +593,12 @@
 <td>Language independence; failure isolation; but coordinating schema changes across two executables is risky</td>
 </tr>
 </tbody></table></div>
-<h3>Event-first request handling</h3>
+<h3 id="event-first-request-handling">Event-first request handling</h3>
 <p>Instead of processing a request synchronously and writing to a database, convert the request to an event → publish to stream → let the event-driven pipeline process it → materialize to state.</p>
 <p><strong>Benefits</strong>: creates a durable, replayable record of every request; any service can consume the data independently.</p>
 <p><strong>Trade-offs</strong>: read-after-write is eventually consistent (the event must materialize before joins or queries against it can succeed). Mitigation: cache the just-written value in memory for immediate non-join use cases.</p>
 <p><strong>Async UI</strong>: when user input becomes an event, the UI must communicate the asynchronous nature of the operation — disable input, show a &quot;please wait&quot; state, and push the update when the event has been materialized. Duplicate events from retries must be handled idempotently (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../comparisons/api-protocol-selection.html">Api Protocol Selection</a> — decision guide: REST vs gRPC vs GraphQL by scenario; trade-off table; mixing protocols</li>
 <li><a href="../concepts/api-gateway.html">Api Gateway</a> — enforces contracts at the edge (input validation, rate limiting, auth)</li>

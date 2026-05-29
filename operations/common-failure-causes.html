@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,19 +309,33 @@
       <h1>Common Failure Causes</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A <strong>fault</strong> is a failure of an internal component or external dependency. A <strong>failure</strong> is when the system no longer provides a service meeting its specification. Some faults are tolerated with no user-visible impact; others lead to user-visible failures.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#hardware-faults">Hardware Faults</a></li><li><a href="#incorrect-error-handling">Incorrect Error Handling</a></li><li><a href="#configuration-changes">Configuration Changes</a></li><li><a href="#single-points-of-failure-spofs">Single Points of Failure (SPOFs)</a></li><li><a href="#network-faults">Network Faults</a></li><li><a href="#resource-leaks">Resource Leaks</a></li><li><a href="#load-pressure">Load Pressure</a></li><li><a href="#cascading-failures">Cascading Failures</a></li><li class="toc-sub"><a href="#resource-exhaustion-cascade-mechanisms">Resource Exhaustion Cascade Mechanisms</a></li><li class="toc-sub"><a href="#queue-management-under-overload">Queue Management Under Overload</a></li><li class="toc-sub"><a href="#load-shedding-and-graceful-degradation">Load Shedding and Graceful Degradation</a></li><li class="toc-sub"><a href="#deadline-propagation">Deadline Propagation</a></li><li class="toc-sub"><a href="#latency-caches-vs-capacity-caches">Latency Caches vs Capacity Caches</a></li><li class="toc-sub"><a href="#stack-communication-rules">Stack Communication Rules</a></li><li class="toc-sub"><a href="#testing-for-cascading-failures">Testing for Cascading Failures</a></li><li class="toc-sub"><a href="#immediate-mitigation">Immediate Mitigation</a></li><li><a href="#risk-management">Risk Management</a></li><li><a href="#building-for-tests-not-for-production">Building for Tests, Not for Production</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#the-airline-cascade-a-real-resource-exhaustion-incident">The Airline Cascade: A Real Resource-Exhaustion Incident</a></li><li><a href="#the-black-friday-cascade-unbalanced-capacities-in-production">The Black Friday Cascade: Unbalanced Capacities in Production</a></li><li><a href="#sources">Sources</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Error handling is the dominant cause of catastrophic failures.</strong> A 2014 study of distributed data stores found the majority of catastrophic outages came from incorrect error handling, not hardware faults. Error paths are written fast, reviewed lightly, almost never tested.</li>
+<li><strong>Configuration changes are the leading cause of production incidents.</strong> A code path that runs an unexpected branch hours after a flag is flipped — long after the change window closes — is the canonical failure shape.</li>
+<li><strong>Slow responses are worse than failures.</strong> A slow downstream ties up resources at both ends; a failed downstream releases them. Cascading failure follows a chain of slow responses propagating upstream as blocked threads exhaust pools.</li>
+<li><strong>Queue management matters under overload.</strong> LIFO and CoDel beat FIFO when requests have timed out at the caller — completing them wastes resources on results that will be discarded. Short queues + load shedding beat long queues + indefinite processing.</li>
+<li><strong>Risk = probability × impact, and probability includes detection delay.</strong> A 0.1% failure rate undetected for a week is a higher-risk event than a 5% failure detected immediately.</li>
+<li><strong>Building for tests is not building for production.</strong> QA environments use polite traffic (valid sessions, correct cookies, sensible URLs). Production sends bots, scrapers, 404 floods, retry storms, and partial requests. Safety devices must be present from day one, not added after incidents.</li>
+<li><strong>The Airline Cascade and Black Friday case studies make the patterns concrete.</strong> Both are blocked-thread cascades triggered by connection-pool exhaustion combined with missing timeouts. The lesson: bound every wait, isolate every pool.</li>
+</ul>
+<p>A <strong>fault</strong> is a failure of an internal component or external dependency. A <strong>failure</strong> is when the system no longer provides a service meeting its specification. Some faults are tolerated with no user-visible impact; others lead to user-visible failures.</p>
 <p>Understanding failure causes is a prerequisite for building fault-tolerant systems. The causes below are ordered roughly from the less surprising to the more counter-intuitive.</p>
-<h2>Hardware Faults</h2>
+<h2 id="hardware-faults">Hardware Faults</h2>
 <p>HDDs, SSDs, memory modules, NICs, power supplies, CPUs can all fail. Hardware faults can also cause silent data corruption. Entire data centres can fail due to power cuts or natural disasters.</p>
 <p>Counter-intuitively, hardware faults are not the dominant cause of failures in distributed applications. The more mundane causes below are responsible for the majority of incidents.</p>
-<h2>Incorrect Error Handling</h2>
+<h2 id="incorrect-error-handling">Incorrect Error Handling</h2>
 <p>A 2014 study of user-reported failures across five popular distributed data stores found that <strong>the majority of catastrophic failures resulted from incorrect handling of non-fatal errors</strong>. Most of these bugs could have been caught with simple tests:</p>
 <ul>
 <li>Error handlers that silently ignored errors.</li>
@@ -322,7 +343,7 @@
 <li>Partially implemented handlers containing <code>FIXME</code> or <code>TODO</code> comments.</li>
 </ul>
 <p>Error handling is typically an afterthought — developers write it quickly, test it rarely, and review it less carefully than business logic. Treating error paths as first-class code, with dedicated tests, is one of the highest-leverage reliability investments.</p>
-<h2>Configuration Changes</h2>
+<h2 id="configuration-changes">Configuration Changes</h2>
 <p>Configuration changes are one of the <strong>leading root causes of catastrophic failures</strong>. This includes both misconfigured values and valid configuration changes that enable rarely-used code paths which haven&#39;t been properly tested.</p>
 <p>What makes configuration particularly dangerous: <strong>delayed effects</strong>. If an application reads a configuration value only when a specific code path executes, an invalid value may take effect hours or days after the change — long after the change has been forgotten, making root cause analysis difficult.</p>
 <p>Configuration changes should be:</p>
@@ -332,7 +353,7 @@
 <li><strong>Released incrementally</strong> (canary configurations, not fleet-wide instant changes).</li>
 <li><strong>Validated eagerly</strong> — configuration should be read and validated at startup, not lazily at point of use.</li>
 </ul>
-<h2>Single Points of Failure (SPOFs)</h2>
+<h2 id="single-points-of-failure-spofs">Single Points of Failure (SPOFs)</h2>
 <p>A <strong>single point of failure</strong> is any component whose failure takes the entire system down. Systems commonly have multiple SPOFs that haven&#39;t been identified.</p>
 <p><strong>Humans are great SPOFs</strong>: manual operational procedures that require a sequence of steps executed in the right order, without errors, are fragile. Automation eliminates human SPOFs.</p>
 <p>Common infrastructure SPOFs:</p>
@@ -342,56 +363,56 @@
 <li><strong>Centralised databases or services</strong>: a single database, message broker, or config service with no redundancy.</li>
 </ul>
 <p>SPOFs should be identified at design time by examining each component and asking: &quot;what happens if this fails?&quot; Some can be eliminated by introducing redundancy; others can only have their blast radius reduced.</p>
-<h2>Network Faults</h2>
+<h2 id="network-faults">Network Faults</h2>
 <p>Network calls can fail in many ways: packet loss, congestion, routing changes, NIC failures. The dangerous case is not hard failure (which is detected quickly) but <strong>slow or partial failure</strong>.</p>
 <p><strong>Gray failures</strong>: a failure so subtle it can&#39;t be detected quickly or accurately. A server that is alive but very slow is almost as useless as one that is down — but its presence in the load balancer pool continues to receive traffic that times out. Gray failures are the silent killers of distributed systems; they can bring a system to its knees while being extremely hard to diagnose.</p>
 <p>Timeouts are the primary defence against gray failures, but timeout values are difficult to tune correctly (→ <a href="../distributed/failure-detection.html">Failure Detection</a>). Setting them too tight creates false positives; too loose means accepting long periods of unavailability.</p>
-<h2>Resource Leaks</h2>
+<h2 id="resource-leaks">Resource Leaks</h2>
 <p>A very slow process looks like a down process from the outside — neither can do useful work. Resource leaks are a common cause of progressive degradation.</p>
 <p><strong>Memory leaks</strong>: even garbage-collected languages leak — any reference to an unneeded object prevents collection. As memory depletes, the OS swaps pages to disk aggressively and the GC runs more frequently; CPU usage rises, response times increase, until memory exhaustion causes allocation failures.</p>
 <p><strong>Thread pool exhaustion</strong>: a thread making a synchronous blocking call without a timeout will never return to the pool. With a pool of fixed size, threads drain until none are left.</p>
 <p><strong>Socket pool exhaustion</strong>: HTTP clients typically reuse connections from a pool. A request made without a timeout holds a socket indefinitely. As the pool fills with stuck connections, new requests cannot be dispatched.</p>
 <p>Third-party libraries your code depends on are subject to the same leaks — their resource consumption is not isolated from yours.</p>
 <p>The watchdog pattern is a practical mitigation: a background thread monitors resource metrics (available memory, active thread count) and deliberately restarts the process when thresholds are breached, rather than waiting for a complete failure (→ <a href="../distributed/load-balancing.html">Load Balancing</a>).</p>
-<h2>Load Pressure</h2>
+<h2 id="load-pressure">Load Pressure</h2>
 <p>Every system has a capacity ceiling. Two types of load pressure:</p>
 <ul>
 <li><strong>Organic growth</strong>: gradual increase that gives autoscaling time to respond. Manageable.</li>
 <li><strong>Sudden surges</strong>: spikes from diurnal patterns, viral events, scrapers/bots, or DDoS attacks. Cannot always be absorbed by autoscaling alone — require <strong>load shedding</strong> (deliberately rejecting requests to protect the system from collapse).</li>
 </ul>
-<h2>Cascading Failures</h2>
+<h2 id="cascading-failures">Cascading Failures</h2>
 <p>A cascading failure occurs when a fault in one component increases the failure probability in other components, causing the fault to spread virally through a positive feedback loop.</p>
 <p><strong>Canonical example</strong>: two database replicas behind a load balancer, each handling 50 req/s. Replica B fails. The load balancer removes it, forcing Replica A to absorb 100 req/s. A becomes overloaded; clients begin timing out and retrying, adding more load. Eventually A fails, leaving no replicas in the pool.</p>
 <p>When B recovers and rejoins the pool, it receives all traffic, overloads, and fails again. The system enters a <strong>metastable failure</strong>: a self-reinforcing feedback loop that persists even after the original fault is gone. Breaking a metastable failure typically requires a large corrective action — such as temporarily blocking all traffic to allow replicas to recover — rather than just fixing the original fault. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a>)</p>
-<h3>Resource Exhaustion Cascade Mechanisms</h3>
+<h3 id="resource-exhaustion-cascade-mechanisms">Resource Exhaustion Cascade Mechanisms</h3>
 <p>Cascades compound through several interconnected pathways. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 22)</p>
 <p><strong>GC death spiral</strong>: CPU exhaustion → GC pauses lengthen → throughput falls → more requests accumulate → more RAM used → more frequent GC → further CPU exhaustion. In garbage-collected runtimes, memory pressure directly feeds back into CPU usage.</p>
 <p><strong>Service unavailability snowball</strong>: if 10% of servers fail, survivors must absorb ~11% more load. If this tips them over their limit, more failures cascade — and even routing back to 90% of original load may not stabilise the system once only 10% of capacity remains.</p>
 <p><strong>Overloaded servers take longer to respond</strong> → in-flight requests occupy resources for longer → effective capacity drops → more requests pile up → cache hit rate falls → more requests reach backends → backends become more overloaded.</p>
-<h3>Queue Management Under Overload</h3>
+<h3 id="queue-management-under-overload">Queue Management Under Overload</h3>
 <p>Short queues are better under sustained overload. Long queues accumulate requests that have already timed out at the caller — completing them wastes resources on results that will be discarded.</p>
 <p>Under overload, prefer <strong>LIFO</strong> or <strong>CoDel</strong> (Controlled Delay) queue disciplines over FIFO. FIFO is the worst choice: the head of the queue contains the requests that have been waiting longest and are most likely to have already expired. Processing them consumes resources that could serve fresher, still-viable requests.</p>
-<h3>Load Shedding and Graceful Degradation</h3>
+<h3 id="load-shedding-and-graceful-degradation">Load Shedding and Graceful Degradation</h3>
 <p><strong>Load shedding</strong>: when concurrently in-flight requests exceed a configured threshold (approximating server capacity), return HTTP 503 immediately rather than queueing. Immediate rejection preserves CPU for requests that can succeed. (→ <a href="../distributed/rate-limiting.html">Rate Limiting</a>)</p>
 <p><strong>Graceful degradation</strong>: instead of failing completely, return a reduced-quality response — omit non-critical features, serve stale data, or simplify the computation. Distinct from load shedding: load shedding drops requests; graceful degradation serves degraded results to more requests.</p>
-<h3>Deadline Propagation</h3>
+<h3 id="deadline-propagation">Deadline Propagation</h3>
 <p>The calling client sets a deadline representing the latest time a response is needed. At each RPC hop, the elapsed time is subtracted from the remaining deadline before the request is forwarded. A backend that receives a request with 2ms remaining should not attempt to process it — it will certainly miss the deadline and the result will be discarded, wasting resources.</p>
 <p><strong>Bimodal latency trap</strong>: if 5% of requests take 100 seconds and the deadline is also 100 seconds, those requests hold threads for the full duration. A thread pool of 100 threads can serve 1,900 fast requests and 5 slow ones — but under load, slow requests accumulate faster than they complete, and the pool exhausts. 5% of bad requests can cause 80%+ error rate.</p>
 <p><strong>Rule of thumb</strong>: deadlines should be within an order of magnitude of mean latency. Very long deadlines defeat the purpose of having them.</p>
-<h3>Latency Caches vs Capacity Caches</h3>
+<h3 id="latency-caches-vs-capacity-caches">Latency Caches vs Capacity Caches</h3>
 <ul>
 <li><strong>Latency cache</strong>: the system can sustain full load without the cache; the cache reduces latency and cost but is not required for feasibility.</li>
 <li><strong>Capacity cache</strong>: the system <em>cannot</em> serve its full load without the cache; the cache is a hard dependency.</li>
 </ul>
 <p>Capacity caches require special handling during cold-start scenarios (new cluster, maintenance return, rolling restarts): restart in stages rejecting traffic until the cache is sufficiently warm; gate rollout progress on cache fill percentage; avoid simultaneous restarts across replicas.</p>
-<h3>Stack Communication Rules</h3>
+<h3 id="stack-communication-rules">Stack Communication Rules</h3>
 <p><strong>&quot;Always go downward in the stack&quot;</strong>: service-to-service calls should flow from higher-level services to lower-level dependencies only. Lateral calls between services at the same tier create hidden dependency cycles that can produce distributed deadlocks — each service waits on another in a ring, and no one makes progress.</p>
-<h3>Testing for Cascading Failures</h3>
+<h3 id="testing-for-cascading-failures">Testing for Cascading Failures</h3>
 <p>Test <em>past</em> the breaking point, not just up to capacity. Testing only to the expected peak load tells you how the system behaves under normal stress; it does not reveal what happens when the system first tips into overload.</p>
 <p>Test both gradual load increases and <strong>impulse loads</strong> (sudden large spikes). Systems often handle gradual ramp-up gracefully but collapse under sharp impulses because queues and caches haven&#39;t had time to adjust.</p>
-<h3>Immediate Mitigation</h3>
+<h3 id="immediate-mitigation">Immediate Mitigation</h3>
 <p>Once a cascade is in progress: (1) add capacity or replicas; (2) stop health-check-driven kills if they are removing servers faster than the system can recover; (3) drop traffic to ~1% to let the system stabilise, then ramp up gradually; (4) suppress retry storms via a server-wide retry budget (→ <a href="../patterns/retry.html">Retry</a>).</p>
-<h2>Risk Management</h2>
+<h2 id="risk-management">Risk Management</h2>
 <p>Not every potential fault requires mitigation. Prioritise by:</p>
 <pre><code>risk score = probability × impact
 </code></pre>
@@ -399,7 +420,7 @@
 Low probability + low impact: accept and monitor.
 High impact + low probability: invest in blast-radius reduction even if probability seems negligible.</p>
 <p>This framing also determines the right mitigation strategy: reduce probability (preventive), reduce impact (palliative), or both.</p>
-<h2>Building for Tests, Not for Production</h2>
+<h2 id="building-for-tests-not-for-production">Building for Tests, Not for Production</h2>
 <p>Nygard&#39;s &quot;Trampled&quot; case study (→ <a href="../sources/release-it.html">Release It</a> ch. 15) identifies a systemic failure mode: teams optimise the system to pass QA, not to survive production.</p>
 <p><strong>Symptoms</strong>:</p>
 <ul>
@@ -415,7 +436,7 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 <li>Safety devices that cut off bad situations regardless of how the request arrived (→ <a href="../patterns/circuit-breaker.html">Circuit Breaker</a>, <a href="../distributed/rate-limiting.html">Rate Limiting</a>).</li>
 </ul>
 <p><strong>&quot;Nothing is as permanent as a temporary fix&quot;</strong>: emergency workarounds built under launch-day pressure often outlive their creators; some lasted a decade. The true cost of not building for production is a year of remediation rather than feature development, and lost revenue from every throttled user.</p>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/availability.html">Availability</a> — redundancy, the primary mitigation for hardware faults and SPOFs</li>
 <li><a href="../operations/data-integrity.html">Data Integrity</a> — software bugs as the dominant cause of data loss; soft deletion and tiered backups as the defence</li>
@@ -430,8 +451,10 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 <li><a href="../distributed/backpressure.html">Backpressure</a> — bounded queues to prevent the queue-growth failure mode that drives cascades</li>
 <li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — utilisation curves and Little&#39;s Law: why systems degrade well before 100% utilisation</li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — Nygard&#39;s full pattern set; the antipatterns this page catalogues are duals of those patterns</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — pattern × antipattern matrix; which defence applies to which failure mode</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — symptom-to-diagnosis decision guide for the queueing-class failures</li>
 </ul>
-<h2>The Airline Cascade: A Real Resource-Exhaustion Incident</h2>
+<h2 id="the-airline-cascade-a-real-resource-exhaustion-incident">The Airline Cascade: A Real Resource-Exhaustion Incident</h2>
 <p>Nygard&#39;s case study (→ <a href="../sources/release-it.html">Release It</a> ch. 2) illustrates all of the above failure types interacting:</p>
 <ol>
 <li><strong>Configuration / planned change</strong>: a database failover invalidated all JDBC connections in the pool. The connections were never removed because the pool had no heartbeat check.</li>
@@ -441,7 +464,7 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 <li><strong>Misleading health monitoring</strong>: CF&#39;s HTTP status endpoint was served by a separate thread pool from the EJB pool. It continued to respond &quot;healthy&quot; throughout the entire outage. Only deep health checks — checks that exercise the real code path — would have detected the failure.</li>
 </ol>
 <p><strong>The root fix required at multiple layers</strong>: validate connections on checkout (or background heartbeat); add timeouts on <code>getConnection()</code>; handle exceptions in <code>finally</code> blocks correctly; use deep health checks; isolate CF&#39;s thread pool so its failure cannot exhaust kiosk/IVR thread pools.</p>
-<h2>The Black Friday Cascade: Unbalanced Capacities in Production</h2>
+<h2 id="the-black-friday-cascade-unbalanced-capacities-in-production">The Black Friday Cascade: Unbalanced Capacities in Production</h2>
 <p>Nygard&#39;s second case study (→ <a href="../sources/release-it.html">Release It</a> ch. 6) illustrates Unbalanced Capacities and resource pool exhaustion at a different scale:</p>
 <ol>
 <li><strong>Self-Denial Attack</strong>: marketing published a newspaper insert offering &quot;free home delivery&quot; on Black Friday — a traffic-pattern change the engineering team did not know about, which multiplied calls to the scheduling subsystem.</li>
@@ -451,7 +474,7 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 <li><strong>The accidental Bulkhead</strong>: the front-end had a separate connection pool just for scheduling (Conway&#39;s Law artifact). By dynamically setting that pool&#39;s max to zero and recycling the service via live admin scripts, scheduling was disabled without requiring a full server restart. Recovery took 90 seconds rather than the 6+ hours a full restart would have required.</li>
 </ol>
 <p><strong>Key lesson</strong>: operational tooling (custom monitoring scripts, admin API access) built before the incident was the survival factor. The team survived a novel failure because they had real-time visibility into thread state across 100 servers.</p>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 24) — failure taxonomy: hardware, error handling, configuration, SPOFs, network/gray failures, resource leaks, load pressure, cascading/metastable failures, risk matrix.</li>
 <li>(→ <a href="../sources/release-it.html">Release It</a> ch. 2) — airline case study: JDBC connection pool exhaustion after database failover cascades to enterprise-wide outage.</li>
@@ -461,7 +484,7 @@ High impact + low probability: invest in blast-radius reduction even if probabil
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../authors/michael-nygard.html">Michael Nygard</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../patterns/timeout.html">Timeout</a></li></ul>
       </aside>
     </main>
   </div>

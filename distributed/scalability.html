@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,18 +309,22 @@
       <h1>Scalability</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../distributed/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/scalability.html">scalability</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/performance.html">performance</a></li><li><a class="tag-chip" href="../tags/quality-attributes.html">quality-attributes</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#two-universal-scaling-strategies">Two Universal Scaling Strategies</a></li><li><a href="#scale-up-vs-scale-out">Scale Up vs Scale Out</a></li><li><a href="#stateless-services-as-an-enabling-condition">Stateless Services as an Enabling Condition</a></li><li><a href="#amdahl39s-law">Amdahl&#39;s Law</a></li><li><a href="#hyperscale">Hyperscale</a></li><li><a href="#scalability-trade-offs-with-other-characteristics">Scalability Trade-Offs with Other Characteristics</a></li><li><a href="#architecture-evolution-pattern">Architecture Evolution Pattern</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Scalability is the ability of a system to handle growth in some operational dimension — typically throughput (requests per unit time), data volume, stable response time under increasing load, or the capacity for analytics over growing datasets. A scalable system can accommodate growth by adding resources, and ideally can also scale <em>down</em> to reduce costs during low-demand periods.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Systems that are not architecturally designed to scale face exponential retrofit costs when scale is eventually needed. The foundations of scalability — stateless services, replication-friendly data designs, async decoupling — cannot easily be bolted on. Early decisions (framework choice, state management, data model) create strong path dependencies (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 1).</p>
-<h2>Two Universal Scaling Strategies</h2>
+<h2 id="two-universal-scaling-strategies">Two Universal Scaling Strategies</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -334,12 +345,12 @@
 </tr>
 </tbody></table></div>
 <p>Both strategies recur at every layer: service tier, caching tier, data tier, network (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 1).</p>
-<h2>Scale Up vs Scale Out</h2>
+<h2 id="scale-up-vs-scale-out">Scale Up vs Scale Out</h2>
 <p><strong>Scale up (vertical scaling):</strong> replace a resource with a more powerful one. Simple, no code changes, but has a hard upper bound and single point of failure. Good first step; carries a system surprisingly far.</p>
 <p><strong>Scale out (horizontal scaling):</strong> run multiple replicas of a resource. Requires stateless designs so any replica can serve any request. No theoretical upper bound on capacity additions. Failure of one replica degrades capacity but not availability (→ <a href="../distributed/load-balancing.html">Load Balancing</a>, <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 2).</p>
-<h2>Stateless Services as an Enabling Condition</h2>
+<h2 id="stateless-services-as-an-enabling-condition">Stateless Services as an Enabling Condition</h2>
 <p>Scale-out only works if services are stateless: no per-session state lives in the service process. Any session state (shopping cart, auth token, user preference) must be externalised to a shared store (e.g., Redis). Without this, a load balancer must route all requests in a session to the same replica — sticky sessions — which eliminates the availability benefits of replication and complicates failure handling.</p>
-<h2>Amdahl&#39;s Law</h2>
+<h2 id="amdahl39s-law">Amdahl&#39;s Law</h2>
 <p>Serial code fractions set a hard ceiling on how much parallelism can help:</p>
 <ul>
 <li>50% serial code → adding beyond ~8 CPU cores yields no further speedup</li>
@@ -348,9 +359,9 @@
 <p>Implication: <strong>multithreaded, parallel code is not a performance optimisation but a prerequisite for scalability.</strong> Poorly threaded code cannot be made scalable by hardware alone (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 2).</p>
 <p>The same logic applies at the code level: <strong>synchronised critical sections are the &quot;serial fraction.&quot;</strong> Keeping them as short as possible directly improves scalable throughput. This means: hold locks only for the minimum time necessary; prefer concurrent data structures (e.g., <code>ConcurrentHashMap</code> with per-shard locking) over coarse-grained locks that serialise the entire collection (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 4).</p>
 <p><strong>Thread pools</strong> are the server-side mechanism for controlling parallelism: a fixed-size pool bounds the number of concurrent requests, preventing resource exhaustion (memory/CPU) while maximising utilization. Tuning pool size is a scalability lever. Underthreading leaves CPU idle; overthreading causes memory exhaustion and context-switch overhead (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 4).</p>
-<h2>Hyperscale</h2>
+<h2 id="hyperscale">Hyperscale</h2>
 <p>Hyperscale systems achieve exponential growth in computational and storage capabilities while costs grow only <em>linearly</em>. The canonical property is elastic scale-down as well as scale-up: Netflix scales down compute at 5am and up at 9pm. Physical infrastructure cannot do this; cloud software can (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 1).</p>
-<h2>Scalability Trade-Offs with Other Characteristics</h2>
+<h2 id="scalability-trade-offs-with-other-characteristics">Scalability Trade-Offs with Other Characteristics</h2>
 <p>Scalability cannot be optimised in isolation — it requires deliberate trade-offs with other quality attributes:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -379,7 +390,7 @@
 <blockquote>
 <p><strong>Open question:</strong> When should scalability be introduced? Gorton cautions that introducing distributed infrastructure before there is a clear requirement can create development inertia. This is consistent with evolutionary architecture — treat scalability as a just-in-time concern where fitness functions flag the tipping point before it becomes a crisis (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>, <a href="../concepts/fitness-functions.html">Fitness Functions</a>).</p>
 </blockquote>
-<h2>Architecture Evolution Pattern</h2>
+<h2 id="architecture-evolution-pattern">Architecture Evolution Pattern</h2>
 <p>Systems typically scale in a predictable sequence (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 2):</p>
 <ol>
 <li><strong>Monolith</strong> — single app + DB; fine under light load</li>
@@ -390,7 +401,7 @@
 <li><strong>Multiple independent tiers</strong> — each service scaled independently; BFF pattern for client-specific frontends</li>
 <li><strong>Async decoupling</strong> — queue-based write path wherever immediate persistence is not required (→ <a href="../concepts/messaging.html">Messaging</a>)</li>
 </ol>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -415,7 +426,7 @@
 <td>Treats scalability through replication and partitioning; strong emphasis on the consistency implications</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../distributed/load-balancing.html">Load Balancing</a> — mechanism for distributing load across replicas</li>
 <li><a href="../distributed/caching.html">Caching</a> — primary optimisation strategy for read-heavy workloads</li>
@@ -427,12 +438,14 @@
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — what replication for scalability costs</li>
 <li><a href="../concepts/messaging.html">Messaging</a> — async queueing as a scalability pattern</li>
 <li><a href="../concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> — scaling decisions as cost decisions</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — capacity planning workflow and diagnosis</li>
+<li><a href="../comparisons/cost-vs-availability.html">Cost Vs Availability</a> — scale-out investment in the broader availability/cost trade-off</li>
 <li><a href="../operations/observability.html">Observability</a> — required to identify bottlenecks and guide scaling decisions</li>
 <li><a href="../distributed/serverless.html">Serverless</a> — managed auto-scaling model where the cloud provider handles scale-out</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li></ul>
+        <ul><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Editors:</strong> <a href="../authors/betsy-beyer.html">Betsy Beyer</a>, <span class="broken-link">Chris Jones</span>, <span class="broken-link">Jennifer Petoff</span>, <span class="broken-link">Niall Richard Murphy</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-1-introduction">Chapter 1 — Introduction</a></li><li class="toc-sub"><a href="#chapter-2-the-production-environment-at-google">Chapter 2 — The Production Environment at Google</a></li><li class="toc-sub"><a href="#chapter-3-embracing-risk">Chapter 3 — Embracing Risk</a></li><li class="toc-sub"><a href="#chapter-4-service-level-objectives">Chapter 4 — Service Level Objectives</a></li><li class="toc-sub"><a href="#chapter-5-eliminating-toil">Chapter 5 — Eliminating Toil</a></li><li class="toc-sub"><a href="#chapter-6-monitoring-distributed-systems">Chapter 6 — Monitoring Distributed Systems</a></li><li class="toc-sub"><a href="#chapter-7-the-evolution-of-automation-at-google">Chapter 7 — The Evolution of Automation at Google</a></li><li class="toc-sub"><a href="#chapter-8-release-engineering">Chapter 8 — Release Engineering</a></li><li class="toc-sub"><a href="#chapter-9-simplicity">Chapter 9 — Simplicity</a></li><li class="toc-sub"><a href="#chapter-10-practical-alerting-from-time-series-data">Chapter 10 — Practical Alerting from Time-Series Data</a></li><li class="toc-sub"><a href="#chapter-11-being-on-call">Chapter 11 — Being On-Call</a></li><li class="toc-sub"><a href="#chapter-12-effective-troubleshooting">Chapter 12 — Effective Troubleshooting</a></li><li class="toc-sub"><a href="#chapter-13-emergency-response">Chapter 13 — Emergency Response</a></li><li class="toc-sub"><a href="#chapter-14-managing-incidents">Chapter 14 — Managing Incidents</a></li><li class="toc-sub"><a href="#chapter-15-postmortem-culture-learning-from-failure">Chapter 15 — Postmortem Culture: Learning from Failure</a></li><li class="toc-sub"><a href="#chapter-20-load-balancing-in-the-datacenter">Chapter 20 — Load Balancing in the Datacenter</a></li><li class="toc-sub"><a href="#chapter-21-handling-overload">Chapter 21 — Handling Overload</a></li><li class="toc-sub"><a href="#chapter-18-software-engineering-in-sre">Chapter 18 — Software Engineering in SRE</a></li><li class="toc-sub"><a href="#chapter-19-load-balancing-at-the-frontend">Chapter 19 — Load Balancing at the Frontend</a></li><li class="toc-sub"><a href="#chapter-16-tracking-outages">Chapter 16 — Tracking Outages</a></li><li class="toc-sub"><a href="#chapter-17-testing-for-reliability">Chapter 17 — Testing for Reliability</a></li><li class="toc-sub"><a href="#chapter-22-addressing-cascading-failures">Chapter 22 — Addressing Cascading Failures</a></li><li class="toc-sub"><a href="#chapter-23-reliable-product-launches-at-scale-distributed-consensus">Chapter 23 — Reliable Product Launches at Scale (Distributed Consensus)</a></li><li class="toc-sub"><a href="#chapter-24-distributed-periodic-scheduling-with-cron">Chapter 24 — Distributed Periodic Scheduling with Cron</a></li><li class="toc-sub"><a href="#chapter-25-data-processing-pipelines">Chapter 25 — Data Processing Pipelines</a></li><li class="toc-sub"><a href="#chapter-26-data-integrity-what-you-read-is-what-you-wrote">Chapter 26 — Data Integrity: What You Read Is What You Wrote</a></li><li class="toc-sub"><a href="#chapter-27-reliable-product-launches-at-scale">Chapter 27 — Reliable Product Launches at Scale</a></li><li class="toc-sub"><a href="#chapter-28-accelerating-sres-to-on-call-and-beyond">Chapter 28 — Accelerating SREs to On-Call and Beyond</a></li><li class="toc-sub"><a href="#chapter-29-dealing-with-interrupts">Chapter 29 — Dealing with Interrupts</a></li><li class="toc-sub"><a href="#chapter-32-the-evolving-sre-engagement-model">Chapter 32 — The Evolving SRE Engagement Model</a></li><li class="toc-sub"><a href="#chapter-33-lessons-learned-from-other-industries">Chapter 33 — Lessons Learned from Other Industries</a></li><li class="toc-sub"><a href="#chapter-30-embedding-an-sre-to-recover-from-operational-overload">Chapter 30 — Embedding an SRE to Recover from Operational Overload</a></li><li class="toc-sub"><a href="#chapter-31-communication-and-collaboration-in-sre">Chapter 31 — Communication and Collaboration in SRE</a></li><li class="toc-sub"><a href="#chapter-34-conclusion">Chapter 34 — Conclusion</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Editors:</strong> <a href="../authors/betsy-beyer.html">Betsy Beyer</a>, <a href="../authors/chris-jones.html">Chris Jones</a>, <a href="../authors/jennifer-petoff.html">Jennifer Petoff</a>, <a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a>
 <strong>Published:</strong> 2016
 <strong>Slug:</strong> <code>site-reliability-engineering</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>Site Reliability Engineering documents how Google designs, operates, and improves its production systems at internet scale. Edited by four senior Google SREs and comprising essays from across the organisation, it defines SRE as a distinct engineering discipline: the application of software engineering practices to operations problems. The book covers everything from foundational philosophy (error budgets, SLOs) to concrete practices (on-call, incident management, postmortems) to management (how to build and evolve an SRE team).</p>
 <p>Its central argument is that the traditional dev/ops split creates a structural conflict of incentives that reliability-as-code and error budgets resolve. Rather than treating reliability as an ops concern and features as a dev concern, SRE gives both teams a shared currency — the error budget — that aligns their incentives.</p>
 <p>As a collection of essays, the book varies in style and specificity. The chapters on principles (Parts I–II) are widely applicable; many of the later chapters (Parts III–IV) are deeply Google-specific and should be read for insight rather than direct emulation.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>SRE is &quot;what happens when you ask a software engineer to design an operations team&quot; — Ben Treynor Sloss (→ ch. 1)</li>
 <li>100% is the wrong reliability target for almost everything: users cannot distinguish 100% from 99.999%, and marginal gains beyond that threshold cost disproportionately more (→ ch. 3)</li>
@@ -328,37 +339,37 @@
 <li>A playbook-armed on-call engineer achieves roughly 3× better MTTR than one &quot;winging it&quot; (→ ch. 1)</li>
 <li>Postmortems must be blameless: the goal is to expose systemic faults and fix them, not to assign personal responsibility (→ ch. 15)</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Chapter 1 — Introduction</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-1-introduction">Chapter 1 — Introduction</h3>
 <p>Benjamin Treynor Sloss defines SRE as the discipline that results when software engineers run operations. Key ideas: the dev/ops conflict arises from incompatible incentive structures; error budgets resolve it by giving both teams a shared variable to optimise. Monitoring taxonomy: alerts (immediate action required), tickets (action needed but not immediately), logging (no action, forensic only). Introduces the 50% ops cap, postmortem culture, capacity planning, and the MTTF/MTTR framing of reliability.</p>
-<h3>Chapter 2 — The Production Environment at Google</h3>
+<h3 id="chapter-2-the-production-environment-at-google">Chapter 2 — The Production Environment at Google</h3>
 <p>Describes Google&#39;s production infrastructure. Primarily Google-specific; most useful as context for later chapters. Key transferable concepts: Borg (cluster operating system, direct ancestor of Kubernetes) abstracts machines from tasks and allocates resources with failure-domain awareness — tasks are reached via BNS (Borg Naming Service) rather than direct IP:port. The N+2 capacity planning heuristic (two spare tasks beyond peak-QPS requirement) accounts for rolling updates (−1) and coincident machine failure (−1). GSLB provides load balancing at three levels: DNS, service, and RPC. Chubby is the distributed lock service used for leader election and consistent key-value storage; it uses Paxos for consensus. Protocol buffers (protobufs) are Google&#39;s serialisation format — 3–10× smaller and 20–100× faster than XML; gRPC (open-source Stubby) carries all inter-service communication.</p>
-<h3>Chapter 3 — Embracing Risk</h3>
+<h3 id="chapter-3-embracing-risk">Chapter 3 — Embracing Risk</h3>
 <p>Central SRE philosophy chapter. Reliability is a continuum, not a binary property. An incremental improvement in reliability may cost 100× more than the previous increment (non-linear cost curve), so every service needs an explicitly scoped target that is both a minimum and a maximum — exceeding it wastes the opportunity to ship features, pay down technical debt, or reduce costs.</p>
 <p><strong>Risk measurement</strong>: Google prefers request-success-rate availability (<code>successful requests / total requests</code>) over time-based uptime for globally distributed services, because partial availability (serving some traffic somewhere) means time-based uptime is almost always 100%.</p>
 <p><strong>Risk tolerance assessment</strong>: Consumer services (Search, Gmail) have clear product owners who can articulate business goals; infrastructure services (Bigtable, frontend proxies) have multiple clients with divergent needs and require segmented service tiers (e.g., Bigtable low-latency vs throughput clusters, provisioned differently to avoid charging all clients for the highest tier).</p>
 <p><strong>Cost/benefit example</strong>: Improving from 99.9% → 99.99% on a $1M revenue service adds ~$900 of value (0.09% × $1M). If the engineering cost exceeds $900, the investment is not justified.</p>
 <p><strong>ISP noise floor</strong>: The typical background error rate measured across ISPs is 0.01%–1%. Driving a service&#39;s error rate below that floor provides no user-visible benefit — failures disappear into the noise of the user&#39;s own connection.</p>
 <p><strong>Error budget formation</strong>: Product Management defines the quarterly SLO; the monitoring system is the neutral arbiter of actual uptime; the difference between target and actual is the budget available to spend on risk-taking.</p>
-<h3>Chapter 4 — Service Level Objectives</h3>
+<h3 id="chapter-4-service-level-objectives">Chapter 4 — Service Level Objectives</h3>
 <p>Disentangles SLI (measured metric), SLO (target), and SLA (contract with consequences). Key insight: most people mean SLO when they say &quot;SLA violation&quot; — a real SLA violation might trigger legal consequences.</p>
 <p>SLI selection by service category: user-facing services → availability, latency, throughput; storage → latency, availability, durability; big data pipelines → throughput, end-to-end latency; all systems → correctness. Collect where it best represents user experience: client-side latency is more meaningful than server-side, but more expensive to instrument.</p>
 <p>Percentiles over averages: distributions are right-skewed; averages obscure tail behaviour. P99/P99.9 represent realistic worst-case; even P50 matters because high-variance services are preferred less by users than slightly slower but consistent ones.</p>
 <p>SLO-setting principles: don&#39;t anchor to current performance (locks you into it); as few SLOs as possible (defend each one by quoting it in priority conversations); don&#39;t set absolutes; leave room to tighten over time.</p>
 <p><strong>The Chubby planned outage</strong>: Chubby (Google&#39;s lock service) became so reliable that teams began assuming it would never fail. When it did, those teams had no fallback. SRE&#39;s response: synthesize planned outages if Chubby has not naturally fallen below its SLO in a given quarter, to flush out over-dependencies. This is the canonical example of &quot;don&#39;t overachieve&quot; — users build on actual performance, not stated SLO.</p>
 <p>Internal vs external SLO: maintain a tighter internal SLO than the published SLA to create a safety buffer for responding to chronic problems before external breach.</p>
-<h3>Chapter 5 — Eliminating Toil</h3>
+<h3 id="chapter-5-eliminating-toil">Chapter 5 — Eliminating Toil</h3>
 <p>Precise definition of toil: work tied to running a production service that is manual, repetitive, automatable, tactical, devoid of enduring value, and scales O(n) with service growth. Toil is not overhead (meetings, goal-setting, HR) and not all grungy work (a one-time cleanup that produces permanent improvement is engineering, not toil).</p>
 <p>The 50% toil cap: SREs spend at most 50% of time on toil; the rest must be engineering work (software or systems engineering that produces a permanent improvement). In practice Google&#39;s average is ~33% toil.</p>
 <p>On-call creates a structural toil floor: a 6-person rotation commits 2/6 weeks to on-call = 33% minimum; an 8-person rotation = 25%. This limits how low toil can actually go.</p>
 <p>Toil becomes toxic at high volumes: career stagnation, low morale, sets precedent for devs to offload more work, causes attrition of the best engineers, breaches the promise made to SRE hires.</p>
-<h3>Chapter 6 — Monitoring Distributed Systems</h3>
+<h3 id="chapter-6-monitoring-distributed-systems">Chapter 6 — Monitoring Distributed Systems</h3>
 <p>Canonical chapter on SRE monitoring philosophy. Core framework: monitor for <strong>symptoms</strong> (what&#39;s broken), not causes (why). Causes are for debugging after a page fires. Paging on causes produces noise; paging on symptoms keeps alerts actionable.</p>
 <p><strong>Four Golden Signals</strong>: latency, traffic, errors, saturation — the four metrics that, if measured and alerted on, provide decent monitoring coverage of any user-facing system.</p>
 <p><strong>Alert quality criteria</strong>: every page must be (1) actionable, (2) require human intelligence (not rote response), (3) be about an urgent condition the system cannot self-resolve, (4) be novel or non-trivially automatable. Pages with rote responses should be automated or resolved at the root cause.</p>
 <p>Two case studies: Bigtable over-alerting (too many low-quality alerts → SRE temporarily reduced SLO target to create breathing room; then fixed root causes); Gmail scripted response (alerts with scripted handling → debate over automation vs permanent fix; conclusion: automate, but track the underlying problem).</p>
 <p><strong>Long-term perspective</strong>: every page today delays improvement of the system for tomorrow. A controlled short-term decrease in availability to fix root causes is preferable to perpetual high-toil fire-fighting.</p>
-<h3>Chapter 7 — The Evolution of Automation at Google</h3>
+<h3 id="chapter-7-the-evolution-of-automation-at-google">Chapter 7 — The Evolution of Automation at Google</h3>
 <p><strong>Automation hierarchy</strong> (5 levels from manual to autonomous):</p>
 <ol>
 <li>No automation — operator manually performs the procedure</li>
@@ -372,7 +383,7 @@
 <p><strong>Failure at scale (Diskerase)</strong>: automation that amplifies manual procedures can amplify mistakes catastrophically. Rate limiting and idempotency are essential safety properties of automation operating at scale.</p>
 <p><strong>Organisational incentives</strong>: teams that don&#39;t own their automation have no incentive to build systems that are easy to automate. The most functional tools are written by those who use them — the same argument that motivates developer ownership of production.</p>
 <p><strong>MySQL on Borg</strong>: automating failover (Decider) reduced toil by 95%, cut hardware usage by 60%, and made it possible to meet error budgets that required sub-30-second failover — impossible for a human-dependent process.</p>
-<h3>Chapter 8 — Release Engineering</h3>
+<h3 id="chapter-8-release-engineering">Chapter 8 — Release Engineering</h3>
 <p>Release engineering as a distinct discipline: building and delivering software repeatably. Core philosophy: four principles.</p>
 <p><strong>Self-service model</strong>: release processes are owned by product teams, not a central release team. Individual teams decide when and how often to release.</p>
 <p><strong>Hermetic builds</strong>: builds must be deterministic and environment-independent. Two engineers building the same revision on different machines must get identical outputs. Builds depend on known versions of compilers and libraries (not whatever is installed), are self-contained (no external network calls during build), and can be reproduced later at the same revision. Cherry-picking is possible precisely because the build environment is fully specified.</p>
@@ -380,7 +391,7 @@
 <p><strong>Risk-profiled deployment cadence</strong>: the rollout process should fit the risk profile of the service. Dev/pre-prod → hourly auto-deploy. Large user-facing service → exponential expansion across clusters. Sensitive infrastructure → days-long rollout interleaved across regions.</p>
 <p><strong>Configuration management approaches</strong> (four models): (1) config in mainline (simple but creates skew between checked-in and running); (2) config bundled with binary (tightly coupled, simplest to deploy); (3) config as separate package (retains ability to update config without rebuilding binary); (4) config in external store (Chubby/Bigtable for dynamic, runtime-changing config). All require code review.</p>
 <p><strong>Start release engineering at the beginning</strong>: it is cheaper to design release processes early than to retrofit them into a mature system.</p>
-<h3>Chapter 9 — Simplicity</h3>
+<h3 id="chapter-9-simplicity">Chapter 9 — Simplicity</h3>
 <p>Simplicity is a reliability prerequisite. Complex systems fail in complex ways; simple systems fail in understandable ways.</p>
 <p><strong>Essential vs accidental complexity</strong> (Fred Brooks): essential complexity is inherent in the problem (cannot be removed); accidental complexity is introduced by the implementation choices (can be resolved with engineering effort). SRE teams should push back on and actively eliminate accidental complexity.</p>
 <p><strong>Every line of code is a liability</strong>: each new line creates potential for defects. The &quot;negative lines of code&quot; metric captures value in deletion. Software bloat degrades understandability, testability, and reliability.</p>
@@ -388,7 +399,7 @@
 <p><strong>Minimal APIs</strong>: fewer methods and arguments = easier to understand, more effort concentrated on quality. Small, simple APIs are a hallmark of a well-understood problem.</p>
 <p><strong>Modularity and loose coupling</strong>: the ability to change parts of a system in isolation is essential for maintainability. API versioning allows independent evolution of producer and consumer. Well-scoped components with clear responsibility are preferable to &quot;util&quot; binaries.</p>
 <p><strong>Release simplicity</strong>: small batches are easier to understand and debug than large batches. Releasing 100 unrelated changes simultaneously makes it hard to attribute performance changes to specific commits.</p>
-<h3>Chapter 10 — Practical Alerting from Time-Series Data</h3>
+<h3 id="chapter-10-practical-alerting-from-time-series-data">Chapter 10 — Practical Alerting from Time-Series Data</h3>
 <p>Describes Borgmon, Google&#39;s internal monitoring system — the direct ancestor of Prometheus (open source; same principles and a similar rule language). Key architectural ideas:</p>
 <p><strong>Pull-based scraping</strong>: every monitored binary exposes a <code>/varz</code> HTTP endpoint listing metrics in plain text. Borgmon polls all targets at regular intervals; the standardised format enables mass collection with low overhead.</p>
 <p><strong>Labels as dimensions</strong>: time-series are identified by sets of key=value labels (variable name, job, instance, zone). Removing labels from a query returns all matching series; this enables aggregation without pre-defining every rollup dimension.</p>
@@ -397,7 +408,7 @@
 <p><strong>Config as code</strong>: Borgmon rules are defined in files, templated for reuse, and tested with synthetic time-series data. A CI system validates and ships configuration to all Borgmon in production.</p>
 <p><strong>Alert flap prevention</strong>: an alerting rule must be true for a minimum duration (at least two evaluation cycles) before the alert fires, to prevent transient collection failures from triggering pages.</p>
 <p><strong>Black-box complement (Prober)</strong>: white-box monitoring observes internals; Prober validates user-visible behaviour from outside. Necessary for detecting DNS failures, connectivity issues, and problems that never reach the server.</p>
-<h3>Chapter 11 — Being On-Call</h3>
+<h3 id="chapter-11-being-on-call">Chapter 11 — Being On-Call</h3>
 <p>Detailed on-call management practices. Key constraints:</p>
 <p><strong>25% on-call rule</strong>: of the non-engineering time (≤50% of total time), at most 25% may be spent on-call. The remainder (25%) is for other non-project operational work.</p>
 <p><strong>Minimum team sizes</strong>: a single-site team needs ≥8 engineers to sustain 24/7 on-call with primary and secondary coverage while honouring the 25% rule. Multi-site &quot;follow the sun&quot; (avoids night shifts) needs ≥6 engineers per site.</p>
@@ -406,7 +417,7 @@
 <p><strong>Psychology of incident handling</strong>: stress hormones (cortisol) impair deliberate cognitive functions and promote habitual/intuitive responses. Reducing on-call stress (clear escalation paths, good runbooks, blameless culture) enables the deliberate, rational approach that complex incidents require.</p>
 <p><strong>&quot;Give back the pager&quot;</strong>: if a developer team&#39;s service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets SRE standards. This is not a penalty but a natural consequence of the reliability contract.</p>
 <p><strong>Response time vs SLO</strong>: for four nines of availability (13 minutes allowed downtime/quarter), on-call response must be in single-digit minutes. For relaxed SLOs, tens of minutes.</p>
-<h3>Chapter 12 — Effective Troubleshooting</h3>
+<h3 id="chapter-12-effective-troubleshooting">Chapter 12 — Effective Troubleshooting</h3>
 <p>Formal model: troubleshooting as the hypothetico-deductive method — observe, hypothesise, test, eliminate, conclude. Steps: Triage → Examine → Diagnose → Test and Treat → Cure.</p>
 <p><strong>Triage before investigating</strong>: first priority is to keep the system working (&quot;fly the airplane&quot;). Mitigate by diverting traffic, dropping load, or disabling subsystems before hunting the root cause. Stopping the bleeding takes precedence over understanding what went wrong.</p>
 <p><strong>Common pitfalls</strong>: latching on to past causes (confirmation bias); spurious correlations (packet loss and disk failure both caused by a power outage — neither caused the other); improbable theories when simpler ones exist (horses, not zebras).</p>
@@ -415,7 +426,7 @@
 <p><strong>Negative results are magic</strong>: document what you ruled out. Negative results are conclusive, prevent others from repeating the same investigation, and contribute to a data-driven culture.</p>
 <p><strong>Active tests have side effects</strong>: turning on verbose logging may worsen the latency problem you&#39;re investigating; changing resource allocation may mask race conditions. Document every change during debugging.</p>
 <p><strong>Make troubleshooting easier by design</strong>: observability (metrics + structured logs) built into each component; well-defined interfaces; request tracing (correlation IDs / trace IDs) across components.</p>
-<h3>Chapter 13 — Emergency Response</h3>
+<h3 id="chapter-13-emergency-response">Chapter 13 — Emergency Response</h3>
 <p>Three case studies (test-induced, change-induced, process-induced) illustrating recurring emergency response patterns:</p>
 <ul>
 <li>Don&#39;t panic; pull in more people immediately if needed</li>
@@ -427,7 +438,7 @@
 <li>Canary rigorously even for &quot;low-risk&quot; changes — the combination of a change with an unlikely configuration keyword triggered the crash-loop outage</li>
 </ul>
 <p><strong>All problems have solutions</strong>: even catastrophic failures (wiping all CDN machines) can be recovered from. The ceiling on impact is bounded by good capacity planning and traffic diversion.</p>
-<h3>Chapter 14 — Managing Incidents</h3>
+<h3 id="chapter-14-managing-incidents">Chapter 14 — Managing Incidents</h3>
 <p>ICS-based (Incident Command System) incident management. Key insight: clear role separation gives individuals more autonomy — they don&#39;t need to second-guess colleagues because responsibilities are well-defined.</p>
 <p><strong>Roles</strong>: Incident Commander (high-level state, assigns work, removes blockers), Ops Lead (the only group modifying the system during an incident), Communications Lead (stakeholder updates, live incident document), Planning Lead (longer-term issues: bugs, handoffs, dinner).</p>
 <p><strong>Only the Ops team modifies the system during an incident.</strong> &quot;Freelancing&quot; — engineers making changes without coordination — is a primary cause of incidents spiralling out of control.</p>
@@ -435,7 +446,7 @@
 <p><strong>Handoff protocol</strong>: explicit verbal confirmation (&quot;you&#39;re now the incident commander, okay?&quot;) and acknowledgment. Never leave a handoff ambiguous.</p>
 <p><strong>When to declare an incident</strong>: (1) need a second team; (2) issue is customer-visible; (3) unresolved after one hour of concentrated analysis. Declare early — spin-up cost of the framework is low; the cost of not declaring when you should have is high.</p>
 <p><strong>Best practices</strong>: Prioritize (stop the bleeding) → Prepare (procedures in advance) → Trust (full autonomy in role) → Introspect (if feeling panicked, get support) → Consider alternatives → Practice routinely → Rotate roles.</p>
-<h3>Chapter 15 — Postmortem Culture: Learning from Failure</h3>
+<h3 id="chapter-15-postmortem-culture-learning-from-failure">Chapter 15 — Postmortem Culture: Learning from Failure</h3>
 <p>A postmortem is a written record of an incident, its impact, the actions taken, the root cause(s), and follow-up actions to prevent recurrence.</p>
 <p><strong>Blameless postmortems</strong>: the postmortem assumes everyone had good intentions and the best information available. Blame-based cultures suppress reporting of issues, reducing learning and leaving root causes unaddressed. Originated in healthcare and aviation.</p>
 <p><strong>Blameless ≠ accountability-free</strong>: the postmortem calls out where and how services can be improved; the individual is not indicted, but the systemic failure is.</p>
@@ -443,7 +454,7 @@
 <p><strong>Review process</strong>: draft internally → senior engineer review (completeness, root-cause depth, action plan appropriateness, stakeholder notification) → broad sharing with widest audience that benefits.</p>
 <p><strong>Culture building</strong>: postmortem of the month (newsletter); reading clubs; &quot;Wheel of Misfortune&quot; (reenact past incidents with new engineers); public recognition for good incident handling.</p>
 <p><strong>&quot;No postmortem left unreviewed&quot;</strong>: an unreviewed postmortem might as well not exist.</p>
-<h3>Chapter 20 — Load Balancing in the Datacenter</h3>
+<h3 id="chapter-20-load-balancing-in-the-datacenter">Chapter 20 — Load Balancing in the Datacenter</h3>
 <p>In-datacenter load balancing: how client tasks route requests to backend tasks.</p>
 <p><strong>The cost of poor distribution</strong>: if the most-loaded task hits its capacity limit, no more traffic can be sent to the datacenter — even though every other task may have spare capacity. A 2× spread from least to most loaded effectively wastes 50% of reserved capacity.</p>
 <p><strong>Lame duck state</strong>: a backend that is shutting down should not just stop accepting connections — it should enter lame duck state, signalling all clients (including inactive UDP health-check clients) to stop sending new requests while completing in-flight ones. Steps: SIGTERM → lame duck signal → drain active requests → exit/kill. Also used for warm-up: new tasks stay in lame duck state until JIT optimisation is complete, then signal ready.</p>
@@ -454,7 +465,7 @@
 <li><strong>Least-Loaded Round Robin</strong>: route to the backend with fewest active requests; degrades to similar spread as Round Robin at scale. Danger: a fast-failing unhealthy backend appears &quot;lightly loaded&quot; — must count recent errors as active requests to prevent it sinkholing traffic</li>
 <li><strong>Weighted Round Robin</strong>: backends include current QPS, error rate, and CPU utilisation in health check/response headers; clients adjust capability scores over time; requests routed proportionally. Works well; eliminates most spread</li>
 </ul>
-<h3>Chapter 21 — Handling Overload</h3>
+<h3 id="chapter-21-handling-overload">Chapter 21 — Handling Overload</h3>
 <p><strong>QPS is a bad capacity metric</strong>: query cost can vary 1000× for the same endpoint; as software changes, the QPS-to-resource ratio changes unpredictably. Better metric: CPU directly. Memory pressure translates into CPU consumption in GC platforms; other resources can be over-provisioned to keep CPU as the binding constraint.</p>
 <p><strong>Per-customer quotas</strong>: backends define per-customer CPU budgets (in CPU seconds/second). Quotas may sum to more than total allocated capacity, relying on the low probability of all customers hitting limits simultaneously. Global quota state is aggregated in real time and pushed to individual backend tasks.</p>
 <p><strong>Client-side adaptive throttling</strong>: when a backend starts rejecting requests, the rejections consume resources too. Client-side throttling prevents the backend from drowning in rejected work. Each client tracks <code>requests</code> (attempts) and <code>accepts</code> (accepted by backend) over the last two minutes. It begins self-throttling with probability:</p>
@@ -470,7 +481,7 @@
 <li>Backends include retry-count histograms; if many retries seen (indicating datacenter-wide overload), return &quot;overloaded; don&#39;t retry&quot; error</li>
 </ul>
 <p><strong>Connection load</strong>: connections themselves cost CPU/memory. Idle connections should switch from TCP to UDP health checking. Burst connection events (large batch job starting with many new workers) can overload backends via connection negotiation overhead — solution: proxy layer between batch clients and production backends.</p>
-<h3>Chapter 18 — Software Engineering in SRE</h3>
+<h3 id="chapter-18-software-engineering-in-sre">Chapter 18 — Software Engineering in SRE</h3>
 <p>SREs are uniquely positioned to develop internal production tooling: they have firsthand production experience, they understand the use cases deeply, and they serve as both creator and customer. Critically, SRE developers must remain embedded in production (on-call, design reviews) even during development work — losing that connection produces tools that don&#39;t fit the real problem.</p>
 <p><strong>Intent-based capacity planning</strong> (the Auxon case study): traditional capacity planning encodes concrete resource requests (&quot;50 cores in clusters X, Y, Z&quot;). This is brittle — any change (delayed delivery, increased demand) cascades through all subsequent quarters. The intent-based approach instead encodes <em>why</em> a service needs resources:</p>
 <div class="table-wrapper"><table>
@@ -502,7 +513,7 @@
 <p><strong>Approximation and launch-and-iterate</strong>: when the problem space is uncertain, build a simplified solver first (the &quot;Stupid Solver&quot;). Abstract the solver behind a stable interface so it can be replaced later. Fuzzy requirements are an incentive to design for generality and modularity rather than a reason to wait.</p>
 <p><strong>Product development practices for internal tools</strong>: target customers with the most pain and no existing solution; build a long-term roadmap alongside short-term wins; provide documentation and early-adopter support (&quot;white glove&quot;); quantify savings with case studies; don&#39;t over-customise for early users (&quot;agnosticism&quot; — come as you are, we&#39;ll work with what you&#39;ve got).</p>
 <p><strong>Team structure</strong>: seed team of generalists + specialists; dedicated project time aggressively defended from interrupts; SREs must not become full-time developers.</p>
-<h3>Chapter 19 — Load Balancing at the Frontend</h3>
+<h3 id="chapter-19-load-balancing-at-the-frontend">Chapter 19 — Load Balancing at the Frontend</h3>
 <p>Multi-level load balancing for internet-scale systems. The chapter focuses on the layers between users and datacenters.</p>
 <p><strong>Why not one big machine</strong>: speed of light constrains fiber optic latency; a single machine is a single point of failure; network bandwidth is bounded.</p>
 <p><strong>Multi-level approach</strong>: DNS load balancing (geographic steering) → VIP + network load balancer (datacenter entry) → datacenter internal (next chapter). Different traffic types need different routing: latency-sensitive requests go to the nearest datacenter; throughput-sensitive requests (video upload) may go to an underutilized link.</p>
@@ -520,14 +531,14 @@
 <li><strong>Direct Server Response (DSR)</strong>: backend sends reply directly to the client rather than routing response back through the load balancer. Big savings when responses are large and requests are small (HTTP traffic). Requires no state on the load balancer.</li>
 <li><strong>GRE encapsulation</strong>: Google&#39;s VIP implementation wraps forwarded packets in GRE over IP so load balancer and backends don&#39;t need to be in the same broadcast domain (Google outgrew the layer-2 DSR constraint). Overhead: 24 bytes per packet (IPv4+GRE), which can cause fragmentation or require a larger internal MTU.</li>
 </ul>
-<h3>Chapter 16 — Tracking Outages</h3>
+<h3 id="chapter-16-tracking-outages">Chapter 16 — Tracking Outages</h3>
 <p>Outage tracking as systematic, long-term learning beyond individual postmortems. Postmortems cover high-impact incidents; outage tracking captures the high-frequency, low-impact issues that individually don&#39;t warrant a postmortem but collectively reveal systemic problems.</p>
 <p><strong>Escalator</strong>: Google&#39;s central alert notification tracker — monitors whether a human has acknowledged each alert within a configured interval and escalates to the next contact if not.</p>
 <p><strong>Outalator</strong>: layered atop Escalator. Three capabilities: (1) <em>aggregation</em> — multiple alerts from a single event are grouped into one incident entity, separating &quot;alerts per day&quot; from &quot;incidents per day&quot;; (2) <em>tagging</em> — free-form hierarchical tags (e.g., &quot;cause:network:switch&quot;) applied by the team at any granularity; tags drive both human annotation and automated analysis; (3) <em>analysis</em> — from basic counts → comparison across teams/services over time → semantic root-cause analysis (e.g., identifying that 40% of incidents share the same infrastructure component).</p>
 <p><strong>Cross-team visibility</strong>: seeing that another team has NOT been alerted for what appears to be their component&#39;s fault is as useful as seeing that they have been. Early cross-team coordination accelerates diagnosis.</p>
 <p><strong>Dummy escalator configs</strong>: &quot;system of record&quot; use — logging privileged account access, periodic job runs, schema migration events — without any human receiving those notifications. Provides an auditable history alongside real incidents.</p>
 <p><strong>Key insight</strong>: postmortems provide deep insight per incident; outage tracking provides breadth across all incidents. Both are necessary.</p>
-<h3>Chapter 17 — Testing for Reliability</h3>
+<h3 id="chapter-17-testing-for-reliability">Chapter 17 — Testing for Reliability</h3>
 <p>Testing as the mechanism for quantifying confidence in a system&#39;s future reliability. Two sources of confidence: (1) monitoring historic behaviour; (2) testing-based predictions — valid only if the system is unchanged, or if every change is fully described and its uncertainty analysed.</p>
 <p><strong>Testing and MTTR</strong>: tests that block a push catch bugs with <em>zero MTTR</em> — the bug never reaches production. More zero-MTTR catches → higher MTBF experienced by users. Monitoring catches bugs with non-zero MTTR (detection + mitigation time).</p>
 <p><strong>Traditional test hierarchy</strong>: unit tests (milliseconds, cheap) → integration tests (component assembly; dependency injection for mocks) → system tests: smoke (critical-path sanity), performance (regression in response time or resource usage), regression (prevent known bugs re-entering). Cost increases dramatically up the stack; mindfulness of test cost is essential.</p>
@@ -544,7 +555,7 @@
 <p><strong>Configuration file risk management</strong>: (1) MTTR-purpose configs — changed only on failure; release cadence slower than MTBF; (2) frequently-changed configs — must be treated as application releases with equivalent testing; if not, they dominate site reliability negatively. Break-glass mechanism should be auditable and should asynchronously run the release tests, back-annotating the push with any failures.</p>
 <p><strong>SRE tools testing</strong>: automation tools operate outside the mainstream API and have a different risk profile. &quot;Barrier defense&quot; pattern: mark a replica as unhealthy (barrier) before running risky maintenance software; only unhealthy replicas are accessible to the tool; remove barrier via health-check tool to release back into production.</p>
 <p><strong>Statistical testing</strong> (Chaos Monkey, Jepsen, fuzzing): not repeatable, but useful for finding higher-order bugs. Log the random seed or action sequence immediately; replay to characterise the fault before claiming it&#39;s fixed.</p>
-<h3>Chapter 22 — Addressing Cascading Failures</h3>
+<h3 id="chapter-22-addressing-cascading-failures">Chapter 22 — Addressing Cascading Failures</h3>
 <p>Cascading failure occurs when a component fault increases load on surviving components, causing them to fail too — creating a positive feedback loop that can collapse the whole system. It is distinct from a single-component failure: the failure mechanism is self-reinforcing.</p>
 <p><strong>Resource exhaustion cascade mechanisms</strong>: overloaded servers take longer to process requests → in-flight requests consume more RAM → cache hit rate falls → more requests reach the backend → backend becomes more overloaded. GC languages exhibit the GC death spiral: CPU exhaustion → longer GC pauses → slower throughput → more RAM used → more frequent GC. Service unavailability snowball: if 10% of servers fail, survivors handle 11% more load; this may tip them over their limit, causing more failures, until even dropping back to 90% load doesn&#39;t help because only 10% of capacity remains.</p>
 <p><strong>Queue management</strong>: short queues are better — they reduce average response time, which reduces resource consumption during overload. Under sustained overload, use LIFO or CoDel (Controlled Delay) queue discipline rather than FIFO. FIFO is the worst choice under overload: the front of the queue contains requests that have been waiting longest and have most likely timed out on the client side — completing them wastes resources on results that will be discarded.</p>
@@ -560,7 +571,7 @@
 <p><strong>&quot;Always go downward in the stack&quot;</strong>: communication should only flow from higher-level services to lower-level dependencies, never laterally between services at the same tier. Intra-tier calls create hidden dependency cycles that can produce distributed deadlocks.</p>
 <p><strong>Testing for cascading failures</strong>: test <em>past</em> the breaking point, not just up to capacity. Test both gradual load increases and impulse loads (sudden large spikes). Without impulse testing, you don&#39;t know how the system behaves when it first tips over.</p>
 <p><strong>Immediate mitigation steps</strong>: (1) add capacity/replicas; (2) stop health-check-driven kills if they&#39;re removing servers faster than the cascade requires; (3) drop traffic to ~1% to let the system stabilise, then ramp up gradually; (4) use server-wide retry budget to suppress retry storms.</p>
-<h3>Chapter 23 — Reliable Product Launches at Scale (Distributed Consensus)</h3>
+<h3 id="chapter-23-reliable-product-launches-at-scale-distributed-consensus">Chapter 23 — Reliable Product Launches at Scale (Distributed Consensus)</h3>
 <p>The chapter presents distributed consensus as the foundation of reliable coordination, via three case studies of ad hoc coordination failures before surveying the correct approach.</p>
 <p><strong>Case studies of ad hoc coordination failure</strong>:</p>
 <ol>
@@ -576,7 +587,7 @@
 <p><strong>Replica placement</strong>: minimise failure domain overlap (different racks, switches, power domains). Trade-off: geographically distributed replicas increase fault tolerance but increase consensus latency. Hierarchical quorums (9-replica cross-region deployment) can reduce latency vs. flat quorums.</p>
 <p><strong>Linchpin replica problem</strong>: if a 5-replica deployment has one replica at the centre of the network topology, losing that replica may effectively partition the cluster — even though majority quorums technically still exist. Placement must account for network topology, not just count.</p>
 <p><strong>Monitoring for consensus systems</strong>: member count and health; number of lagging replicas (count + bytes behind); whether a leader currently exists; leader change rate (instability signal); consensus transaction number (must increase monotonically — a non-increasing transaction number is a bug); proposal counts; throughput and latency.</p>
-<h3>Chapter 24 — Distributed Periodic Scheduling with Cron</h3>
+<h3 id="chapter-24-distributed-periodic-scheduling-with-cron">Chapter 24 — Distributed Periodic Scheduling with Cron</h3>
 <p>Classical cron runs on a single machine: a crond daemon loads the crontab schedule and fires jobs. Its reliability is bounded by the machine it runs on — a single hardware failure takes the entire cron service down.</p>
 <p><strong>Distributed cron design</strong>: decouple the cron service from individual machines by running it on multiple replicas inside a datacenter scheduler (Borg). Use Paxos to maintain consistent state across replicas. A single leader is the only replica allowed to launch jobs and modify shared state; followers track all state changes and are ready to become leader.</p>
 <p><strong>Idempotency and the &quot;fail closed&quot; principle</strong>: cron jobs vary enormously in their tolerance for duplicate or skipped launches. A garbage collection job can run twice safely; a payroll job or newsletter mailing cannot. When in doubt, prefer <em>skipping</em> a launch over risking a <em>double launch</em> — recovering from a skip is feasible; recovering from a double launch may be impossible. This &quot;fail closed&quot; orientation is built into the architecture.</p>
@@ -585,7 +596,7 @@
 <p><strong>State storage trade-offs</strong>: Paxos logs stored on local disk of each replica (3 replicas = 3 copies); snapshots stored on local disk <em>and</em> backed up to a distributed filesystem. Logs are acceptable to lose (bounded, bounded-in-time loss); snapshots are critical (losing all snapshots means starting from zero). New replicas fetch state from a running replica over the network, making rescheduling to a new machine trivial.</p>
 <p><strong>Thundering herd mitigation</strong>: when many teams schedule daily jobs at midnight, the datacenter faces simultaneous resource spikes. The crontab format is extended with a <code>?</code> wildcard: &quot;run at any value in this range.&quot; The cron service hashes the job&#39;s configuration to deterministically pick a value within the range, distributing launches more evenly across the time window.</p>
 <p><strong>Leader failover time</strong>: must converge faster than one minute (the smallest cron interval) to avoid missing or double-launching a job.</p>
-<h3>Chapter 25 — Data Processing Pipelines</h3>
+<h3 id="chapter-25-data-processing-pipelines">Chapter 25 — Data Processing Pipelines</h3>
 <p>Data pipelines transform an input dataset to an output dataset, typically via a chain of programs whose outputs feed the next stage (pipeline depth = number of chained programs). Initially reliable when well-tuned; fragile as organic growth changes input volumes and execution patterns.</p>
 <p><strong>Hanging chunk problem</strong>: &quot;embarrassingly parallel&quot; algorithms partition input into chunks. When a chunk requires disproportionate resources (e.g., a very large customer in a customer-partitioned workload), the entire pipeline is blocked on the worst-case chunk. The naive response — kill and restart the job — discards all completed work because periodic pipelines typically lack checkpointing.</p>
 <p><strong>Thundering herd in batch scheduling</strong>: a large periodic pipeline can simultaneously start thousands of workers. Misconfigured retry logic compounds the problem: failed workers retry immediately, multiplying load on cluster services. Adding more workers (the intuitive response) makes it worse.</p>
@@ -594,7 +605,7 @@
 <p><strong>Workflow (Google&#39;s continuous pipeline system)</strong>: a leader-follower system with four correctness guarantees: (1) configuration tasks act as barriers — workers must complete the previous configuration&#39;s tasks before proceeding; (2) each work unit carries a unique lease — only the lease holder may commit; (3) worker output files are uniquely named — orphaned workers cannot overwrite valid work; (4) each task carries a server token — prevents a misconfigured Task Master from corrupting the pipeline.</p>
 <p>Workers are entirely stateless (can be killed at any time); the Task Master holds pointers to work units in memory with synchronous journalling to disk. For business continuity across datacenter failures, each local Workflow uses Chubby for leader election and journals to Spanner as a globally consistent (low-throughput) log; reference tasks in a global Workflow track in-flight work across sites.</p>
 <p><strong>Key recommendation</strong>: if a data processing problem is inherently continuous or will grow to become continuous, do not use a periodic pipeline. The transition cost later is high and usually forced at the worst time. Design for continuous processing from the start.</p>
-<h3>Chapter 26 — Data Integrity: What You Read Is What You Wrote</h3>
+<h3 id="chapter-26-data-integrity-what-you-read-is-what-you-wrote">Chapter 26 — Data Integrity: What You Read Is What You Wrote</h3>
 <p>Data integrity means that users can access their data and that the data is correct. These are two distinct properties: data can be perfectly preserved but inaccessible, or corrupted but accessible. Both are failures from the user&#39;s perspective.</p>
 <p><strong>Replication is not recoverability.</strong> Replication propagates corruption to all replicas before the problem is detected. If a bug deletes 10 rows per minute and replication is synchronous, all replicas have lost the same data within seconds. Backups are the defence that replication cannot provide.</p>
 <p><strong>The failure mode matrix</strong>: data integrity failures occur across three dimensions — <em>root cause</em> (user action, operator error, application bug, infrastructure bug, hardware fault, site catastrophe), <em>scope</em> (widespread vs. narrow), and <em>rate</em> (big-bang vs. creeping). Google&#39;s study of 19 recovery events found that software bugs causing deletion or referential integrity loss were the most common cause; the most insidious were low-grade, creeping losses discovered weeks to months after the bug shipped.</p>
@@ -608,7 +619,7 @@
 <p><strong>Point-in-time recovery</strong> (&quot;time-travel&quot;): for creeping corruption bugs, recovering to a single snapshot is insufficient — different subsets of data may need to be recovered to different timestamps. This is the most complex and expensive recovery scenario; deep backup retention (30–90 days at Google) is needed to make it feasible.</p>
 <p><strong>At exabyte scale</strong>: iterating over petabytes of data to validate or copy takes decades serially. The approach: establish <em>trust points</em> (immutable data segments whose content is verified and frozen by age); make incremental backups of only data changed since the last backup; parallelise validation and copying by sharding across many tasks with independent data ranges.</p>
 <p><strong>Google Music case study</strong>: a refactored data deletion pipeline introduced a race condition between pipeline stages. The bug ran silently for a month, deleting ~600K audio references. Recovery required recalling 5,337 backup tapes from offsite storage — 1.5 petabytes, 7 days of recovery work. Root cause: pipeline stages designed to run in strict succession began taking longer as data volume grew, invalidating the simplifying timing assumptions.</p>
-<h3>Chapter 27 — Reliable Product Launches at Scale</h3>
+<h3 id="chapter-27-reliable-product-launches-at-scale">Chapter 27 — Reliable Product Launches at Scale</h3>
 <p><strong>Launch Coordination Engineers (LCE)</strong>: a dedicated consulting team within SRE specialising in the technical side of product launches. Draw on cross-product experience from hundreds of launches. Role: audit services, act as liaison between teams, drive technical momentum, gatekeep launches deemed unsafe, educate on best practices.</p>
 <p><strong>Launch checklist principles</strong>: every question must be substantiated by a prior launch disaster; every instruction must be concrete and actionable. LCEs curate the checklist continuously; adding a question once required VP approval. Checklist themes: architecture &amp; dependencies, integration, capacity planning, failure modes, client behaviour, processes &amp; automation, development process, external dependencies, rollout planning.</p>
 <p><strong>Convergence on common infrastructure</strong>: the checklist drives teams toward shared rate-limiting, binary release, and data-push infrastructure — a line saying &quot;use system X&quot; replaces an entire checklist section.</p>
@@ -616,7 +627,7 @@
 <p><strong>Abusive client behaviour</strong>: clients with scheduled background operations (sync, heartbeat, update check) must inject randomness into all timing — without jitter, every instance fires at once (thundering herd). Exponential backoff on retry must also be jittered to prevent synchronised retry bursts after a brief outage.</p>
 <p><strong>Feature flag frameworks</strong>: roll out features to a fraction of traffic while the rest sees the old behaviour; requirements: parallel experiments, gradual percentage increase, automatic failure isolation, instant revert capability, A/B measurement. Two classes: UI rewriters (simpler, stateless) and request routers (stateful, supports arbitrary business logic). Dormant code paths can be shipped ahead of activation, simplifying rollback.</p>
 <p><strong>Three things LCE couldn&#39;t solve</strong>: (1) architectural rearchitecting required when a service scales by more than 100×; (2) operational load accumulation over time; (3) infrastructure churn — migration debt when infrastructure APIs break backward compatibility. These require company-wide engineering efforts beyond a consulting team.</p>
-<h3>Chapter 28 — Accelerating SREs to On-Call and Beyond</h3>
+<h3 id="chapter-28-accelerating-sres-to-on-call-and-beyond">Chapter 28 — Accelerating SREs to On-Call and Beyond</h3>
 <p>Training SREs for on-call requires structure, not chaos. The &quot;trial by fire&quot; model (assigning all incoming tickets to new hires so they learn by reacting) produces operations-focused engineers rather than SREs, and likely alienates capable engineers along the way.</p>
 <p><strong>Anti-pattern vs. recommended practices</strong>:</p>
 <div class="table-wrapper"><table>
@@ -651,7 +662,7 @@
 <p><strong>On-call learning checklist</strong>: a structured reading and comprehension list ordered by system (e.g., from how a query enters the system → frontend → mid-tier → infrastructure → cross-cutting). Each section lists expert contacts, key documentation, required knowledge, and comprehension questions. Students pass section-by-section; passing unlocks deeper production access (&quot;powerups&quot;). The checklist is a living document — new hires are tasked with updating the most outdated sections, turning onboarding into documentation apprenticeship.</p>
 <p><strong>Shadow on-call</strong>: configure alerts to copy incoming pages to the new SRE (initially business hours only). They observe an outage as it unfolds rather than reconstructing it afterward. The experienced on-caller reviews reasoning post-incident. Final step: reverse shadow — new SRE becomes primary while the senior lurks and intervenes only if needed.</p>
 <p><strong>&quot;Scale your humans faster than you scale your machines.&quot;</strong></p>
-<h3>Chapter 29 — Dealing with Interrupts</h3>
+<h3 id="chapter-29-dealing-with-interrupts">Chapter 29 — Dealing with Interrupts</h3>
 <p>Operational load falls into three categories: <em>pages</em> (production alerts, response in minutes), <em>tickets</em> (customer requests, response in hours/days), and <em>ongoing operational responsibilities</em> (rollouts, ad hoc queries).</p>
 <p><strong>Cognitive flow state</strong>: engineers produce their best work when in a state of deep focus — time distortion, clear goals, immediate feedback. Interrupts break this state. A 20-minute interrupt entails two context switches and realistically costs several hours of productive work.</p>
 <p><strong>Polarise time</strong>: when an engineer arrives, they should know whether the day is project-work or interrupt-handling — not a mixture of both. The two modes are incompatible. The minimum useful granularity is a day; a week is better. An SRE on on-call should treat the week as entirely written off for project work. If a project is too important to lose a week, assign someone else to the on-call shift.</p>
@@ -663,7 +674,7 @@
 </ul>
 <p><strong>Reduce interrupt load at the root</strong>: teams that rotate through interrupt duty without analysing what caused the tickets repeat the same gauntlet every rotation. Conduct regular scrubs to identify classes of tickets with fixable root causes. Silence the alert until the fix is complete; this both relieves the current handler and creates a deadline for the fix.</p>
 <p><strong>Do not be on interrupts unless assigned to it.</strong> Engineers who pick up tickets when not assigned inadvertently mask the true interrupt volume, which prevents the team from making the staffing adjustments needed to make the load manageable.</p>
-<h3>Chapter 32 — The Evolving SRE Engagement Model</h3>
+<h3 id="chapter-32-the-evolving-sre-engagement-model">Chapter 32 — The Evolving SRE Engagement Model</h3>
 <p>SRE engagement with a service has evolved through three distinct models, each addressing the previous model&#39;s scaling limitations.</p>
 <p><strong>Simple PRR (Production Readiness Review) model</strong>: the default engagement path for services already in production. A PRR follows five phases — Engagement (scoping, SLO agreement), Analysis (checklist-driven review against SRE standards), Improvements/Refactoring (prioritised fixes, jointly executed), Training (SRE team onboarding to the service), and Onboarding (progressive transfer of production responsibility). Areas examined: system architecture and dependencies, instrumentation and monitoring, emergency response, capacity planning, change management, performance (availability/latency/efficiency).</p>
 <p>PRRs are resource-intensive: typically 2–3 SREs for 2–3 quarters. This creates a serialisation bottleneck — not all services can be onboarded, and lead times are measured in quarters.</p>
@@ -677,7 +688,7 @@
 <li><em>Automatic improvement propagation</em>: improvements to framework modules benefit all services using the framework without individual service work</li>
 </ul>
 <p>The frameworks model resolves the fundamental SRE staffing constraint: the number of services requiring SRE expertise can grow without requiring a proportional growth in SRE headcount.</p>
-<h3>Chapter 33 — Lessons Learned from Other Industries</h3>
+<h3 id="chapter-33-lessons-learned-from-other-industries">Chapter 33 — Lessons Learned from Other Industries</h3>
 <p>A comparative survey of SRE principles across high-reliability industries: nuclear (US Navy, UK civil nuclear), aviation/air traffic control, telecommunications/E911, medical devices (LASIK), diamond manufacturing, and proprietary trading.</p>
 <p><strong>Four SRE principles across all industries</strong>:</p>
 <ol>
@@ -691,7 +702,7 @@
 </li>
 </ol>
 <p><strong>Key distinction</strong>: Google has a higher velocity appetite than almost any other high-reliability industry. Most industries surveyed accept much slower rates of change because the consequences of failure include loss of life. Google&#39;s error budget mechanism — explicitly scoping &quot;how unreliable is acceptable&quot; — is a direct response to this: it allows calculated risk-taking at high velocity while maintaining accountability. Error budgets are Google&#39;s adaptation of well-known reliability principles to a context where lives are not directly at stake and velocity has competitive value.</p>
-<h3>Chapter 30 — Embedding an SRE to Recover from Operational Overload</h3>
+<h3 id="chapter-30-embedding-an-sre-to-recover-from-operational-overload">Chapter 30 — Embedding an SRE to Recover from Operational Overload</h3>
 <p>When a dev team is stuck in pure ops mode — every engineer consumed by alert-handling and ticket-triage — the SRE engagement model shifts from standard service ownership to a temporary embedded model: one SRE joins the team to drive structural improvement, not to clear tickets.</p>
 <p><strong>Ops mode vs nonlinear scaling</strong>: a team in ops mode is a team whose operational load grows linearly with user count. This means headcount must scale with users — the opposite of SRE&#39;s mandate. The embedded SRE&#39;s job is to break that linear dependency.</p>
 <p><strong>Three phases</strong>:</p>
@@ -711,7 +722,7 @@
 <p><strong>SLO is the single most important lever</strong>: an SLO gives the team a shared objective definition of &quot;working well enough.&quot; Without it, every ticket is a crisis and every metric spike demands a response. With it, the team can triage against a concrete standard and push back on unreasonable demands.</p>
 <p><strong>Don&#39;t fix things yourself</strong>: an embedded SRE who resolves issues directly may improve the dashboard temporarily but leaves the team no more capable. Explaining the reasoning behind a fix is as important as the fix itself. Teach the team to fish.</p>
 <p><strong>Bad Apple Theory is false</strong>: the embedded SRE will encounter team members who appear to be the cause of many problems. In almost every case, investigation reveals systemic causes: unclear processes, lack of tooling, inadequate training. The systemic view is always more productive than the individual-blame view.</p>
-<h3>Chapter 31 — Communication and Collaboration in SRE</h3>
+<h3 id="chapter-31-communication-and-collaboration-in-sre">Chapter 31 — Communication and Collaboration in SRE</h3>
 <p><strong>Production meetings</strong>: the primary recurring communication mechanism between SRE teams and their partner dev teams. Key properties:</p>
 <ul>
 <li><em>Frequency</em>: weekly; duration 30–60 minutes</li>
@@ -743,7 +754,7 @@
 </ul>
 <p><strong>SRE-Dev collaboration is most effective at the design phase</strong>, before any code has been committed. Retrofitting SRE requirements (observability, load-shedding, graceful degradation, SLO alignment) into an existing system is significantly harder than designing for them. The SRE consulting model (LCE, design review participation) is structurally designed to create this early contact.</p>
 <p><strong>DFP → F1 migration case study</strong>: the Double Filtering Pipeline (DFP) was a batch-processing service that reached the limits of its architecture as query volume grew. Rather than patching it, the team designed F1 (Flexible Filtering) — a continuous, event-driven replacement with fundamentally different performance characteristics. The migration required cross-team coordination (SRE + multiple dev teams sharing the infrastructure), explicit SLOs for the transition period, and a multi-stage cutover plan. The key lesson: cross-team migrations of this scale succeed only when roles are clearly defined, when each team&#39;s changes are independently deployable, and when the SLO for the system is explicit enough to measure whether the migration is going well.</p>
-<h3>Chapter 34 — Conclusion</h3>
+<h3 id="chapter-34-conclusion">Chapter 34 — Conclusion</h3>
 <p>Benjamin Lutch (VP, Site Reliability Engineering) synthesises SRE&#39;s evolution through an aviation analogy.</p>
 <p><strong>The 747 analogy</strong>: a hundred years ago, a small plane had a single engine, fragile systems, and a pilot who also served as mechanic. Today, a 747 carries hundreds of passengers and tons of cargo across 6,000 miles, but still has just two pilots. Every other dimension — safety, capacity, speed, reliability — has scaled enormously. How? The interface to the underlying systems was designed by people who understood complex systems and how to present them to humans in a way that is both consumable and scalable. The underlying systems have all the same properties the book has described: availability, performance optimisation, change management, monitoring and alerting, capacity planning, emergency response.</p>
 <p><strong>SRE&#39;s goal</strong> mirrors this: an SRE team should be as compact as possible, operating at a high level of abstraction, relying on backup systems and thoughtful APIs. Simultaneously, SREs must have comprehensive, hands-on knowledge of how systems operate, fail, and should be responded to — knowledge that only comes from running them day-to-day.</p>
@@ -758,7 +769,7 @@
 <li><em>Overloads</em>: graceful degradation first; load shedding second; every client must implement exponential backoff with jitter</li>
 <li><em>SRE teams</em>: at most 50% toil; at least 8 engineers for sustainable on-call; at most 2 paging events per 12-hour shift; weekly production meetings</li>
 </ul>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;Hope is not a strategy.&quot; (traditional SRE saying, ch. 1 epigraph)</p>
 </blockquote>
@@ -771,7 +782,7 @@
 <blockquote>
 <p>&quot;A system that requires a human to read an email and decide whether or not some type of action needs to be taken in response is fundamentally flawed.&quot; (ch. 1)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
 <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
@@ -784,7 +795,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li><li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+        <ul><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/availability.html">Availability</a></li><li><a href="../streams/batch-processing.html">Batch Processing</a></li><li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li><li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li><li><a href="../authors/chris-jones.html">Chris Jones</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li><li><a href="../distributed/load-balancing.html">Load Balancing</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../concepts/software-complexity.html">Software Complexity</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

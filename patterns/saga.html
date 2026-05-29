@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,15 +309,29 @@
       <h1>Saga Pattern</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 15<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/transactions.html">transactions</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li><li><a class="tag-chip" href="../tags/consistency.html">consistency</a></li><li><a class="tag-chip" href="../tags/coordination.html">coordination</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A Saga is a sequence of local transactions used to implement a long-running distributed transaction without 2PC. Each local transaction T₁…Tₙ is followed by a compensating transaction C₁…Cₙ that can undo its effects. On failure at step i, the saga executes the compensating chain Cᵢ₋₁ → ... → C₁ to restore consistency.</p>
-<h2>Structure</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#structure">Structure</a></li><li><a href="#the-apology-model">The &quot;Apology&quot; Model</a></li><li><a href="#orchestration-vs-choreography">Orchestration vs. Choreography</a></li><li><a href="#the-isolation-problem">The Isolation Problem</a></li><li><a href="#compensating-transactions">Compensating Transactions</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#relationship-to-outbox-pattern">Relationship to Outbox Pattern</a></li><li><a href="#semantic-vs-implementation-coupling">Semantic vs Implementation Coupling</a></li><li><a href="#orchestration-vs-choreography-extended-trade-offs">Orchestration vs Choreography: Extended Trade-offs</a></li><li class="toc-sub"><a href="#workflow-state-management-for-choreography">Workflow state management for choreography</a></li><li><a href="#saga-types-the-eight-cell-taxonomy">Saga Types: the Eight-Cell Taxonomy</a></li><li><a href="#epic-saga-pitfalls">Epic Saga Pitfalls</a></li><li><a href="#state-machine-implementation">State Machine Implementation</a></li><li><a href="#annotation-based-governance">Annotation-Based Governance</a></li><li><a href="#compensation-workflows-bellemare">Compensation Workflows (Bellemare)</a></li><li><a href="#saga-and-process-manager-ddd-perspective">Saga and Process Manager (DDD Perspective)</a></li><li class="toc-sub"><a href="#saga-simple">Saga (Simple)</a></li><li class="toc-sub"><a href="#process-manager-complex">Process Manager (Complex)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A Saga is a sequence of local transactions used to implement a long-running distributed transaction without 2PC. Each local transaction T₁…Tₙ is followed by a compensating transaction C₁…Cₙ that can undo its effects. On failure at step i, the saga executes the compensating chain Cᵢ₋₁ → ... → C₁ to restore consistency.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Sagas trade isolation for availability.</strong> Unlike 2PC, intermediate state is visible to concurrent operations — there is no atomic boundary. &quot;Apology&quot; semantics (compensations) replace strict atomicity.</li>
+<li><strong>Orchestration vs choreography is the central decision.</strong> Orchestration centralises workflow state and error handling but couples participants to the coordinator. Choreography decouples but distributes state and complicates debugging. Team ownership decides: one team owns the whole saga → orchestrate; multiple teams own different steps → choreograph.</li>
+<li><strong>The &quot;saga or fix granularity?&quot; question comes first.</strong> Richards &amp; Ford&#39;s position: distributed transactions are usually a service-boundary problem. Don&#39;t reach for saga until you&#39;ve checked that the services genuinely need to be separate.</li>
+<li><strong>Compensations must be idempotent and may not be perfect inverses.</strong> &quot;Refund a charge&quot; is not the same as &quot;reverse a charge&quot; — the customer sees both. Some failures need business-level workarounds (credits, apologies) rather than technical rollback.</li>
+<li><strong>&quot;Saga&quot; is broader than the original definition.</strong> <em>Software Architecture: The Hard Parts</em> uses it for any distributed workflow pattern, deriving 8 named types from three binary dimensions (sync/async × atomic/eventual × orchestrated/choreographed). The traditional compensating-transaction saga is one cell in that taxonomy.</li>
+<li><strong>State machines beat compensating chains.</strong> Model each saga as an FSM with explicit states and durable checkpoints. Current state is immediately queryable; compensations are FSM transitions toward terminal failure states, not a separate rollback path.</li>
+<li><strong>Process Manager ≠ Saga.</strong> DDD&#39;s distinction: a saga maps events to commands with no branching; a process manager has conditional logic and tracks explicit state. Trip booking is the canonical process manager; payment-after-order is a saga.</li>
+</ul>
+<h2 id="structure">Structure</h2>
 <pre><code>SUCCESS:  T₁ → T₂ → T₃ → ... → Tₙ ✓
 
 FAILURE at T₃:
@@ -318,10 +339,10 @@ FAILURE at T₃:
                         ↓
                    C₂ → C₁ (compensate)
 </code></pre>
-<h2>The &quot;Apology&quot; Model</h2>
+<h2 id="the-apology-model">The &quot;Apology&quot; Model</h2>
 <p>Vitillo&#39;s framing (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13): each local transaction Tᵢ <em>assumes</em> all other local transactions will succeed — it is an optimistic guess. When the guess is wrong, a mistake has been made, and the compensating transactions are the system&#39;s &quot;apology&quot; for the inconsistency caused. This is analogous to airline overbooking: the airline assumes every booking is good; when it&#39;s not, it compensates passengers rather than preventing the situation in advance.</p>
 <p>This framing clarifies why sagas cannot provide isolation: the &quot;apology&quot; can only come <em>after</em> the intermediate state has been visible.</p>
-<h2>Orchestration vs. Choreography</h2>
+<h2 id="orchestration-vs-choreography">Orchestration vs. Choreography</h2>
 <p><strong>Orchestrator (centralised)</strong>:</p>
 <ul>
 <li>A single coordinator process drives the saga: issues commands to participants, tracks state, triggers compensations on failure.</li>
@@ -336,7 +357,7 @@ FAILURE at T₃:
 <li>No central coordinator; each participant knows what to do next based on events received.</li>
 <li>More loosely coupled; harder to track overall saga state; harder to debug.</li>
 </ul>
-<h2>The Isolation Problem</h2>
+<h2 id="the-isolation-problem">The Isolation Problem</h2>
 <p><strong>Sagas do not provide isolation</strong> — unlike 2PC, intermediate state is visible to concurrent transactions between T₁ committing and Tₙ committing.</p>
 <p>Example: In a flight booking saga, seats are marked &quot;reserved&quot; (T₁), payment charged (T₂), reservation confirmed (T₃). Between T₁ and T₃, another user might see a seat as taken that hasn&#39;t been fully committed.</p>
 <p>Mitigations:</p>
@@ -346,14 +367,14 @@ FAILURE at T₃:
 <li><strong>Pivot transactions</strong>: designate a point of no return; compensations only go backwards from before the pivot.</li>
 <li><strong>Accept the anomaly</strong>: for many use cases, brief inconsistency is acceptable (e.g., &quot;reservation pending&quot;).</li>
 </ul>
-<h2>Compensating Transactions</h2>
+<h2 id="compensating-transactions">Compensating Transactions</h2>
 <p>Compensations must be:</p>
 <ul>
 <li><strong>Idempotent</strong>: the orchestrator may retry compensations if they fail.</li>
 <li><strong>Semantically undone</strong>: compensation is not always a logical inverse. &quot;Refund a charge&quot; is not the same as &quot;reverse a charge&quot; — the customer sees both on their statement.</li>
 </ul>
 <p>Not all operations can be compensated perfectly. Some sagas require business-level workarounds (e.g., issuing a credit rather than reversing a charge).</p>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <p>Sagas are the right choice when:</p>
 <ul>
 <li>A business process spans multiple services or databases.</li>
@@ -365,17 +386,17 @@ FAILURE at T₃:
 <li>Operations that require strict isolation (financial systems requiring serializability across services).</li>
 <li>Cases where compensations are impossible or semantically unacceptable.</li>
 </ul>
-<h2>Relationship to Outbox Pattern</h2>
+<h2 id="relationship-to-outbox-pattern">Relationship to Outbox Pattern</h2>
 <p>The <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> is typically used <em>within</em> a saga to guarantee that each local transaction reliably publishes its event/command to the next participant. Without the outbox, message publication can be lost on crash, leaving the saga in a stuck state.</p>
-<h2>Semantic vs Implementation Coupling (SATH)</h2>
-<p><em>Software Architecture: The Hard Parts</em> (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11) distinguishes two forms of coupling in distributed workflows:</p>
-<p><strong>Semantic coupling</strong> (domain-mandated): coupling imposed by the business process itself — if a payment must confirm before an order can ship, that temporal dependency is semantic. Architects cannot remove semantic coupling; it is inherent to the domain.</p>
-<p><strong>Implementation coupling</strong> (architect choices): how the coordination is implemented — synchronous vs asynchronous, atomic vs eventual, orchestrated vs choreographed. These are the architect&#39;s knobs. Architects can reduce implementation coupling by choosing async over sync, eventual over atomic, and choreography over orchestration — but they can never reduce semantic coupling below what the domain requires.</p>
-<blockquote>
-<p>Key insight: architects can only minimise <em>implementation</em> coupling. Semantic coupling is given by the problem, not a choice.</p>
-</blockquote>
-<h2>Orchestration vs Choreography (Extended Trade-offs)</h2>
-<p><em>Software Architecture: The Hard Parts</em> (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11) provides detailed trade-off analysis beyond the basic coordination dimension:</p>
+<h2 id="semantic-vs-implementation-coupling">Semantic vs Implementation Coupling</h2>
+<p>Two coupling layers operate in any distributed workflow (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11):</p>
+<ul>
+<li><strong>Semantic coupling</strong> is domain-mandated. If payment must confirm before shipping, that temporal dependency is semantic. Architects cannot remove it; it&#39;s inherent to the problem.</li>
+<li><strong>Implementation coupling</strong> is architect-chosen. Sync vs async, atomic vs eventual, orchestrated vs choreographed. These are the knobs.</li>
+</ul>
+<p>The architect&#39;s job is to minimise <em>implementation</em> coupling without falling below what semantic coupling actually requires. Choosing async over sync, eventual over atomic, and choreography over orchestration all reduce implementation coupling — but if the domain mandates atomicity, no implementation choice removes it.</p>
+<h2 id="orchestration-vs-choreography-extended-trade-offs">Orchestration vs Choreography: Extended Trade-offs</h2>
+<p>Beyond the basic centralised-vs-decentralised dimension, the trade-offs are richer (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11):</p>
 <p><strong>Orchestration advantages</strong>:</p>
 <ul>
 <li>Centralised error handling — the orchestrator knows when any step fails and can trigger compensations</li>
@@ -401,14 +422,14 @@ FAILURE at T₃:
 <li>Hard to track — &quot;what is the current state of order #12345?&quot; requires querying multiple services or event logs</li>
 <li>Complex error handling — compensation logic is distributed; coordinating rollback is hard</li>
 </ul>
-<h3>Workflow State Management Options for Choreography</h3>
-<p>When choreography is chosen but workflow state visibility is needed, three approaches exist (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11):</p>
+<h3 id="workflow-state-management-for-choreography">Workflow state management for choreography</h3>
+<p>Choreography gives up centralised workflow state. When state visibility is needed anyway, three approaches exist (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 11):</p>
 <p><strong>1. Front controller</strong>: designate the first service in the choreography as the state owner. It tracks which downstream events it has received and infers overall workflow state. Simple but creates awkward coupling: the first service must know about all downstream services.</p>
 <p><strong>2. Stateless choreography</strong>: rely solely on events and queries; no persistent workflow state. To answer &quot;what is the current state of this workflow?&quot;, execute a saga state machine query — reconstruct the current state by querying all participating services. Can be expensive at query time but avoids persistent state coupling.</p>
 <p><strong>3. Stamp coupling</strong>: include the entire workflow state in each message or event (the &quot;stamp&quot;). The next service reads the workflow state from the message, updates its portion, and passes the updated state forward. Simple to implement and avoids external state queries. Drawback: increases message size; all workflow state travels with every message.</p>
 <p><strong>Stamp coupling</strong> is the preferred pragmatic approach for workflows where the overall state is small and message size is not a constraint.</p>
-<h2>Saga Types Taxonomy (SATH)</h2>
-<p><em>Software Architecture: The Hard Parts</em> (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 2, ch. 12) uses &quot;saga&quot; as a broad term for <em>any</em> distributed workflow pattern, not just eventually-consistent compensating transactions. The book derives a taxonomy from three interlocking dimensions of dynamic coupling:</p>
+<h2 id="saga-types-the-eight-cell-taxonomy">Saga Types: the Eight-Cell Taxonomy</h2>
+<p>The traditional saga (compensating transactions) is one cell in a broader space. Three interlocking dimensions of dynamic coupling generate 2³ = 8 distinct distributed-workflow patterns (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> chs. 2, 12):</p>
 <ol>
 <li><strong>Communication</strong>: synchronous vs asynchronous</li>
 <li><strong>Consistency</strong>: atomic vs eventual</li>
@@ -514,27 +535,21 @@ FAILURE at T₃:
 <p><strong>Patterns to avoid</strong>: Fantasy Fiction and Horror Story both combine asynchronous communication with atomic consistency — a combination that is extremely difficult to implement correctly (async + atomic requires distributed locking or distributed 2PC, which defeats the benefit of async). If you need async + atomic, use Parallel Saga (eventual) instead.</p>
 <p>The coupling level is a direct function of position in the 3D space: synchronous + atomic + orchestrated → very high coupling (Epic Saga); asynchronous + eventual + choreographed → very low coupling (Anthology Saga).</p>
 <p>The traditional saga (compensating transactions) maps most closely to the <strong>Epic Saga</strong> or <strong>Parallel Saga</strong> types depending on synchrony.</p>
-<h2>Epic Saga: Pitfalls and Compensations</h2>
-<p>The Epic Saga (sync + atomic + orchestrated) is the most commonly used type, but carries the most operational risk (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12):</p>
+<h2 id="epic-saga-pitfalls">Epic Saga Pitfalls</h2>
+<p>The Epic Saga (sync + atomic + orchestrated) is the most commonly used type and carries the most operational risk (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12):</p>
 <p><strong>No transaction isolation</strong>: between each local transaction step, intermediate state is visible to other operations. A saga that reserves inventory (step 1), charges a card (step 2), and confirms the order (step 3) will expose &quot;inventory reserved, payment pending&quot; as observable state. Concurrent requests may see this partial state.</p>
 <p><strong>Side effects during compensation</strong>: if a confirmation email was sent at step 3 and the saga must compensate at step 4, the email has already left the building. Compensation cannot undo side effects. Business-level workarounds (cancellation email, credit note) are required.</p>
 <p><strong>Compensation failures</strong>: compensating transactions can themselves fail. What happens when the compensating transaction for step 2 times out? The system must handle compensation failures idempotently, often by queueing retry attempts.</p>
-<h2>Saga State Machines</h2>
-<p>A finite state machine (FSM) approach to saga implementation is preferred over simple compensating transaction chains (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12):</p>
-<ul>
-<li>Each saga type is modelled as an FSM: explicit states (OrderInitiated, PaymentPending, PaymentFailed, OrderConfirmed, OrderCancelled), with transitions triggered by events or outcomes.</li>
-<li>The orchestrator checkpoints the current state to durable storage at each transition.</li>
-<li>FSM approach improves responsiveness: the current state is always immediately known without replaying the transaction history.</li>
-<li>Compensating transactions are modelled as FSM transitions toward terminal failure states, not as a separate compensating chain.</li>
-</ul>
-<h2>Saga Annotation Technique</h2>
-<p>In Java and C# ecosystems, custom annotations/attributes on service classes can declare which saga types a service participates in (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12):</p>
+<h2 id="state-machine-implementation">State Machine Implementation</h2>
+<p>A finite state machine (FSM) approach beats simple compensating transaction chains (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12). Each saga type is modelled as an FSM with explicit states (OrderInitiated, PaymentPending, PaymentFailed, OrderConfirmed, OrderCancelled) and transitions triggered by events or outcomes. The orchestrator checkpoints state to durable storage at each transition. Current state is immediately known without replaying history; compensations become FSM transitions toward terminal failure states rather than a separate rollback chain.</p>
+<h2 id="annotation-based-governance">Annotation-Based Governance</h2>
+<p>In Java and C# ecosystems, custom annotations on service classes can declare which saga types a service participates in (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 12):</p>
 <pre><code class="language-java">@SagaOrchestrator(sagaType = &quot;OrderFulfillment&quot;)
 @SagaParticipant(sagaType = &quot;OrderFulfillment&quot;)
 public class PaymentService { ... }
 </code></pre>
 <p>This serves as documentation and governance: it makes traceability explicit (which services participate in which sagas), enables impact analysis (which services are affected by a saga change), and can be used by tooling to generate saga dependency maps. It is an architectural governance mechanism, not a runtime mechanism.</p>
-<h2>Compensation Workflows (Bellemare)</h2>
+<h2 id="compensation-workflows-bellemare">Compensation Workflows (Bellemare)</h2>
 <p>Not all failure cases require strict rollback — sometimes a <strong>compensation workflow</strong> is more appropriate than a formal saga rollback (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 8).</p>
 <p>A compensation workflow accepts that a transaction cannot be cleanly reversed and instead applies a business-level remedy. Examples:</p>
 <ul>
@@ -550,9 +565,9 @@ public class PaymentService { ... }
 <blockquote>
 <p>Compensation workflows blur the technical/business boundary of distributed transactions. The architect must explicitly decide which failures are handled technically (saga rollback) and which are delegated to business operations (compensation workflow). Leaving this implicit leads to silent partial failures.</p>
 </blockquote>
-<h2>Saga and Process Manager (DDD Perspective)</h2>
+<h2 id="saga-and-process-manager-ddd-perspective">Saga and Process Manager (DDD Perspective)</h2>
 <p>Khononov (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 9) gives a DDD-centric treatment that distinguishes between two closely related patterns:</p>
-<h3>Saga (Simple)</h3>
+<h3 id="saga-simple">Saga (Simple)</h3>
 <p>In the DDD context, a saga is an event-driven coordinator for a <strong>long-running business process spanning multiple aggregates</strong>. It listens to domain events from participating aggregates and issues commands to other aggregates in response. It does not initiate itself — it is triggered by a domain event.</p>
 <p>Two implementations:</p>
 <ul>
@@ -563,7 +578,7 @@ public class PaymentService { ... }
 <blockquote>
 <p><strong>Don&#39;t use sagas to compensate for wrong aggregate boundaries.</strong> If two aggregates are so frequently coordinated that a saga seems necessary, this is usually a sign the aggregate boundary is wrong — they should be merged into one aggregate.</p>
 </blockquote>
-<h3>Process Manager (Complex)</h3>
+<h3 id="process-manager-complex">Process Manager (Complex)</h3>
 <p>A <strong>process manager</strong> is a saga that contains conditional branching logic (<code>if-else</code> statements). The distinction:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -597,55 +612,54 @@ public class PaymentService { ... }
 <p><strong>Example — trip booking</strong>: A trip booking process manager coordinates flights, hotels, and car rental. It is instantiated by a &quot;book trip&quot; command, not triggered by a single domain event. It tracks which bookings succeeded and applies different logic depending on which step failed (e.g., if the hotel fails after the flight succeeds, it must cancel the flight).</p>
 <p>The process manager is implemented as an aggregate — it has an ID, manages its own state transitions, and uses the outbox pattern to issue commands reliably.</p>
 <hr>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
 <th>Source</th>
-<th>Perspective</th>
+<th>Angle</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></td>
-<td>Saga structure, orchestration vs choreography, compensation, isolation problem, semantic locks</td>
+<td>Foundational treatment: structure, orchestration vs choreography, compensation, isolation problem, semantic locks (ch. 13).</td>
 </tr>
 <tr>
 <td><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a></td>
-<td>Emphasises the &quot;last resort&quot; framing: &quot;Don&#39;t do transactions in microservices — fix granularity instead!&quot; The saga pattern is for the exceptional case where two services genuinely need different operational characteristics but still have a transactional relationship. If sagas are the dominant feature, service granularity is wrong.</td>
+<td>&quot;Last resort&quot; framing — sagas are a signal that service granularity is wrong (ch. 17).</td>
 </tr>
 <tr>
 <td><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a></td>
-<td>Expands &quot;saga&quot; to mean any distributed workflow pattern; derives 8 named types from 3 binary dimensions (communication × consistency × coordination); provides full trade-off ratings (coupling, complexity, responsiveness, scale) for each type; introduces semantic vs implementation coupling distinction; workflow state management for choreography; Epic Saga pitfalls; saga FSM approach; annotation technique (ch. 2, 11, 12)</td>
+<td>Broadens &quot;saga&quot; to all distributed workflows; eight-cell taxonomy; semantic vs implementation coupling; FSM implementation; annotation governance (chs. 2, 11, 12).</td>
 </tr>
 <tr>
 <td><a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a></td>
-<td>EDM workflow perspective: choreographed sagas suitable only for simple 2–3 service transactions with stable ordering; orchestrated transactions preferred for complex workflows; God orchestrator anti-pattern (granular commands to minion services — breaks bounded contexts); compensation workflows as business-level alternative to technical rollback (ch. 8)</td>
+<td>EDM workflow perspective: choreography only for 2–3 service transactions; God orchestrator anti-pattern; compensation workflows as business-level remedy (ch. 8).</td>
 </tr>
 <tr>
 <td><a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a></td>
-<td>DDD-centric: saga as event-driven coordinator for multi-aggregate long-running processes (stateless or stateful); process manager as the conditional-branching extension; both implemented as aggregates using the outbox pattern; strong warning against using sagas to paper over wrong aggregate boundaries (ch. 9)</td>
+<td>DDD distinction between saga (no branching) and process manager (conditional, stateful, command-instantiated); both as aggregates using outbox; warning against sagas papering over wrong aggregate boundaries (ch. 9).</td>
 </tr>
 <tr>
 <td><a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a></td>
-<td>Migration-focused treatment (ch. 4): saga as the tool of last resort when a database must be split across a transactional boundary. Two recovery strategies: <em>backward recovery</em> (compensating/semantic rollbacks — preferred; e.g. &quot;cancel order&quot; not just &quot;delete record&quot;) and <em>forward recovery</em> (retry — when the operation must eventually succeed). Reorder saga steps to minimise rollback cost: put the most likely-to-fail steps first so fewer compensations are needed if they fail. Team ownership drives coordination choice: one team owns the whole saga → use orchestration (explicit state machine, easier to reason about); multiple teams own different steps → use choreography (event-driven, no single coordinator, each team owns their step). Require correlation IDs for choreographed sagas to track saga instances across services. Newman accepts that 2PC is sometimes the right answer for simple two-service cases — but for anything complex, sagas are the default.</td>
+<td>Migration-focused: backward vs forward recovery; team-ownership heuristic (one team → orchestrate, many teams → choreograph); step reordering to minimise compensation cost (ch. 4).</td>
 </tr>
 </tbody></table></div>
 <blockquote>
-<p><strong>Contradiction:</strong> Vitillo presents saga as a standard tool for cross-service transactions in distributed systems; Richards &amp; Ford treat it as a red flag that service boundaries need revisiting. The underlying advice is compatible — both agree saga adds complexity — but FOSA is more emphatic that it should be avoided by design.</p>
+<p><strong>Contradiction:</strong> Vitillo treats saga as a standard tool for cross-service transactions; Richards &amp; Ford treat it as a red flag. The underlying advice converges — both agree saga adds complexity — but FOSA is more emphatic that it should be avoided by design.</p>
 </blockquote>
 <blockquote>
-<p><strong>Vocabulary difference:</strong> SATH uses &quot;saga&quot; more broadly than the traditional definition (compensating transactions sequence). The traditional saga is one specific type within SATH&#39;s taxonomy; the taxonomy as a whole covers all distributed workflow coordination patterns.</p>
+<p><strong>Vocabulary difference:</strong> SATH uses &quot;saga&quot; more broadly than the original 1987 Garcia-Molina/Salem definition (compensating transactions). The traditional saga is one cell in SATH&#39;s eight-cell taxonomy; the taxonomy as a whole covers all distributed-workflow coordination patterns.</p>
 </blockquote>
-<h2>Sources</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
 <ul>
-<li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 13) — saga structure, orchestration, compensation, isolation problem, semantic locks.</li>
-<li>(→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> ch. 17) — saga as last resort; fix granularity before reaching for saga.</li>
-<li>(→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 2, 11, 12) — 8 saga types, full ratings, semantic vs implementation coupling, choreography state management, Epic Saga pitfalls, saga FSM, annotation technique.</li>
-<li>(→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 8) — choreography vs orchestration in EDM workflows; compensation workflows; God orchestrator anti-pattern.</li>
-<li>(→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 9) — DDD saga vs process manager distinction; stateless/stateful saga implementations; process manager as aggregate; outbox relay for command execution.</li>
-<li>(→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a> ch. 4) — migration-focused treatment: backward vs forward recovery; semantic rollbacks; step reordering to minimise compensations; team ownership as the coordination selector (one team → orchestrate, multiple teams → choreograph); correlation IDs for choreographed sagas.</li>
+<li><strong>Don&#39;t reach for saga first.</strong> A cross-service transaction is usually a signal that the service boundary is wrong. Fix granularity first; reach for saga only if the services genuinely need to be separate.</li>
+<li><strong>Choose orchestration vs choreography by team ownership.</strong> One team owns the whole workflow → orchestrate (central state, easier to debug). Multiple teams own different steps → choreograph (no single coordinator, decentralised ownership).</li>
+<li><strong>Sagas don&#39;t provide isolation.</strong> Intermediate state is visible to concurrent operations. Use semantic locks, pivot transactions, or accept the anomaly as a business decision — don&#39;t pretend sagas behave like 2PC.</li>
+<li><strong>Compensations are not always perfect inverses.</strong> &quot;Refund a charge&quot; leaves both transactions visible. Business-level workarounds (credits, apologies, alternative arrangements) are often cleaner than technical rollback.</li>
+<li><strong>Sagas don&#39;t fix bad aggregate boundaries.</strong> If two aggregates are so frequently coordinated that a saga seems necessary, they probably should be one aggregate.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration Vs Choreography</a> — decision guide: when to use orchestration vs choreography; team-ownership heuristic; workflow state options</li>
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
@@ -656,7 +670,7 @@ public class PaymentService { ... }
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li><li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li><li><a href="../distributed/consistency-models.html">Consistency Models</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../distributed/idempotency.html">Idempotency</a></li><li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,7 +316,11 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#quantum-count-by-architecture-style">Quantum Count by Architecture Style</a></li><li><a href="#dynamic-quantum-coupling">Dynamic Quantum Coupling</a></li><li><a href="#origin">Origin</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#practical-use">Practical Use</a></li><li><a href="#connascence-and-quanta-boundaries">Connascence and Quanta Boundaries</a></li><li><a href="#case-study-going-going-gone-ch-7">Case Study: Going, Going, Gone (Ch 7)</a></li><li><a href="#bounded-context-as-quantum-boundary">Bounded Context as Quantum Boundary</a></li><li><a href="#quantum-size-cost-and-evolvability">Quantum Size, Cost, and Evolvability</a></li><li><a href="#per-quantum-architecture-styles">Per-Quantum Architecture Styles</a></li><li><a href="#transactions-as-the-strong-nuclear-force">Transactions as the Strong Nuclear Force</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>An architecture quantum is an independently deployable artifact with high functional cohesion, high static coupling, and synchronous dynamic coupling. In practice it is the smallest unit of a system that can be deployed, scaled, and governed independently, and within which a consistent set of <a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> applies.</p>
 <p>The four criteria (SATH formulation, → <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 2):</p>
 <ol>
@@ -323,7 +334,7 @@
 <li><em>Static coupling</em> = wiring — the set of dependencies required to bootstrap the quantum. Measurable at compile time from POM files, npm packages, container manifests, etc. An easy mental model: &quot;What would I need to stand up from scratch to run this service?&quot;</li>
 <li><em>Dynamic coupling</em> = communication — how quanta call one another at runtime. Affects operational characteristics (performance, scale, elasticity) rather than structural dependencies.</li>
 </ul>
-<h2>Quantum Count by Architecture Style</h2>
+<h2 id="quantum-count-by-architecture-style">Quantum Count by Architecture Style</h2>
 <p>The key rule for static coupling: <strong>any shared coupling point (database, mediator, UI) collapses all dependent services into a single quantum</strong> (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 2):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -376,7 +387,7 @@
 </tbody></table></div>
 <p><strong>Micro-frontends</strong> are the pattern that allows a microservices architecture to achieve multiple quanta even in the presence of a UI: each service emits its own UI components; the browser acts as a canvas rather than a coupling point. This preserves per-service architecture characteristic independence even at the UI layer.</p>
 <p>Micro-frontends pair particularly well with event-driven backends (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 13): both are composition-based. Each backend microservice materializes exactly the state it needs from event streams; the corresponding microfrontend renders that state, with no cross-component coupling. This enables independent evolution of each bounded context&#39;s UI and backend simultaneously. Design requirements: a common style guide + shared UI element library to maintain visual consistency; graceful loading states for slow or failing components; avoid bounded-context-specific business logic in shared element libraries.</p>
-<h2>Dynamic Quantum Coupling</h2>
+<h2 id="dynamic-quantum-coupling">Dynamic Quantum Coupling</h2>
 <p>How quanta communicate creates a second set of coupling concerns orthogonal to static coupling. The three interlocking dimensions (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a> ch. 2):</p>
 <ol>
 <li><strong>Communication</strong>: synchronous vs asynchronous</li>
@@ -385,9 +396,9 @@
 </ol>
 <p>These three binary dimensions produce 2³ = 8 distinct distributed workflow patterns, which SATH names as &quot;saga types&quot; — a vocabulary for describing how services collaborate. The coupling level correlates with position in the space: synchronous + atomic + orchestrated = very high coupling; asynchronous + eventual + choreographed = very low coupling.</p>
 <p>See <a href="../patterns/saga.html">Saga</a> for the full 8-type taxonomy.</p>
-<h2>Origin</h2>
+<h2 id="origin">Origin</h2>
 <p>The architecture quantum concept was developed during the writing of <em>Building Evolutionary Architectures</em> (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a>). The authors needed a measure of structural evolvability that went beyond code-level metrics: cyclomatic complexity, coupling, and LCOM only reveal information about the code itself. They cannot capture dependent external components — particularly databases — that directly affect operational architecture characteristics. An architect can design a perfectly elastic code base, but if the database doesn&#39;t support those characteristics, the system will fail. The quantum unit provides the scope that includes these external dependencies.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>The architecture quantum solves the question of <em>scope</em>: for which part of the system does a given architecture characteristic apply? A system with a single quantum needs only one set of characteristics — potentially validating a monolithic deployment. A system with multiple quanta (each needing different characteristics for scalability, reliability, or security) requires a distributed architecture to honour those differences.</p>
 <p>Examples:</p>
 <ul>
@@ -398,7 +409,7 @@
 <blockquote>
 <p>&quot;Using quantum analysis at the component design stage allowed the architect to more easily identify service, data, and communication boundaries.&quot; (→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a>, Ch 18)</p>
 </blockquote>
-<h2>Practical Use</h2>
+<h2 id="practical-use">Practical Use</h2>
 <p>Quanta analysis is a design technique performed during component design (Ch 8) and refined during architecture style selection (Ch 18). Steps:</p>
 <ol>
 <li>Identify domain components.</li>
@@ -407,11 +418,11 @@
 <li>If multiple quanta emerge → a distributed style (service-based, event-driven, microservices) is likely appropriate.</li>
 <li>If a single quantum → monolith styles (layered, microkernel, modular monolith) are viable.</li>
 </ol>
-<h2>Connascence and Quanta Boundaries</h2>
+<h2 id="connascence-and-quanta-boundaries">Connascence and Quanta Boundaries</h2>
 <p>The quantum definition extends the connascence concept (→ <a href="../concepts/modularity.html">Modularity</a>) to distributed systems. Within a quantum, <strong>synchronous connascence</strong> binds services: when one service calls another synchronously, the caller waits for the callee&#39;s response. Both services must exhibit the same operational characteristics for the duration of the call — if the caller is significantly more scalable than the callee, timeouts and reliability failures result. Components with strong synchronous connascence cannot have meaningfully different architecture characteristics; they share a quantum.</p>
 <p><strong>Asynchronous connascence</strong> (via queues or events) allows fire-and-forget semantics: the caller does not wait. This decouples operational characteristics and allows the two services to exist in separate quanta, each independently tunable. Moving from synchronous REST calls to async messaging is therefore one of the primary mechanisms for splitting quanta and enabling distributed architecture.</p>
 <p><strong>Example (auction domain):</strong> a Payment service and Auction service where Auction sends payment requests synchronously after each auction ends. If many auctions end simultaneously, the Payment service may be overwhelmed. Redesigning the connection to be asynchronous (Auction publishes to a queue; Payment consumes at its own rate) decouples them into separate quanta with independent scalability profiles.</p>
-<h2>Case Study: Going, Going, Gone (Ch 7)</h2>
+<h2 id="case-study-going-going-gone-ch-7">Case Study: Going, Going, Gone (Ch 7)</h2>
 <p>An online auction kata illustrates quantum-based characteristic scoping. The kata has requirements for real-time bidding, nationwide scale, credit card processing, and live video streaming. Analysing at the quantum level reveals three distinct quanta rather than a single system:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -439,10 +450,10 @@
 </tbody></table></div>
 <p>The auctioneer quantum has <em>higher</em> reliability and availability requirements than the bidder quantum: a dropped bidder connection is a bad experience; a dropped auctioneer connection stops the auction entirely. This difference in requirements is invisible at the system level but visible at the quantum level — it drives the decision to use a distributed architecture and informs where to invest redundancy budget.</p>
 <p>(For connascence taxonomy, see <a href="../concepts/modularity.html">Modularity</a>.)</p>
-<h2>Bounded Context as Quantum Boundary</h2>
+<h2 id="bounded-context-as-quantum-boundary">Bounded Context as Quantum Boundary</h2>
 <p><em>Building Evolutionary Architectures</em> identifies the DDD <strong>bounded context</strong> as the natural quantum boundary in a microservices architecture (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 4). A bounded context defines a cohesive domain subdomain with its own ubiquitous language and data model — exactly the criteria for high functional cohesion within a quantum.</p>
 <p>The Inverse Conway Maneuver (→ <a href="../concepts/conways-law.html">Conways Law</a>) aligns team boundaries with quantum boundaries: one cross-functional team per bounded context produces a system where service boundaries and quantum boundaries coincide.</p>
-<h2>Quantum Size, Cost, and Evolvability</h2>
+<h2 id="quantum-size-cost-and-evolvability">Quantum Size, Cost, and Evolvability</h2>
 <p>Evo-arch observes a cost sweet-spot relationship between quantum size and per-quantum cost (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 8):</p>
 <ul>
 <li><strong>Too few, large quanta</strong>: coordination cost is low but characteristics cannot be independently tuned; the entire system must support the most demanding requirement</li>
@@ -450,7 +461,7 @@
 <li><strong>Too many, tiny quanta</strong>: the sheer number of quanta drives coordination cost back up (service-per-field is the pathological extreme in microservices)</li>
 </ul>
 <p>Smaller quanta also reduce cycle time: <strong>v ∝ c</strong> — a quantum that can be independently deployed and tested evolves faster than one coupled to a large deployment unit.</p>
-<h2>Per-Quantum Architecture Styles</h2>
+<h2 id="per-quantum-architecture-styles">Per-Quantum Architecture Styles</h2>
 <p>Because each quantum has its own technical architecture, different quanta within the same system can use different internal architecture styles (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 8):</p>
 <ul>
 <li>A write-heavy service may use an event-driven internal architecture for scalability</li>
@@ -458,9 +469,9 @@
 <li>A simple CRUD service may use a layered approach internally</li>
 </ul>
 <p>This is only possible when quanta are truly independently deployable — when they share a deployment unit, they must share an architecture.</p>
-<h2>Transactions as the Strong Nuclear Force</h2>
+<h2 id="transactions-as-the-strong-nuclear-force">Transactions as the Strong Nuclear Force</h2>
 <p>Two-phase commit (2PC) across quanta effectively merges them into a single quantum: the two services share fate at the transaction boundary (→ <a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a> Ch 4). This is why microservices require saga/eventual consistency patterns — preserving quantum independence requires abandoning distributed ACID transactions. Service-based architectures accept coarser quanta specifically to preserve ACID within each quantum.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -485,7 +496,7 @@
 <td>Most rigorous treatment: explicit static/dynamic coupling distinction added to the definition; quantum count rules per architecture style; micro-frontends as a quantum-preserving UI pattern; 3D dynamic coupling space (communication × consistency × coordination) leading to 8 saga types</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — the characteristics that apply within a quantum</li>
 <li><a href="../concepts/modularity.html">Modularity</a> — connascence taxonomy that defines intra- and inter-quantum coupling strength</li>
@@ -498,7 +509,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../styles/layered-architecture.html">Layered Architecture</a></li><li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li></ul>
+        <ul><li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li><li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li><li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li><li><a href="../styles/architecture-styles.html">Architecture Styles</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li><li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li><li><a href="../concepts/conways-law.html">Conway's Law</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li><li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li><li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li><li><a href="../styles/layered-architecture.html">Layered Architecture</a></li><li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li><li><a href="../concepts/modularity.html">Modularity</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../concepts/service-granularity.html">Service Granularity</a></li><li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li><li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li></ul>
       </aside>
     </main>
   </div>

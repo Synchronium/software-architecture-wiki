@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#topology">Topology</a></li><li><a href="#data-pumps-writers-and-readers">Data Pumps, Writers, and Readers</a></li><li><a href="#replicated-vs-distributed-cache">Replicated vs Distributed Cache</a></li><li><a href="#cloud-vs-on-premises">Cloud vs On-Premises</a></li><li><a href="#when-to-use">When to Use</a></li><li><a href="#architecture-characteristics-ratings">Architecture Characteristics Ratings</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#quanta">Quanta</a></li><li><a href="#partitioning">Partitioning</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Space-based architecture (SBA) eliminates the central database as the scalability bottleneck by distributing data across in-memory replicated caches that each processing unit carries. Multiple instances of a processing unit run simultaneously, each with a full copy of the shared data in memory. Requests are routed to any available processing unit, which reads from and writes to its local cache; asynchronous data writers persist changes to the database in the background.</p>
 <p>The name comes from <em>tuple space</em> — a shared distributed memory model from parallel computing. Also called <em>cloud architecture pattern</em>, though Richards prefers &quot;space-based&quot; because processing units do not need to run on cloud infrastructure — they can reside on local servers.</p>
 <p><strong>The problem it solves:</strong> conventional web applications form a triangle-shaped scaling topology — web servers are easiest and cheapest to scale (the wide base), application servers are harder (the middle), and the database is the narrowest and hardest to scale (the apex). Scaling out the web layer just pushes the bottleneck to the app layer; scaling the app layer pushes it to the database. SBA dissolves the database from the hot path entirely, eliminating the apex of the triangle.</p>
-<h2>Topology</h2>
+<h2 id="topology">Topology</h2>
 <pre><code>┌──────────────────────────────────────────────────────┐
 │                  Virtualized Middleware              │
 │  ┌──────────────┐  ┌──────────────┐  ┌────────────┐  │
@@ -342,13 +353,13 @@
 <p><strong>Processing units</strong>: the actual application logic, paired with an in-memory data cache.</p>
 <p><strong>Data writers</strong>: asynchronously flush updated cache entries to the database. Non-critical-path for request processing.</p>
 <p><strong>Data readers</strong>: load data into a processing unit&#39;s cache on startup or after a crash (cold cache warm-up).</p>
-<h2>Data Pumps, Writers, and Readers</h2>
+<h2 id="data-pumps-writers-and-readers">Data Pumps, Writers, and Readers</h2>
 <p><strong>Data pumps</strong> are always asynchronous (messaging, FIFO-guaranteed). The processing unit that handles an update becomes the <em>owner of the update</em> and is responsible for sending it through the data pump. Data pumps carry contracts (add/delete/update action + only the changed fields, not the full record).</p>
 <p><strong>Data writers</strong> accept messages from data pumps and persist to the database. Two models: <em>domain-based</em> (one writer handles all updates for a domain, regardless of data pump granularity) vs <em>dedicated</em> (one writer per data pump — more components but better scalability and agility alignment). Implementation: service, application, or data hub (e.g., Ab Initio).</p>
 <p><strong>Data readers</strong> read from the database and deliver data to processing units via a reverse data pump. Invoked only in three specific situations: (1) crash of <em>all</em> instances of a named cache, (2) full redeployment of all processing units in a named cache, (3) retrieval of archive data not in the cache. Normally, when a new instance starts, it syncs directly from an existing live instance — no database involved.</p>
 <p><strong>Third-party products</strong>: GemFire, JavaSpaces, GigaSpaces, IBM Object Grid, nCache, Oracle Coherence. These vary significantly in cost and replication performance — establish specific goals before selecting a product.</p>
 <p><strong>Data abstraction vs data access layer:</strong> if cache schema matches the DB schema, it&#39;s a data access layer (coupling to table structure). If writers/readers contain transformation logic (buffering column type changes, dropped tables, restructured schemas), it&#39;s a <strong>data abstraction layer</strong> — preferred, because incremental DB changes don&#39;t require processing unit changes.</p>
-<h2>Replicated vs Distributed Cache</h2>
+<h2 id="replicated-vs-distributed-cache">Replicated vs Distributed Cache</h2>
 <ul>
 <li><strong>Replicated cache</strong>: every processing unit instance has a full copy of the data. A cache update is replicated to all instances. Fast reads from local memory; high fault tolerance (no single point of failure). Works well when data is relatively static and cache size is under ~100 MB.</li>
 <li><strong>Distributed cache</strong>: data lives on a central external cache server. Processing units access it remotely. Better consistency (single source of truth) but higher latency and fault tolerance risk (central server failure renders all processing units non-operational; mirroring helps but adds complexity).</li>
@@ -359,9 +370,9 @@
 <pre><code>CollisionRate = N × (UR² / S) × RL
 </code></pre>
 <p>Where: N = number of instances, UR = update rate (updates/ms, squared), S = cache size (rows), RL = replication latency (ms). Factors: N and RL are directly proportional; S is inversely proportional (smaller cache = more collisions). Key insight: reducing RL from 100ms to 1ms drops collision rate by 100×. Use 100ms as planning baseline; measure actual values in production.</p>
-<h2>Cloud vs On-Premises</h2>
+<h2 id="cloud-vs-on-premises">Cloud vs On-Premises</h2>
 <p>A distinctive feature of space-based architecture is the ability to split deployment: processing units and virtualized middleware in cloud (elastic, managed); databases on-prem (secure, compliant, physically controlled). The async data pump model makes cloud-to-on-prem data synchronisation effective. This hybrid topology is not practical in most other styles.</p>
-<h2>When to Use</h2>
+<h2 id="when-to-use">When to Use</h2>
 <ul>
 <li>Extreme scalability and elasticity requirements — the highest-rated style for these characteristics alongside EDA.</li>
 <li>Variable, high-spike workloads (concert ticket sales, online auction bidding, product launch flash sales). The deployment manager can pre-start instances before a known spike.</li>
@@ -370,7 +381,7 @@
 </ul>
 <p><strong>Implementation examples:</strong> online concert ticketing (deployment manager pre-starts processing units before ticket sale begins; in-memory seat availability replicated across all instances) and online auction (per-auction processing units; async data pumps forward bid events to history/analytics services without affecting bidding latency).</p>
 <p><strong>Not well suited for:</strong> traditional large-scale relational database applications with large amounts of operational data — the in-memory footprint becomes impractical and the async persistence model conflicts with complex relational transaction requirements (→ <a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a>).</p>
-<h2>Architecture Characteristics Ratings</h2>
+<h2 id="architecture-characteristics-ratings">Architecture Characteristics Ratings</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -435,7 +446,7 @@
 <td>Very hard to test — distributed in-memory state, complex failure modes</td>
 </tr>
 </tbody></table></div>
-<h2>Trade-offs</h2>
+<h2 id="trade-offs">Trade-offs</h2>
 <p><strong>Strengths:</strong></p>
 <ul>
 <li>Highest performance and scalability of any style — database is off the hot path.</li>
@@ -450,11 +461,11 @@
 <li>Data durability depends on the async data writer — a crash between a cache update and database flush can cause data loss.</li>
 <li>Not suitable for domains with complex transactional requirements across many entities.</li>
 </ul>
-<h2>Quanta</h2>
+<h2 id="quanta">Quanta</h2>
 <p>Delineated through the association between user interfaces and processing units. Processing units that synchronously communicate with each other (or via the processing grid) are in the same quantum. The database is excluded from the quantum equation because processing units do not communicate with it synchronously — it is written to asynchronously via data pumps.</p>
-<h2>Partitioning</h2>
+<h2 id="partitioning">Partitioning</h2>
 <p><strong>Both domain and technically partitioned.</strong> Domain: processing units correspond to business domains. Technical: the processing unit / data pump / data reader / data writer / database layers form a technical stack analogous to n-tier, structured around caching vs persistence separation.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -471,7 +482,7 @@
 <td>Earlier (2015) treatment — introduces the triangle-shaped scaling problem framing and names SBA&#39;s alternative label (&quot;cloud architecture pattern&quot;); characteristic ratings (agility/deployability/performance/scalability: high; testability/ease of development: low) are directionally consistent with FOSA; content superseded and expanded by FOSA</td>
 </tr>
 </tbody></table></div>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../distributed/replication.html">Replication</a> — the cache replication model in SBA parallels database replication strategies</li>
 <li><a href="../styles/event-driven-architecture.html">Event Driven Architecture</a> — shares extreme scalability/elasticity ratings; complementary for event processing</li>

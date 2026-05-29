@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html" aria-current="page">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,12 +316,16 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>The Core Distinction</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-core-distinction">The Core Distinction</a></li><li><a href="#trade-off-table">Trade-off Table</a></li><li><a href="#when-synchronous-is-right">When Synchronous Is Right</a></li><li><a href="#when-asynchronous-is-right">When Asynchronous Is Right</a></li><li><a href="#availability-chaining-the-key-risk-of-synchronous-chains">Availability Chaining: The Key Risk of Synchronous Chains</a></li><li><a href="#async-concerns-to-address-explicitly">Async Concerns to Address Explicitly</a></li><li><a href="#the-mixed-model-sync-outside-async-inside">The Mixed Model: Sync Outside, Async Inside</a></li><li><a href="#decision-guide">Decision Guide</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="the-core-distinction">The Core Distinction</h2>
 <p>This is fundamentally a coupling decision, not an implementation one. The question &quot;should I call this synchronously or asynchronously?&quot; is a special case of the question &quot;how much temporal coupling am I willing to accept?&quot;</p>
 <p><strong>Synchronous</strong>: the caller blocks until the callee responds. Both parties must be simultaneously available. The caller&#39;s progress depends directly on the callee&#39;s availability and performance.</p>
 <p><strong>Asynchronous</strong>: the caller sends a message and continues. The callee processes when it is ready. The parties are temporally decoupled — neither requires the other to be available at the same moment.</p>
 <p>Newman (→ <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>) identifies <strong>temporal coupling</strong> as one of the four fundamental coupling types: service A can only function when service B is simultaneously available. Synchronous calls are the primary cause of temporal coupling in distributed systems.</p>
-<h2>Trade-off Table</h2>
+<h2 id="trade-off-table">Trade-off Table</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -374,33 +385,33 @@
 <td>Requires eventual consistency or saga patterns</td>
 </tr>
 </tbody></table></div>
-<h2>When Synchronous Is Right</h2>
+<h2 id="when-synchronous-is-right">When Synchronous Is Right</h2>
 <p><strong>The caller genuinely needs the result before it can proceed.</strong> A credit-card authorisation must complete before an order is confirmed. A search query must return results before a page can render. When the caller&#39;s next action depends logically on the callee&#39;s response, synchronous is the natural model.</p>
 <p><strong>User-facing operations expecting an immediate response.</strong> North-south traffic (browser/mobile → backend) is almost always synchronous: the user is waiting. The acceptable latency budget is short (&lt; 1–2 seconds), which also caps how many synchronous hops the request can make before hitting that budget.</p>
 <p><strong>The operation is read-only and idempotent.</strong> Synchronous reads have no retry amplification risk and no ordering concerns.</p>
 <p><strong>The simplicity benefit outweighs the coupling cost.</strong> When both services are on the same team, co-deployed, and tightly related, temporal coupling may be an acceptable trade-off for simpler code.</p>
 <p><strong>Practical requirement</strong>: every synchronous call must have a timeout. Without a timeout, a slow or unresponsive callee can hold the caller&#39;s thread indefinitely — a resource leak that causes cascading failures (→ <a href="../patterns/timeout.html">Timeout</a>). Nygard&#39;s rule: slow responses are worse than refused connections, because refused connections fail fast while slow responses drain the caller&#39;s capacity.</p>
-<h2>When Asynchronous Is Right</h2>
+<h2 id="when-asynchronous-is-right">When Asynchronous Is Right</h2>
 <p><strong>Background and long-running processing.</strong> Order fulfilment, report generation, email delivery, video encoding — none of these need the caller to wait. Queue the work; the caller confirms receipt, not completion.</p>
 <p><strong>Event fan-out.</strong> One producer event needs to reach multiple independent consumers. Async pub/sub avoids tight coupling between producer and each consumer; new consumers can be added without touching the producer (→ <a href="../styles/event-driven-architecture.html">Event Driven Architecture</a>).</p>
 <p><strong>Cross-bounded-context integration.</strong> When two services belong to different bounded contexts with different ownership and deployment lifecycles, synchronous coupling merges their operational fate. Async messaging is the default for cross-context data sharing: each team publishes events; consumers read independently (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> ch. 1).</p>
 <p><strong>Absorbing demand spikes.</strong> A message queue naturally levels load: producers send at peak rate; consumers process at their own pace. Synchronous chains amplify throughput pressure upstream.</p>
 <p><strong>Resilience over simplicity.</strong> If the callee is known to be unreliable or slow, async with retry is more robust than sync with timeout and fallback. The <a href="../patterns/retry.html">Retry</a> pattern is most naturally expressed as a queue consumer that retries on failure.</p>
 <p><strong>East-west service communication.</strong> Between internal services (east-west), async messaging is often the preferred default: it eliminates temporal coupling, enabling services to be deployed, scaled, and failed independently.</p>
-<h2>Availability Chaining: The Key Risk of Synchronous Chains</h2>
+<h2 id="availability-chaining-the-key-risk-of-synchronous-chains">Availability Chaining: The Key Risk of Synchronous Chains</h2>
 <p>In a synchronous call chain A → B → C, the availability of A is the product of the availability of all three services. If each service is 99.9% available:</p>
 <pre><code>Chain availability ≈ 0.999 × 0.999 × 0.999 ≈ 99.7%
 </code></pre>
 <p>Each additional synchronous hop multiplies the downtime. A five-hop synchronous call chain among 99.9%-available services yields only ~99.5% availability — without any other failure mode. This effect is why the SATH dynamic coupling model (→ <a href="../sources/software-architecture-the-hard-parts.html">Software Architecture The Hard Parts</a>) identifies <em>communication</em> (sync vs async) as one of the three primary axes of distributed workflow complexity, alongside <em>consistency</em> and <em>coordination</em>.</p>
 <p>Async messaging breaks the chain: the producer&#39;s availability is decoupled from the consumer&#39;s. The broker absorbs the gap.</p>
-<h2>Async Concerns to Address Explicitly</h2>
+<h2 id="async-concerns-to-address-explicitly">Async Concerns to Address Explicitly</h2>
 <p>Choosing async is not free. These concerns must be handled:</p>
 <p><strong>Idempotency</strong>: at-least-once delivery is the reliable delivery guarantee for most messaging systems. Consumers must handle duplicate messages without double-processing. Idempotency keys are the standard mechanism (→ <a href="../distributed/idempotency.html">Idempotency</a>).</p>
 <p><strong>Ordering</strong>: messages within a partition/topic are ordered; messages across partitions are not. Systems that depend on ordering (e.g., state machine transitions) must either constrain to a single partition or implement sequence numbers and out-of-order buffering.</p>
 <p><strong>Correlation</strong>: when a caller sends a message and later receives a response, it must be able to match the response to the original request. Correlation identifiers are the standard mechanism (→ <a href="../concepts/messaging.html">Messaging</a>).</p>
 <p><strong>Backpressure</strong>: a slow consumer facing a fast producer accumulates an unbounded queue. Monitoring queue depth and applying backpressure or scaling consumers is an operational requirement. See <a href="../distributed/backpressure.html">Backpressure</a> for the mechanisms (bounded queues, credit-based flow control, pull-based consumption) and <a href="../distributed/queueing-theory.html">Queueing Theory</a> for why unbounded queues produce unbounded latency.</p>
 <p><strong>Distributed tracing</strong>: async message flows are invisible to traditional call-stack profilers. Trace IDs must be propagated through message headers; a distributed tracing system (Jaeger, Zipkin) is necessary to reconstruct flows (→ <a href="../operations/observability.html">Observability</a>).</p>
-<h2>The Mixed Model: Sync Outside, Async Inside</h2>
+<h2 id="the-mixed-model-sync-outside-async-inside">The Mixed Model: Sync Outside, Async Inside</h2>
 <p>The most common pattern in mature distributed systems:</p>
 <ul>
 <li><strong>North-south (user → backend)</strong>: synchronous — the user waits for a response</li>
@@ -409,7 +420,7 @@
 </ul>
 <p>This is not a contradiction: the synchronous user-facing call completes quickly because the backend processes asynchronously and returns a receipt (&quot;order accepted; you&#39;ll be notified&quot;). The user gets immediate feedback; the internal processing is decoupled.</p>
 <p>For Bellemare (→ <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>), the default for event-driven microservices is fully async east-west communication via event streams, with synchronous APIs reserved for user-facing queries.</p>
-<h2>Decision Guide</h2>
+<h2 id="decision-guide">Decision Guide</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -458,7 +469,7 @@
 <td>Either (synchronous simpler)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/coupling.html">Coupling</a> — temporal coupling is Newman&#39;s term for the availability dependency created by synchronous calls</li>
 <li><a href="../concepts/integration-styles.html">Integration Styles</a> — EIP&#39;s four styles: File Transfer and Messaging are async; RPI is synchronous; Shared Database is neither</li>
@@ -476,7 +487,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li></ul>
+        <ul><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/coupling.html">Coupling</a></li><li><a href="../concepts/integration-styles.html">Integration Styles</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li></ul>
       </aside>
     </main>
   </div>

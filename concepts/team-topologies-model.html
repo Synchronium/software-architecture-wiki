@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,19 +309,33 @@
       <h1>Team Topologies Model</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../concepts/index.html">concept</a>
-        <span class="page-updated">Updated 14<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/teams.html">teams</a></li><li><a class="tag-chip" href="../tags/organisational-design.html">organisational-design</a></li><li><a class="tag-chip" href="../tags/cognitive-load.html">cognitive-load</a></li><li><a class="tag-chip" href="../tags/flow.html">flow</a></li><li><a class="tag-chip" href="../tags/conways-law.html">conways-law</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#the-four-fundamental-team-types">The Four Fundamental Team Types</a></li><li class="toc-sub"><a href="#1-stream-aligned-team">1. Stream-Aligned Team</a></li><li class="toc-sub"><a href="#2-platform-team">2. Platform Team</a></li><li class="toc-sub"><a href="#3-enabling-team">3. Enabling Team</a></li><li class="toc-sub"><a href="#4-complicated-subsystem-team">4. Complicated-Subsystem Team</a></li><li><a href="#the-three-team-interaction-modes">The Three Team Interaction Modes</a></li><li class="toc-sub"><a href="#1-collaboration">1. Collaboration</a></li><li class="toc-sub"><a href="#2-x-as-a-service">2. X-as-a-Service</a></li><li class="toc-sub"><a href="#3-facilitating">3. Facilitating</a></li><li><a href="#team-sizing-and-stability">Team Sizing and Stability</a></li><li class="toc-sub"><a href="#size-dunbar-compatible-teams">Size: Dunbar-Compatible Teams</a></li><li class="toc-sub"><a href="#stability-work-flows-to-teams">Stability: Work Flows to Teams</a></li><li class="toc-sub"><a href="#one-owner-per-system-component">One Owner per System Component</a></li><li><a href="#team-api">Team API</a></li><li><a href="#platform-as-a-product-the-thinnest-viable-platform">Platform as a Product: The Thinnest Viable Platform</a></li><li><a href="#team-type-ratios-and-conversions">Team-Type Ratios and Conversions</a></li><li><a href="#industry-patterns-and-anti-patterns">Industry Patterns and Anti-Patterns</a></li><li class="toc-sub"><a href="#the-spotify-model-example-not-a-recipe">The Spotify Model (example, not a recipe)</a></li><li class="toc-sub"><a href="#team-anti-patterns">Team Anti-Patterns</a></li><li class="toc-sub"><a href="#devops-team-anti-pattern">DevOps Team Anti-Pattern</a></li><li><a href="#cognitive-load-as-an-architectural-constraint">Cognitive Load as an Architectural Constraint</a></li><li><a href="#interaction-mode-detail">Interaction Mode Detail</a></li><li class="toc-sub"><a href="#constraints-per-mode">Constraints per Mode</a></li><li class="toc-sub"><a href="#interaction-mode-matrix">Interaction Mode Matrix</a></li><li class="toc-sub"><a href="#awkward-interactions-as-diagnostic-signal">Awkward Interactions as Diagnostic Signal</a></li><li class="toc-sub"><a href="#promise-theory-and-semantic-versioning">Promise Theory and Semantic Versioning</a></li><li class="toc-sub"><a href="#intermittent-collaboration-research">Intermittent Collaboration Research</a></li><li><a href="#evolution-of-interaction-modes">Evolution of Interaction Modes</a></li><li class="toc-sub"><a href="#triggers-for-topology-evolution">Triggers for Topology Evolution</a></li><li><a href="#organisational-sensing">Organisational Sensing</a></li><li><a href="#team-topologies-is-necessary-but-not-sufficient">Team Topologies is Necessary but Not Sufficient</a></li><li><a href="#relationship-to-conway39s-law">Relationship to Conway&#39;s Law</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Four team types are sufficient.</strong> Stream-aligned (the primary type, owns a value stream), platform (reduces cognitive load for stream-aligned teams), enabling (raises capability, time-limited), and complicated-subsystem (used sparingly for genuinely specialist concerns). Aim for 6:1 to 9:1 stream-aligned to other types.</li>
+<li><strong>Three interaction modes, explicitly chosen.</strong> Collaboration (high bandwidth, time-bounded), X-as-a-Service (low bandwidth, default for platforms), facilitating (enabling team mode). Awkward interactions are a topology problem, not a people problem.</li>
+<li><strong>Cognitive load is the sizing constraint.</strong> A team can own only as much software as it can hold in collective working memory. Domain complexity, tooling overhead, and infrastructure ops all consume cognitive capacity.</li>
+<li><strong>Stable teams are an organisational sensor.</strong> Stable team-to-team communication pathways are how the organisation detects environmental change. Constantly shifting teams break sensing entirely.</li>
+<li><strong>The team API is the primary inter-team interface.</strong> Code, versioning, documentation, practices, and communication channels are all part of a team&#39;s public surface. Design the team API for its consumers, the way a service API is designed for clients.</li>
+<li><strong>Thinnest Viable Platform.</strong> Platforms must resist over-engineering. Start with a wiki listing shared services; grow only in response to demonstrated need. Strong product management is the antidote to platform-team feature creep.</li>
+<li><strong>The DevOps team is an anti-pattern as a permanent structure.</strong> Use it as a temporary enabling team that raises capability and then withdraws; permanent ops teams become silos that defeat the purpose.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Team Topologies (Skelton &amp; Pais, 2019) is an adaptive model for technology organisation design. It provides four fundamental team types and three team interaction modes as the building blocks for structuring engineering organisations. The core premise: team structure is not separate from software architecture — the two are bound together by <a href="../concepts/conways-law.html">Conways Law</a>, and must be designed together.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>Most software delivery problems attributed to technology or process are actually organisational: wrong team shapes, excessive cognitive load, or undefined interaction modes between teams. Prescribing a fixed org chart fails because it is a static snapshot of a dynamic system. Team Topologies provides a vocabulary for teams to deliberately evolve their structures and interactions as the system and organisation mature.</p>
-<h2>The Four Fundamental Team Types</h2>
-<h3>1. Stream-Aligned Team</h3>
+<h2 id="the-four-fundamental-team-types">The Four Fundamental Team Types</h2>
+<h3 id="1-stream-aligned-team">1. Stream-Aligned Team</h3>
 <p>The primary team type. Aligned to a single, valuable stream of work — a product, service, user journey, or business capability. Has end-to-end responsibility: build, run, and own the software delivering that stream.</p>
 <ul>
 <li>Long-lived; not a project team</li>
@@ -322,21 +343,21 @@
 <li>Minimises dependencies on other teams; fast flow is the goal</li>
 <li>Most teams in an organisation should be stream-aligned</li>
 </ul>
-<h3>2. Platform Team</h3>
+<h3 id="2-platform-team">2. Platform Team</h3>
 <p>Provides internal services to stream-aligned teams, reducing their cognitive load by abstracting away infrastructure and cross-cutting concerns. The platform is a product: it has explicit consumers (stream-aligned teams), SLAs, documentation, and a compelling developer experience (the &quot;thinnest viable platform&quot;).</p>
 <ul>
 <li>Does not do work on behalf of stream-aligned teams — it provides self-service capabilities they use themselves</li>
 <li>Success metric: stream-aligned teams can use the platform with minimal interaction with the platform team</li>
 <li>Must resist becoming a bottleneck; self-service is the design goal</li>
 </ul>
-<h3>3. Enabling Team</h3>
+<h3 id="3-enabling-team">3. Enabling Team</h3>
 <p>Helps stream-aligned (and other) teams acquire new capabilities they currently lack — skills, practices, tooling, frameworks. Acts as a consultant or coach, not a permanent owner.</p>
 <ul>
 <li>Time-limited engagements; not a permanent dependency</li>
 <li>Goal: raise capability so the stream-aligned team can operate independently afterward</li>
 <li>Avoids creating a permanent service relationship (that would be a platform team)</li>
 </ul>
-<h3>4. Complicated-Subsystem Team</h3>
+<h3 id="4-complicated-subsystem-team">4. Complicated-Subsystem Team</h3>
 <p>Owns a part of the system requiring deep specialist knowledge that is impractical to embed in a stream-aligned team (e.g., video processing codec, actuarial calculation engine, ML training pipeline).</p>
 <ul>
 <li>Used sparingly; most teams should not be this type</li>
@@ -346,30 +367,30 @@
 <blockquote>
 <p><strong>Open question:</strong> The boundary between &quot;complicated enough to warrant its own team&quot; and &quot;stream-aligned teams can handle it with enabling support&quot; is not precisely defined. The book treats it as a judgement call.</p>
 </blockquote>
-<h2>The Three Team Interaction Modes</h2>
+<h2 id="the-three-team-interaction-modes">The Three Team Interaction Modes</h2>
 <p>Interaction modes define <em>how</em> two teams should relate at a given point in time. The mode should be explicitly chosen — not left to emerge from habit.</p>
-<h3>1. Collaboration</h3>
+<h3 id="1-collaboration">1. Collaboration</h3>
 <p>Two teams work closely together, with overlapping boundaries, toward a shared goal. High bandwidth; high cognitive load overhead. Used during:</p>
 <ul>
 <li>Periods of exploration and discovery (unknown technology, new product area)</li>
 <li>When the right API or boundary between two systems is not yet clear</li>
 </ul>
 <p>Collaboration is expensive and should be time-limited. Once the boundary is understood, transition to X-as-a-Service.</p>
-<h3>2. X-as-a-Service</h3>
+<h3 id="2-x-as-a-service">2. X-as-a-Service</h3>
 <p>One team provides a well-defined service that another team consumes with minimal interaction. Low bandwidth; low cognitive load overhead. The consuming team has autonomy and does not depend on the providing team for day-to-day decisions.</p>
 <ul>
 <li>Default mode for platform teams and complicated-subsystem teams</li>
 <li>Requires a stable, well-documented interface (API, SDK, CLI)</li>
 <li>Breakdown signal: the consuming team frequently needs to escalate to the providing team</li>
 </ul>
-<h3>3. Facilitating</h3>
+<h3 id="3-facilitating">3. Facilitating</h3>
 <p>An enabling team helps another team adopt a new practice, tool, or approach. The facilitating team does not own the outcome; it raises capability.</p>
 <ul>
 <li>Time-limited; ends when the target team is self-sufficient</li>
 <li>Distinct from collaboration (the enabling team has the expertise; the goal is transfer, not joint discovery)</li>
 </ul>
-<h2>Team Sizing and Stability</h2>
-<h3>Size: Dunbar-Compatible Teams</h3>
+<h2 id="team-sizing-and-stability">Team Sizing and Stability</h2>
+<h3 id="size-dunbar-compatible-teams">Size: Dunbar-Compatible Teams</h3>
 <p>Teams are bounded by Dunbar&#39;s number — the cognitive limits on human trust and relationship depth (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 3):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -401,12 +422,12 @@
 </tr>
 </tbody></table></div>
 <p>A team larger than ~9 people begins losing the trust required for high performance; beyond ~15 even in high-trust organisations. When a grouping exceeds a Dunbar limit, split it rather than let it grow — the architecture must be realigned to match the new team groupings.</p>
-<h3>Stability: Work Flows to Teams</h3>
+<h3 id="stability-work-flows-to-teams">Stability: Work Flows to Teams</h3>
 <p>Teams should be <strong>stable but not static</strong> — changing only when necessary, not after every project. A new team takes two weeks to three months to become cohesive; disbanding a high-performing team destroys that value immediately.</p>
 <p>The principle: <em>flow the work to the team</em>, not people to projects. Project-based team assembly is an anti-pattern: it optimises for short-term flexibility at the cost of long-term performance.</p>
-<h3>One Owner per System Component</h3>
+<h3 id="one-owner-per-system-component">One Owner per System Component</h3>
 <p>Every software system component must be owned by exactly one team. No shared ownership of components, libraries, or services. Outside teams may submit pull requests, but the owning team retains responsibility and final say. Shared ownership is no ownership — no team has cognitive space to care for something that is also someone else&#39;s problem.</p>
-<h2>Team API</h2>
+<h2 id="team-api">Team API</h2>
 <p>With stable long-lived teams owning bounded software systems, the <strong>team API</strong> becomes the primary interface between teams (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 3). The team API includes:</p>
 <ul>
 <li><strong>Code</strong>: runtime endpoints, libraries, clients, UI produced by the team</li>
@@ -417,7 +438,7 @@
 <li><strong>Work information</strong>: current priorities, backlog visibility, roadmap</li>
 </ul>
 <p>The team API should be designed for its consumers (other teams): easy to discover, easy to onboard, stable, and explicitly versioned. Teams should continuously test and evolve it.</p>
-<h2>Platform as a Product: The Thinnest Viable Platform</h2>
+<h2 id="platform-as-a-product-the-thinnest-viable-platform">Platform as a Product: The Thinnest Viable Platform</h2>
 <p>The platform team must treat the internal developer platform as a <strong>product</strong> — not as an internal tooling effort (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 5):</p>
 <ul>
 <li><strong>Self-service</strong>: stream-aligned teams consume the platform with minimal interaction with the platform team. A platform that requires tickets or collaboration for routine operations has failed.</li>
@@ -430,7 +451,7 @@
 <p>&quot;Software developers love building platforms and, without strong product management input, will create a bigger platform than needed.&quot; — Allan Kelly (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 5)</p>
 </blockquote>
 <p><strong>Fractal platforms</strong>: in large organisations, the platform itself is composed of the four fundamental team types — stream-aligned teams for platform features, enabling teams for platform practices, complicated-subsystem teams for specialist platform components, and lower-level platform teams for the platform&#39;s own infrastructure. From the outside, stream-aligned teams see one platform. Inside, it runs as its own mini-organisation using the same model.</p>
-<h2>Team-Type Ratios and Conversions</h2>
+<h2 id="team-type-ratios-and-conversions">Team-Type Ratios and Conversions</h2>
 <p><strong>Ratio</strong>: in healthy, flow-optimised organisations, 6:1 to 9:1 stream-aligned teams to all other types. One in seven to one in ten teams is non-stream-aligned (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 5).</p>
 <p><strong>Converting existing teams</strong> (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 5):</p>
 <div class="table-wrapper"><table>
@@ -465,9 +486,9 @@
 <td>Part-time enabling team — supports other teams, does not impose designs</td>
 </tr>
 </tbody></table></div>
-<p><strong>Architecture team model</strong>: the most effective pattern for an architecture function is a part-time enabling team — not a powerful separate body. Its key role is discovering effective APIs between teams and shaping team interactions with Conway&#39;s law in mind.</p>
-<h2>Industry Patterns and Anti-Patterns</h2>
-<h3>The Spotify Model (example, not a recipe)</h3>
+<p><strong>Architecture team model</strong>: the most effective pattern for an architecture function is a part-time enabling team — not a powerful separate body. Its key role is discovering effective APIs between teams and shaping team interactions with Conway&#39;s Law in mind.</p>
+<h2 id="industry-patterns-and-anti-patterns">Industry Patterns and Anti-Patterns</h2>
+<h3 id="the-spotify-model-example-not-a-recipe">The Spotify Model (example, not a recipe)</h3>
 <p>Spotify&#39;s squad/tribe/chapter/guild model is an influential example of stream-aligned team design, not a prescribable recipe (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 4):</p>
 <ul>
 <li><strong>Squad</strong>: 5–9 people, cross-functional, long-term mission, autonomous — equivalent to a stream-aligned team</li>
@@ -479,15 +500,15 @@
 <p>&quot;We didn&#39;t invent this model. Spotify is (like any good Agile company) evolving fast. This article is only a snapshot.&quot; — Kniberg &amp; Ivarsson</p>
 </blockquote>
 <p>Many organisations copied the model without its underlying culture and trajectory, producing cargo-culted structures that failed.</p>
-<h3>Team Anti-Patterns</h3>
+<h3 id="team-anti-patterns">Team Anti-Patterns</h3>
 <p>Two common failure modes when teams are not deliberately designed (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 4):</p>
 <ol>
 <li><strong>Ad hoc team design</strong>: teams split or merged reactively in response to individual problems (production incident, new technology) without considering the broader team inter-relationship context</li>
 <li><strong>Shuffling team members</strong>: project-based staffing; teams assembled for a project and disbanded after, leaving one or two people for maintenance. Optimises for short-term deadlines; ignores ramp-up cost and trust destruction.</li>
 </ol>
-<h3>DevOps Team Anti-Pattern</h3>
+<h3 id="devops-team-anti-pattern">DevOps Team Anti-Pattern</h3>
 <p>A dedicated &quot;DevOps team&quot; (common ~2015–present) frequently becomes a silo that application teams are hard-dependent on for deployment and automation steps, defeating the purpose. The DevOps team should be a temporary enabling team — raising the capability of stream-aligned teams until they are self-sufficient — not a permanent execution team.</p>
-<h2>Cognitive Load as an Architectural Constraint</h2>
+<h2 id="cognitive-load-as-an-architectural-constraint">Cognitive Load as an Architectural Constraint</h2>
 <p>Team cognitive load is the total mental effort required to operate the software a team owns. The book distinguishes three types:</p>
 <ul>
 <li><strong>Intrinsic</strong>: inherent complexity of the domain/task</li>
@@ -501,8 +522,8 @@
 <li>Motivation falls (autonomy, mastery, and purpose are all impeded)</li>
 </ul>
 <p>Practical limit: a team should own no more software than it can hold in its collective working memory and maintain confidence in operating.</p>
-<h2>Interaction Mode Detail</h2>
-<h3>Constraints per Mode</h3>
+<h2 id="interaction-mode-detail">Interaction Mode Detail</h2>
+<h3 id="constraints-per-mode">Constraints per Mode</h3>
 <p>Each interaction mode has explicit constraints that prevent misuse (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 7):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -528,7 +549,7 @@
 <td>Requires deep engagement; enabling team gets stretched</td>
 </tr>
 </tbody></table></div>
-<h3>Interaction Mode Matrix</h3>
+<h3 id="interaction-mode-matrix">Interaction Mode Matrix</h3>
 <p>Which modes are Typical vs Occasional by team type (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 7, Table 7.4):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -564,14 +585,14 @@
 <td>—</td>
 </tr>
 </tbody></table></div>
-<h3>Awkward Interactions as Diagnostic Signal</h3>
+<h3 id="awkward-interactions-as-diagnostic-signal">Awkward Interactions as Diagnostic Signal</h3>
 <p>Team interactions that feel awkward or require more effort than expected are a diagnostic signal, not a people problem (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 7):</p>
 <ul>
 <li><strong>Excessive communication in X-as-a-Service mode</strong> → the API or service is poorly designed; the providing team has not invested sufficiently in DevEx or documentation</li>
 <li><strong>Lack of communication in collaboration mode</strong> → the wrong teams have been placed together, or the boundary is too ambitious</li>
 <li><strong>Response</strong>: fix the API or team boundary, not the individuals</li>
 </ul>
-<h3>Promise Theory and Semantic Versioning</h3>
+<h3 id="promise-theory-and-semantic-versioning">Promise Theory and Semantic Versioning</h3>
 <p>X-as-a-Service interactions are best understood through <strong>promise theory</strong> (Mark Burgess) (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 7):</p>
 <ul>
 <li>Inter-team relationships are voluntary promises, not contractual obligations imposed from outside</li>
@@ -579,22 +600,22 @@
 <li>Promise-based relationships are more durable than contracts because teams <em>choose</em> to uphold them — motivation comes from within, not enforcement</li>
 <li>This framing helps teams think about their &quot;team API&quot; as a product with genuine commitments to consumers</li>
 </ul>
-<h3>Intermittent Collaboration Research</h3>
+<h3 id="intermittent-collaboration-research">Intermittent Collaboration Research</h3>
 <p>Research by Bernstein et al. (2018) supports the Team Topologies model of time-bounded collaboration over permanent open collaboration: intermittent groups achieved near-identical average quality to constantly-collaborating groups while preserving solution variation — protecting the organisation&#39;s ability to discover best solutions. Permanent open collaboration converges to sameness and misses better outcomes (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 7).</p>
-<h2>Evolution of Interaction Modes</h2>
+<h2 id="evolution-of-interaction-modes">Evolution of Interaction Modes</h2>
 <p>Team interactions should change over time. A common healthy trajectory:</p>
 <ol>
 <li><strong>Collaboration</strong> (during discovery) → 2. <strong>X-as-a-Service</strong> (during execution)</li>
 </ol>
 <p>This <strong>discovery-to-establish pattern</strong> is expected simultaneously across the organisation at different stages for different team pairs. An enabling team that never exits is a platform team in disguise. A platform team that needs constant collaboration with its consumers has a service design problem. Explicit conversations about which mode applies right now — and when to transition — are a key Team Topologies practice.</p>
-<h3>Triggers for Topology Evolution</h3>
+<h3 id="triggers-for-topology-evolution">Triggers for Topology Evolution</h3>
 <p>Three signals that the current topology needs to change (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 8):</p>
 <ol>
 <li><strong>Software grown too large</strong>: team exceeds Dunbar limits; key-person dependencies emerge; onboarding and documentation become fragile; team can no longer hold the system in collective working memory</li>
 <li><strong>Delivery cadence slowing</strong>: team feels slower, WIP increases, hard dependencies on other teams block delivery</li>
 <li><strong>Multiple streams relying on a large underlying service set</strong>: solution is to &quot;platformize&quot; the lower layer — create a platform team and let stream-aligned teams own their own telemetry and diagnostics above it</li>
 </ol>
-<h2>Organisational Sensing</h2>
+<h2 id="organisational-sensing">Organisational Sensing</h2>
 <p>The stability of teams and the clarity of their interaction modes is not just an efficiency concern — it makes the organisation capable of <em>sensing its environment</em> (→ <a href="../sources/team-topologies.html">Team Topologies</a> ch. 8).</p>
 <p>Stable, well-defined teams with well-defined interaction modes create reliable communication pathways. These pathways are the organisation&#39;s sensory apparatus: signals from users, markets, and operational systems flow through them to inform decisions. Unstable team structures — with constantly shifting membership and interaction patterns — destroy these pathways. The organisation becomes literally <em>senseless</em>: unable to detect and respond to environmental change.</p>
 <p><strong>Cybernetic feedback loop</strong>: drawing on Stafford Beer&#39;s cybernetics, the book argues that operations must feed back into development. Teams are the sensors. The mechanism: operations experience generates signals (operability failures, user complaints, reliability degradation) that flow through stable team-to-team communication back to development, enabling course correction. This requires:</p>
@@ -605,7 +626,7 @@
 </ul>
 <p><strong>BAU/maintenance team anti-pattern</strong>: separating &quot;new-service&quot; teams from &quot;business as usual&quot; maintenance teams breaks the feedback loop entirely. New-service teams implement approaches without seeing operational consequences; BAU teams cannot improve things without authority. Both teams are blind. Better model: one stream-aligned team owns both new and existing services, retrofits telemetry from newer systems to older ones, and learns from the full operational range.</p>
 <p><strong>Three Ways of DevOps</strong> (Gene Kim et al., cited in ch. 8): (1) systems thinking — optimise for flow across the whole; (2) feedback loops — Dev informed and guided by Ops; (3) culture of continual experimentation. The Team Topologies sensing model is an organisational implementation of Ways 2 and 3.</p>
-<h2>Team Topologies is Necessary but Not Sufficient</h2>
+<h2 id="team-topologies-is-necessary-but-not-sufficient">Team Topologies is Necessary but Not Sufficient</h2>
 <p>Team Topologies provides the structure, but effective software delivery also requires (→ <a href="../sources/team-topologies.html">Team Topologies</a> conclusion):</p>
 <ul>
 <li><strong>Healthy organisational culture</strong>: psychological safety, continuous learning, empowerment to speak out</li>
@@ -614,7 +635,7 @@
 <li><strong>Clarity of business vision</strong>: non-conflicting direction at human-relevant timescales (3, 6, 12 months) with clear reasoning behind priorities</li>
 </ul>
 <p>The garden metaphor from the conclusion: Team Topologies provides the instructions for planting, pruning, and training. Culture, engineering, and financial practices are the soil, water, and fertiliser. Unhealthy culture or poor engineering practices poison the garden regardless of how well the planting patterns are followed.</p>
-<h2>Relationship to Conway&#39;s Law</h2>
+<h2 id="relationship-to-conway39s-law">Relationship to Conway&#39;s Law</h2>
 <p>Team Topologies is an operationalisation of <a href="../concepts/conways-law.html">Conways Law</a>. The four team types and three interaction modes are the mechanism by which the reverse Conway maneuver is applied: design the team structure to match the desired software architecture, not the other way around.</p>
 <ul>
 <li>Stream-aligned teams → domain-partitioned services with clear ownership</li>
@@ -623,7 +644,15 @@
 <li>Collaboration mode → temporary coupling during boundary discovery</li>
 <li>X-as-a-Service mode → the target state: loose coupling between teams mirrored in loose coupling between services</li>
 </ul>
-<h2>Related Concepts</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Most teams should be stream-aligned.</strong> Aim for 6:1 to 9:1 stream-aligned to other types. If you have many platform/enabling/subsystem teams, ask whether they&#39;re doing work the stream-aligned teams should own.</li>
+<li><strong>Pick interaction modes deliberately.</strong> Awkward interactions are a topology problem, not a people problem. Excessive communication in X-as-a-Service mode → fix the API. Lack of communication in collaboration mode → wrong teams paired.</li>
+<li><strong>Size to cognitive load, not headcount targets.</strong> A team can own only as much software as it can hold in collective working memory. Pull extraneous load out via platforms; keep intrinsic domain load within capacity.</li>
+<li><strong>Stable teams are organisational sensors.</strong> Constantly shifting team structures destroy the communication pathways through which operational signals flow back to development. Flow work to teams, not people to projects.</li>
+<li><strong>Treat the platform as a product.</strong> Strong product management, real consumers, real SLAs, real DevEx. Start with the Thinnest Viable Platform — even a wiki — and grow only in response to demonstrated need.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/conways-law.html">Conways Law</a> — the foundational law that makes team structure and software architecture isomorphic</li>
 <li><a href="../concepts/cognitive-load.html">Cognitive Load</a> — team cognitive load as a first-class design constraint; drives software boundary sizing</li>

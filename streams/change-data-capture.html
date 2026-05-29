@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,16 +309,30 @@
       <h1>Change Data Capture</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../streams/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/cdc.html">cdc</a></li><li><a class="tag-chip" href="../tags/change-data-capture.html">change-data-capture</a></li><li><a class="tag-chip" href="../tags/data-integration.html">data-integration</a></li><li><a class="tag-chip" href="../tags/event-streaming.html">event-streaming</a></li><li><a class="tag-chip" href="../tags/migration.html">migration</a></li><li><a class="tag-chip" href="../tags/data-pipelines.html">data-pipelines</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#how-cdc-works">How CDC Works</a></li><li class="toc-sub"><a href="#log-based-cdc">Log-based CDC</a></li><li class="toc-sub"><a href="#trigger-based-cdc">Trigger-based CDC</a></li><li class="toc-sub"><a href="#query-based-cdc">Query-based CDC</a></li><li><a href="#cdc-and-event-sourcing">CDC and Event Sourcing</a></li><li><a href="#patterns-built-on-cdc">Patterns Built on CDC</a></li><li class="toc-sub"><a href="#outbox-pattern">Outbox Pattern</a></li><li class="toc-sub"><a href="#data-liberation-bellemare">Data Liberation (Bellemare)</a></li><li class="toc-sub"><a href="#strangler-migration">Strangler Migration</a></li><li class="toc-sub"><a href="#cache-and-index-invalidation">Cache and Index Invalidation</a></li><li class="toc-sub"><a href="#multi-region-replication">Multi-Region Replication</a></li><li class="toc-sub"><a href="#bootstrapping-new-consumers-log-compacted-topics">Bootstrapping New Consumers (Log-Compacted Topics)</a></li><li><a href="#architectural-considerations">Architectural Considerations</a></li><li class="toc-sub"><a href="#schema-coupling">Schema coupling</a></li><li class="toc-sub"><a href="#ordering-guarantees">Ordering guarantees</a></li><li class="toc-sub"><a href="#replay-and-snapshotting">Replay and snapshotting</a></li><li class="toc-sub"><a href="#backpressure-on-consumers">Backpressure on consumers</a></li><li class="toc-sub"><a href="#initial-load-cost">Initial-load cost</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li><li><a href="#key-quotes">Key Quotes</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>CDC bridges the state-database and event-stream worlds.</strong> It turns a database into an event source without modifying the application that owns it — the practical mechanism that makes event-streaming approaches incrementally adoptable in relational-DB-based systems.</li>
+<li><strong>Three implementation modes, vastly different fidelity.</strong> Log-based (WAL/binlog/oplog via Debezium — the modern default), trigger-based (database-agnostic but expensive), query-based (polling — misses deletes, lowest fidelity). Pick log-based unless constraints rule it out.</li>
+<li><strong>CDC events are technically faithful but domain-poor.</strong> They describe what changed in the database, not what happened in the business. Downstream consumers must reconstruct domain meaning from row changes, coupling them to the source schema.</li>
+<li><strong>CDC + outbox pattern is the canonical solution to dual writes.</strong> The application writes business state and an outbox event in one DB transaction; CDC propagates outbox events reliably. Domain-meaningful events plus reliable transport.</li>
+<li><strong>Log compaction enables bootstrap without coordination.</strong> A new consumer can replay from a compacted topic and see the current state of every entity without a database snapshot transfer.</li>
+<li><strong>Schema coupling is the central design risk.</strong> CDC events expose the source schema to all consumers; a column rename is a breaking change for everyone. Mitigate with schema registry + versioning, anti-corruption layers, or domain events via outbox.</li>
+<li><strong>Three use cases dominate.</strong> Data integration (avoiding dual writes), data liberation from a monolithic database, and incremental migration from legacy stores.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Change Data Capture (CDC) is the practice of observing changes to a system of record — typically a database — and emitting those changes as a stream of events that downstream systems can consume. Each event describes a single state change (insert, update, delete) with enough information for consumers to derive a current view, propagate the change to other stores, or react to it. The defining property: CDC turns a state-oriented data store into an event source without requiring the application that owns the store to be modified.</p>
-<h2>Why It Matters</h2>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>CDC sits at the boundary between two architectural worlds: the relational/document database tradition (state-oriented, query at read time) and the event-streaming tradition (immutable log, derive views from events). It is the practical bridge that makes the event-streaming approach incrementally adoptable in systems built around relational stores.</p>
 <p>Three problems CDC solves:</p>
 <ol>
@@ -322,9 +343,9 @@
 <li><p><strong>Incremental migration from legacy stores.</strong> A new service can subscribe to CDC events from the legacy DB, build its own view, and shadow-read against it before cutover. From <a href="../sources/monolith-to-microservices.html">Monolith To Microservices</a>: CDC is one of Newman&#39;s database decomposition patterns, particularly useful when the old system can&#39;t be modified to publish events directly.</p>
 </li>
 </ol>
-<h2>How CDC Works</h2>
+<h2 id="how-cdc-works">How CDC Works</h2>
 <p>The mechanism depends on the database. Three common implementations:</p>
-<h3>Log-based CDC</h3>
+<h3 id="log-based-cdc">Log-based CDC</h3>
 <p>Read the database&#39;s write-ahead log (Postgres WAL, MySQL binlog, MongoDB oplog) and parse change events from it. From <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11: &quot;Tools: Debezium, Maxwell.&quot; Properties:</p>
 <ul>
 <li><strong>Captures everything</strong> including changes made bypassing the application (DBA scripts, replication tools)</li>
@@ -333,7 +354,7 @@
 <li><strong>Vendor-specific</strong> — log format differs across databases; tools (Debezium) abstract this</li>
 </ul>
 <p>This is the dominant CDC approach in modern systems.</p>
-<h3>Trigger-based CDC</h3>
+<h3 id="trigger-based-cdc">Trigger-based CDC</h3>
 <p>Database triggers fire on insert/update/delete and write to an audit table or message queue. Properties:</p>
 <ul>
 <li><strong>Database-agnostic</strong> — works on any RDBMS that supports triggers</li>
@@ -341,7 +362,7 @@
 <li><strong>Can miss bypassing writes</strong> if the trigger is disabled or bypassed by replication</li>
 </ul>
 <p>Common in legacy environments where the log format isn&#39;t accessible.</p>
-<h3>Query-based CDC</h3>
+<h3 id="query-based-cdc">Query-based CDC</h3>
 <p>Periodically poll the database for rows with a <code>last_modified</code> timestamp or version number greater than the last poll&#39;s high-water mark. Properties:</p>
 <ul>
 <li><strong>Easy to implement</strong> — no special database privileges</li>
@@ -350,7 +371,7 @@
 <li><strong>Inefficient</strong> — repeated queries against the source DB</li>
 </ul>
 <p>Used when neither log access nor triggers are available; generally inferior to log-based CDC.</p>
-<h2>CDC and Event Sourcing</h2>
+<h2 id="cdc-and-event-sourcing">CDC and Event Sourcing</h2>
 <p>CDC and <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> are related but distinct. Fowler&#39;s taxonomy (cited in event-sourcing-cqrs):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -387,11 +408,11 @@
 </tr>
 </tbody></table></div>
 <p>CDC events are technically faithful but domain-poor: they describe <em>what changed in the database</em>, not <em>what happened in the business</em>. From <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>: this is the central trade-off of using CDC as a public event stream. Downstream consumers must reconstruct domain meaning from row changes, which couples them to the source schema.</p>
-<h2>Patterns Built on CDC</h2>
-<h3>Outbox Pattern</h3>
+<h2 id="patterns-built-on-cdc">Patterns Built on CDC</h2>
+<h3 id="outbox-pattern">Outbox Pattern</h3>
 <p>The canonical solution to the dual-write problem. The application writes the business state and an outbox event in the <em>same</em> database transaction. A separate process — typically a CDC pipeline — reads the outbox and publishes events to a message broker. See <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> for the full pattern.</p>
 <p>CDC and outbox are complementary: outbox gives you domain-meaningful events (the application writes them, with business semantics); CDC gives you the reliable transport mechanism (atomically captured, exactly-once propagation).</p>
-<h3>Data Liberation (Bellemare)</h3>
+<h3 id="data-liberation-bellemare">Data Liberation (Bellemare)</h3>
 <p><a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a> frames CDC as one of three data-liberation patterns:</p>
 <ol>
 <li><strong>Application-driven</strong> — modify the application to publish events explicitly (requires source-app changes; gives best domain events)</li>
@@ -399,25 +420,25 @@
 <li><strong>CDC-log-based</strong> — no application changes; downstream parses the log (lowest intrusiveness; lowest domain fidelity)</li>
 </ol>
 <p>Choice depends on how much the source app can be modified and how much domain semantics matters to consumers.</p>
-<h3>Strangler Migration</h3>
+<h3 id="strangler-migration">Strangler Migration</h3>
 <p>The new service subscribes to CDC events from the legacy database, builds an equivalent state, runs in shadow mode (compare outputs), then takes over reads, then writes. CDC enables this migration without requiring legacy-app changes. See <a href="../patterns/strangler-fig.html">Strangler Fig</a>.</p>
-<h3>Cache and Index Invalidation</h3>
+<h3 id="cache-and-index-invalidation">Cache and Index Invalidation</h3>
 <p>CDC events drive cache invalidation and search-index updates. The pattern resolves a long-standing problem: a stale cache is a dual-write failure; CDC-driven invalidation has the same source of truth as the data itself.</p>
-<h3>Multi-Region Replication</h3>
+<h3 id="multi-region-replication">Multi-Region Replication</h3>
 <p>CDC streams flow across regions, replicating writes to a remote read replica. This is what most database replication mechanisms do internally; CDC exposes the mechanism at the application layer.</p>
-<h3>Bootstrapping New Consumers (Log-Compacted Topics)</h3>
+<h3 id="bootstrapping-new-consumers-log-compacted-topics">Bootstrapping New Consumers (Log-Compacted Topics)</h3>
 <p>From <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11: &quot;Log-compacted topics enable DB bootstrap.&quot; Kafka can retain only the latest value per key indefinitely; a new consumer subscribing from the start of the topic sees the <em>current state</em> of every entity, not the full change history. This makes CDC a viable bootstrap mechanism for new services without coordinating a database snapshot transfer.</p>
-<h2>Architectural Considerations</h2>
-<h3>Schema coupling</h3>
+<h2 id="architectural-considerations">Architectural Considerations</h2>
+<h3 id="schema-coupling">Schema coupling</h3>
 <p>CDC events expose the source database schema to consumers. A column rename is a breaking change for every CDC consumer. Mitigations:</p>
 <ul>
 <li><strong>Schema registry + versioning</strong> — events go through a schema registry (Avro/Protobuf) and consumers handle versions</li>
 <li><strong>Anti-corruption layer</strong> at the consumer — translate raw CDC events into a consumer-local domain model (→ <a href="../patterns/anti-corruption-layer.html">Anti Corruption Layer</a>)</li>
 <li><strong>Outbox over raw CDC</strong> — application writes a domain event to the outbox; CDC propagates the outbox event, not the row change</li>
 </ul>
-<h3>Ordering guarantees</h3>
+<h3 id="ordering-guarantees">Ordering guarantees</h3>
 <p>Log-based CDC preserves per-row ordering (changes to the same row arrive in commit order). Cross-row ordering depends on whether the CDC pipeline preserves transaction boundaries. For single-entity consumers this is usually sufficient; for aggregate consumers that span multiple rows, transaction-preserving CDC matters.</p>
-<h3>Replay and snapshotting</h3>
+<h3 id="replay-and-snapshotting">Replay and snapshotting</h3>
 <p>A long-running CDC pipeline accumulates state. A new consumer needs to either:</p>
 <ul>
 <li><strong>Replay from the start</strong> of the log (only viable if the log is retained long enough)</li>
@@ -425,11 +446,11 @@
 <li><strong>Read from a log-compacted topic</strong> to get the current state without replay</li>
 </ul>
 <p>Most production CDC deployments combine snapshot + log: Debezium emits an initial snapshot of all rows on first start, then switches to log-based capture.</p>
-<h3>Backpressure on consumers</h3>
+<h3 id="backpressure-on-consumers">Backpressure on consumers</h3>
 <p>Slow consumers cannot block the source database — the source keeps committing. The CDC pipeline (broker) must buffer or shed. Log-based brokers (Kafka) handle this naturally with retention; queue-based transports (AMQP) may overflow (→ <a href="../distributed/backpressure.html">Backpressure</a>).</p>
-<h3>Initial-load cost</h3>
+<h3 id="initial-load-cost">Initial-load cost</h3>
 <p>For large tables, the initial snapshot is expensive. Strategies: snapshot only the rows changed in the last N days; perform an out-of-band bulk load; accept that the new consumer is read-incomplete until snapshot completes. From <a href="../sources/building-event-driven-microservices.html">Building Event Driven Microservices</a>: this is one of the main practical limits on CDC adoption for large legacy stores.</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -454,7 +475,7 @@
 <td>CDC referenced as one of the data integration mechanisms for distributed systems; trade-offs in the data-decomposition framework.</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — the dual-write solution that often pairs with CDC</li>
 <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a> — adjacent paradigm; events as primary source of truth</li>
@@ -466,7 +487,7 @@
 <li><a href="../distributed/backpressure.html">Backpressure</a> — consumer slowness as a CDC pipeline concern</li>
 <li><a href="../concepts/data-decomposition.html">Data Decomposition</a> — data ownership and CDC as integration mechanism</li>
 </ul>
-<h2>Key Quotes</h2>
+<h2 id="key-quotes">Key Quotes</h2>
 <blockquote>
 <p>&quot;Change Data Capture: observe DB changes as stream, replicate to search index/caches/warehouses; log-compacted topic enables DB bootstrap.&quot; — <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a> ch. 11</p>
 </blockquote>
@@ -475,7 +496,7 @@
 </blockquote>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li></ul>
+        <ul><li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../distributed/replication.html">Replication</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,12 +316,16 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-problem-it-addresses">The Problem It Addresses</a></li><li><a href="#three-uses-of-specification">Three Uses of Specification</a></li><li class="toc-sub"><a href="#validation">Validation</a></li><li class="toc-sub"><a href="#selection-querying">Selection (Querying)</a></li><li class="toc-sub"><a href="#building-to-order-generation">Building to Order (Generation)</a></li><li><a href="#composite-specification">Composite Specification</a></li><li><a href="#subsumption">Subsumption</a></li><li><a href="#design-notes">Design Notes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>A Specification is a predicate VALUE OBJECT that tests whether another object satisfies stated criteria. It encapsulates a rule as a first-class object, keeping it in the domain layer rather than scattered across conditional logic in entities, application services, or repositories (→ <a href="../sources/domain-driven-design.html">Domain Driven Design</a> ch. 9).</p>
-<h2>The Problem It Addresses</h2>
+<h2 id="the-problem-it-addresses">The Problem It Addresses</h2>
 <p>Business rules often don&#39;t fit the responsibility of any obvious entity or value object. Moving them into the application layer removes them from the domain. Keeping them inside an entity that doesn&#39;t own them creates coupling and bloat. Without Specification, the same rule may show up in different forms in validation code, query code, and generation code — each a separate maintenance burden.</p>
-<h2>Three Uses of Specification</h2>
-<h3>Validation</h3>
+<h2 id="three-uses-of-specification">Three Uses of Specification</h2>
+<h3 id="validation">Validation</h3>
 <p>Test whether an individual domain object satisfies a rule:</p>
 <pre><code class="language-java">boolean isSatisfiedBy(Invoice candidate) {
     Date firmDeadline = DateUtility.addDaysToDate(
@@ -322,7 +333,7 @@
     return currentDate.after(firmDeadline);
 }
 </code></pre>
-<h3>Selection (Querying)</h3>
+<h3 id="selection-querying">Selection (Querying)</h3>
 <p>Filter a collection or generate a database query. The repository provides a generic entry point:</p>
 <pre><code class="language-java">// Collection-based (small sets)
 Set results = invoiceRepository.selectSatisfying(spec);
@@ -331,9 +342,9 @@ Set results = invoiceRepository.selectSatisfying(spec);
 // to a specialised repository query method
 </code></pre>
 <p>Specifications mesh naturally with <a href="../patterns/repository.html">Repository</a>: the repository exposes <code>selectSatisfying(Specification)</code>, and the Specification controls which query runs. The rule stays in the domain layer; the SQL stays in the infrastructure layer.</p>
-<h3>Building to Order (Generation)</h3>
+<h3 id="building-to-order-generation">Building to Order (Generation)</h3>
 <p>Specify what a generator must produce. The same Specification that constrains the generated object can be used in validation role to confirm the result is correct. Decouples the <em>what</em> (stated by the Specification) from the <em>how</em> (implemented by the generator/factory).</p>
-<h2>Composite Specification</h2>
+<h2 id="composite-specification">Composite Specification</h2>
 <p>Specifications can be combined with AND/OR/NOT, just as predicates are combined with logical operators. This creates a declarative style for expressing complex rules:</p>
 <pre><code class="language-java">Specification ventilated = new ContainerSpecification(VENTILATED);
 Specification armored = new ContainerSpecification(ARMORED);
@@ -342,17 +353,17 @@ Specification both = ventilated.and(armored);
 Specification cheap = ventilated.not().and(armored.not());
 </code></pre>
 <p>AND/OR/NOT compose via the COMPOSITE pattern. The operations are closed under the Specification set — combining Specifications produces Specifications, introducing no new concepts.</p>
-<h2>Subsumption</h2>
+<h2 id="subsumption">Subsumption</h2>
 <p>A more stringent Specification subsumes a less stringent one: if the new Spec would be satisfied, the old Spec would also be satisfied. Enables requirements comparison — &quot;which chemical types now have more stringent handling rules?&quot; — by directly comparing Specifications rather than running instances.</p>
 <p>Subsumption is equivalent to logical implication (A→B). General subsumption proofs are hard; specific parameterised cases (e.g., <code>MinimumAgeSpecification</code> subsumes another if its threshold is higher) are tractable.</p>
-<h2>Design Notes</h2>
+<h2 id="design-notes">Design Notes</h2>
 <ul>
 <li>A Specification is a VALUE OBJECT: it carries no identity, should be immutable, and can be shared.</li>
 <li>The Factory can configure a Specification with data from external sources (customer account status, corporate policy database) without coupling that data to the Invoice or other evaluated objects.</li>
 <li>When the full composite feature set (AND/OR/NOT + subsumption) is not needed, implement only what the domain requires. AND alone covers most practical cases and is simpler to implement efficiently.</li>
 <li>Where the ORM framework supports expressing queries in terms of domain objects, the Specification&#39;s SQL generation can be pushed down to the infrastructure layer, keeping table structure out of the domain.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/domain-model.html">Domain Model</a> — Specification is an explicit constraint modelled as a VALUE OBJECT within the domain model</li>
 <li><a href="../patterns/repository.html">Repository</a> — repositories implement <code>selectSatisfying(Specification)</code> to push query responsibility to the Specification</li>

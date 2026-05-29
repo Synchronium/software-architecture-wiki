@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,22 +309,26 @@
       <h1>Timeout</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/stability.html">stability</a></li><li><a class="tag-chip" href="../tags/distributed-systems.html">distributed-systems</a></li><li><a class="tag-chip" href="../tags/fault-tolerance.html">fault-tolerance</a></li><li><a class="tag-chip" href="../tags/integration-points.html">integration-points</a></li><li><a class="tag-chip" href="../tags/microservices.html">microservices</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>A timeout is a bound on how long a caller will wait for an operation to complete. When the bound is exceeded, the caller abandons the operation and takes a defined action — returning an error, returning a fallback value, or retrying.</p>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#the-core-problem">The Core Problem</a></li><li><a href="#where-to-apply-timeouts">Where to Apply Timeouts</a></li><li><a href="#sizing-timeouts">Sizing Timeouts</a></li><li><a href="#what-to-do-when-a-timeout-fires">What to Do When a Timeout Fires</a></li><li><a href="#the-absent-timeout-a-common-gotcha">The Absent Timeout: A Common Gotcha</a></li><li><a href="#timeouts-and-connection-validation">Timeouts and Connection Validation</a></li><li><a href="#relationship-to-other-patterns">Relationship to Other Patterns</a></li><li><a href="#fail-fast-and-timeouts">Fail Fast and Timeouts</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>A timeout is a bound on how long a caller will wait for an operation to complete. When the bound is exceeded, the caller abandons the operation and takes a defined action — returning an error, returning a fallback value, or retrying.</p>
 <p>Timeouts are the most fundamental resiliency pattern. They are a prerequisite for all other stability patterns: without timeouts, a single slow downstream dependency can exhaust a thread pool and cascade to a full service failure.</p>
-<h2>The Core Problem</h2>
+<h2 id="the-core-problem">The Core Problem</h2>
 <p>Without a timeout, a blocked call can hold a thread indefinitely. Threads are finite. A downstream service that hangs — not crashes, hangs — will silently consume caller threads one at a time until the pool is exhausted. At that point, the caller service stops responding to new requests entirely, even though its own code is correct. This is the root cause of most cascading failures (→ <a href="../operations/common-failure-causes.html">Common Failure Causes</a>).</p>
 <blockquote>
 <p>&quot;Slow responses are worse than refused connections.&quot; — Nygard (→ <a href="../sources/release-it.html">Release It</a> ch. 4)</p>
 </blockquote>
 <p>A refused connection fails fast and returns a thread immediately. A slow response holds the thread for the full timeout duration. This makes slow dependencies more dangerous than crashed ones.</p>
-<h2>Where to Apply Timeouts</h2>
+<h2 id="where-to-apply-timeouts">Where to Apply Timeouts</h2>
 <p>Timeouts apply to every operation that can block:</p>
 <ul>
 <li><strong>Outbound network calls</strong>: HTTP requests, gRPC calls, database queries, cache lookups</li>
@@ -326,14 +337,14 @@
 <li><strong>Message broker operations</strong>: producing or consuming from a queue when the broker is unresponsive</li>
 </ul>
 <p>Every integration point (→ <a href="../sources/release-it.html">Release It</a> ch. 4) must have a timeout. No exceptions.</p>
-<h2>Sizing Timeouts</h2>
+<h2 id="sizing-timeouts">Sizing Timeouts</h2>
 <p>Set the timeout based on the dependency&#39;s latency distribution, not an arbitrary round number:</p>
 <pre><code>timeout = P99.9 of the dependency&#39;s response time
 </code></pre>
 <p>A timeout at P99.9 means 1 in 1,000 requests will hit the timeout even when the dependency is healthy (false timeouts). This is typically acceptable; the trade-off is explicit. Setting a timeout below P99 creates excessive false timeouts that degrade availability; setting it too high defeats the purpose.</p>
 <p>The P99.9 value must be measured in production, not estimated. Latency distributions are often long-tailed — what appears to be P100 in QA may be P99 under production load (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27).</p>
 <p>For dependencies with variable latency (e.g., a bulk query that scales with result set size), consider per-operation timeouts rather than a single global timeout.</p>
-<h2>What to Do When a Timeout Fires</h2>
+<h2 id="what-to-do-when-a-timeout-fires">What to Do When a Timeout Fires</h2>
 <p><strong>A timeout alone does nothing.</strong> The caller must handle it explicitly:</p>
 <ol>
 <li><strong>Return an error</strong> (for critical dependencies): propagate a 503 to the upstream caller; don&#39;t convert a downstream timeout into a 500 on the caller side — the distinction matters for monitoring and retry logic.</li>
@@ -341,7 +352,7 @@
 <li><strong>Record a fault and feed the <a href="../patterns/circuit-breaker.html">Circuit Breaker</a></strong>: circuit breakers track fault density across calls; timeouts are faults. A sustained stream of timeouts from one dependency should trip the breaker and stop calls entirely.</li>
 <li><strong>Do not retry immediately</strong>: a timeout indicates the downstream is slow or overwhelmed; immediate retry adds load. Retry only with exponential backoff + jitter, and only for idempotent operations (→ <a href="../patterns/retry.html">Retry</a>).</li>
 </ol>
-<h2>The Absent Timeout: A Common Gotcha</h2>
+<h2 id="the-absent-timeout-a-common-gotcha">The Absent Timeout: A Common Gotcha</h2>
 <p>Many widely-used HTTP client libraries default to no timeout:</p>
 <ul>
 <li>Python <code>requests</code>: no timeout by default (will block indefinitely)</li>
@@ -350,10 +361,10 @@
 </ul>
 <p>Always set timeouts explicitly. Never assume a library default is safe.</p>
 <p>A sidecar proxy (→ <a href="../patterns/sidecar-service-mesh.html">Sidecar Service Mesh</a>) can enforce timeouts at the network layer, independently of application code — useful for catching integration points that developers forgot to configure.</p>
-<h2>Timeouts and Connection Validation</h2>
+<h2 id="timeouts-and-connection-validation">Timeouts and Connection Validation</h2>
 <p>A connection pool may hold connections that became stale after a database or service failover. The pool is unaware of the failover; connections appear healthy by internal state. When a request tries to use a stale connection, it may block or fail only when actual I/O occurs — not at checkout.</p>
 <p>Defense: configure the pool to validate connections at checkout (send a lightweight ping before returning the connection to the caller). This adds a small latency cost but prevents the resource exhaustion pattern described in the airline case study (→ <a href="../sources/release-it.html">Release It</a> ch. 2).</p>
-<h2>Relationship to Other Patterns</h2>
+<h2 id="relationship-to-other-patterns">Relationship to Other Patterns</h2>
 <p>Timeouts, circuit breakers, and retries are a trio that work together — not independently:</p>
 <pre><code>Timeout         → bounds a single call; returns a thread when the call is slow
 Retry           → handles transient failures by repeating; requires idempotency
@@ -367,13 +378,13 @@ Circuit Breaker → handles sustained failures; stops calls entirely after repea
 <li><strong>Circuit breaker opens</strong> if faults accumulate, stopping further calls.</li>
 </ol>
 <p>Using retries without a circuit breaker causes a retry storm during sustained failures. Using a circuit breaker without timeouts means faults are only counted when threads eventually return — too slowly to protect the thread pool.</p>
-<h2>Fail Fast and Timeouts</h2>
+<h2 id="fail-fast-and-timeouts">Fail Fast and Timeouts</h2>
 <p>Nygard distinguishes two complementary patterns (→ <a href="../sources/release-it.html">Release It</a> ch. 5):</p>
 <ul>
 <li><strong>Timeout</strong> applies to <em>outgoing</em> calls: bound how long you wait for a response.</li>
 <li><strong>Fail Fast</strong> applies to <em>incoming</em> requests: if a required resource (pool, circuit breaker, downstream) is already known unavailable, refuse the request immediately before doing any work. Timeouts discover new failures; Fail Fast prevents work on known failures.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a> — timeouts feed fault counts; circuit breaker stops calls when faults accumulate</li>
 <li><a href="../patterns/retry.html">Retry</a> — what to do when a call fails transiently; must be paired with timeouts</li>
@@ -381,12 +392,14 @@ Circuit Breaker → handles sustained failures; stops calls entirely after repea
 <li><a href="../distributed/idempotency.html">Idempotency</a> — prerequisite for safely retrying timed-out calls</li>
 <li><a href="../distributed/queueing-theory.html">Queueing Theory</a> — timeout sizing from the P99.9 of the dependency&#39;s latency distribution</li>
 <li><a href="../concepts/stability-patterns.html">Stability Patterns</a> — the full Nygard pattern set; timeout as the universal failure-arresting pattern</li>
+<li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a> — composition order: timeout first, then everything else</li>
+<li><a href="../comparisons/performance-and-capacity.html">Performance And Capacity</a> — sizing timeouts as part of capacity planning</li>
 <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a> — blocked threads from missing timeouts; airline case study</li>
 <li><a href="../operations/availability.html">Availability</a> — timeouts are a direct mechanism for preserving availability under downstream failure</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../distributed/backpressure.html">Backpressure</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li></ul>
       </aside>
     </main>
   </div>

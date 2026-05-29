@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,18 +309,32 @@
       <h1>Chaos Engineering</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 28<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/chaos-engineering.html">chaos-engineering</a></li><li><a class="tag-chip" href="../tags/resiliency.html">resiliency</a></li><li><a class="tag-chip" href="../tags/fault-injection.html">fault-injection</a></li><li><a class="tag-chip" href="../tags/testing.html">testing</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/availability.html">availability</a></li><li><a class="tag-chip" href="../tags/complexity.html">complexity</a></li><li><a class="tag-chip" href="../tags/sociotechnical.html">sociotechnical</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#why-complex-systems-require-chaos-engineering">Why Complex Systems Require Chaos Engineering</a></li><li><a href="#why-production-not-staging">Why Production, Not Staging</a></li><li><a href="#dynamic-safety-model">Dynamic Safety Model</a></li><li><a href="#economic-pillars-of-complexity">Economic Pillars of Complexity</a></li><li><a href="#experimentation-vs-testing">Experimentation vs Testing</a></li><li><a href="#the-five-advanced-principles">The Five Advanced Principles</a></li><li><a href="#theoretical-foundations">Theoretical Foundations</a></li><li><a href="#game-days-and-structured-exercises">Game Days and Structured Exercises</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#designing-the-experiment">Designing the Experiment</a></li><li><a href="#injection-types">Injection Types</a></li><li><a href="#experiment-prioritisation">Experiment Prioritisation</a></li><li><a href="#targeting-strategy">Targeting Strategy</a></li><li><a href="#opt-in-vs-opt-out">Opt-In vs Opt-Out</a></li><li><a href="#automation-and-moderation">Automation and Moderation</a></li><li><a href="#game-days-as-cognitive-exercises">Game Days as Cognitive Exercises</a></li><li><a href="#regulated-environments-and-financial-services">Regulated Environments and Financial Services</a></li><li><a href="#disaster-simulations-human-side">Disaster Simulations (Human Side)</a></li><li><a href="#continuous-verification">Continuous Verification</a></li><li><a href="#chaos-maturity-model">Chaos Maturity Model</a></li><li><a href="#roi-and-business-justification">ROI and Business Justification</a></li><li><a href="#automated-experiment-selection">Automated Experiment Selection</a></li><li><a href="#automation-and-human-judgement">Automation and Human Judgement</a></li><li><a href="#security-chaos-engineering">Security Chaos Engineering</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Experimentation, not testing.</strong> Tests verify known properties; chaos experiments create new knowledge by trying to falsify hypotheses about system behaviour under turbulence. The two cannot substitute for each other.</li>
+<li><strong>Safety is not a composable property.</strong> Components individually safe can be unsafe in combination. Production-scale emergent failures (cascading retries, dogpiles, congestion-induced behaviour change) cannot be reproduced in staging.</li>
+<li><strong>Verification beats validation.</strong> &quot;Does the right output come out at the system boundary?&quot; is more useful than &quot;are the internals correct?&quot; — particularly in complex systems where all components can validate while still composing into the wrong output.</li>
+<li><strong>Five advanced principles.</strong> Steady-state hypothesis, vary real-world events, run in production, automate continuously, minimise blast radius.</li>
+<li><strong>The discipline&#39;s deepest value is sociotechnical.</strong> Game Days transfer expert mental models that the experts themselves can&#39;t fully articulate (Woods&#39;s <em>Law of Fluency</em>). The artefacts are secondary; the conversation is primary.</li>
+<li><strong>Continuous Verification extends CI/CD.</strong> Automated chaos experiments inside the deployment pipeline — verifying system <em>output</em> against business expectations — are the mature end-state.</li>
+<li><strong>Three counter-intuitive conclusions</strong> (from the book&#39;s closing argument): redundancy increases complexity faster than safety; removing complexity buys more capacity than adding redundancy; efficiency destroys adaptive capacity.</li>
+</ul>
+<h2 id="definition">Definition</h2>
 <p>Chaos engineering is &quot;the discipline of experimenting on a distributed system in order to build confidence in the system&#39;s capability to withstand turbulent conditions in production.&quot; (→ <a href="../sources/release-it.html">Release It</a> ch. 17, citing principlesofchaos.org; also <a href="../sources/chaos-engineering.html">Chaos Engineering</a> introduction)</p>
 <p>It is empirical, not formal: experiments are run against the real system to learn what it <em>does</em>, not models to verify what it <em>should</em> do. The purpose is to build <em>confidence</em> — if you have other reliable means of building confidence, chaos may not be necessary. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> introduction)</p>
 <p>The discipline originated at Netflix in 2011–2015. Chaos Monkey — which randomly terminated one instance per cluster per day during business hours — was created to force all teams to make their services resilient to vanishing instances. Critically, it is &quot;a management principle instantiated in running code&quot;: it aligns the organisation toward a shared goal while remaining <em>loosely coupled</em> as to how each team achieves resilience. Regional failover simulation (Chaos Kong) followed the 2012 Christmas Eve AWS outage. The formal Principles of Chaos Engineering were published in 2015. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> introduction)</p>
-<h2>Why Complex Systems Require Chaos Engineering</h2>
+<h2 id="why-complex-systems-require-chaos-engineering">Why Complex Systems Require Chaos Engineering</h2>
 <p>Distributed systems are <em>complex</em> in the technical sense: nonlinear, unpredictable in output, and impossible for any single person to hold a complete mental model of. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 1)</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -345,7 +366,7 @@
 <blockquote>
 <p><strong>Contradiction with traditional QA thinking</strong>: Test-driven development and pre-production testing verify that individual components behave correctly. Chaos engineering addresses the gap between correct components and correct composition. Safety is not a composable property — see below.</p>
 </blockquote>
-<h2>Why Production, Not Staging</h2>
+<h2 id="why-production-not-staging">Why Production, Not Staging</h2>
 <p>Staging environments are never full-size replicas of production; their economics make that impossible. Certain system properties only emerge at production scale:</p>
 <ul>
 <li>Cascading failures and retry storms (triggered by specific load/component ratios)</li>
@@ -354,11 +375,11 @@
 <li>Network congestion behaviour (congested networks are qualitatively different from uncongested ones)</li>
 </ul>
 <p>More importantly: <strong>safety is not a composable property</strong>. Two services that are individually safe may not be safe in composition. Example: client enforces a 50 ms timeout; each of two providers has P99.9 latency of 30 ms — each call is individually safe, but a sequential call to both will breach the timeout for a meaningful percentage of requests. This emergent failure mode is invisible from component-level testing. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 2)</p>
-<h2>Dynamic Safety Model</h2>
+<h2 id="dynamic-safety-model">Dynamic Safety Model</h2>
 <p>Adapted from Jens Rasmussen&#39;s Dynamic Safety Model (resilience engineering). Three properties constrain every engineer: <strong>Economics</strong>, <strong>Workload</strong>, and <strong>Safety</strong>. Engineers naturally develop intuitions for Economics and Workload, but rarely for Safety — incidents almost always come as surprises because engineers lack the feedback signals needed to sense when they are drifting toward the safety boundary. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 2)</p>
 <p>This optimisation gradient is dangerous: because Economics and Workload are visible, engineers drift <em>toward</em> those poles — and thereby <em>away</em> from Safety, silently, as the system &quot;improves.&quot;</p>
 <p>Chaos Engineering provides empirical feedback about the Safety boundary. Once engineers develop an intuition for it, they implicitly modify their behaviour to maintain a safety margin — without being told to, and without imposing process. This is the model&#39;s primary explanation for why Chaos Engineering changes organisational behaviour, not just fixes bugs.</p>
-<h2>Economic Pillars of Complexity</h2>
+<h2 id="economic-pillars-of-complexity">Economic Pillars of Complexity</h2>
 <p>Adapted from Kent Beck (informed by Enrico Zaninotto). Four pillars determine how well an organisation can navigate complexity: <strong>State</strong>, <strong>Relationships</strong>, <strong>Environment</strong>, and <strong>Reversibility</strong>. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 2)</p>
 <p>Software engineering is structurally disadvantaged on the first three pillars:</p>
 <ul>
@@ -371,7 +392,7 @@
 <blockquote>
 <p><strong>Synthesis</strong>: The Dynamic Safety Model explains the <em>behavioural</em> value of chaos engineering (develops safety intuition). The Economic Pillars model explains the <em>architectural</em> value (identifies targets for Reversibility improvement). Together they ground chaos engineering as a systemic discipline, not a collection of fault injection scripts.</p>
 </blockquote>
-<h2>Experimentation vs Testing</h2>
+<h2 id="experimentation-vs-testing">Experimentation vs Testing</h2>
 <p>A critical distinction from ch. 3: Chaos Engineering is <em>experimentation</em>, not <em>testing</em>. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 3)</p>
 <ul>
 <li><strong>Testing</strong> verifies <em>known</em> properties: a test is an assertion based on existing knowledge; running it collapses a known question to true/false. Testing does not create new knowledge.</li>
@@ -381,7 +402,7 @@
 <p><strong>Verification over validation</strong>: Chaos Engineering cares whether something works, not <em>how</em>. Verification examines output at a system boundary (does clean water come out of the tap?). Validation inspects internal parts and builds mental models (are all the pipes in order?). In complex systems, all components can pass validation while still producing bad output due to unanticipated interactions.</p>
 <p><strong>Not &quot;breaking stuff&quot;</strong>: Chaos Engineering is better characterised as <em>fixing stuff in production</em>. Breaking is trivial; the difficult work is mitigating blast radius, reasoning about what is worth investigating, and making the chaos inherent in the system <em>visible</em> rather than hiding it.</p>
 <p><strong>Not Antifragility</strong>: Taleb&#39;s Antifragility proposes adding chaos so the system grows stronger in response. Resilience Engineering (the scholarly basis of Chaos Engineering) diverges: studying <em>what goes right</em> is more informative than hunting weaknesses; redundancy can cause failure as easily as prevent it. The two frameworks are fundamentally different pursuits. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 3)</p>
-<h2>The Five Advanced Principles</h2>
+<h2 id="the-five-advanced-principles">The Five Advanced Principles</h2>
 <p>The Principles of Chaos Engineering define the gold standard for the practice. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 3; also <a href="../sources/release-it.html">Release It</a> ch. 17)</p>
 <ol>
 <li><p><strong>Build a hypothesis around steady-state behaviour</strong>: define the system&#39;s normal measurable output first; then form the hypothesis that this steady state will hold under turbulent conditions. Focuses on KPIs and business-visible outputs — not internal implementation. Favours verification over validation.</p>
@@ -395,12 +416,12 @@
 <li><p><strong>Minimise blast radius</strong>: use control vs experimental group design, shadow traffic, session stickiness, high-value-request exclusions, or automated retry to limit the customer impact of a disproved hypothesis. Minimising blast radius also sharpens signal — a small variable group stands out sharply against a small control group.</p>
 </li>
 </ol>
-<h2>Theoretical Foundations</h2>
+<h2 id="theoretical-foundations">Theoretical Foundations</h2>
 <p><strong>Drift into failure</strong> (Dekker, <em>Drift into Failure</em>): economic pressure continuously pushes systems toward safety boundaries. Highly optimised, highly efficient systems handle disruption badly — they break catastrophically rather than gracefully. Chaos engineering creates a countervailing force that optimises for availability and disruption tolerance, not just throughput.</p>
 <p><strong>Fundamental regulator paradox</strong> (Weinberg, <em>General Principles of Systems Design</em>): the better a regulator suppresses variation, the less information it generates about its own quality. &quot;You don&#39;t know how much you depend on your IT staff until they go on vacation.&quot; The same applies to stability mechanisms that are never exercised.</p>
 <p><strong>Volkswagen microbus paradox</strong>: you learn to fix what breaks often; what rarely breaks stays mysterious — and when it does break, the situation is worse because no one knows how to fix it. Controlled low-level breakage prevents expertise atrophy.</p>
 <p><strong>Antifragility</strong> (Taleb, <em>Antifragile</em>): Rosenthal &amp; Jones argue chaos engineering is <em>not</em> antifragility — see Experimentation vs Testing section above. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 3)</p>
-<h2>Game Days and Structured Exercises</h2>
+<h2 id="game-days-and-structured-exercises">Game Days and Structured Exercises</h2>
 <p>For legacy systems not designed for fault tolerance, or for any team starting out, structured <strong>Game Day</strong> exercises are a practical alternative to automated chaos tooling. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 4 — Slack Disasterpiece Theater)</p>
 <p><strong>Prerequisites before running any chaos</strong> (automated or manual):</p>
 <ul>
@@ -426,7 +447,7 @@
 <li>Treat DiRT as actual outages — &quot;escalate as normal&quot;; laxity because &quot;it&#39;s just a test&quot; wastes the learning opportunity.</li>
 </ol>
 <p><strong>Hyrum&#39;s Law</strong> (coined at Google): &quot;With a sufficient number of users of an API, it does not matter what you promise in the contract: all observable behaviours of your system will be depended on by somebody.&quot; Applies to reliability and latency characteristics as much as data contracts — systems that consistently exceed their SLO create an implicit contract at <em>observed</em> performance, not at <em>specified</em> performance. Running at published SLO levels is itself a form of chaos test.</p>
-<h2>Prerequisites</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <p>Before running chaos in production:</p>
 <ol>
 <li><strong>Irreplaceable-request check</strong>: if every request is irreplaceable (financial transactions with no idempotency), chaos engineering may not be appropriate. You must be able to break the system without breaking the business.</li>
@@ -435,7 +456,7 @@
 <li><strong>Meaningful monitoring</strong>: you must be able to detect when failure rates shift by small amounts. &quot;If you have a wall full of green dashboards, that means your monitoring tools aren&#39;t good enough&quot; (Charity Majors). Monitoring infrastructure must be independent of production traffic paths.</li>
 <li><strong>Recovery plan</strong>: the system may not auto-recover when the chaos test ends. Know what to restart, disconnect, or clean up.</li>
 </ol>
-<h2>Designing the Experiment</h2>
+<h2 id="designing-the-experiment">Designing the Experiment</h2>
 <ol>
 <li><strong>Form a hypothesis</strong>: expressed as an invariant the system should maintain under turbulent conditions. Focus on externally observable behaviour, not internals. Example: &quot;Clustered services should remain functional when any single instance is terminated.&quot;</li>
 <li><strong>Define steady state</strong>: verify you can currently measure whether the steady state holds. Identify monitoring blind spots before injecting chaos.</li>
@@ -445,7 +466,7 @@
 </ol>
 <p><strong>Big red button</strong>: every experiment — automated or manual — must have an immediate abort mechanism that returns the system to steady state with a single action. The 2018 Hawaii missile false alarm is an instructive analogy: real and test actions placed in the same dropdown caused catastrophic confusion. Chaos engineering UIs must make abort unambiguous and one-click. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 7)</p>
 <p><strong>Blast radius progression</strong> (LinkedIn&#39;s model): self-browser only (no member impact) → employees only → controlled member percentages via A/B framework → wider production. Never skip levels; each validates confidence before widening exposure. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 7)</p>
-<h2>Injection Types</h2>
+<h2 id="injection-types">Injection Types</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -476,7 +497,7 @@
 </tr>
 </tbody></table></div>
 <p><strong>FIT (Failure Injection Testing)</strong>: tag a request at the API gateway with a cookie specifying &quot;when G calls H, fail this call.&quot; At the call site, the framework reads the cookie and reports failure without making the network call. Enables precise, controllable testing of deep call trees without infrastructure disruption.</p>
-<h2>Experiment Prioritisation</h2>
+<h2 id="experiment-prioritisation">Experiment Prioritisation</h2>
 <p>No team can cover all possible failure modes — experiment selection has an outsized impact on value returned. Prioritise by three properties: (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 6)</p>
 <ol>
 <li><strong>Frequency</strong>: what events will definitely happen? Deployments, credential rotations, certificate renewals, DST changes, OS patches. Practise these <em>more often than required</em> — &quot;we get good at things we do often.&quot; If credentials rotation hasn&#39;t been exercised in six months, it cannot be trusted when needed.</li>
@@ -495,18 +516,18 @@
 <li><strong>Combined</strong>: multiple simultaneous failures; more realistic; harder to diagnose; higher risk of cascade.</li>
 <li><strong>Compounded</strong>: failures propagating upstream or downstream beyond the experiment boundary; plan and test the recovery procedure <em>before</em> executing; can expand blast radius beyond safety assumptions.</li>
 </ul>
-<h2>Targeting Strategy</h2>
+<h2 id="targeting-strategy">Targeting Strategy</h2>
 <p><strong>Start with randomness</strong>: most immature systems have so many problems that random injection (random cluster, random instance) will uncover something significant immediately.</p>
 <p><strong>Progress to targeted injection</strong>: as easy problems are fixed, the search space becomes sparse but non-uniform. Apply knowledge of the call tree: a top-level request generates a tree of supporting calls; removing one node either succeeds (revealing redundancy) or fails (revealing a crucial dependency). Both outcomes are valuable.</p>
 <p><strong>Learn from non-failures</strong>: cases where a fault was injected but the request succeeded reveal redundancy paths. These are as important as failure cases — they document where safety exists, so it isn&#39;t accidentally removed.</p>
 <p><strong>Cunning malevolent intelligence</strong> (Peter Alvaro, UC Santa Cruz): collect traces of normal workload; build a graph of service dependencies; use graph algorithms to find crucial links to cut; automatically learn about redundancy from successful injections. Dramatically narrows the search space as the system matures.</p>
-<h2>Opt-In vs Opt-Out</h2>
+<h2 id="opt-in-vs-opt-out">Opt-In vs Opt-Out</h2>
 <ul>
 <li><strong>Opt-out</strong> (Netflix model): all services are subject to Chaos Monkey by default; exemptions require explicit sign-off and carry engineering-management review. Higher coverage, higher reliability improvement.</li>
 <li><strong>Opt-in</strong>: lower resistance, easier to start, but adoption rates are much lower.</li>
 </ul>
 <p>Recommended strategy: start opt-in to build success stories and organizational confidence, then migrate to opt-out as the culture matures.</p>
-<h2>Automation and Moderation</h2>
+<h2 id="automation-and-moderation">Automation and Moderation</h2>
 <p>Once a vulnerability class is found, automate the injection. Apply constraints to prevent the automation from being destructive:</p>
 <ul>
 <li>Never kill the last instance in a cluster.</li>
@@ -514,7 +535,7 @@
 <li>Gate side effects (emails, payments) — especially important during any kind of reprocessing.</li>
 </ul>
 <p>A <strong>chaos automation platform</strong> (e.g., Netflix&#39;s ChAP) manages what injections to apply, to whom, and when, while enforcing safety constraints and reporting test events to monitoring systems for correlation with production behaviour.</p>
-<h2>Game Days as Cognitive Exercises</h2>
+<h2 id="game-days-as-cognitive-exercises">Game Days as Cognitive Exercises</h2>
 <p>The most underappreciated purpose of a Game Day is <em>distilling expertise from humans</em>, not finding bugs. If no vulnerabilities are found but senior engineers articulate mental models that junior engineers absorb — the exercise succeeded. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 9)</p>
 <p><strong>The Law of Fluency</strong> (David Woods): expert performance becomes opaque to the expert. Automatised skills cannot be accurately self-reported. An external facilitator and structured cognitive interviews are required to surface the implicit knowledge that makes experienced engineers effective. Self-documentation by the expert misrepresents what they actually do.</p>
 <p><strong>Resilience as positive adaptive capacity</strong> (Dekker): resilience is not minimising errors — it is enhancing the organisation&#39;s capacity to adapt successfully to disruption. Game Days succeed when adaptive capacity grows, not merely when bugs are patched.</p>
@@ -523,7 +544,7 @@
 <p><strong>Three-phase model</strong>: Before / During / After. The industry chronically underinvests in Before and After — the phases where mental model transfer actually occurs. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 9)</p>
 <p><strong>Automation ironies</strong>: as automation handles normal operations, humans lose the practice needed for abnormal operations — exactly when automation hands control back to humans. Regular Game Days counteract expertise atrophy by creating deliberate abnormal scenarios. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 9)</p>
 <p><strong>ChAP at Netflix</strong>: automation alone did not drive adoption — mostly only Chaos Engineers ran experiments, not service teams. The <em>process</em> of automating, and the dashboards it produced, created organisational value by making tacit system behaviour legible. The artifact of automation is sometimes less valuable than the act of automating.</p>
-<h2>Regulated Environments and Financial Services</h2>
+<h2 id="regulated-environments-and-financial-services">Regulated Environments and Financial Services</h2>
 <p>In regulated industries (banking, healthcare), chaos engineering requires adaptations: (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 8)</p>
 <ul>
 <li><strong>Audit trail is non-negotiable</strong>: every chaos action must be attributable and logged. This typically rules out third-party tools with limited compliance support; in-house platforms are preferred.</li>
@@ -532,7 +553,7 @@
 <li><strong>Co-creation team model</strong>: a core chaos engineering team pairs with embedded application engineers who own their services. Prevents the chaos team from becoming a siloed &quot;chaos taxi&quot; disconnected from service context.</li>
 <li><strong>ROI via call volume reduction</strong>: support call volume is convertible to dollar value and satisfies finance stakeholders. Receiving an alert during an experiment = failing the experiment. Defining success metrics in advance forces clarity about what &quot;correctly functioning&quot; means.</li>
 </ul>
-<h2>Disaster Simulations (Human Side)</h2>
+<h2 id="disaster-simulations-human-side">Disaster Simulations (Human Side)</h2>
 <p>Chaos engineering applies to the human side of systems too. Organisations are complex systems — some structures are explicit (on-call rota, vacation policy), others are tribal knowledge (&quot;only contact George via Slack&quot;). The gap between <strong>work-as-imagined</strong> and <strong>work-as-done</strong> is the primary source of organisational latent risk — called &quot;dark debt&quot; in the SNAFUcatchers STELLA report. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 10)</p>
 <p><strong>Weak signals</strong>: in technical systems, USE metrics monitor bottlenecks before failure becomes loud. Organisationally: &quot;we need to talk to Emma&quot; signals a single point of failure; an on-call shift ending Monday being more tiring than Friday is a signal approaching a capacity boundary. Read weak signals during success, not failure — by the time failure arrives, the signal is too loud to be useful. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 10)</p>
 <p><strong>Zombie simulation</strong>: randomly designate a percentage of staff as &quot;unavailable for the day&quot; (they cannot respond to communications or perform work tasks). Observe what breaks. Review issues in a postmortem format; resolve through documentation, role distribution, or automation.</p>
@@ -540,7 +561,7 @@
 <p><strong>Communication as network latency</strong>: cross-team communication is the latency of the organisational distributed system. Frameworks like Scrum and Kanban work well under low latency; they degrade when communication must cross team or department boundaries. Deliberate rotation programmes (engineers spending sprints on other teams) create new trusted relationships — mesh connections that survive the departure of any individual node. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 10)</p>
 <p><strong>Westrum&#39;s organisational typology</strong>: pathological (novelty crushed) → bureaucratic (novelty causes problems) → generative (novelty is implemented). Chaos experiments on human systems require at minimum a generative environment. Use Westrum&#39;s model as a readiness sniff test before attempting significant organisational experiments. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 10)</p>
 <p>Apply incrementally: confirm you can operate at normal load with 20% zombie rate before introducing concurrent system fault injection.</p>
-<h2>Continuous Verification</h2>
+<h2 id="continuous-verification">Continuous Verification</h2>
 <p><strong>Continuous Verification (CV)</strong> is the natural extension of CI/CD: a discipline of proactive experimentation implemented as tooling that verifies system behaviours against business-visible expectations in production. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 16)</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -574,7 +595,7 @@
 <li><em>Holistic visualisation tools</em> (Vizceral at Netflix): allow a human to glance at the global state of a complex system and develop intuition without inspecting individual metrics.</li>
 </ul>
 <p><strong>CI/CD/CV integration</strong>: with minor modification, a chaos automation platform can be inserted as a stage in the CD pipeline — a gate that must pass before production traffic is fully shifted to new code. This is the most mature form of chaos engineering adoption.</p>
-<h2>Chaos Maturity Model</h2>
+<h2 id="chaos-maturity-model">Chaos Maturity Model</h2>
 <p>A two-axis framework for assessing and developing a Chaos Engineering programme. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 15)</p>
 <p><strong>Adoption axis</strong> — how widely the practice has spread:</p>
 <ul>
@@ -594,7 +615,7 @@
 </ol>
 <p><strong>Experiment layer progression</strong>: Infrastructure (instance/region termination) → Application (IPC injection between services) → Business Logic (plausible unexpected responses). Most teams start at infrastructure; maturity moves up the stack.</p>
 <p><strong>Adoption drivers</strong>: post-incident momentum is the most common inflection point (&quot;Never let a good crisis go to waste&quot;). Top-down adoption (CISO/CIO mandate) follows bottom-up advocacy from teams carrying pagers.</p>
-<h2>ROI and Business Justification</h2>
+<h2 id="roi-and-business-justification">ROI and Business Justification</h2>
 <p>The attribution challenge: chaos engineering operates by preventing incidents that never occur. &quot;No one tells the story of the incident that didn&#39;t happen.&quot; Successful programmes are self-limiting: improved availability releases business pressure to ship features faster, which increases complexity, which may offset the gains. The signal erases itself. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 13)</p>
 <p><strong>Kirkpatrick Model</strong> for evaluating ROI (from educational training):</p>
 <ul>
@@ -604,7 +625,7 @@
 <li><strong>Level 4 — Results</strong>: correlate with business outcomes — reduced downtime, fewer incidents, less degraded operation time. Most difficult; only necessary if a strong formal case is required.</li>
 </ul>
 <p><strong>Collateral ROI</strong>: value accrued outside the primary goal. The stakeholder assembly and scenario design before a Game Day surfaces knowledge silos and high-probability failures — this is valuable even if the experiment never runs. The team formation effect (people who have never worked together learning each other&#39;s communication style) pays dividends during real incidents.</p>
-<h2>Automated Experiment Selection</h2>
+<h2 id="automated-experiment-selection">Automated Experiment Selection</h2>
 <p>The combinatorial explosion problem: a 20-service distributed system has over one million distinct combinations of node crashes alone. Random selection is computationally tractable but cannot cover multi-fault interactions. Expert-guided selection is powerful but expensive and depends on intuition that is difficult to communicate and transfer. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 12)</p>
 <p><strong>Lineage-Driven Fault Injection (LDFI)</strong> (Alvaro, Disorderly Labs): uses distributed tracing to automate experiment selection:</p>
 <ol>
@@ -615,13 +636,13 @@
 </ol>
 <p>Fault tolerance <em>is</em> redundancy: a system is fault-tolerant precisely if it provides enough alternative computation paths that partial failure cannot prevent success. Tracing makes those paths legible; LDFI systematically finds the experiments most likely to find the gaps. Requires mature distributed tracing infrastructure; has been deployed at Netflix, Huawei, and eBay.</p>
 <p>Appropriately calibrated, LDFI does not replace human judgement — it automates the <em>selection</em> step so humans can focus on interpreting surprising results, providing explanations, and repairing bugs.</p>
-<h2>Automation and Human Judgement</h2>
+<h2 id="automation-and-human-judgement">Automation and Human Judgement</h2>
 <p>Proposals to &quot;automate Chaos Engineering&quot; run into a fundamental tension: the discipline&#39;s value comes from the human cognitive activities it generates, not just the experiments it runs. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 11 — Allspaw)</p>
 <p><strong>The Substitution Myth</strong> (Hollnagel, via Allspaw): automation cannot be substituted for human action without changing the system. &quot;Capitalising on some strength of computers does not replace a human weakness — it creates new human strengths and weaknesses, often in unanticipated ways.&quot; Tasks in complex systems are highly interdependent; any automation changes the system in ways the automation&#39;s designer cannot fully predict.</p>
 <p><strong>Ironies of Automation</strong> (Bainbridge): designer errors in automation become operating problems; automation intended to reduce human workload typically adds new tasks (maintenance, oversight, deciding when to pause it) that may exceed the work it eliminates.</p>
 <p><strong>Confidence as generative dialogue</strong>: forming hypotheses, defining steady state, and interpreting results forces engineers to articulate mental models and expose disagreements. These dialogues are where much of the value lies. Automating the process away removes the learning, even if the experiments continue to run. Automated tooling is most valuable for <em>generating candidate experiments</em> for human review — not for replacing the human judgement involved in selecting, timing, and interpreting them.</p>
 <p><strong>Context-sensitive timing</strong>: experiments are delayed for partner deployments, paused during incidents to avoid ambiguity, triggered by surprising production behaviour. These judgements require situational awareness that cannot be reduced to rules. People cannot be &quot;out of the loop&quot; — they are the ones responsible, and software cannot be. (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 11)</p>
-<h2>Security Chaos Engineering</h2>
+<h2 id="security-chaos-engineering">Security Chaos Engineering</h2>
 <p><strong>Security Chaos Engineering (SCE)</strong>: &quot;The identification of security control failures through proactive experimentation to build confidence in the system&#39;s ability to defend against malicious conditions in production.&quot; (→ <a href="../sources/chaos-engineering.html">Chaos Engineering</a> ch. 20)</p>
 <p>Most security incidents are caused by misconfiguration, human error, and &quot;system glitches&quot; — not sophisticated attackers. The traditional root-cause-and-blame model entrenches these failures rather than eliminating them, and produces point-in-time assessments that become stale as the surrounding system changes.</p>
 <p><strong>Security controls drift after Day 0</strong>: controls are designed for the initial production state. The system around them changes continuously via CI/CD. Security must have continuous feedback loops to detect when controls have drifted into unknown failure states.</p>
@@ -629,7 +650,15 @@
 <p><strong>Security Game Days</strong>: introduce controlled security failure conditions to measure: how effectively detection tools identified the failure; which tools provided actionable signal; whether the system operated as intended. Identical mechanics to availability Game Days.</p>
 <p><strong>&quot;Do Less, Better&quot;</strong> (Nwatu, Netflix): build fewer security controls, but verify empirically that they work. Without feedback loops, security controls that were effective on Day 0 silently drift into ineffectiveness as the system evolves around them.</p>
 <p><strong>Antipattern</strong>: root-cause analysis in security produces the same dysfunction as in availability — blame and isolation rather than systemic learning. &quot;What you call root cause is simply the place where you stop looking any further.&quot; (Dekker)</p>
-<h2>Related Concepts</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Chaos engineering is empirical, not formal.</strong> You run experiments against real systems to discover what they do; you don&#39;t model them and prove what they should. Verification beats validation in complex systems.</li>
+<li><strong>The five advanced principles distinguish mature practice.</strong> Steady-state hypothesis, real-world variation, production execution, continuous automation, minimal blast radius. A programme missing any of them is incomplete.</li>
+<li><strong>The value lives in the conversation, not the experiment.</strong> Hypothesis-forming, steady-state definition, result interpretation — these force engineers to articulate mental models and expose disagreements. Automating the conversation away removes the value even if experiments keep running.</li>
+<li><strong>Continuous Verification is the mature end-state.</strong> Automated experiments inside CI/CD verify system output against business expectations. ChAP is the canonical example; the future is more of this.</li>
+<li><strong>The discipline&#39;s deepest insights are sociotechnical.</strong> Redundancy increases complexity; removing complexity buys more capacity than adding redundancy; efficiency destroys adaptive capacity. Resilience is created by people, not patterns.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/monitoring.html">Monitoring</a> — prerequisite: monitoring must detect small changes in failure rates; chaos tests are annotated as events on dashboards</li>
 <li><a href="../operations/availability.html">Availability</a> — chaos engineering operationally validates SLO targets and resiliency mechanisms</li>
@@ -643,7 +672,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+        <ul><li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li><li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/data-integrity.html">Data Integrity</a></li><li><a href="../concepts/feature-flags.html">Feature Flags</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li><li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -302,14 +309,27 @@
       <h1>Business Logic Implementation Patterns</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../patterns/index.html">pattern</a>
-        <span class="page-updated">Updated 17<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ddd.html">ddd</a></li><li><a class="tag-chip" href="../tags/business-logic.html">business-logic</a></li><li><a class="tag-chip" href="../tags/transaction-script.html">transaction-script</a></li><li><a class="tag-chip" href="../tags/active-record.html">active-record</a></li><li><a class="tag-chip" href="../tags/domain-model.html">domain-model</a></li><li><a class="tag-chip" href="../tags/tactical-design.html">tactical-design</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Overview</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#overview">Overview</a></li><li><a href="#transaction-script">Transaction Script</a></li><li class="toc-sub"><a href="#three-common-failure-modes">Three Common Failure Modes</a></li><li class="toc-sub"><a href="#when-to-use">When to Use</a></li><li><a href="#active-record">Active Record</a></li><li class="toc-sub"><a href="#when-to-use-2">When to Use</a></li><li><a href="#pattern-selection-heuristic">Pattern Selection Heuristic</a></li><li><a href="#tactical-design-decision-tree">Tactical Design Decision Tree</a></li><li class="toc-sub"><a href="#step-1-business-logic-pattern-selection">Step 1 — Business Logic Pattern Selection</a></li><li class="toc-sub"><a href="#step-2-architectural-pattern-selection">Step 2 — Architectural Pattern Selection</a></li><li class="toc-sub"><a href="#step-3-testing-strategy-selection">Step 3 — Testing Strategy Selection</a></li><li><a href="#migration-paths-between-patterns">Migration Paths Between Patterns</a></li><li class="toc-sub"><a href="#transaction-script-active-record">Transaction Script → Active Record</a></li><li class="toc-sub"><a href="#active-record-domain-model">Active Record → Domain Model</a></li><li class="toc-sub"><a href="#domain-model-event-sourced-domain-model">Domain Model → Event-Sourced Domain Model</a></li><li><a href="#table-module-peaa">Table Module (PEAA)</a></li><li><a href="#service-layer-peaa">Service Layer (PEAA)</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
+<ul>
+<li><strong>Match the pattern to the subdomain type.</strong> Transaction script and active record for supporting subdomains; domain model for core; event-sourced domain model for core subdomains needing audit, time travel, or behavioural analysis.</li>
+<li><strong>The pattern selection is a cascade.</strong> Business logic pattern determines architectural pattern (event-sourced → CQRS, domain model → ports &amp; adapters, active record → layered + service layer, transaction script → minimal layered) determines testing strategy (pyramid for rich models, diamond for active record, reversed pyramid for transaction script).</li>
+<li><strong>Transaction Script&#39;s defining requirement is transactional integrity.</strong> Three common failure modes break it: missing DB transaction; distributed DB+message-bus write (solved by <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>); implicit distributed transaction via void method (solved by idempotency).</li>
+<li><strong>Active record is not &quot;anaemic domain model&quot; as an insult.</strong> It&#39;s a valid choice for simple business logic with complex data structures. Forcing a domain model on simple logic adds accidental complexity.</li>
+<li><strong>Subdomain type can be wrong.</strong> If a &quot;core&quot; subdomain works fine as a transaction script, it&#39;s probably supporting. If a &quot;supporting&quot; subdomain has accumulated rules and invariants, it has become core. Use pattern fit as a check on classification.</li>
+<li><strong>Service Layer (Fowler) belongs over Domain Model, not under it.</strong> Thin facade for cross-cutting concerns (transactions, security); application logic above, domain logic below. Avoid the controller-entity anti-pattern that puts use-case logic in services.</li>
+</ul>
+<h2 id="overview">Overview</h2>
 <p>DDD&#39;s tactical design provides four patterns for implementing business logic, chosen based on the <strong>complexity of the business logic</strong> and the <strong>subdomain type</strong>:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -343,24 +363,24 @@
 <p>This page covers the two simpler patterns. For the domain model, see <a href="../patterns/domain-model.html">Domain Model</a>. For the event-sourced domain model, see <a href="../streams/event-sourcing-cqrs.html">Event Sourcing Cqrs</a>.</p>
 <p>(→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> chs. 5–7)</p>
 <hr>
-<h2>Transaction Script</h2>
+<h2 id="transaction-script">Transaction Script</h2>
 <blockquote>
 <p>&quot;Organises business logic by procedures where each procedure handles a single request from the presentation.&quot; — Martin Fowler</p>
 </blockquote>
 <p><strong>Structure</strong>: each business operation is a procedure. The system&#39;s public interface is a collection of business transactions. Each procedure may use thin abstractions for data access but is otherwise straightforward.</p>
 <p><strong>The one requirement</strong>: transactional behaviour — every operation must either succeed completely or fail completely, leaving the system in a consistent state. This is the pattern&#39;s defining constraint, and it&#39;s easier to violate than it appears.</p>
-<h3>Three Common Failure Modes</h3>
+<h3 id="three-common-failure-modes">Three Common Failure Modes</h3>
 <p><strong>1. Lack of a transaction</strong>: multiple DB writes not wrapped in a single transaction. If the second write fails, the first is committed but the second is not — inconsistent state. Fix: wrap in a single DB transaction.</p>
 <p><strong>2. Distributed transaction (DB + message bus)</strong>: after updating the DB, publishing to a message bus in the same operation. A failure between the two leaves the DB updated but the message unpublished. Fix: use the <a href="../patterns/outbox-pattern.html">Outbox Pattern</a> to publish reliably after the DB commit.</p>
 <p><strong>3. Implicit distributed transaction</strong>: a void method that updates the DB communicates its result to the caller via exception/success. If the update succeeds but the communication fails (network, process crash), the caller retries and the operation executes twice. Fix: make the operation <strong>idempotent</strong> (caller passes the target value, not a delta) or use optimistic concurrency control (update only if the value matches what the caller read).</p>
-<h3>When to Use</h3>
+<h3 id="when-to-use">When to Use</h3>
 <ul>
 <li>Supporting subdomains: simple ETL/CRUD operations</li>
 <li>Adapters for external integration (generic subdomains, anticorruption layers)</li>
 <li><strong>Not for core subdomains</strong>: complex business logic leads to duplicated logic across transactions, which diverges over time → big ball of mud</li>
 </ul>
 <hr>
-<h2>Active Record</h2>
+<h2 id="active-record">Active Record</h2>
 <blockquote>
 <p>&quot;An object that wraps a row in a database table or view, encapsulates the database access, and adds domain logic on that data.&quot; — Martin Fowler</p>
 </blockquote>
@@ -368,19 +388,19 @@
 <p><strong>Purpose</strong>: reduces repetitive data mapping code when the business logic is simple but the data structures are complex (object trees, hierarchies, one-to-many and many-to-many relationships).</p>
 <p>Active records have public getters/setters; external procedures modify their state. They can contain validation and simple business logic, but the defining feature is that data access is coupled to the data structure.</p>
 <p>Also known as the &quot;anemic domain model&quot; — Khononov avoids this framing as pejorative. It is a valid tool for simple business logic; using a domain model for simple logic introduces unnecessary accidental complexity.</p>
-<h3>When to Use</h3>
+<h3 id="when-to-use-2">When to Use</h3>
 <ul>
 <li>Same contexts as transaction script, when data structures are complex enough to justify the abstraction</li>
 <li>Still not appropriate for core subdomains</li>
 </ul>
 <hr>
-<h2>Pattern Selection Heuristic</h2>
+<h2 id="pattern-selection-heuristic">Pattern Selection Heuristic</h2>
 <p><em>Does the business logic resemble CRUD interfaces and ETL transformations?</em> → Transaction Script or Active Record.</p>
 <p><em>Does it involve complex business rules, invariants, and long-running processes?</em> → Domain Model (see <a href="../patterns/domain-model.html">Domain Model</a>).</p>
 <p>The distinction is driven by subdomain type: supporting subdomains almost always use transaction script or active record; core subdomains almost always need a domain model.</p>
-<h2>Tactical Design Decision Tree</h2>
+<h2 id="tactical-design-decision-tree">Tactical Design Decision Tree</h2>
 <p>Khononov&#39;s Ch 10 provides a unified heuristic decision tree connecting subdomain type → business logic pattern → architectural pattern → testing strategy (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 10):</p>
-<h3>Step 1 — Business Logic Pattern Selection</h3>
+<h3 id="step-1-business-logic-pattern-selection">Step 1 — Business Logic Pattern Selection</h3>
 <p>Ask in order:</p>
 <ol>
 <li>Does the subdomain require monetary transaction tracking, a consistent audit log, or deep behavioural analysis? → <strong>Event-sourced domain model</strong></li>
@@ -390,7 +410,7 @@
 </ol>
 <p><strong>Validation heuristic</strong>: if a subdomain you believe is core is best served by transaction script or active record, revisit whether it is truly core. If a supporting subdomain needs a domain model, revisit whether it has become core.</p>
 <p><strong>Ubiquitous language as a complexity signal</strong>: if the ubiquitous language describes mainly CRUD operations → simple business logic. If it describes complex business processes, rules, and invariants → complex business logic.</p>
-<h3>Step 2 — Architectural Pattern Selection</h3>
+<h3 id="step-2-architectural-pattern-selection">Step 2 — Architectural Pattern Selection</h3>
 <p>Follows directly from the business logic pattern:</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -427,7 +447,7 @@
 </tr>
 </tbody></table></div>
 <p>See <a href="../styles/ports-and-adapters.html">Ports And Adapters</a> and <a href="../styles/layered-architecture.html">Layered Architecture</a>.</p>
-<h3>Step 3 — Testing Strategy Selection</h3>
+<h3 id="step-3-testing-strategy-selection">Step 3 — Testing Strategy Selection</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -453,11 +473,11 @@
 </tr>
 </tbody></table></div>
 <hr>
-<h2>Migration Paths Between Patterns</h2>
+<h2 id="migration-paths-between-patterns">Migration Paths Between Patterns</h2>
 <p>As subdomain types evolve (→ <a href="../concepts/bounded-contexts.html">Bounded Contexts</a>, subdomain type evolution), the business logic pattern must evolve with them. Khononov provides incremental migration paths (→ <a href="../sources/learning-domain-driven-design.html">Learning Domain Driven Design</a> ch. 11):</p>
-<h3>Transaction Script → Active Record</h3>
+<h3 id="transaction-script-active-record">Transaction Script → Active Record</h3>
 <p>Identify complex data structures and encapsulate them in active record objects. Replace direct DB access with active record CRUD methods. The business logic structure (procedural scripts) remains unchanged; only data access is abstracted.</p>
-<h3>Active Record → Domain Model</h3>
+<h3 id="active-record-domain-model">Active Record → Domain Model</h3>
 <ol>
 <li>Make all active record setters private — compilation errors reveal where external code modifies state</li>
 <li>Move state-modifying logic inside the active record&#39;s boundaries</li>
@@ -466,16 +486,16 @@
 <li>Reference other aggregates by ID only</li>
 <li>Extract logic that doesn&#39;t fit any aggregate into domain services</li>
 </ol>
-<h3>Domain Model → Event-Sourced Domain Model</h3>
+<h3 id="domain-model-event-sourced-domain-model">Domain Model → Event-Sourced Domain Model</h3>
 <p>Model all domain events needed to represent the aggregate&#39;s lifecycle. The key challenge is migrating existing aggregate state (no event history exists). Two approaches:</p>
 <p><strong>Generating past transitions</strong>: infer probable past events from current state and generate them. The event stream can be projected back to the current state. <em>Limitation</em>: intermediate state (e.g., how many times a contact was attempted) is lost.</p>
 <p><strong>Migration events</strong>: define an explicit <code>migrated-from-legacy</code> event containing the full current state. All projections must handle this event type. <em>Advantage</em>: the lack of historical data is made explicit; no one mistakenly assumes the event stream is complete. <em>Disadvantage</em>: traces of the legacy system remain in the event store permanently.</p>
 <hr>
-<h2>Table Module (PEAA)</h2>
+<h2 id="table-module-peaa">Table Module (PEAA)</h2>
 <p>A fourth pattern from Fowler&#39;s PEAA that Khononov omits: one class instance per database <em>table</em> (not per row). A client first issues a database query to get a Record Set (like ADO.NET&#39;s DataSet), passes it to the Table Module constructor, then calls methods on it (passing an ID when addressing a specific row).</p>
 <p><strong>Trade-off vs Domain Model</strong>: less OO power (no inheritance or strategies on per-row instances), but excellent fit in environments where Record Set is a first-class platform citizen (.NET/COM). Fowler: &quot;I don&#39;t see a reason to use Transaction Script in a .NET environment&quot; when Table Module is available.</p>
 <p>(→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> ch. 2)</p>
-<h2>Service Layer (PEAA)</h2>
+<h2 id="service-layer-peaa">Service Layer (PEAA)</h2>
 <p>An API facade placed over the domain layer (Domain Model or Table Module). Provides a coarse-grained interface oriented around use cases. Good location for cross-cutting concerns: transaction control, security checks.</p>
 <p><strong>Domain logic vs application logic</strong> (Randy Stafford, ch. 9): domain logic has to do purely with the problem domain (e.g., rules for calculating revenue recognition); application logic has to do with application responsibilities (e.g., notifying administrators, publishing to middleware). Domain objects should not implement application-specific logic — it reduces reusability across applications and makes it harder to later replace the logic with a workflow engine. The Service Layer is where application logic lives; it delegates to domain objects for domain logic.</p>
 <p><strong>Two implementation approaches</strong>:</p>
@@ -489,7 +509,7 @@
 <p><strong>Controller-entity anti-pattern</strong>: placing use-case-specific logic in &quot;controller&quot; transaction scripts inside the Service Layer, with domain objects holding only shared logic. Fowler explicitly dislikes this — use-case controllers encourage duplication.</p>
 <p><strong>When to use</strong>: any application with more than one type of client (UI, API, integration gateway) or use cases that involve multiple transactional resources. Unnecessary when the application has only a single client type and responses involve only one transactional resource — Page Controllers can manage transactions directly.</p>
 <p>(→ <a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns Of Enterprise Application Architecture</a> chs. 2, 9)</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -506,7 +526,7 @@
 <td>Fowler&#39;s originating treatment of Transaction Script, Domain Model, and Table Module; introduces Service Layer; emphasises that the right choice depends on domain complexity, not ideology; adds Table Module as a third option not covered by Khononov (ch. 2)</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/bounded-contexts.html">Bounded Contexts</a> — tactical patterns are applied within a bounded context; pattern choice depends on subdomain type</li>
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a> — solves the distributed transaction problem that transaction scripts commonly encounter</li>

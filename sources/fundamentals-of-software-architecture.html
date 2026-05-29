@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,14 +316,18 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/mark-richards.html">Mark Richards</a>, <a href="../authors/neal-ford.html">Neal Ford</a>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#part-i-foundations">Part I — Foundations</a></li><li class="toc-sub"><a href="#part-ii-architecture-styles">Part II — Architecture Styles</a></li><li class="toc-sub"><a href="#part-iii-techniques-and-soft-skills">Part III — Techniques and Soft Skills</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/mark-richards.html">Mark Richards</a>, <a href="../authors/neal-ford.html">Neal Ford</a>
 <strong>Published:</strong> 2020
 <strong>Slug:</strong> <code>fundamentals-of-software-architecture</code></p>
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 <p>A breadth-first guide to software architecture, covering what the discipline is, how to think about it, and how to practise it. Unlike books focused on a single style or problem domain, FOSA attempts to map the entire landscape: from the definition of architecture itself and the metrics of modularity, through a taxonomy of 8 architecture styles with trade-off scorecards, to the soft skills (ADRs, risk storming, negotiation, team leadership) that distinguish effective architects from technically competent ones.</p>
 <p>The thesis is that architecture is not primarily about structure — it is about making decisions under constraints. The book&#39;s two governing laws are: (1) <em>Everything in software architecture is a trade-off</em>, and (2) <em>Why is more important than how.</em> Every tool the book offers (fitness functions, ADRs, the architecture quantum, risk matrices) is an instrument for making trade-offs visible and decisions defensible.</p>
 <p>The audience is backend developers moving into architecture or early-career architects seeking a conceptual map of the whole field. Richards &amp; Ford recommend pairing with Kleppmann&#39;s <em>Designing Data-Intensive Applications</em> (→ <a href="../sources/designing-data-intensive-applications.html">Designing Data Intensive Applications</a>) for depth on data systems.</p>
-<h2>Key Claims</h2>
+<h2 id="key-claims">Key Claims</h2>
 <ul>
 <li>Software architecture is the union of four things: structure, architecture characteristics (&quot;-ilities&quot;), architecture decisions, and design principles. Most practitioners only think about structure.</li>
 <li>Every architecture characteristic (scalability, testability, etc.) must be measurable; if it can&#39;t be measured, it can&#39;t be governed.</li>
@@ -325,8 +336,8 @@
 <li>Distributed architectures incur a fixed cost captured by the 8 Fallacies of Distributed Computing; the decision to go distributed must be justified against that cost.</li>
 <li>~50% of being an effective architect is soft skills: negotiation, leadership, facilitation, and communication.</li>
 </ul>
-<h2>Chapter Notes</h2>
-<h3>Part I — Foundations</h3>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="part-i-foundations">Part I — Foundations</h3>
 <p><strong>Ch 1 — Introduction</strong>
 Defines architecture as the combination of four things: (1) <strong>structure</strong> — the architecture style(s) implemented; (2) <strong>architecture characteristics</strong> — &quot;-ilities&quot; the system must support; (3) <strong>architecture decisions</strong> — hard rules constraining how the system is built (e.g., only business/services layers may access the database); (4) <strong>design principles</strong> — guidelines, not rules, for how the system <em>should</em> be built (e.g., prefer async messaging within microservices where feasible). The distinction between decisions and principles matters: decisions form constraints enforced by governance; principles guide teams in making the right technical choice within those constraints.</p>
 <p>Architecture decisions may be challenged through a <strong>variance</strong> process — an ARB (Architecture Review Board) or chief architect approves formal exceptions to established decisions based on justification and trade-off analysis. This is the formal mechanism for escaping a decision that doesn&#39;t fit a particular context.</p>
@@ -442,7 +453,7 @@ A component is the physical manifestation of a module (jar in Java, dll in .NET,
 </ul>
 <p><strong>Architecture style vs pattern distinction:</strong> an architecture <em>style</em> defines the overarching structure of how the UI, backend, and datastore are organised and interconnected. An architecture <em>pattern</em> is a lower-level design structure that solves a specific problem within a style (e.g., how to achieve high scalability within a microservices style via event-driven messaging).</p>
 <p><strong>Quantum → monolith vs distributed decision:</strong> if a system&#39;s initial component design yields one set of architecture characteristics (one quantum), a monolithic architecture is viable. If different components need meaningfully different characteristics (e.g., the auctioneer needs higher reliability than bidders), a distributed architecture is required. This decision can be made earlier using quantum analysis than by waiting for performance or reliability failures.</p>
-<h3>Part II — Architecture Styles</h3>
+<h3 id="part-ii-architecture-styles">Part II — Architecture Styles</h3>
 <p><strong>Ch 9 — Architecture Styles: Foundations</strong>
 An architecture style name acts as shorthand between architects: saying &quot;layered monolith&quot; conveys assumed topology, default and anti-characteristics, deployment model, and data strategy simultaneously. This is analogous to design pattern names — they compress a large amount of understood detail into a single term.</p>
 <p><strong>Fundamental historical patterns:</strong> <em>Big Ball of Mud</em> (Foote &amp; Yoder, 1997) — no discernible structure, promiscuous information sharing, &quot;duct-tape-and-baling-wire spaghetti&quot;; the default outcome without governance. <em>Unitary architecture</em> — software and hardware as a single system; now confined to embedded systems. <em>Client/server</em> — 2-tier (desktop+db; browser+web server) and 3-tier (application server between browser and database). Three-tier coincided with CORBA and DCOM.</p>
@@ -596,7 +607,7 @@ Architecture style selection is always contextual — no universally correct ans
 <blockquote>
 <p>&quot;This isn&#39;t the &#39;correct&#39; design for GGG... We don&#39;t even suggest it&#39;s the best possible design, but it seems to have the least worst set of trade-offs.&quot; (Ch 18)</p>
 </blockquote>
-<h3>Part III — Techniques and Soft Skills</h3>
+<h3 id="part-iii-techniques-and-soft-skills">Part III — Techniques and Soft Skills</h3>
 <p><strong>Ch 19 — Architecture Decisions</strong> → <a href="../concepts/adrs.html">Adrs</a>
 Three anti-patterns: <em>Covering Your Assets</em> (deferring decisions from fear of being wrong — fix: wait until the <em>last responsible moment</em>, not Analysis Paralysis); <em>Groundhog Day</em> (decisions re-litigated because justification was never documented — fix: always include both technical <em>and</em> business justification); <em>Email-Driven Architecture</em> (decisions buried in inboxes — fix: never put the decision in the email body; only the context and a link to the single source of record).</p>
 <p><strong>Architecturally significant</strong> (Nygard&#39;s five criteria): structure, nonfunctional characteristics (&quot;-ilities&quot;), dependencies, interfaces (contracts + versioning), construction techniques.</p>
@@ -683,7 +694,7 @@ Risk matrix: two dimensions — <em>overall impact</em> (1–3) × <em>likelihoo
 <p><strong>Technology portfolio as financial portfolio:</strong> diversify. Include some high-demand/stable skills and some technology gambits (open source, mobile, emerging platforms). Creating the radar forces structured thinking about investment — the exercise matters more than the output.</p>
 <p><strong>Social network for learning:</strong> three link types — <em>strong</em> (family, daily coworkers), <em>weak</em> (occasional acquaintances), <em>potential</em> (not yet met). McAfee: next job is more likely to come from a weak link than a strong one (weak links offer perspective outside your normal experience). Use social media professionally to build weak links with technologists whose advice you respect — this is how new technologies make it into the Assess ring.</p>
 <p><strong>Architecture katas</strong> (Ted Neward): practice is the only way to build architecture skills — there is no answer key. &quot;There are no right or wrong answers in architecture—only trade-offs.&quot; Teams at katas produce topology solutions without ADRs; the topology is only half the story; the <em>why</em> (trade-offs considered) is what matters.</p>
-<h2>Notable Quotes</h2>
+<h2 id="notable-quotes">Notable Quotes</h2>
 <blockquote>
 <p>&quot;There are no right or wrong answers in architecture—only trade-offs.&quot; (Ch 24)</p>
 </blockquote>
@@ -717,7 +728,7 @@ Risk matrix: two dimensions — <em>overall impact</em> (1–3) × <em>likelihoo
 <blockquote>
 <p>&quot;Use synchronous by default, asynchronous when necessary.&quot; (Ch 18)</p>
 </blockquote>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a> — the central decision framework</li>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — scope unit for characteristics</li>

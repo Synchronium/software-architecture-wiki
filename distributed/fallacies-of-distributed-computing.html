@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,15 +316,19 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><h2>Definition</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#the-eight-fallacies">The Eight Fallacies</a></li><li class="toc-sub"><a href="#fallacy-1-the-network-is-reliable">Fallacy 1: The Network Is Reliable</a></li><li class="toc-sub"><a href="#fallacy-2-latency-is-zero">Fallacy 2: Latency Is Zero</a></li><li class="toc-sub"><a href="#fallacy-3-bandwidth-is-infinite">Fallacy 3: Bandwidth Is Infinite</a></li><li class="toc-sub"><a href="#fallacy-4-the-network-is-secure">Fallacy 4: The Network Is Secure</a></li><li class="toc-sub"><a href="#fallacy-5-the-topology-never-changes">Fallacy 5: The Topology Never Changes</a></li><li class="toc-sub"><a href="#fallacy-6-there-is-only-one-administrator">Fallacy 6: There Is Only One Administrator</a></li><li class="toc-sub"><a href="#fallacy-7-transport-cost-is-zero">Fallacy 7: Transport Cost Is Zero</a></li><li class="toc-sub"><a href="#fallacy-8-the-network-is-homogeneous">Fallacy 8: The Network Is Homogeneous</a></li><li><a href="#other-distributed-challenges">Other Distributed Challenges</a></li><li><a href="#implications-for-architecture-decisions">Implications for Architecture Decisions</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>The eight fallacies of distributed computing are false assumptions that developers and architects commonly make about distributed systems. They were first articulated by L. Peter Deutsch and colleagues at Sun Microsystems in 1994. Each fallacy describes something that seems true (or is hoped to be true) but is reliably not.</p>
 <p>Understanding the fallacies is a prerequisite for any distributed architecture decision. They represent fixed structural costs that cannot be engineered away — only designed around. Every additional service call in a distributed architecture incurs these costs; monolithic architectures avoid most of them at the cost of other trade-offs.</p>
 <p>(→ <a href="../sources/fundamentals-of-software-architecture.html">Fundamentals Of Software Architecture</a> Ch 9)</p>
-<h2>The Eight Fallacies</h2>
-<h3>Fallacy 1: The Network Is Reliable</h3>
+<h2 id="the-eight-fallacies">The Eight Fallacies</h2>
+<h3 id="fallacy-1-the-network-is-reliable">Fallacy 1: The Network Is Reliable</h3>
 <p>Networks fail. They fail in obvious ways (service unreachable) and subtle ways (request sent, no response received — was it processed?). The more a system relies on the network — the more services it makes calls to — the more it is exposed to network failures. This is why circuit breakers, timeouts, and retry logic exist between services.</p>
 <p>The consequence: latency and reliability assumptions must be explicit, not implicit. Every synchronous service call is a potential failure point.</p>
-<h3>Fallacy 2: Latency Is Zero</h3>
+<h3 id="fallacy-2-latency-is-zero">Fallacy 2: Latency Is Zero</h3>
 <p>Local calls are measured in nanoseconds or microseconds. Remote calls over REST, messaging, or RPC are measured in milliseconds. The gap is orders of magnitude.</p>
 <p><strong>What architects must know:</strong></p>
 <ul>
@@ -326,7 +337,7 @@
 <li>Chained calls multiply latency: 10 sequential service calls at 100ms each = 1,000ms added to the request.</li>
 </ul>
 <p>This fallacy is especially severe for microservices, where fine-grained services may chain many calls to fulfil a single business operation. Architects must measure and budget latency explicitly before committing to a distributed style.</p>
-<h3>Fallacy 3: Bandwidth Is Infinite</h3>
+<h3 id="fallacy-3-bandwidth-is-infinite">Fallacy 3: Bandwidth Is Infinite</h3>
 <p>In a monolith, all data processing happens in the same process — bandwidth is not a concern. In distributed architectures, every inter-service call consumes bandwidth. The two problems:</p>
 <ol>
 <li><p><strong>Stamp coupling:</strong> services send more data in a call than the consumer needs. A wish-list service calls a customer profile service that returns 45 fields (500 KB) when only the customer&#39;s name (200 bytes) is needed. At 2,000 requests/second, this single inter-service call consumes 1 GB of bandwidth.</p>
@@ -342,20 +353,20 @@
 <li>Use consumer-driven contracts (CDCs) to specify exactly what each consumer needs</li>
 <li>Use internal messaging endpoints</li>
 </ul>
-<h3>Fallacy 4: The Network Is Secure</h3>
+<h3 id="fallacy-4-the-network-is-secure">Fallacy 4: The Network Is Secure</h3>
 <p>The attack surface in distributed architectures is dramatically larger than in monoliths: every service endpoint is a potential attack vector. VPNs, trusted networks, and firewalls create a false sense of security. Each service must secure its own endpoints — even for inter-service calls — because any compromised internal service becomes an insider threat to all others.</p>
 <p>The consequence: encryption overhead is a real performance cost (Fallacy 1 and 2 compound here), and security becomes an architectural concern rather than a perimeter concern.</p>
-<h3>Fallacy 5: The Topology Never Changes</h3>
+<h3 id="fallacy-5-the-topology-never-changes">Fallacy 5: The Topology Never Changes</h3>
 <p>Network topology includes all routers, hubs, switches, firewalls, and appliances. It changes: network upgrades, rerouting, new firewall rules, AZ migrations. A &quot;minor&quot; network upgrade at 2am can invalidate all latency assumptions and trigger cascading timeouts across the system.</p>
 <p>Architects must maintain continuous communication with network and operations teams. Topology changes are operational events that have architectural consequences.</p>
-<h3>Fallacy 6: There Is Only One Administrator</h3>
+<h3 id="fallacy-6-there-is-only-one-administrator">Fallacy 6: There Is Only One Administrator</h3>
 <p>Large organisations have dozens of network administrators. When latency changes unexpectedly or a topology problem emerges, knowing which administrator to contact — and coordinating across multiple administrators simultaneously — is a non-trivial operational challenge. This fallacy points to the coordination cost of distributed architecture that has no equivalent in monolithic systems.</p>
-<h3>Fallacy 7: Transport Cost Is Zero</h3>
+<h3 id="fallacy-7-transport-cost-is-zero">Fallacy 7: Transport Cost Is Zero</h3>
 <p>Transport cost does not mean latency (Fallacy 2) — it means actual monetary cost. Distributed architectures require significant additional infrastructure: servers, load balancers, API gateways, firewalls, subnets, proxies, service meshes, monitoring tooling. Making a &quot;simple RESTful call&quot; requires all this infrastructure to exist and be maintained.</p>
 <p>Before choosing a distributed architecture, architects should analyse current server and network topology with regard to capacity, bandwidth, latency, and security zones to budget the real cost of going distributed.</p>
-<h3>Fallacy 8: The Network Is Homogeneous</h3>
+<h3 id="fallacy-8-the-network-is-homogeneous">Fallacy 8: The Network Is Homogeneous</h3>
 <p>Most companies use hardware from multiple network vendors. These vendors do not always interoperate perfectly. Network packets can be lost at the boundary between heterogeneous hardware, particularly under unusual load or edge-case scenarios. This affects reliability (Fallacy 1), latency (Fallacy 2), and bandwidth (Fallacy 3) simultaneously.</p>
-<h2>Other Distributed Challenges</h2>
+<h2 id="other-distributed-challenges">Other Distributed Challenges</h2>
 <p>Beyond the eight fallacies, distributed architectures introduce structural challenges not present in monoliths:</p>
 <p><strong>Distributed logging:</strong> a monolith has one log; a distributed system has dozens to hundreds of separate logs in different locations and formats. Root-cause analysis — tracing why a specific order was dropped — requires correlating across all these logs. Tools like Splunk and distributed tracing systems (Zipkin, Jaeger) partially address this but do not eliminate the complexity. (See <a href="../operations/observability.html">Observability</a>.)</p>
 <p><strong>Distributed transactions:</strong> ACID transactions within a single database are straightforward. Across distributed services, ACID is not available. Distributed systems use:</p>
@@ -366,7 +377,7 @@
 </ul>
 <p>See <a href="../patterns/saga.html">Saga</a> and <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>.</p>
 <p><strong>Contract maintenance and versioning:</strong> services are owned by different teams with different release cadences. Any service changing its API contract must manage backward compatibility for all consumers simultaneously. Versioning strategies (URL versioning, header versioning, consumer-driven contracts) introduce operational complexity that has no equivalent in monolithic systems.</p>
-<h2>Implications for Architecture Decisions</h2>
+<h2 id="implications-for-architecture-decisions">Implications for Architecture Decisions</h2>
 <p>The fallacies represent the fixed overhead of going distributed. They must be explicitly justified against the benefits a distributed architecture provides. Questions to ask:</p>
 <ul>
 <li>Is the latency budget (Fallacy 2) feasible for the required user-facing performance?</li>
@@ -375,7 +386,7 @@
 <li>Is the operational cost (Fallacies 5, 6, 7) justified by the scalability or deployment independence gains?</li>
 </ul>
 <p>These costs compound with the number of services. A microservices architecture that makes many fine-grained calls is more exposed to the fallacies than a service-based architecture with coarser-grained services. (See <a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a> for trade-offs across styles.)</p>
-<h2>How Different Sources Treat It</h2>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -396,7 +407,7 @@
 <td>Deep treatment of distributed transactions, consistency, and replication — the consequences of Fallacies 1 and 3 at the data layer</td>
 </tr>
 </tbody></table></div>
-<h2>Related Concepts</h2>
+<h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a> — quantum analysis determines whether the fallacy costs are justified</li>
 <li><a href="../distributed/consistency-models.html">Consistency Models</a> — the consistency trade-offs introduced by Fallacy 1 (reliability) and Fallacy 3 (bandwidth)</li>

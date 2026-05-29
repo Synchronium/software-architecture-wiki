@@ -208,8 +208,12 @@
         <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
         <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
         <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
         <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
         <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
         <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
       </ul>
     </details>
@@ -259,6 +263,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
@@ -268,6 +273,7 @@
         <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
         <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
         <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
@@ -280,6 +286,7 @@
         <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
         <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
         <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
         <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
         <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
         <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
@@ -294,7 +301,7 @@
     </details>
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
     <main id="main-content" data-pagefind-body>
       
     <div class="page-header">
@@ -309,11 +316,15 @@
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
-  </div><div class="page-body"><p>An operation is <strong>idempotent</strong> if applying it multiple times produces the same result as applying it once. Idempotency is the primary tool for making distributed systems safe to retry.</p>
-<h2>Why It Matters</h2>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#why-it-matters">Why It Matters</a></li><li><a href="#idempotency-keys">Idempotency Keys</a></li><li><a href="#idempotent-messaging">Idempotent Messaging</a></li><li><a href="#idempotency-and-retries">Idempotency and Retries</a></li><li><a href="#delivery-semantics-spectrum">Delivery Semantics Spectrum</a></li><li><a href="#sources">Sources</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p>An operation is <strong>idempotent</strong> if applying it multiple times produces the same result as applying it once. Idempotency is the primary tool for making distributed systems safe to retry.</p>
+<h2 id="why-it-matters">Why It Matters</h2>
 <p>In a distributed system, any request can fail in an ambiguous way: the server might have processed the request before the connection dropped, or might not have. The client cannot know. The only safe response is to retry — but retries are only safe if the operation is idempotent.</p>
 <p>Without idempotency: retrying a charge creates duplicate charges; retrying a POST creates duplicate records.</p>
-<h2>Idempotency Keys</h2>
+<h2 id="idempotency-keys">Idempotency Keys</h2>
 <p>The standard pattern for making non-idempotent operations safe to retry:</p>
 <ol>
 <li><strong>Client generates a unique key</strong> (<code>Idempotency-Key</code> header containing a UUID) for each logical operation.</li>
@@ -329,21 +340,21 @@
 <li><code>POST</code> is <strong>not</strong> idempotent by default — make it so via idempotency keys.</li>
 <li><code>PATCH</code> is typically not idempotent (depends on payload).</li>
 </ul>
-<h2>Idempotent Messaging</h2>
+<h2 id="idempotent-messaging">Idempotent Messaging</h2>
 <p>Message brokers deliver at-least-once — duplicates are possible. Consumers must be idempotent or deduplicate:</p>
 <ol>
 <li><strong>Message deduplication</strong>: store processed message IDs; skip if already seen.</li>
 <li><strong>Idempotent writes</strong>: operations are designed so re-applying has no additional effect (e.g., <code>SET x = 5</code> vs. <code>INCREMENT x</code>).</li>
 </ol>
 <p>The outbox pattern (→ <a href="../patterns/outbox-pattern.html">Outbox Pattern</a>) achieves exactly-once <em>semantics</em> (not delivery) by combining at-least-once delivery with idempotent consumer processing.</p>
-<h2>Idempotency and Retries</h2>
+<h2 id="idempotency-and-retries">Idempotency and Retries</h2>
 <p>Retry safety requires both:</p>
 <ul>
 <li>Idempotency on the server side.</li>
 <li>Exponential backoff with jitter on the client side to avoid retry storms.</li>
 </ul>
 <p>In deep call chains, retry amplification can occur: if each layer retries independently, the bottom service sees exponential load. The recommendation is to retry at <strong>one layer only</strong> — typically the outermost. (→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27)</p>
-<h2>Delivery Semantics Spectrum</h2>
+<h2 id="delivery-semantics-spectrum">Delivery Semantics Spectrum</h2>
 <p>Three delivery guarantees exist, each with a performance/reliability trade-off (→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 3):</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -370,14 +381,14 @@
 </tr>
 </tbody></table></div>
 <p>Exactly-once does not mean no retries occur — it means the <em>result</em> is as if the operation executed exactly once, regardless of how many retries were made. Transactional semantics (→ <a href="../distributed/distributed-transactions.html">Distributed Transactions</a>) ensure atomicity between the application state update and idempotency key persistence.</p>
-<h2>Sources</h2>
+<h2 id="sources">Sources</h2>
 <ul>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 5) — idempotency keys in REST APIs.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 23) — idempotent message processing; exactly-once semantics.</li>
 <li>(→ <a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> ch. 27) — retry safety and amplification.</li>
 <li>(→ <a href="../sources/foundations-of-scalable-systems.html">Foundations Of Scalable Systems</a> ch. 3) — six partial failure scenarios; delivery semantics spectrum (at-most-once/at-least-once/exactly-once); idempotency key pattern with transactional atomicity requirement.</li>
 </ul>
-<h2>Related Pages</h2>
+<h2 id="related-pages">Related Pages</h2>
 <ul>
 <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
 <li><a href="../patterns/saga.html">Saga</a></li>
@@ -385,7 +396,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/http.html">HTTP</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../distributed/system-models.html">System Models</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
+        <ul><li><a href="../concepts/api-design.html">API Design</a></li><li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li><li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li><li><a href="../distributed/caching.html">Caching</a></li><li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li><li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li><li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li><li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li><li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../distributed/http.html">HTTP</a></li><li><a href="../concepts/messaging.html">Messaging</a></li><li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li><li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li><li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li><li><a href="../patterns/retry.html">Retry</a></li><li><a href="../patterns/saga.html">Saga Pattern</a></li><li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li><li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li><li><a href="../streams/stream-processing.html">Stream Processing</a></li><li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li><li><a href="../distributed/system-models.html">System Models</a></li><li><a href="../patterns/timeout.html">Timeout</a></li><li><a href="../databases/transactions.html">Transactions</a></li><li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li></ul>
       </aside>
     </main>
   </div>
