@@ -4,12 +4,22 @@ type: pattern
 tags: [microservices, networking, load-balancing, resiliency, observability, security, east-west]
 sources: [understanding-distributed-systems, mastering-api-architecture, software-architecture-the-hard-parts, building-event-driven-microservices]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # Sidecar / Service Mesh
 
 The Sidecar pattern places a proxy process alongside each service instance to handle cross-cutting network concerns — load balancing, retries, circuit breaking, mTLS, observability — transparently, without requiring service code to implement them. When deployed uniformly across all services, the collection of sidecars and their shared control plane forms a **service mesh**: the standard solution for managing east–west (service-to-service) traffic in distributed systems.
+
+## Key Claims
+
+- **The sidecar handles operational concerns, never business logic.** Logging, mTLS, retries, circuit breaking, observability live in the sidecar; domain logic stays in the service. Mixing the two recreates the ESB anti-pattern at the mesh layer.
+- **Two planes, two failure modes.** Data plane (sidecars on the request path) must be highly available and degrade gracefully when the control plane is unreachable. Control plane (config, certs, policy) can be temporarily down without breaking traffic.
+- **Service mesh handles east-west; API gateway handles north-south.** Both, not either. Mesh ingress gateways are not API gateways — they lack lifecycle management, developer portals, and monetisation.
+- **Zero trust is the security pay-off.** SPIFFE workload identities + mTLS give service-to-service authentication independent of network address. Consul Intentions or Istio AuthorizationPolicy enforce deny-by-default east-west traffic.
+- **Operational cost is real.** At a small cluster of 20 services × 5 pods × 3 nodes you have 100 proxy containers; even after Envoy optimisation, ~2GB of proxy memory per node. Plan for it.
+- **eBPF and proxyless gRPC are emerging alternatives** but not yet operationally mature. Sidecars remain the production default.
+- **Data-sinking sidecar is a different pattern using the same topology.** A co-deployed event consumer that upserts into a legacy data store has nothing in common with the network proxy except deployment shape.
 
 ## Historical Motivation: The 8 Fallacies of Distributed Computing
 

@@ -4,10 +4,19 @@ type: concept
 tags: [databases, schema-evolution, data, evolutionary-architecture, coupling]
 sources: [building-evolutionary-architectures, monolith-to-microservices]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Evolutionary Database Design
+
+## Key Claims
+
+- **Schemas evolve incrementally and safely** through version-controlled migration scripts run by the deployment pipeline. The database is no different from the code: it changes continuously, governed by automated tools.
+- **Expand/contract is the workhorse pattern.** Add new structures alongside old (expand), migrate consumers, remove old structures (contract). Zero downtime, no coordinated deployment of consumers.
+- **Inappropriate data coupling kills evolvability.** Shared schemas across services, vendor lock-in via proprietary SQL, and legacy quirks encoded in nulls and odd formats all calcify the database. Per-service schema ownership is the antidote.
+- **Newman's twelve database decomposition patterns** offer concrete techniques for splitting a shared database: database views, wrapping services, tracer writes, synchronise-in-application, expand/contract for split brain, repository per service. Each fits a different combination of read/write patterns and migration constraints.
+- **Flyway and Liquibase are the practical mechanism.** Versioned SQL files, schema-history tracking, no manual DDL. Migrations are reviewed like code, run in the pipeline like tests, and the database state is reproducible from history.
+- **Reporting-tier coupling is its own anti-pattern.** Direct reads from operational databases for reports create implicit schema coupling that prevents change. Move analytics to a separate read model (CDC, replica, OLAP store) so the operational schema can evolve.
 
 ## Definition
 

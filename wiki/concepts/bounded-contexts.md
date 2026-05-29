@@ -4,10 +4,20 @@ type: concept
 tags: [ddd, bounded-contexts, domain, subdomains, microservices, coupling, conways-law, ubiquitous-language]
 sources: [domain-driven-design, building-event-driven-microservices, learning-domain-driven-design, monolith-to-microservices]
 created: 2026-05-14
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Bounded Contexts and Domain-Driven Design
+
+## Key Claims
+
+- **A bounded context is the consistency boundary of a ubiquitous language.** Within it, every term has one precise meaning. The same word can mean something different in a different context — this is intentional, not a problem to be eliminated.
+- **Subdomains are discovered; bounded contexts are designed.** Subdomains exist in the business; bounded contexts are the architect's choice of how to draw implementation boundaries around them. Common is 1:1, but several BCs per subdomain or one BC spanning subdomains is valid.
+- **Three subdomain types drive implementation strategy.** Core (competitive advantage, in-house, best engineers, domain model), generic (already-solved, buy/adopt), supporting (simple CRUD, outsource or junior teams). Get the type wrong and you over-invest in commodity or under-invest in differentiator.
+- **Start wide, split on knowledge.** Refactoring logical boundaries within a context is cheap; refactoring physical boundaries between services is expensive. For volatile core subdomains, start with a wide context and split as domain understanding stabilises.
+- **One team per bounded context — strictly.** Multiple teams sharing one context recreates the implicit assumptions BCs are designed to eliminate. One team can own multiple contexts; the constraint is unidirectional.
+- **Subdomain types evolve.** All six transitions happen (core ↔ generic ↔ supporting). The signal is usually pain in the existing implementation pattern — a supporting subdomain accumulating complex rules has become core; reassess.
+- **The data communication structure is the missing piece** (Bellemare). Business and implementation communication structures are well-understood; how data flows across context boundaries isn't. Event streams are the modern answer.
 
 ## DDD Foundations
 

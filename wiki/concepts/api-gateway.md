@@ -4,10 +4,20 @@ type: concept
 tags: [api, gateway, traffic-management, security, microservices, distributed-systems]
 sources: [mastering-api-architecture, understanding-distributed-systems]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # API Gateway
+
+## Key Claims
+
+- **API gateway is for north-south; service mesh is for east-west.** Both, not either. Don't loop internal calls through the public gateway, and don't use a mesh ingress gateway as a full API gateway.
+- **The gateway authenticates; services authorise.** Centralise authentication mechanisms (OAuth2, JWT, API keys) at the edge. Authorisation is domain logic and stays with the services that own the resources.
+- **Three gateway types match three use cases.** Enterprise (Kong, Apigee — full lifecycle, monetisation, developer portal), microservices/micro (Ambassador, Traefik — IaC-native, self-service), service mesh ingress (Istio gateway — minimum viable, mesh-coupled).
+- **Six justifications for using a gateway.** Reduce coupling, simplify consumption, protect from abuse, observability, lifecycle management, monetisation. Without three or more of these, a plain reverse proxy suffices.
+- **Composition has an availability cost.** Multiplying upstream availabilities: three 99.9% services aggregated by the gateway give ~99.7%. Decide explicitly how to handle partial failures.
+- **The dominant antipatterns are coupling traps.** Gateway-as-ESB (business logic in plug-ins), gateway loopback (internal traffic over public path), turtles-all-the-way-down (hierarchical gateways), routing on request payloads. Keep the gateway a facade.
+- **Fail-open vs fail-closed is an architectural decision.** Financial systems need fail-closed; consumer services often want fail-open. Decide deliberately and document in an ADR.
 
 ## Definition
 

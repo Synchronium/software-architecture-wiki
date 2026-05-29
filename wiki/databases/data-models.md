@@ -4,12 +4,21 @@ type: database
 tags: [databases, data-models, relational, document, graph, query-languages]
 sources: [designing-data-intensive-applications, understanding-distributed-systems, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-18
+updated: 2026-05-29
 ---
 
 # Data Models
 
 A data model determines how data is organised, how it can be queried, and what kind of relationships it can represent efficiently. The history of data models is a history of abstraction: each generation hides complexity behind a cleaner interface while trading off something else. The dominant models today are relational, document, and graph — each suited to different relationship structures.
+
+## Key Claims
+
+- **Three dominant data models match three relationship structures.** Relational for many-to-many (joins), document for one-to-many trees (nested entities), graph for arbitrary highly-connected data. Picking the wrong model creates expensive workarounds.
+- **Relational won by hiding access paths.** Codd's 1970 insight: programmers declare *what* they want; the optimiser decides *how* to retrieve it. CODASYL's manual graph navigation lost because schema changes meant rewriting application code.
+- **NoSQL is more tightly coupled to access patterns than relational, not less.** Without joins, data must be pre-joined at write time for expected reads. Changing the access pattern can require rebuilding the data model from scratch.
+- **Single-table design** (DynamoDB) deliberately denormalises by overloading partition+sort keys as type discriminators. One query retrieves a customer and their orders without joins — but the schema only fits the planned access patterns.
+- **Schema-on-read is not schemaless.** The schema is implicit in application code rather than enforced in the database. The trade-off is migration cost (DB alter vs application interpretation) vs validation guarantees.
+- **Polyglot persistence is the modern reality.** No single store fits every workload. Use relational for transactional core, document for content, graph for relationships, columnar for analytics — each where it fits.
 
 ## Historical Progression
 

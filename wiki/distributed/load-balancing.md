@@ -4,12 +4,22 @@ type: concept
 tags: [distributed-systems, scalability, availability, networking, load-balancing]
 sources: [understanding-distributed-systems, foundations-of-scalable-systems, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-29
 ---
 
 # Load Balancing
 
 A load balancer distributes requests across a pool of servers to increase capacity and availability. Clients interact with the load balancer's address; individual servers are invisible to them. This decoupling enables horizontal scaling (add more servers) and automatic failure handling (remove failed servers from the pool).
+
+## Key Claims
+
+- **The nines add up for independent servers.** Two 99% servers behind a balancer give 99.99% (1 − 0.01²). The maths is theoretical — correlated failures and slow failure detection erode the gain — but the principle drives every redundancy decision.
+- **L4 vs L7 is a capability-vs-overhead trade.** L4 (TCP-level, VIP + consistent hash) is fast but can't see HTTP; L7 (reverse proxy) terminates TLS, routes on headers, rate limits, but adds latency. Typical production stack: L4 in front to absorb DDoS, L7 behind for application routing.
+- **Power of two choices beats actual load tracking.** Polling backend load introduces oscillation (fresh server reports 0, gets hammered, reports overloaded, gets nothing). Picking two backends at random and routing to the less loaded is near-optimal with no coordination.
+- **Sticky sessions create hotspots.** Sessions vary in cost; consistent hashing on session ID concentrates the expensive ones on individual backends. Externalise session state instead.
+- **Health checks have failure modes.** Mass-failure of health endpoints (misconfigured `/health`) makes a naive balancer empty the pool entirely. Detect mass failure as "checks unreliable" rather than as "everything down."
+- **Lame duck state is the graceful-shutdown discipline.** Backend signals "draining" via the health endpoint, completes in-flight requests, then exits. Zero-downtime rolling deploys without blue-green infrastructure.
+- **DNS load balancing is for geographic steering, not failure handling.** TTL caching and 512-byte reply limits prevent failure-aware fine-grained routing. EDNS0 client subnet extension reveals the actual client location to authoritative resolvers.
 
 ## Availability Benefit
 

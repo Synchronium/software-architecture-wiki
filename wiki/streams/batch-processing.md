@@ -4,12 +4,21 @@ type: stream
 tags: [batch, mapreduce, data-processing, etl, distributed-systems, databases]
 sources: [designing-data-intensive-applications, site-reliability-engineering]
 created: 2026-05-13
-updated: 2026-05-27
+updated: 2026-05-29
 ---
 
 # Batch Processing
 
 Batch processing takes a bounded, immutable input dataset and produces a new output dataset. Unlike online systems (which process requests in milliseconds) or stream processors (which handle unbounded event streams with low latency), batch jobs are distinguished by three properties: **offline execution** (latency of minutes to hours is acceptable), **bounded input** (a defined dataset to process in full), and **immutable inputs** (the source data is never modified). Immutability is the key insight: it enables retry, replay, and rollback without the careful ordering constraints of stateful online systems.
+
+## Key Claims
+
+- **Immutability is the engineering trick that makes batch tractable.** Immutable inputs + deterministic transformation = identical output on retry, safe rollback by deleting output, no partial-update state. The Unix pipeline is the model: each tool reads files, writes files, never modifies inputs.
+- **MapReduce is the foundational model.** Map (per-record transformation emitting key-value pairs), shuffle (partition by key, sort), reduce (aggregate per key). Three join algorithms (sort-merge, broadcast hash, partitioned hash) handle different size combinations.
+- **Hadoop vs MPP is a flexibility-vs-efficiency trade-off.** Hadoop: schema-on-read, raw files, fine-grained fault tolerance, cheap nodes — the data lake. MPP: schema-on-write, structured SQL, query-level abort — structured analytics. Use both for different workloads.
+- **Dataflow engines (Spark, Flink, Tez) are MapReduce done right.** Pipelined operators, no per-stage materialisation, JVM reuse, lineage-based or checkpoint fault tolerance. 10-100× faster than MapReduce for iterative and multi-stage workflows.
+- **Graph algorithms need the BSP model.** Pregel/Giraph/GraphX iterate vertex state through supersteps with message passing. Standard MapReduce can't express iteration efficiently because it re-reads the full graph per pass.
+- **Periodic pipelines fail in characteristic ways at scale** (SRE): hanging chunks (skewed work), thundering herd (simultaneous worker start), Moiré load pattern (interfering schedules), monitoring gap (no telemetry mid-run). When frequency requirements push against execution time, switch to continuous pipelines.
 
 ## Unix Philosophy as Template
 

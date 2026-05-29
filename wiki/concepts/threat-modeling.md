@@ -4,10 +4,20 @@ type: concept
 tags: [security, threat-modeling, api, stride, dread, rate-limiting, owasp]
 sources: [mastering-api-architecture, release-it]
 created: 2026-05-13
-updated: 2026-05-19
+updated: 2026-05-29
 ---
 
 # Threat Modeling
+
+## Key Claims
+
+- **Threat modeling belongs in design, not in incident response.** Reactive security is far more expensive than proactive analysis. Integrate the model into the SDLC; revisit it on every new endpoint, trust-boundary change, or security incident.
+- **STRIDE classifies threats; DREAD scores them.** STRIDE (Spoofing, Tampering, Repudiation, Information disclosure, DoS, Elevation of privilege) per element on the Data Flow Diagram; DREAD ranks the surfaced threats. Prefer DREAD-D (drop Discoverability) to avoid rewarding security-through-obscurity.
+- **The OWASP API Top 10 is the practitioner checklist.** BOLA, Broken Auth, Excessive Data Exposure, Lack of Rate Limiting, Broken Function Auth, Mass Assignment, Misconfiguration, Injection, Improper Assets Mgmt, Insufficient Logging. Cover all ten before claiming an API is secure.
+- **Mass assignment is more insidious than injection.** Auto-binding request bodies to domain objects (`isAdmin: true`) lets attackers set fields they shouldn't control. Explicit allowlisting; never bind directly.
+- **Rate limiting belongs at the gateway, not the service.** Apply before compute resources are consumed. Token bucket is the standard choice — allows legitimate bursts while capping sustained throughput.
+- **Pie Crust defence is the enterprise antipattern.** Authenticate at the perimeter but trust everything internal. Internal services must also authenticate callers; encrypt internal traffic too ([[concepts/zero-trust]]).
+- **Components with known vulnerabilities are the Equifax lesson.** Automate CVE checking in CI; treat container images as perishable (rebuild from upstream, don't patch in place).
 
 ## Definition
 

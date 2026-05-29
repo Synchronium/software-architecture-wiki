@@ -4,10 +4,21 @@ type: pattern
 tags: [ddd, domain-model, aggregate, value-object, domain-events, domain-services, tactical-design, business-logic]
 sources: [learning-domain-driven-design, domain-driven-design, patterns-of-enterprise-application-architecture]
 created: 2026-05-14
-updated: 2026-05-18
+updated: 2026-05-29
 ---
 
 # Domain Model Pattern
+
+## Key Claims
+
+- **The aggregate is the consistency boundary.** Only the aggregate's own business logic may modify its state. One aggregate per transaction; modifying multiple aggregates atomically signals wrong boundaries.
+- **Value Objects are immutable and identified by value.** No identity, no shared mutable state, safe to copy or share. Used to eliminate primitive obsession — `PhoneNumber` not `string`, `Money` not `int`.
+- **Entities have explicit identity through time.** Two entities with the same data but different IDs are different things. Identity is immutable; everything else changes over the lifecycle.
+- **Aggregate references go by ID only.** Object references across aggregate boundaries hide the transaction boundary and create implicit lock contention. Foreign keys at the aggregate level enforce the boundary.
+- **Domain Events are past-tense facts.** "Order Placed," "Payment Confirmed." Part of the aggregate's public interface; published after commit; connect choreography and event-sourced flows.
+- **Domain Services hold logic that fits no single aggregate.** Stateless, named after domain concepts. They coordinate reads across aggregates but don't violate the one-aggregate-per-transaction rule.
+- **Plain Old Objects, no infrastructure.** No DB calls, no framework coupling, no transport concerns. The aggregate's purity makes it testable and durable as infrastructure evolves.
+- **Use the domain model only for complex business logic.** Supporting subdomains should use transaction script or active record — applying a domain model to CRUD wastes effort.
 
 ## Definition
 

@@ -4,10 +4,19 @@ type: concept
 tags: [integration, messaging, coupling, enterprise, distributed-systems]
 sources: [enterprise-integration-patterns]
 created: 2026-05-15
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Integration Styles
+
+## Key Claims
+
+- **Four styles, ordered by sophistication and decoupling.** File Transfer → Shared Database → Remote Procedure Invocation → Messaging. Each solves the same problem with different trade-offs on coupling, timeliness, intrusiveness, and operational complexity.
+- **Decisions are per-integration-point.** Real systems mix all four. Catalogue updates via File Transfer, real-time orders via Messaging, status queries via RPI — choose per integration, not per system.
+- **Shared Database is the most dangerous style for microservices.** Implementation coupling that prevents independent deployment. Newman's rule: don't share databases across services. EIP acknowledges the same problem but in the enterprise integration context.
+- **RPC's local-call illusion misleads developers.** Remote calls are orders of magnitude slower and more failure-prone than local calls; reasoning about them as method calls (CORBA's original sin) produces brittle systems. Modern RPC frameworks (gRPC) acknowledge the difference rather than hiding it.
+- **Messaging is the default for cross-team, cross-platform integration.** Temporal decoupling, location independence, reliable delivery, transformation in transit. The asynchronous design tax is real but well-understood.
+- **Evaluate against eight criteria before choosing.** Coupling, intrusiveness, technology selection, data format, data timeliness, data vs functionality, remote communication, reliability. The criteria force the trade-offs into the open.
 
 ## Definition
 

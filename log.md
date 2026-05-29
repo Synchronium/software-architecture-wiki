@@ -2,6 +2,34 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-29] lint | Next 20 pages: Key Claims blocks
+
+Continuation of the readability pass — added Key Claims blocks (3–8 bullets, after Definition) to the next 20 longest wiki pages. The reader can now assess what each page covers and what its argument is without reading the full body.
+
+Pages updated:
+- **api-testing** (206) — CDC investment, test pyramid, scope vs size, test double fidelity, Pact + Broker, TLA+, user journey tests
+- **sidecar-service-mesh** (202) — operational concerns only, two planes/two failure modes, east-west vs north-south, zero trust, operational cost, eBPF emerging
+- **replication** (202) — four topologies, sync vs async trade, replication lag breaks intuitions, multi-leader conflict resolution, logical replication as CDC foundation, backups vs replicas
+- **bounded-contexts** (195) — context as consistency boundary of ubiquitous language, subdomain types drive strategy, start wide split on knowledge, one team per BC, subdomain evolution, data communication structure
+- **business-logic-patterns** (191) — match pattern to subdomain type, cascade through architectural and testing patterns, three TransactionScript failure modes, ActiveRecord legitimacy, Service Layer placement
+- **transactions** (190) — ACID precision, isolation levels via anomalies, most "Serializable" isn't, write skew, three roads to serialisability, business transactions need offline concurrency
+- **evolutionary-database-design** (178) — incremental schema evolution, expand/contract workhorse, inappropriate coupling kills evolvability, Newman's twelve patterns, Flyway/Liquibase, reporting-tier antipattern
+- **batch-processing** (177) — immutability as engineering trick, MapReduce foundations, Hadoop vs MPP flexibility trade, dataflow engines, BSP for graphs, periodic-pipeline SRE failure modes
+- **availability** (174) — 100% always wrong target, nines table, MTTR matters more, redundancy not prevention, dependency chaining, financial framing, tyranny of the nines
+- **rate-limiting** (169) — three complementary techniques, shed at edge, bounded queues, sliding-window buckets, constant work, Governor pattern
+- **load-balancing** (169) — nines add up, L4/L7 capability vs overhead, Power of Two, sticky session hotspots, health check failure modes, lame duck state, DNS for geography only
+- **change-data-capture** (168) — bridges state and stream worlds, three modes by fidelity, technically faithful but domain-poor, CDC+outbox solves dual writes, log compaction bootstrap, schema coupling risk
+- **encoding-and-evolution** (167) — data outlives code, two compat directions both required, never use language-specific, field tags as evolution mechanism, Avro reader/writer resolution, RPC local-call illusion, format selection by use case
+- **oauth2-and-authn** (166) — OAuth2 vs OIDC, ID tokens ≠ access tokens, grant per client type, refresh rotation, API keys aren't substitutes, scopes are coarse, gateway as validation point
+- **integration-styles** (165) — four styles ordered by sophistication, per-integration not per-system, Shared Database dangerous for micro, RPC's local-call illusion, Messaging as default, eight decision criteria
+- **threat-modeling** (163) — belongs in design, STRIDE+DREAD-D, OWASP API Top 10, mass assignment, rate-limit at gateway, Pie Crust antipattern, Equifax lesson
+- **contracts** (163) — contracts as wires, strict vs loose spectrum, CDC gets both, stamp coupling, forward/backward both, structural vs semantic, expansion path
+- **data-models** (162) — three models match three structures, relational hides access paths, NoSQL more coupled to access patterns, single-table design, schema-on-read isn't schemaless, polyglot persistence
+- **domain-model** (161) — aggregate as consistency boundary, immutable Value Objects, entity identity through time, references by ID, past-tense Domain Events, Domain Services for cross-aggregate, POJOs not framework-coupled, only for complex logic
+- **api-gateway** (160) — north-south vs east-west, gateway authenticates services authorise, three gateway types, six justifications, composition availability cost, antipatterns are coupling traps, fail-open vs fail-closed
+
+Bumped `updated:` to 2026-05-29 on all 20 files.
+
 ## [2026-05-29] lint | Top-20 pages: Key Claims, deduplication, refresh overview
 
 Quality pass on the 20 longest wiki pages, addressing three problems surfaced in review: source-tagged taxonomies fragmenting the narrative, no executive summary on long pages, and a stale overview.

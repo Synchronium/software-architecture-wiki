@@ -4,10 +4,20 @@ type: concept
 tags: [security, oauth2, jwt, oidc, authn, authz, api]
 sources: [mastering-api-architecture]
 created: 2026-05-13
-updated: 2026-05-13
+updated: 2026-05-29
 ---
 
 # OAuth2 and Authentication
+
+## Key Claims
+
+- **OAuth2 is authorisation, OIDC is authentication.** OAuth2 lets a client get scoped access to a resource server; OIDC adds the ID token to assert *who* the user is. Treating them interchangeably is the most common implementation error.
+- **ID tokens are never access tokens.** Different `aud` claims (client vs resource server), different lifetimes, different semantics. Mixing them creates real privilege-escalation paths.
+- **Match the grant to the client type.** Authorization Code for server-side web apps; Authorization Code + PKCE for SPAs and mobile (public clients); Client Credentials for M2M; Device for input-constrained devices. Implicit grant is deprecated.
+- **Access tokens are short-lived; refresh tokens rotate.** 1-60 minute access token lifetimes limit theft damage; refresh tokens issued one-at-a-time with dual-use detection (revoke the family if a rotated token is reused).
+- **API keys aren't OAuth2 substitutes.** They can't represent user delegation. If a third party calls on behalf of a user, an API key forces credential sharing — the exact problem OAuth2 solves. Use Authorization Code or Client Credentials instead.
+- **Scopes are coarse-grained authorisation.** "Can write orders" is appropriate; "can write order #12345 owned by user 456" is RBAC/ABAC inside the service. Don't try to express resource-level access via scopes.
+- **The API gateway is the canonical validation point.** Signature check, claim validation (iss/aud/exp/nbf), scope enforcement, forward validated claims as trusted headers. Offloads crypto from every service and ensures consistent enforcement.
 
 ## Definition
 

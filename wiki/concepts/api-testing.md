@@ -4,10 +4,20 @@ type: concept
 tags: [testing, contract-testing, api, quality, distributed-systems]
 sources: [mastering-api-architecture, understanding-distributed-systems, building-event-driven-microservices]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # API Testing
+
+## Key Claims
+
+- **Consumer-driven contracts are the highest-leverage investment** for internal API testing. The consumer defines the interactions it needs; the producer runs every consumer's tests as gates. Integration failures get caught at producer-change time, not after a consumer deploys.
+- **The test pyramid is right; the ice-cream cone is wrong.** Many unit tests, fewer integration tests, fewer end-to-end tests. Inverting this produces slow brittle suites that get run too infrequently to provide signal.
+- **Scope and size are orthogonal.** A narrow-scope test (one adapter) can be small (in-memory fake) or large (real downstream). Always write the smallest test for the desired scope.
+- **Test double fidelity matters.** Real implementation > official fake > stub > mock. Mocks test interactions, not outcomes — use them last. Tests built on mocks can pass while the real integration is broken.
+- **Pact + Pact Broker is the production-grade CDC setup.** Generated JSON contracts, versioned, with `can-i-deploy` safety checks. Storing contracts in repos or shared filesystems instead is a common downgrade.
+- **Formal verification (TLA+) catches what tests can't.** For consensus protocols, distributed transactions, and migration procedures, model-checking is the only way to surface subtle correctness bugs across all reachable states.
+- **User journey tests beat exhaustive E2E.** One multi-step scenario (create → modify → cancel) covers more surface than the equivalent individual API tests, faster.
 
 ## Definition
 

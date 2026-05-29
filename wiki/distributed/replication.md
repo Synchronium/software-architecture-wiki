@@ -4,12 +4,21 @@ type: concept
 tags: [distributed-systems, replication, consistency, fault-tolerance, scalability]
 sources: [understanding-distributed-systems, designing-data-intensive-applications, foundations-of-scalable-systems]
 created: 2026-05-13
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Replication
 
 Replication stores copies of data on multiple nodes to achieve fault tolerance, read scalability, and geographic distribution. The core challenge is keeping replicas consistent when writes happen.
+
+## Key Claims
+
+- **Four replication topologies, distinct trade-offs.** State machine (Raft, strong consistency), chain (head-tail, splits read/write throughput), leader-follower (the relational DB default), Dynamo-style leaderless (write-anywhere, quorum reads). Pick by the consistency-vs-availability trade-off the application can absorb.
+- **Synchronous replication is slow but safe; async replication is fast but lossy.** Sync waits for quorum; async commits locally and propagates after. Failover on an async system loses recent writes; failover on a sync system pays the latency tax on every write.
+- **Replication lag is observable and breaks intuitions.** Read-your-writes, monotonic reads, and consistent-prefix reads can all be violated by an async follower. Application must either route reads to the leader for sensitive cases or use session-pinned tokens.
+- **Multi-leader replication trades coordination for availability and ergonomics** (multi-region active-active, offline-first clients). Conflict resolution is unavoidable: LWW silently discards concurrent writes; version vectors detect concurrency; CRDTs automate convergence.
+- **Logical (row-based) replication is the foundation for CDC.** MySQL binlog and PostgreSQL logical decoding produce a stream of changes consumable by downstream systems — search indexes, caches, data warehouses — without coupling to the source storage engine.
+- **Replicas don't substitute for backups.** A delete propagates to every replica. Backups protect against software bugs and operator error; replication protects against hardware failure. They're solving different problems.
 
 ## State Machine Replication (Raft)
 

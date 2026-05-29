@@ -4,12 +4,21 @@ type: concept
 tags: [resiliency, rate-limiting, load-shedding, upstream, distributed-systems, scalability]
 sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Rate Limiting and Upstream Resiliency
 
 Upstream resiliency patterns protect a service from being overwhelmed by its own callers — whether due to traffic spikes, misbehaving clients, or adversarial load. The four mechanisms form a layered defence: load shedding (local, reactive), load leveling (async decoupling), rate limiting (global, quota-based), and the constant work pattern (structural predictability). (→ [[sources/understanding-distributed-systems]] ch. 28)
+
+## Key Claims
+
+- **Three complementary techniques at different boundaries.** Load shedding (reject at the edge with 503), load levelling (queue + auto-scale consumers), rate limiting (per-client caps with sliding-window buckets). Use all three; they solve different problems.
+- **Shed load at the edge as early as possible.** Rejecting fast preserves CPU for requests that can succeed. Slow rejection ties up resources at both ends — worse than refusal.
+- **Bounded queues are not optional.** Unbounded queues mask backlog and produce unbounded latency (Little's Law). Every queue in the system needs a hard cap; what happens at the cap (block, reject, fail-fast) is a design choice but the cap itself isn't.
+- **Sliding-window buckets handle distributed rate limiting.** Atomic counter increment in Redis-style stores; fail-open if the rate limiter itself is unavailable (you'd rather over-serve than be down). Per-client and per-endpoint keys.
+- **Constant work is antifragile.** Periodic full-state dump (e.g., AWS Route 53 health checker dumps the entire health state every 2.5s) means failure of any individual node doesn't propagate. Self-healing by design.
+- **The Governor pattern rate-limits automation, not callers.** Automation can act faster than humans can intervene; cap the rate of change asymmetrically (slow for large changes, fast for alerts). Reddit's ZooKeeper-induced fleet shutdown is the cautionary tale.
 
 ## Load Shedding
 

@@ -4,10 +4,20 @@ type: concept
 tags: [distributed-systems, reliability, resiliency, slos, operations, measurement]
 sources: [understanding-distributed-systems, release-it, software-architecture-metrics, site-reliability-engineering]
 created: 2026-05-14
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Availability
+
+## Key Claims
+
+- **100% is always the wrong target** (SRE). Past user-perceptible thresholds, additional nines waste engineering capacity that could go to features. Define the SLO by user impact, not technical aspiration.
+- **The nines table makes the trade-off concrete.** 99.9% = 8h 46m/year; 99.99% = 52 min/year; 99.999% = 5 min 35s/year. Each additional nine roughly 10× the engineering cost. Negotiate with the table in hand.
+- **MTBF and MTTR are the two levers; MTTR matters more.** At hyperscale MTBF approaches zero — failure is constant. Recovery speed is the active lever. Allspaw's argument; SRE operationalises it.
+- **Availability is achieved by redundancy + failure isolation, not by preventing failure.** Multiple availability zones, bulkheads, shuffle sharding, cellular architecture. Designing failures out is more expensive and less effective than designing for failure.
+- **Dependency chaining destroys availability.** A service with 99.9% availability that depends on five other 99.9% services has an upper bound of ~99.5%. Reduce dependency depth, isolate fault domains, accept degraded responses ([[patterns/circuit-breaker]]).
+- **Availability is a financial decision.** A 5-minute monthly release window for 5 years costs roughly $900K (300 min × $3K/min). A $50K zero-downtime deployment investment returns 18× ([[sources/release-it]]). See [[concepts/cost-as-architectural-force]].
+- **Tyranny of the nines is the dominant antipattern.** Specifying availability without specifying *what for*. Negotiate per-feature: does the entire system need five nines, or only the transaction core?
 
 ## Definition
 

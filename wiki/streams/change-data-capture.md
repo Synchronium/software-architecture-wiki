@@ -4,10 +4,20 @@ type: concept
 tags: [cdc, change-data-capture, data-integration, event-streaming, migration, data-pipelines]
 sources: [designing-data-intensive-applications, building-event-driven-microservices, monolith-to-microservices, software-architecture-the-hard-parts]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-05-29
 ---
 
 # Change Data Capture
+
+## Key Claims
+
+- **CDC bridges the state-database and event-stream worlds.** It turns a database into an event source without modifying the application that owns it — the practical mechanism that makes event-streaming approaches incrementally adoptable in relational-DB-based systems.
+- **Three implementation modes, vastly different fidelity.** Log-based (WAL/binlog/oplog via Debezium — the modern default), trigger-based (database-agnostic but expensive), query-based (polling — misses deletes, lowest fidelity). Pick log-based unless constraints rule it out.
+- **CDC events are technically faithful but domain-poor.** They describe what changed in the database, not what happened in the business. Downstream consumers must reconstruct domain meaning from row changes, coupling them to the source schema.
+- **CDC + outbox pattern is the canonical solution to dual writes.** The application writes business state and an outbox event in one DB transaction; CDC propagates outbox events reliably. Domain-meaningful events plus reliable transport.
+- **Log compaction enables bootstrap without coordination.** A new consumer can replay from a compacted topic and see the current state of every entity without a database snapshot transfer.
+- **Schema coupling is the central design risk.** CDC events expose the source schema to all consumers; a column rename is a breaking change for everyone. Mitigate with schema registry + versioning, anti-corruption layers, or domain events via outbox.
+- **Three use cases dominate.** Data integration (avoiding dual writes), data liberation from a monolithic database, and incremental migration from legacy stores.
 
 ## Definition
 

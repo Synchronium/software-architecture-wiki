@@ -4,12 +4,22 @@ type: database
 tags: [databases, encoding, serialisation, schema-evolution, compatibility]
 sources: [designing-data-intensive-applications]
 created: 2026-05-13
-updated: 2026-05-14
+updated: 2026-05-29
 ---
 
 # Encoding and Evolution
 
 Data needs to be encoded to cross process boundaries — written to disk, sent over a network, or passed between services. The choice of encoding format determines how much data you can evolve over time without breaking things. This matters because **data outlives code**: a database may contain records written years ago by a version of the code that no longer exists.
+
+## Key Claims
+
+- **Data outlives code; choose the encoding accordingly.** A value written today may be read by code five years from now. The encoding format must survive schema changes over the data's full retention horizon.
+- **Two compatibility directions, both required.** Backward (new code reads old data) and forward (old code reads new data). Rolling deployments need both simultaneously. Schema-aware encodings (Protobuf, Thrift, Avro) handle this by design; JSON requires application-level discipline.
+- **Never use language-specific serialisation across processes.** Java's `Serializable`, Python's `pickle`, Ruby's `Marshal` are convenient but language-locked, security-vulnerable (instantiation enables RCE), and have no versioning story.
+- **Field tags are the schema evolution mechanism in Protobuf/Thrift.** Never change a field tag — it's the field's identity in the binary. Add new fields with new tags as optional; remove fields by marking deprecated, never reusing the tag number. Required fields can never be safely removed.
+- **Avro encodes no tags; reader/writer schema resolution does the work.** Most compact, but requires the writer's schema available at decode time — drives the Confluent Schema Registry pattern for Kafka.
+- **RPC's "local call illusion" is fundamentally flawed.** Network calls can time out, may be received without acknowledged, can't pass pointers, can't share memory. Modern RPC frameworks (gRPC) acknowledge these differences rather than hiding them.
+- **Format selection follows use case.** Public REST APIs → JSON; internal gRPC → Protobuf; Kafka streams → Avro + schema registry; long-lived data lake → Parquet or Avro. JSON for interop; binary for size and schema enforcement.
 
 ## Language-Specific Serialisation
 

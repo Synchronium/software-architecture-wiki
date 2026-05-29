@@ -4,10 +4,19 @@ type: pattern
 tags: [ddd, business-logic, transaction-script, active-record, domain-model, tactical-design]
 sources: [learning-domain-driven-design, patterns-of-enterprise-application-architecture]
 created: 2026-05-14
-updated: 2026-05-17
+updated: 2026-05-29
 ---
 
 # Business Logic Implementation Patterns
+
+## Key Claims
+
+- **Match the pattern to the subdomain type.** Transaction script and active record for supporting subdomains; domain model for core; event-sourced domain model for core subdomains needing audit, time travel, or behavioural analysis.
+- **The pattern selection is a cascade.** Business logic pattern determines architectural pattern (event-sourced → CQRS, domain model → ports & adapters, active record → layered + service layer, transaction script → minimal layered) determines testing strategy (pyramid for rich models, diamond for active record, reversed pyramid for transaction script).
+- **Transaction Script's defining requirement is transactional integrity.** Three common failure modes break it: missing DB transaction; distributed DB+message-bus write (solved by [[patterns/outbox-pattern]]); implicit distributed transaction via void method (solved by idempotency).
+- **Active record is not "anaemic domain model" as an insult.** It's a valid choice for simple business logic with complex data structures. Forcing a domain model on simple logic adds accidental complexity.
+- **Subdomain type can be wrong.** If a "core" subdomain works fine as a transaction script, it's probably supporting. If a "supporting" subdomain has accumulated rules and invariants, it has become core. Use pattern fit as a check on classification.
+- **Service Layer (Fowler) belongs over Domain Model, not under it.** Thin facade for cross-cutting concerns (transactions, security); application logic above, domain logic below. Avoid the controller-entity anti-pattern that puts use-case logic in services.
 
 ## Overview
 

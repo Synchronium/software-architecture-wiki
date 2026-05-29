@@ -4,10 +4,20 @@ type: concept
 tags: [contracts, coupling, microservices, api, integration, events, schema-evolution]
 sources: [software-architecture-the-hard-parts, mastering-api-architecture, building-event-driven-microservices, monolith-to-microservices, enterprise-integration-patterns]
 created: 2026-05-14
-updated: 2026-05-15
+updated: 2026-05-29
 ---
 
 # Contracts in Distributed Architecture
+
+## Key Claims
+
+- **Contracts cut across every coupling dimension.** API protocols, library interfaces, message schemas, integration event formats — anywhere parts of the system wire together, contracts are the wires. They're one of the most pervasive sources of coupling.
+- **Strict vs loose is a spectrum, not a binary.** Strict (gRPC/Protobuf) — fidelity, build-time verification, tight coupling. Loose (JSON, REST) — decoupling, schema-evolution flexibility, contract-management risk. Default to strict within a team's tech stack, loose across team boundaries.
+- **Consumer-driven contracts get you both.** Consumer specifies what it needs; producer runs every consumer's contract as a pipeline gate. Loose implementation coupling + guaranteed fidelity. Pact is the canonical implementation.
+- **Stamp coupling is over-specification by another name.** Passing the whole `Profile` object when the consumer only reads `name` couples to fields it doesn't use. Legitimate exception: carrying workflow state forward in choreographed sagas.
+- **Schema evolution has two directions; both matter.** Backward (new code reads old data) and forward (old code reads new data). Rolling deploys need both. Avro and Protobuf are designed for this; JSON forces application-level discipline.
+- **Breaking changes have two flavours.** Structural (rename, remove, type change — caught by schema diff) and semantic (same field, different meaning — only caught by tests). Use both schema comparison and consumer contract tests.
+- **The expansion path is usually right.** Add the new without removing the old; support both for a deprecation window. Forced lock-step deploys are the antipattern.
 
 ## Definition
 

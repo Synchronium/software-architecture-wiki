@@ -4,12 +4,21 @@ type: database
 tags: [databases, transactions, acid, isolation, concurrency, serializability, mvcc]
 sources: [designing-data-intensive-applications, understanding-distributed-systems, patterns-of-enterprise-application-architecture]
 created: 2026-05-13
-updated: 2026-05-18
+updated: 2026-05-29
 ---
 
 # Transactions
 
 A transaction groups a set of reads and writes into a logical unit that either commits entirely or aborts entirely. Transactions simplify the error-handling model: instead of reasoning about every possible partial failure in concurrent execution, application code handles two outcomes — commit or abort — and the database handles everything else. However, the degree of protection provided depends heavily on the **isolation level** chosen, and most databases deliver weaker guarantees than their documentation claims.
+
+## Key Claims
+
+- **ACID is precise but often misread.** Atomicity = commit-or-rollback, not concurrency. Consistency = application invariant, not DB property. Isolation = concurrent transactions don't interfere. Durability = committed data survives crash. The C "was tossed in to make the acronym work" (Hellerstein) and has nothing to do with distributed consistency models.
+- **Isolation levels are defined by which anomalies they prevent.** Dirty read, read skew, lost update, write skew, phantom — each prevented at a progressively stronger level. Picking the right level requires knowing which anomalies your workload actually exposes.
+- **Most "Serializable" databases aren't.** Vendors ship Snapshot Isolation (MVCC) under various marketing names — Oracle's "Serializable," PostgreSQL/MySQL "Repeatable Read." Write skew is possible. PostgreSQL SERIALIZABLE has been true SSI since v9.1; most others haven't caught up.
+- **Write skew is the most underrated anomaly.** Two transactions read overlapping state, both decide to write based on what they read, the combined writes violate an invariant. On-call scheduling, room booking, username claiming are all examples. Only true serialisability prevents it.
+- **Three roads to serialisability.** Actual serial execution (VoltDB, Redis Lua, Datomic — works if dataset fits in memory and transactions are short); 2PL (the traditional path, slow under contention); SSI (Serializable Snapshot Isolation — optimistic, the modern default for PostgreSQL and CockroachDB).
+- **Business transactions span system transactions, requiring offline concurrency.** Multi-page edit workflows can't hold a DB transaction open; the application manages concurrency across the gaps. Optimistic Offline Lock (version field) is the default; add Pessimistic only where conflict cost justifies it.
 
 ## ACID Properties
 
