@@ -558,10 +558,78 @@ a.page-type-badge:hover {
   margin: 0 0 0.75rem;
 }
 .backlinks ul { list-style: none; padding: 0; margin: 0; }
-.backlinks li { margin: 0.3rem 0; font-size: 0.9rem; }
+.backlinks li { margin: 0.3rem 0; font-size: 0.9rem; break-inside: avoid; }
 .backlinks a         { color: var(--link); }
 .backlinks a:visited { color: var(--link-visited); }
 .backlinks a:hover   { text-decoration: none; }
+
+/* Two-column layout for backlinks on wider viewports.
+   721px matches the sidebar-toggle breakpoint used elsewhere. */
+@media (min-width: 721px) {
+  .backlinks ul {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+}
+
+/* ─── Table of contents ──────────────────────────────────────────────────── */
+.toc {
+  margin: 0 0 2rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-tag);
+  font-size: 0.9rem;
+}
+.toc > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.toc > summary::-webkit-details-marker { display: none; }
+.toc > summary::before {
+  content: "›";
+  display: inline-block;
+  width: 0.7rem;
+  transition: transform 0.12s ease;
+  transform-origin: center 45%;
+}
+.toc[open] > summary::before { transform: rotate(90deg); color: var(--accent); }
+.toc > summary:hover { color: var(--text); }
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0.1rem;
+}
+.toc li {
+  margin: 0.2rem 0;
+  line-height: 1.3;
+  break-inside: avoid;
+}
+.toc li.toc-sub {
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+.toc a         { color: var(--link); text-decoration: none; }
+.toc a:visited { color: var(--link-visited); }
+.toc a:hover   { text-decoration: underline; }
+
+/* Two-column TOC on wider viewports, matching the backlinks treatment. */
+@media (min-width: 721px) {
+  .toc ol {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+}
 
 /* ─── Listen bar ─────────────────────────────────────────────────────────── */
 .listen-bar {

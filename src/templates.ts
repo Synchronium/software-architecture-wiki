@@ -53,6 +53,20 @@ function breadcrumb(urlPath: string, title: string): string {
   return `<nav class="breadcrumb" aria-label="Breadcrumb">${homeLink} <span class="sep">›</span> <a href="${sectionHref}">${escapeHtml(sectionLabel)}</a> <span class="sep">›</span> ${escapeHtml(title)}</nav>`;
 }
 
+/**
+ * Inline script that gives a `<details>` element an "open on desktop, closed
+ * on mobile" default. The element is rendered with `open` server-side so
+ * desktop shows it without JS; this script removes `open` on mobile before
+ * first paint and restores it when the viewport widens. Used by both the
+ * sidebar and the per-page TOC so the behaviour stays in sync.
+ *
+ * The selector is interpolated into a JS string literal — only pass trusted
+ * static selectors.
+ */
+function desktopOpenScript(selector: string): string {
+  return `<script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('${selector}');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>`;
+}
+
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
@@ -94,7 +108,7 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
     </ul>`;
 
   // Rendered open so desktop shows the sidebar without JS.
-  // The script collapses it on mobile before first paint.
+  // desktopOpenScript() collapses it on mobile before first paint.
   return `<details class="sidebar-wrapper" open>
     <summary class="sidebar-toggle">Navigation</summary>
     <nav class="sidebar" aria-label="Wiki sections">
@@ -102,7 +116,7 @@ function renderSidebar(nav: NavSection[], currentUrlPath: string): string {
     ${topLinks}${sections}
     </nav>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),s=document.querySelector('.sidebar-wrapper');if(!q.matches)s.removeAttribute('open');q.addEventListener('change',function(e){if(e.matches)s.setAttribute('open','');});})();</script>`;
+  ${desktopOpenScript(".sidebar-wrapper")}`;
 }
 
 // ─── Base shell ───────────────────────────────────────────────────────────────
@@ -177,6 +191,72 @@ function renderBase(opts: {
 </html>`;
 }
 
+// ─── Table of contents ───────────────────────────────────────────────────────
+
+/** GitHub-style slug for heading anchors. */
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, "")           // strip any HTML tags
+    .replace(/&[a-z]+;/g, "")          // strip HTML entities
+    .replace(/[^a-z0-9\s-]/g, "")      // drop punctuation
+    .trim()
+    .replace(/\s+/g, "-");             // spaces → hyphens
+}
+
+/**
+ * Extract h2/h3 headings, inject stable IDs into the HTML, and return the
+ * TOC HTML alongside the modified body. h1 is the page title (handled by the
+ * template). h4+ is omitted to keep the TOC shallow.
+ *
+ * Returns { html, toc }. `toc` is empty if there are fewer than 3 headings.
+ */
+function extractToc(html: string): { html: string; toc: string } {
+  type Heading = { level: 2 | 3; id: string; text: string };
+  const headings: Heading[] = [];
+  const seen = new Set<string>();
+
+  const newHtml = html.replace(
+    /<h([23])>([^<]+(?:<[^>]+>[^<]*)*?)<\/h\1>/g,
+    (_match, levelStr, inner) => {
+      const level = parseInt(levelStr, 10) as 2 | 3;
+      const text = String(inner).replace(/<[^>]+>/g, "").trim();
+      const base = slugify(text);
+      // De-dupe by appending -2, -3 … on collision
+      let id = base;
+      let n = 2;
+      while (seen.has(id)) {
+        id = `${base}-${n++}`;
+      }
+      seen.add(id);
+      headings.push({ level, id, text });
+      return `<h${level} id="${id}">${inner}</h${level}>`;
+    }
+  );
+
+  if (headings.length < 3) return { html: newHtml, toc: "" };
+
+  // h.text is already HTML-escaped (it comes from inside marked-rendered tags),
+  // so we use it as-is here. Re-escaping would double-encode entities like
+  // &quot; → &amp;quot;.
+  const items = headings
+    .map(h => {
+      const cls = h.level === 3 ? ' class="toc-sub"' : "";
+      return `<li${cls}><a href="#${h.id}">${h.text}</a></li>`;
+    })
+    .join("");
+
+  // Rendered open so desktop shows the TOC without JS.
+  // desktopOpenScript() collapses it on mobile before first paint.
+  const toc = `<details class="toc" open>
+    <summary>Contents</summary>
+    <ol>${items}</ol>
+  </details>
+  ${desktopOpenScript(".toc")}`;
+
+  return { html: newHtml, toc };
+}
+
 // ─── Wiki page ────────────────────────────────────────────────────────────────
 
 export function renderPage(
@@ -218,8 +298,9 @@ export function renderPage(
     <span class="listen-experimental">← experimental</span>
   </div>`;
 
-  const wrappedBody = wrapTables(bodyHtml);
-  const content = `${header}${listenBar}<div class="page-body">${wrappedBody}</div>${backlinksHtml}`;
+  const { html: withIds, toc } = extractToc(bodyHtml);
+  const wrappedBody = wrapTables(withIds);
+  const content = `${header}${listenBar}${toc}<div class="page-body">${wrappedBody}</div>${backlinksHtml}`;
   return renderBase({ title: meta.title, urlPath, content, nav, description });
 }
 
