@@ -2,6 +2,72 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 9–10 (book complete)
+
+Ingested chapters 9 (Inference Optimization) and 10 (AI Engineering Architecture and User Feedback) from *AI Engineering* (Huyen, 2024). Book fully ingested.
+
+**New pages created:**
+- **concepts/inference-optimization** — inference metrics (TTFT, TPOT, total latency, throughput, goodput, MFU, MBU); two bottleneck types: prefill (compute-bound, matrix multiplications) vs decode (memory bandwidth-bound, weight loading per token); GPU memory hierarchy (CPU DRAM 25–50 GB/s → GPU HBM 256 GB/s–1.5 TB/s → GPU SRAM >10 TB/s); model-level optimisation: quantisation (PTQ most common, QAT better quality), pruning (requires hardware sparsity support), speculative decoding (fast draft proposes K tokens, target verifies in parallel, DeepMind 4B→Chinchilla-70B >50% latency reduction), inference with reference (draft from context ~2× speedup), parallel decoding (Lookahead/Jacobi, Medusa multiple heads 1.9× on Llama 3.1); KV cache: size formula 2×B×S×L×H×M, Llama 2 13B 54 GB at batch=32 seq=2048; attention variants (MQA, GQA, cross-layer, windowed; Character.AI >20× reduction); PagedAttention (non-contiguous blocks, eliminates fragmentation); FlashAttention (fused kernel, avoids materialising attention matrix); service-level: batching evolution (static → dynamic → continuous/in-flight Orca paper), prefill/decode decoupling (separate GPU instances, 2:1–4:1 ratio), prompt caching (Anthropic 90% cost/75% latency; Gemini 75% discount); parallelism (tensor, pipeline, data, sequence)
+- **concepts/ai-engineering-architecture** — five-step progressive architecture: (1) context enhancement via RAG/tools, (2) input/output guardrails (PII masking with reverse dictionary, format validation, factual consistency, retry logic, human fallback), (3) router (intent classifier → specialised models; fast/cheap: GPT-2/BERT/small Llama) + model gateway (unified API abstraction, access control, fallback policies, logging; examples Portkey/MLflow AI Gateway/Kong/Cloudflare), (4) caching (exact: LRU/LFU/FIFO; semantic: embedding+threshold — high failure risk; data-leak risk for personalised responses), (5) agent patterns; monitoring: MTTD/MTTR/CFR; model drift (system prompt changes, user behaviour shifts, provider-side updates — Chen et al. 2023 GPT-4 March vs June; Voiceflow 10% drop across GPT-3.5 versions); orchestration (LangChain/LlamaIndex/Flowise/Langflow/Haystack; start without, add when justified); user feedback: explicit (thumbs/stars/comments) vs implicit (early termination, error correction, regeneration, conversation length/diversity); user edits as DPO preference pairs (original=loser, edit=winner); feedback design (non-intrusive, low-friction, action-correlated; Midjourney 4-image grid; GitHub Copilot Tab=accept); feedback biases (leniency, randomness, position, preference/length, recency); degenerate feedback loops (exposure bias, sycophancy/Sharma et al. 2023 — RLHF models favour users' views)
+
+**Updated pages:**
+- **sources/ai-engineering** — chapter notes for chs 9–10 filled in; all stubs replaced; book fully documented
+- **index.md** — inference-optimization, ai-engineering-architecture added to AI & ML section; source marked fully ingested
+
+**Book completion:**
+- Moved 09-inference-optimization.txt, 10-ai-engineering-architecture-and-user-feedback.txt, 00-preamble.txt to processed/
+- Removed _incoming/processing/ai-engineering/ directory
+- Updated README.md: AI Engineering added to ingested sources table
+
+## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 7–8
+
+Ingested chapters 7 (Finetuning) and 8 (Dataset Engineering) from *AI Engineering* (Huyen, 2024).
+
+**New pages created:**
+- **concepts/finetuning** — when to finetune vs RAG (behavioural failures vs information failures; "finetuning is for form, RAG is for facts"); memory bottleneck (inference N×M×1.2; training adds gradients + optimiser states; Adam requires 3× extra per trainable param); numerical representations and quantisation (FP32→BF16→INT8→INT4; PTQ vs QAT; BitNet b1.58 at 1.58 bits/param); PEFT overview (full → partial → adapter-based → soft prompt); LoRA deep dive (low-rank decomposition W′=W+(α/r)AB; rank 4–64; apply to attention + feedforward; multi-LoRA serving — 23.3M vs 1.68B params for 100 customers; QLoRA 4-bit enables 65B finetuning on 48 GB GPU); model merging (task arithmetic, linear combination/model soups, SLERP, TIES/DARE pruning, layer stacking/frankenmerging, concatenation); finetuning tactics (progression vs distillation development paths; learning rate, batch size, epochs, prompt loss weight hyperparameters)
+- **concepts/dataset-engineering** — data-centric AI shift; three criteria: quality (six dimensions: relevant/aligned/consistent/formatted/unique/compliant; 10K curated > 100K noisy; LIMA 1K examples matches GPT-4 43% of time), coverage (domain/task/linguistic/format diversity; performance gains plateau ~282 tasks), quantity (full FT: tens of thousands+; PEFT: hundreds; 50-example pilot); data acquisition (own application data as data flywheel is highest priority); synthesis techniques (rule-based templates, simulation/self-play, AI paraphrasing/translation, instruction synthesis/Self-Instruct/Alpaca, reverse instruction, model bootstrapping); Llama 3 coding pipeline (2.7M synthetic examples via generate+test+translate+back-translate); limitations of synthetic data (quality control, superficial imitation/Gudibande 2023, model collapse/Shumailov 2023, data lineage obscurity); model distillation (teacher→student, DistilBERT 40% smaller 97% capability); data processing (inspect, deduplicate/MinHash/Bloom filter, clean/filter, format with correct chat template)
+
+**Updated pages:**
+- **sources/ai-engineering** — chapter notes for chs 7–8 filled in; stubs remain for chs 9–10
+- **index.md** — finetuning, dataset-engineering added to AI & ML section; source progress updated to chs 1–8
+
+## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 5–6
+
+Ingested chapters 5 (Prompt Engineering) and 6 (RAG and Agents) from *AI Engineering* (Huyen, 2024).
+
+**New pages created:**
+- **concepts/prompt-engineering** — prompt anatomy (task description, examples, task, context); system vs user prompt; chat templates and silent failure risk from wrong templates; in-context learning (zero-shot, few-shot, k-shot; GPT-3 to GPT-4 marginal gain); best practices (explicit instructions, persona, examples, output markers, context, subtask decomposition, CoT, self-critique, versioned iteration); prompt tooling cautions (DSPy, Promptbreeder, TextGrad — hidden API call multiplication); defensive prompt engineering: extraction attacks, jailbreaking/injection (DAN, grandma exploit, indirect prompt injection, PAIR automated attacks), information extraction (~1% memorisation rate, Nasr et al. 2023); three-layer defence (model instruction hierarchy, prompt-level warnings, system-level sandboxing); violation rate and false refusal rate as security metrics
+- **concepts/rag** — RAG definition; why RAG persists despite long contexts (three reasons); retriever + generator architecture; term-based retrieval (TF-IDF formula, BM25, Elasticsearch); embedding-based retrieval (vector databases, ANN: LSH, HNSW, Product Quantization, IVF, Annoy, FAISS); hybrid search (cascade and parallel with RRF: Score = Σ 1/(k+r_i(D))); chunking strategy (unit/size/overlap/recursive); reranking (cross-encoder, recency, lost-in-the-middle positioning); query rewriting; contextual retrieval (Anthropic 50–100 token AI-generated chunk context); evaluation (context precision/recall, NDCG/MAP/MRR, MTEB); multimodal RAG (CLIP); tabular RAG (text-to-SQL 3-step workflow); memory model (internal/short-term/long-term) with FIFO/summarisation/reflection-based management
+- **concepts/ai-agents** — agent definition (environment + tool inventory + planning); three tool categories (knowledge augmentation, capability extension, write actions); planning (CoT + few-shot, natural language plans, plan validation heuristics, sequential/parallel/if/for control flows); ReAct pattern (Thought/Act/Observation interleaved); Reflexion (self-reflection module); multi-agent systems (planner/evaluator/executor/intent classifier); function calling mechanics; tool selection (ablation, usage distribution, failure analysis); planning failure modes (invalid tool, invalid parameters, incorrect values, goal failure, reflection error); tool failures; efficiency failures; safety (write action risks, compound error: 95%^10=60%, indirect prompt injection); LLM planning debate (LeCun/Kambhampati contra Hao et al.)
+
+**Updated pages:**
+- **sources/ai-engineering** — chapter notes for chs 5–6 filled in; stubs remain for chs 7–10
+- **index.md** — prompt-engineering, rag, ai-agents added to AI & ML section; source progress updated to chs 1–6
+
+## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 3–4
+
+Ingested chapters 3 (Evaluation Methodology) and 4 (Evaluate AI Systems) from *AI Engineering* (Huyen, 2024).
+
+**New pages created:**
+- **concepts/ai-evals** — comprehensive evaluation concept page covering: perplexity/cross-entropy/BPC theory; pass@k functional correctness; BLEU/ROUGE/semantic similarity; embeddings (BERT, CLIP, Sentence Transformers, ULIP/ImageBind); AI-as-a-judge (biases: self-bias, position bias, verbosity bias); comparative evaluation (Elo, Bradley-Terry, TrueSkill, LMSYS Chatbot Arena); factual consistency evaluation (AI judge, SelfCheckGPT, SAFE, textual entailment); safety taxonomy; instruction-following (IFEval, INFOBench); model selection workflow; open-source vs API decision (seven axes); public benchmark contamination and limitations; evaluation pipeline design (four steps: component coverage, evaluation guideline, methods and data, pipeline self-evaluation)
+
+**Updated pages:**
+- **sources/ai-engineering** — chapter notes for chs 3–4 filled in; stubs remain for chs 5–10
+- **index.md** — ai-evals added to AI & ML section; source progress updated to chs 1–4
+
+## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 1–2
+
+Began ingestion of *AI Engineering* (Huyen, 2024). Chapters 1 and 2 cover the emergence of AI engineering as a discipline and the technical foundations of foundation models.
+
+**New pages created:**
+- **sources/ai-engineering** — source page with chapter notes for chs 1–2; placeholder stubs for chs 3–10
+- **concepts/foundation-models** — definition; transformer architecture (prefill/decode, attention, KV cache); alternative architectures (RWKV, Mamba, Jamba); model scale and Chinchilla scaling law; training data constraints and language bias; post-training (SFT, RLHF, DPO); adaptation techniques overview
+- **concepts/ai-engineering** — AI engineering vs ML engineering; three-layer stack; product defensibility; last-mile challenge; human-in-the-loop; eight use case categories; planning framework
+- **concepts/llm-sampling** — sampling strategies (temperature, top-k, top-p); test-time compute; structured outputs (prompting → post-processing → constrained sampling → finetuning spectrum); hallucination (self-delusion and knowledge-mismatch hypotheses); inconsistency mitigation
+- **authors/chip-huyen** — new author page
+
+**Updated:** index.md (new AI & ML section, source entry, author entry)
+
 ## [2026-05-29] add | Four new comparison/decision pages
 
 Wrote four new comparison pages that synthesise across the existing wiki to answer specific architectural questions. Each is a decision guide with explicit decision trees, anti-patterns, and composition rules.

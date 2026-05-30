@@ -82,6 +82,8 @@ Slugs are the kebab-case full book title. Use these in frontmatter `sources:` fi
 | `a-philosophy-of-software-design` | A Philosophy of Software Design — John Ousterhout |
 | `accelerate` | Accelerate: The Science of Lean Software and DevOps — Forsgren, Humble & Kim |
 | `site-reliability-engineering` | Site Reliability Engineering — Beyer, Jones, Petoff, Murphy (eds.) |
+| `ai-engineering` | AI Engineering — Chip Huyen |
+| `designing-machine-learning-systems` | Designing Machine Learning Systems — Chip Huyen |
 
 ---
 

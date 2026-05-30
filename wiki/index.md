@@ -1,7 +1,7 @@
 ---
 title: "Wiki Index"
 type: index
-updated: 2026-05-29
+updated: 2026-05-30
 
 ---
 
@@ -84,6 +84,20 @@ updated: 2026-05-29
 - [[concepts/oauth2-and-authn]] — OAuth2 roles, JWT, grants (Auth Code, PKCE, Client Credentials), OIDC, refresh tokens (informed by: mastering-api-architecture)
 - [[concepts/threat-modeling]] — STRIDE, DREAD, OWASP API Top 10, six-step process, rate limiting strategies (informed by: mastering-api-architecture)
 - [[concepts/zero-trust]] — Zonal architecture critique, NCSC eight principles, service mesh + OAuth2 implementation stack (informed by: mastering-api-architecture)
+
+### AI & Machine Learning
+
+- [[concepts/foundation-models]] — What foundation models are; transformer architecture (prefill/decode, KV cache, MoE); training data constraints; Chinchilla scaling law; post-training (SFT, RLHF, DPO) (informed by: ai-engineering)
+- [[concepts/ai-engineering]] — AI engineering as a discipline vs ML engineering; three-layer stack (application dev, model dev, infrastructure); product planning; last-mile challenge; use case taxonomy (informed by: ai-engineering)
+- [[concepts/llm-sampling]] — Sampling strategies (temperature, top-k, top-p); test-time compute; structured outputs; hallucination (self-delusion + knowledge-mismatch hypotheses); inconsistency mitigation (informed by: ai-engineering)
+- [[concepts/ai-evals]] — Evaluation methodology: perplexity, pass@k, BLEU/ROUGE, embeddings, AI-as-a-judge, comparative evaluation (Elo/Bradley-Terry, LMSYS Arena); factual consistency, safety, instruction-following; model selection workflow; API vs self-hosting; evaluation pipeline design; benchmark contamination (informed by: ai-engineering)
+- [[concepts/prompt-engineering]] — Prompt anatomy; system vs user prompt; chat templates; in-context learning (zero/few-shot, CoT); prompt decomposition; defensive prompt engineering (extraction, jailbreaking, injection, information extraction); three-layer defence (model/prompt/system) (informed by: ai-engineering)
+- [[concepts/rag]] — Retrieval-augmented generation; term-based (TF-IDF, BM25) vs embedding-based retrieval; ANN algorithms (LSH, HNSW, FAISS); hybrid search with RRF; chunking; reranking; contextual retrieval; text-to-SQL; memory model (informed by: ai-engineering)
+- [[concepts/ai-agents]] — Agent planning (ReAct, Reflexion); tool categories (knowledge, capability, write actions); function calling; multi-agent systems; planning/tool/efficiency failure modes; safety and compound errors; LLM planning debate (informed by: ai-engineering)
+- [[concepts/finetuning]] — When to finetune vs RAG; memory bottleneck; quantisation (FP32→INT4); PEFT; LoRA (low-rank decomposition, rank, alpha, multi-LoRA serving); QLoRA; model merging (task arithmetic, TIES/DARE, frankenmerging); finetuning tactics (informed by: ai-engineering)
+- [[concepts/dataset-engineering]] — Data-centric AI; three criteria (quality, coverage, quantity); acquisition and annotation; data synthesis (rule-based, simulation, AI-powered, reverse instruction); model distillation; model collapse; data processing pipeline (informed by: ai-engineering)
+- [[concepts/inference-optimization]] — Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache management (PagedAttention, FlashAttention, GQA/MQA); continuous batching; prefill-decode decoupling; prompt caching (informed by: ai-engineering)
+- [[concepts/ai-engineering-architecture]] — Five-step progressive architecture (context enhancement, guardrails, router/gateway, caching, agents); model drift detection; orchestration frameworks; user feedback systems (explicit vs implicit, edit-as-preference, degenerate feedback loops, sycophancy) (informed by: ai-engineering)
 
 ### Data
 
@@ -226,6 +240,8 @@ updated: 2026-05-29
 - [[sources/software-architecture-metrics]] — *Software Architecture Metrics* — Ciceri et al. (fully ingested 2026-05-22)
 - [[sources/accelerate]] — *Accelerate: The Science of Lean Software and DevOps* — Forsgren, Humble & Kim (fully ingested 2026-05-18)
 - [[sources/site-reliability-engineering]] — *Site Reliability Engineering* — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)
+- [[sources/chaos-engineering]] — *Chaos Engineering: System Resiliency in Practice*
+- [[sources/ai-engineering]] — *AI Engineering* — Chip Huyen (fully ingested 2026-05-30)
 - [[sources/chaos-engineering]] — *Chaos Engineering: System Resiliency in Practice* — Rosenthal & Jones (eds.); complex systems theory, Five Advanced Principles, Game Days, LDFI, Chaos Maturity Model, Continuous Verification, Security Chaos Engineering, organisational/human factors (informed by: chaos-engineering)
 
 ---
@@ -274,3 +290,4 @@ updated: 2026-05-29
 - [[authors/gene-kim]] — Co-author of *Accelerate*; founder and CTO of Tripwire; co-author of *The Phoenix Project* and *The DevOps Handbook*; high-performing technology organisation researcher
 - [[authors/casey-rosenthal]] — Co-author of *Chaos Engineering*; built and managed Netflix's Chaos Engineering team; co-creator of the Principles of Chaos Engineering
 - [[authors/nora-jones]] — Co-author of *Chaos Engineering*; Netflix Chaos Engineering team; safety science and sociotechnical systems perspective
+- [[authors/chip-huyen]] — Author of *AI Engineering*; Stanford lecturer (CS 329S: ML Systems Design); ML systems and AI engineering specialist
