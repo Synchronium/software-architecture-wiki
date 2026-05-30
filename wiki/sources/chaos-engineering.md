@@ -68,18 +68,6 @@ Three case studies of failures that no reasonable engineering team could have an
 
 Key insight: in all three cases, no individual was at fault. The failures emerged from the complex interaction of reasonable design decisions. Brooks' distinction between *accidental complexity* (byproduct of work, always accumulating, not sustainably reducible) and *essential complexity* (required by new features and safety properties) shows that eliminating complexity from complex systems is not possible.
 
-## Notable Quotes
-
-> "Chaos Engineering is the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production." (introduction, citing principlesofchaos.org)
-
-> "Chaos Engineering is about making the chaos inherent in the system visible." (introduction)
-
-> "Chaos Monkey is a management principle instantiated in running code." (introduction)
-
-> "In complex systems, we acknowledge that one person can't hold all of the pieces in their head." (ch. 1)
-
-> "Adding new features to software (or safety properties like availability and security) requires the addition of complexity." (ch. 1)
-
 ### Chapter 2 — Navigating Complex Systems
 
 Two foundational models for working *with* complexity rather than fighting it:
@@ -164,20 +152,6 @@ Three categories of experiment outcomes:
 
 **Key insight**: "We get good at things we do often." Anything that happens monthly should be practised weekly; anything weekly, daily. Credentials rotation, certificate renewal, OS patching — if you haven't exercised the rotation story in six months, you cannot trust it to work when needed.
 
-### Chapter 8 — Capital One: Adoption and Evolution of Chaos Engineering (Ravi Chockaiyan)
-
-Applying chaos engineering in a regulated financial services context. Capital One began "Blind Resiliency Testing" in 2013, well before "chaos engineering" was a named discipline — a **disruption group** introduced failures while a **response group** operated unaware that disruption was intentional, replicating a real incident's surprise.
-
-**Regulatory constraints** shape the entire practice: observability and audit trail are as important as the ability to design customised experiments. In banking, every action must be attributable; this rules out third-party chaos tooling (which has limited compliance support) and demands in-house platforms with full audit logging. Compliance requirements also turned out to be an **evangelism lever** — linking chaos engineering to regulatory and audit obligations persuaded leadership far more effectively than pure reliability arguments.
-
-**Transition to cloud (2018)**: moving from on-premises to AWS shifted the failure model significantly; cloud instances are ephemeral in ways physical hardware is not. Running chaos in the CI/CD pipeline — as a gate before traffic cutover — proved the most effective maturity step: a failing chaos test blocks the deployment, eliminating the need to schedule separate experiment days.
-
-**Team model**: a core Chaos Engineering team (platform + methodology expertise) combined with **embedded application engineers** (co-creation model) — application engineers own their services but are temporarily partnered with the chaos team to design and run experiments. Prevents the chaos team from becoming a siloed "chaos taxi."
-
-**ROI metric**: reduction in call volume to customer support (convertible to dollar value). Receiving an alert = failing the experiment. The discipline of defining success metrics before running experiments forces teams to clarify what "working correctly" means.
-
-**Community of practice** was the organisational mechanism for scaling expertise — regular meetups, shared runbooks, cross-team learning. Treated chaos as a craft to be built, not a tool to be installed.
-
 ### Chapter 7 — LinkedIn Being Mindful of Members (Logan Rosen)
 
 LinkedIn's LinkedOut framework (part of Project Waterbear): request-level failure injection built into the Rest.li filter chain, targeting blast radius minimisation as the primary engineering goal.
@@ -198,108 +172,132 @@ Deliberately *excluded* response body modification (wrong response codes, malfor
 
 **UI design lesson**: The Hawaii missile alert false alarm (2018) — real and test alert links in the same dropdown. Chaos Engineering UIs must make catastrophic actions visually distinct and require deliberate confirmation. Clarity in UX is a safety property.
 
-### Chapter 21 — Conclusion (Rosenthal & Jones)
+### Chapter 8 — Capital One: Adoption and Evolution of Chaos Engineering (Ravi Chockaiyan)
 
-Three counter-intuitive rules that are true despite appearing false:
+Applying chaos engineering in a regulated financial services context. Capital One began "Blind Resiliency Testing" in 2013, well before "chaos engineering" was a named discipline — a **disruption group** introduced failures while a **response group** operated unaware that disruption was intentional, replicating a real incident's surprise.
 
-1. **Redundancy does not make a system safer** (Challenger O-ring): the secondary O-ring caused engineers to normalise primary O-ring failures, allowing the Shuttle to operate outside specification over time. Redundancy without discipline creates complacency.
-2. **Removing complexity from a stable system can make it less safe**: functionality that makes the system safe is embedded in the complexity. You cannot surgically remove "accidental complexity" without also removing some safety properties.
-3. **Efficiency makes a system more brittle**: allowance for inefficiency enables the system to absorb shock and allows people to make creative decisions. Highly optimised systems fail catastrophically rather than gracefully.
+**Regulatory constraints** shape the entire practice: observability and audit trail are as important as the ability to design customised experiments. In banking, every action must be attributable; this rules out third-party chaos tooling (which has limited compliance support) and demands in-house platforms with full audit logging. Compliance requirements also turned out to be an **evangelism lever** — linking chaos engineering to regulatory and audit obligations persuaded leadership far more effectively than pure reliability arguments.
 
-**Above the line vs below the line**: tools are "below the line." People, organisation, and human interaction are "above the line." Software engineers are drawn to below-the-line solutions — it is psychologically satisfying to reduce an incident to a single line of code and fix it. The conclusion explicitly resists this: the most productive investments are above the line. Better alignment around how to react to hazards often produces more reliability improvement than writing more code.
+**Transition to cloud (2018)**: moving from on-premises to AWS shifted the failure model significantly; cloud instances are ephemeral in ways physical hardware is not. Running chaos in the CI/CD pipeline — as a gate before traffic cutover — proved the most effective maturity step: a failing chaos test blocks the deployment, eliminating the need to schedule separate experiment days.
 
-**Rasmussen's conclusion** (cited directly): "The most promising general approach to improved risk management appears to be an explicit identification of the boundaries of safe operation together with efforts to make these boundaries visible to the actors and to give them an opportunity to learn to cope with the boundaries." — This is exactly what Chaos Engineering does.
+**Team model**: a core Chaos Engineering team (platform + methodology expertise) combined with **embedded application engineers** (co-creation model) — application engineers own their services but are temporarily partnered with the chaos team to design and run experiments. Prevents the chaos team from becoming a siloed "chaos taxi."
 
-**Final claim**: "Tools don't create resilience. People do. But tools can help. Chaos Engineering is an essential tool in our pursuit of resilient systems."
+**ROI metric**: reduction in call volume to customer support (convertible to dollar value). Receiving an alert = failing the experiment. The discipline of defining success metrics before running experiments forces teams to clarify what "working correctly" means.
 
-### Chapter 20 — The Case for Security Chaos Engineering (Aaron Rinehart)
+**Community of practice** was the organisational mechanism for scaling expertise — regular meetups, shared runbooks, cross-team learning. Treated chaos as a craft to be built, not a tool to be installed.
 
-**Security Chaos Engineering (SCE)** defined: "The identification of security control failures through proactive experimentation to build confidence in the system's ability to defend against malicious conditions in production." Developed by Rinehart at UnitedHealth Group; released as open-source tooling (ChaoSlingr).
+### Chapter 9 — Creating Foresight (Nora Jones)
 
-**The core argument**: security incident root causes are predominantly "human factors" and "system glitches" — not sophisticated attackers. Most malicious code exploits low-hanging fruit: weak passwords, outdated software, misconfigured controls, human unawareness. The current RCA-and-blame model entrenches these failures rather than eliminating them. Hindsight bias confuses our personal narrative with truth; true attribution is never fully knowable.
+The most underappreciated chapter in the book: reframes Game Day as a *cognitive exercise* for building resilience culture, not a checklist for finding bugs.
 
-**Security feedback loops are missing**: security controls are designed for Day 0 of production. The system around them changes continuously via CI/CD. Red and Purple Team exercises are run infrequently (monthly/annually) and produce artifacts (reports, alerts) that rapidly become stale. The system may fundamentally change between exercises. SCE runs continuously and keeps pace with the rate of change.
+**Three-phase model**: Before / During / After. The industry chronically underinvests in Before (preparation, alignment, framing) and After (debrief, synthesis, follow-up). The During phase is the visible part; Before and After are where the actual learning transfer happens.
 
-**SCE vs Red/Purple Teaming**:
-- Red Teaming problems: results are reports; incentivises outfoxing the Blue Team rather than shared understanding; focuses on malicious attack chains rather than systemic vulnerabilities.
-- Purple Teaming problems: highly resource-intensive; only covers a small percentage of the portfolio; no regression mechanism to reapply past findings.
-- SCE advantage: holistic system focus (not adversarial); isolated and controlled simple experiments (not complex attack chains); continuous and automated; collaborative learning culture; reproducible.
+**Goal is not finding vulnerabilities**: the primary goal of a Game Day is *distilling expertise from humans* — surfacing the mental models of senior engineers and making them legible and transferable. If no vulnerabilities are found, the exercise still succeeded if mental models were refined. (→ directly contradicts the common framing of "we run chaos to break things and fix them")
 
-**Security Game Days**: introduce controlled security failure modes to measure: how effectively detection tools, techniques, and processes detected the failure; which tools provided signal; how useful that data was; whether the system operated as intended.
+**Law of Fluency** (David Woods): *expert performance becomes fluent to the degree that it is opaque to the performer.* Experts cannot perceive their own expertise — they have automatised skills to the point that introspection misrepresents what they actually do. This is why external facilitators and cognitive interviews are essential: the expert cannot self-report what makes them effective.
 
-**ChaoSlingr** (UnitedHealth Group, open source): framework for security chaos experiments on AWS. Components: Generatr (identifies the injection target and calls Slingr), Slingr (injects the failure), Trackr (logs experiment details). Lambda function-based, auto-configuration via Terraform, configurable frequency. Key finding: a misconfigured port was correctly blocked by firewall only 50% of the time; a commodity cloud configuration tool *always* caught it but logged it in a form inaccessible to the security team. Neither team had known this gap existed.
+**Cognitive interviews** (adapted from aviation, medicine, maritime): structured interview technique designed to elicit implicit knowledge from domain experts. Used in the Before phase to extract mental models from the people who know the system best, before the exercise surfaces gaps between what experts assume and what the system actually does.
 
-**Core principle**: "Do Less, Better" (Charles Nwatu, Netflix security engineer). Build fewer security controls, but verify that they actually work. Without feedback loops, security drifts into unknown failure states, just as systems without development feedback loops drift into unreliable operational readiness.
+**Resilience = positive adaptive capacity** (Sidney Dekker): resilience is not the absence of errors or minimising negative outcomes — it is the *enhancement of positive adaptive capabilities*. This distinguishes resilience engineering from traditional reliability engineering. Game Days succeed by measuring whether adaptive capacity grew, not merely whether bugs were found.
 
-### Chapter 19 — Chaos Engineering on a Database (Liu Tang and Hao Weng)
+**Five Game Day roles**: Designer/Facilitator (third party, not the system expert — ensures objectivity and learning focus); Commander (has authority to abort); Scribe (timestamped record); Observer (watches what humans do, not just what systems do); Correspondent (communicates status externally).
 
-The most technically detailed chapter: applying Chaos Engineering to TiDB (PingCAP's open-source distributed HTAP database). The database context imposes a stronger correctness requirement than availability services: data loss is unacceptable. 100% unit test coverage does not equal a fault-tolerant system.
+**ChAP experience at Netflix**: Netflix's Chaos Automation Platform ran automated experiments at scale, but the team discovered that mostly only Chaos Engineers ran experiments — not service teams. Automation alone did not solve adoption. The *process* of automating — the dashboard, the surfacing of system behaviour through metrics — created enormous organisational value by making tacit system knowledge legible. The lesson: the artifact of automation is sometimes less valuable than the act of automating.
 
-**Motivating failure**: a snapshot corruption bug in TiDB's Raft-based replication. The follower received a snapshot with corrupted size metadata because Linux's page cache flushing failed silently (SLUB memory allocation error). This class of failure is only observable in the full production environment and cannot be reproduced via unit or integration tests — it requires chaos.
+**Gary Klein — expert vs novice mental models**: experienced engineers use pattern-matching from prior incidents to navigate novel situations; novices follow procedure. Building resilient organisations requires mechanisms to transfer expert pattern libraries — not just procedures — across teams and tenure levels. Game Days are an experiential mechanism for that transfer.
 
-**TiDB's 5-step Chaos Engineering methodology**:
-1. Define steady state via Prometheus metrics: QPS, P99/P95 latency, CPU, memory.
-2. List hypotheses for specific failure scenarios (e.g., "isolating a TiKV node from a 3-replica cluster: QPS drops then recovers; 40,000 regions on a single node: CPU/memory remain stable").
-3. Pick a hypothesis.
-4. Inject fault, monitor, verify. QPS not recovering → either leader re-election failed or client routing is broken → bug found.
-5. Automate via Schrodinger; repeat.
+**Automation ironies**: as automation handles normal operations, humans lose the practice needed to handle abnormal operations — precisely the scenarios where automation hands back control. Regular Game Days counteract this by deliberately creating abnormal scenarios that humans must navigate without automation assistance.
 
-**Fault injection taxonomy**:
-- *Application level*: SIGKILL/SIGTERM random process kills; SIGSTOP/SIGCONT; renice for priority; `pthread_setaffinity_np` for concurrency bugs.
-- *CPU/memory*: while-true loop (100% CPU saturation); cgroup resource limiting.
-- *Network*: three network partition types (complete/partial/simplex); `tc` for latency injection and packet reordering; bandwidth saturation; iptables connection restriction. 80% of 136 network-partition failures in 25 famous open-source systems were catastrophic; data loss was the most common (27%).
-- *Filesystem*: FUSE-mounted directory with rule-based fault injection (e.g., /a/b/c → 20 ms read/write delay; /a/b/d → NoSpace write error). The injector intercepts I/O operations via hook, applies rules per path, and passes non-matching operations through to the real directory.
+### Chapter 10 — Humanistic Chaos (Andy Fleener)
 
-**Schrodinger platform**: Kubernetes-based automated chaos experimentation. Components: *Cat* (TiDB cluster under test); *Box* (experiment template/configuration); *Nemesis* (fault injectors); *Test Case* (procedure, inputs, expected outputs). Runs 7 clusters simultaneously, 24/7 without stopping. With Schrodinger, a multi-step experiment that previously required manual cluster deployment, configuration, fault injection, and failure detection runs automatically at a few clicks.
+Applies chaos engineering principles to *human and organisational systems*. At SportsEngine, Fleener ran three case studies treating the organisation as a complex system and applying the Principles of Chaos Engineering to its sociotechnical side.
 
-**Key claim**: even a distributed database with 20 million unit test cases and comprehensive integration tests cannot capture failures that emerge from production-specific system interactions. Chaos Engineering is the necessary complement.
+**Core thesis**: organisations are systems of systems. Some are explicit (vacation policy, on-call rota); others are tribal knowledge (only communicate with George via Slack). Tribal knowledge systems are inherently less reliable; poorly mapped explicit systems are worse still. The gap between **work-as-imagined** and **work-as-done** is the primary source of organisational latent risk ("dark debt," from the SNAFUcatchers STELLA report).
 
-### Chapter 18 — HOP Meets Chaos Engineering (Bob Edwards)
+**Weak signals**: in technical systems, USE metrics (Utilisation/Saturation/Errors) monitor key bottlenecks before failure becomes loud. The organisational equivalent: "we need to talk to Emma" signals a single point of failure; on-call shifts ending on Monday being more tiring than Friday is a signal approaching a capacity boundary. Dr. Todd Conklin: "You'll never hear a weak signal in failure — the signal in failure is loud." Safety signals must be read during success, not failure.
 
-**Human and Organisational Performance (HOP)**: an approach from manufacturing for improving organisational structures and processes to optimise for safety. Rooted in the same "new view" safety philosophy (Dekker et al.) as Chaos Engineering. Not a prescriptive process — flexible and arts-based. The five HOP principles, which align directly with Chaos Engineering's underlying philosophy:
+**Cook's principles of complex systems**: organisations are hazardous (latent failures everywhere); well-defended (catastrophe requires a sequence); and humans play a dual role as both defenders and producers of failure.
 
-1. **Error is normal**: humans make mistakes; the goal is not zero errors but building the capacity to fail safely (crumple zones, not just brake assist). Build both prevention *and* recovery.
-2. **Blame fixes nothing**: blame drives important information underground. Accountability means focusing on learning and improving, not finding someone to punish.
-3. **Context drives behavior**: the systems surrounding work (safety metrics, production targets, observation programs) drive behaviour — often in ways misaligned with the actual goal. What behaviour is your metric system incentivising?
-4. **Learning and improving is vital**: learning must be usable by practitioners in practice, not just theory. The "Learning Team" model. Chaos Engineering verifies that improvements made actually produce the desired system output.
-5. **Intentional response matters**: when incidents happen, how the organisation responds — at all levels — sets the tone. Intentional learning-focused responses prevent the blame reflex.
+**Three case studies**:
+1. *Gaming Game Days*: ran incident response Game Days with a deliberately removed subject-matter expert ("X is on vacation today"). Surfaced single points of failure in incident response knowledge. Outcome: engineers who went on long vacations without being paged — the success metric.
+2. *Connecting the Dots*: inspired by Etsy's bootcamp concept (every new hire spends time on a different team before joining their team). Implemented a rotation: one engineer from each product team spent a sprint on the Platform Ops team. Also created "Operations Advocate" roles — dedicated Ops engineers assigned to product teams. Both initiatives deliberately injected friction to widen communication pathways. Blast radius from the rotation: production pressure occasionally pulled engineers back; the experiment was eventually ended when margins disappeared.
+3. *Changing a Basic Assumption* (Goldratt): employee-driven initiatives — a mentorship programme and Spotify-style team health checks — that started as individual engineer experiments. Both grew into cultural pillars. The key: explicitly stating "I want to try something" and framing it as an experiment with a rollback plan.
 
-**HOP + Chaos Engineering in practice**: in manufacturing, simulation training rooms model the control room but usually model the *ideal* state. In a real plant, valve 3 has been hanging and only closes 80%. The Chaos Engineering approach: modify the simulator to represent the actual degraded state of the site. New operators must now respond to a valve that appears to close but doesn't fully divert flow — real-time problem solving under the actual chaos of operations. A "decay algorithm" randomising component degradation across simulation runs could approximate production entropy.
+**Westrum's organisational typology**: pathological (novelty crushed) → bureaucratic (novelty causes problems) → generative (novelty is implemented). Chaos Engineering experiments on human systems require a generative organisation. Use Westrum's model as a readiness sniff test before attempting larger experiments.
 
-**Key synthesis**: HOP is about building confidence in organisational improvements through verification. Chaos Engineering is about building confidence in technical systems through verification. Both are empirical: they want to see the system operating under turbulent conditions, not just test known requirements.
+**Leadership as an emergent property** (Barker): leadership is "a phenomenon that moves the organisation forward" — decision-making within bounded context, pushing accountability to the sharp end (practitioners). Local rationality applies.
 
-### Chapter 17 — Let's Get Cyber-Physical (Nathan Aschbacher)
+**Altitude and direction**: every experiment needs margin to avoid catastrophic failure and a stated direction (explicit unacceptable outcome). When rip cords become commonplace, rethink the experiment.
 
-Extends Chaos Engineering to **cyber-physical systems (CPSs)** — embedded, hardware-software systems deployed into and interacting with the physical world (autonomous vehicles, industrial control systems, avionics). Consequences of failure can be life-threatening.
+### Chapter 11 — People in the Loop (John Allspaw)
 
-**Failure Mode and Effects Analysis (FMEA)**: the established Functional Safety practice (required by standards like ISO 26262, DO-178C, IEC 61508) for assessing risk. Process: enumerate functions → enumerate all possible failures → rank severity/likelihood/detectability → compute risk priority numbers. FMEA puts engineers in a failure-first mindset and, with experienced cross-disciplinary teams, extracts significant uncertainty. But FMEA is limited: it treats one failure at a time (not simultaneous multipoint failures), relies on human imagination to enumerate failure modes, and documents imagined effects rather than empirically measuring real ones.
+A philosophical counterargument to automation-first approaches to Chaos Engineering. Allspaw (CTO of Etsy, MSc in Human Factors and Systems Safety from Lund University) argues that Chaos Engineering's power comes precisely from the human cognitive activities it generates — and that automating those away is self-defeating.
 
-**Where Chaos Engineering extends FMEA**: chaos experiments can validate or invalidate every FMEA assumption — inject failures enumerated in the FMEA and measure real effects; inject out-of-scope failures to see whether they should have been in-scope; use multiple independent expert teams to perform FMEA and compare discrepancies; feed findings back into the FMEA document.
+**The Substitution Myth** (Hollnagel): the belief that automation can be substituted for human action without changing the rest of the system — that work can be decomposed into tasks that are allocated to humans or machines according to their respective strengths. This is a myth: "capitalising on some strength of computers does not replace a human weakness. It creates new human strengths and weaknesses — often in unanticipated ways." Tasks in real complex systems are highly interdependent; substitution changes the system fundamentally.
 
-**The multipoint failure problem**: traditional FMEA assumes single-point failures, which was reasonable when multi-point independent failures in electro-mechanical systems were extremely unlikely. Software changes this — a single software bug replicates identically everywhere it is called; a bad function creates simultaneous correlated failures across an entire system. Standard FMEA constraints break down in software-intensive CPSs.
+**Function allocation / HABA-MABA** (Fitts List, 1951): original framework prescribing which tasks should be allocated to humans vs machines. Allspaw presents this as a useful historical frame — but notes it has been extensively critiqued by Cognitive Systems Engineering for ignoring systemic interdependence.
 
-**Experiment target priority for CPSs**: start with the things you trust most (your critical assumptions), not the obvious black boxes. The parts of a system most trusted and most widely depended on become the largest risk vectors if they fail, precisely because nothing has been designed to tolerate their failure. For CPSs specifically: **start with timing constraints**. Embedded engineers trust local clocks absolutely; in interconnected software-intensive systems, timing assumptions cascade catastrophically. Distributed systems engineers have learned to distrust wall clocks; embedded engineers are becoming distributed systems engineers.
+**Ironies of Automation** (Bainbridge): two key ironies:
+1. Designer errors in automation are a major source of operating problems — automation is not bug-free; it requires expertise to maintain.
+2. The designer who tries to eliminate the operator still leaves the operator to do the tasks the designer cannot think how to automate.
 
-**Probe effect**: in CPSs, instrumenting the system to run chaos experiments or take measurements can itself alter system behaviour (probe resistance/capacitance in electrical systems; branch prediction effects, cache pollution, and timing perturbation in software). Mitigations: (a) characterise the probe's footprint independently before injecting chaos; (b) use dummy probes (same resource profile but no fault injection) to calibrate baseline probe effect; (c) select experimental targets insensitive to the probe's side effects.
+Applied to chaos experiment selection automation: while automated tooling (see ch. 12) can help generate candidate experiments, it introduces new tasks (maintaining the automation, deciding when to run it, pausing it during incidents) that may exceed the work it eliminates.
 
-**Long-term vision**: Aschbacher argues Chaos Engineering can create the "material properties" of software — context-independent, empirically measured characteristics (like tensile strength in materials science) that allow engineers to reason about complex software-intensive systems without building every prototype. This would let design-time analysis (analogous to Finite Element Analysis in mechanical engineering) catch failure modes before production.
+**Confidence-building as a human cognitive activity**: the process of forming hypotheses, defining steady state, and interpreting results is valuable *because* it forces engineers to articulate their mental models, expose disagreements, and update their understanding. These are "generative dialogues" — the artifact of the process (the experiment) is less important than the process itself. Automating the process away removes the learning.
 
-### Chapter 16 — Continuous Verification (Casey Rosenthal)
+**Timing of experiments**: real-world practice is highly context-dependent — experiments are delayed for partner-team deployments, paused during incidents (to avoid ambiguity), or triggered by surprising production behaviour. These contextual judgements require human situational awareness and cannot be reduced to rules.
 
-Introduces **Continuous Verification (CV)** as the next evolution after CI/CD: a discipline of proactive experimentation implemented as tooling that verifies system behaviours against expectations.
+**People cannot be "out of the loop"**: "People are responsible, and software cannot be. An essential part of being human is the ability to enter into commitments and to be responsible for the courses of action they anticipate. A computer can never enter into a commitment." (Winograd and Flores) — therefore Chaos Engineering ultimately serves to help people fulfil their irreducible responsibility to design and operate complex systems.
 
-**CI/CD/CV as a progression**:
-- CI catches expectations gaps between engineers' code as quickly as possible by running integration tests on every commit.
-- CD automates the path from passing CI build to production, enabling frequent low-risk deployments.
-- CV adds proactive experimentation in production: verifying that the *output* of complex systems meets expectations, rather than validating that the *internals* work as designed.
+### Chapter 12 — The Experiment Selection Problem (and a Solution) (Peter Alvaro)
 
-**Why CV is necessary**: complex systems are open-ended and in constant flux. Validation (do internal parts match spec?) cannot keep pace with the rate of change. Verification (does output meet expectation?) is more pragmatic. CV addresses systemic properties — availability, resilience — that cannot be captured in pre-production tests.
+The experiment selection problem: for a distributed system with 20 services, there are 2²⁰ (over a million) distinct combinations of node crashes alone. An exhaustive search is computationally intractable. The chapter frames two current approaches and proposes a third.
 
-**Types of CV systems**: at one end, sophisticated chaos automation platforms running explicit experiments with control and variable groups. At the other, holistic system visualisations (Vizceral at Netflix) that allow humans to glance at the global state of a complex system and develop intuition. Automated canaries sit in between — the "variable" is a new code branch, and the CD pipeline promotes code only if the canary hypothesis holds.
+**Random search** (Chaos Monkey): uniform random sampling over the fault space. Simple, requires no domain knowledge, but performs poorly — unlikely to surface bugs requiring concurrent multi-fault conditions; provides no coverage metric; cannot terminate when "enough" has been tested.
 
-**ChAP as the canonical CV example**: Chaos Automation Platform at Netflix. Monocle introspects microservice dependencies, integrates telemetry, tracing, and configuration data (timeout values, Hystrix commands), and determines which services are "safe to fail." ChAP spins up two instances (control + variable) per experiment, routes a small fraction of production traffic to each, and runs for 45 minutes. If the KPI (SPS) deviates between groups, the experiment is immediately shut down and the owning team notified. All five advanced Chaos Engineering principles are implemented in ChAP.
+**Expert-guided selection**: the current state of the art. Expensive; requires expertise that takes years to develop; dependent on the communicability of human intuition — which is limited. An expert's job is not just choosing which experiments to run, but identifying which to *skip* (either because we already know an experiment will trigger a bug, or because a soft dependency means a downstream fault cannot propagate to user-visible failure). Ordering matters: testing X thoroughly before Y can rule out many Y-experiments based on what X-experiments revealed.
 
-**Future CV directions**: performance testing at subsystem granularity; data artifact verification (Jepsen-style continuous database consistency checks); correctness verification at infrastructure, application, and business logic layers. Business logic is the hardest to verify because it is innovative and changes rapidly; mismatches between layers are an inevitable source of incidents.
+**The communicability problem**: human intuition is powerful but opaque — experts trained via the "pain suit" (Rosenthal et al., Netflix Tech Blog 2015, where system alerts are converted to physical sensations on the wearer's skin) develop instinct, not knowledge. Knowledge implies communicability; instinct cannot be trained into others, cannot be documented, cannot be automated.
+
+**Lineage-Driven Fault Injection (LDFI)** (Alvaro, Disorderly Labs): automation of end-to-end experiment selection using distributed tracing infrastructure:
+1. Collect traces of successful system executions — these reveal the redundancy structure (failovers, retries, fallbacks, replicated paths) that allowed computation to succeed.
+2. Model these traces as Boolean formulae representing "sufficient conditions for success."
+3. Submit the formula to a SAT solver: which faults, if injected simultaneously, would eliminate all currently known paths to success? The solution is the highest-value next experiment.
+4. Incorporate prioritisation (likelihood of fault, topological graph metrics) via integer linear programming to rank experiments.
+
+**Key insight**: fault tolerance *is* redundancy. A fault-tolerant system is one with enough alternative computation paths that partial failure cannot prevent success. Tracing exposes those paths. LDFI finds the minimal set of simultaneous faults that would eliminate all known paths — i.e., the highest-probability way to disprove the hypothesis.
+
+Deployed with industrial collaborators at Netflix, Huawei, and eBay. Requires a mature distributed tracing infrastructure. The integration work (extracting data from specific tracing deployments, mapping to specific fault injection frameworks) is non-trivial but formulaic.
+
+**Contra Allspaw (ch. 11)**: deliberately positions automation as complementary to human expertise, not as replacement for human judgement. The goal is to automate the *selection* step so humans can focus on what they do uniquely: interpreting surprising results, providing explanations, and repairing bugs.
+
+### Chapter 13 — ROI of Chaos Engineering
+
+The central challenge: "No one tells the story of the incident that didn't happen." Attribution is structurally difficult — many factors change concurrently with a new chaos programme. Worse, successful chaos programmes are self-limiting: improved availability typically triggers faster feature release, which increases complexity, which makes maintaining availability harder. The ROI may be invisible; the signal erases itself.
+
+**Kirkpatrick Model** (originally from educational training evaluation, applied here to chaos engineering):
+- **Level 1 — Reaction**: did participants feel they learned something? Survey/questionnaire. Sufficient justification for lightweight, low-cost programmes. If stakeholders don't value the programme, it will not produce learning.
+- **Level 2 — Learning**: can you enumerate what was actually learned? Facilitator-captured discoveries, recorded disproved hypotheses. More rigorous than reaction alone.
+- **Level 3 — Transfer**: did learning change behaviour? Engineers fixing vulnerabilities, allocating more resources to safety, building more robustly. Harder to observe and record.
+- **Level 4 — Results**: can learning be correlated with a business outcome? Reduced downtime, fewer security incidents, reduced degraded time. Most difficult but most convincing.
+
+**ChAP ROI case study (Netflix)**: For each disproved hypothesis, ChAP recorded the delta in SPS (starts per second) between variable and control group. Each disproved hypothesis was bucketed against the probability distribution of actual incident durations and SPS impact. Summing "SPS saved" — the hypothetical loss prevented by finding the vulnerability in ChAP rather than in a production incident — produced a chart increasing over time. This achieved **Level 2** (demonstrable learning) in the Kirkpatrick framework, which was sufficient for Netflix's internal justification.
+
+**Collateral ROI**: value accrued that is different from the primary goal. Two examples:
+1. *Scenario design*: before any experiment runs, stakeholders are assembled and asked "what do you think will happen?" Isolated pockets of knowledge surface; cross-team dependencies become visible; high-probability-of-failure scenarios are identified and fixed before the Game Day runs. This is valuable even if the experiment never executes.
+2. *Team formation*: the exercise brings together people who have never worked together. This social knowledge — how to communicate under pressure, individual idiosyncrasies — pays dividends during real incidents, when there is no time to make introductions.
+
+**Key claim**: "You will feel the value of experiments almost immediately, before you can articulate that value." If feeling the value is sufficient, do not spend engineering effort on formal ROI measurement. Only invest in formal measurement (Kirkpatrick Levels 3–4) if an objective justification is required by stakeholders.
+
+### Chapter 14 — Open Minds, Open Science, and Open Chaos (Russ Miles)
+
+A chapter on organisational dynamics and the conditions for Chaos Engineering to flourish.
+
+**The adversarial vs collaborative mindset**: a chaos team that does experiments *to* other teams (surfacing their failures and leaving them to fix the results) creates a conflict-style relationship that mirrors the worst QA-vs-Dev dynamic — eventually chaos becomes "yet another thing to circumvent." A team that works *with* other teams (co-owning the exploration, sharing the tooling) builds the trust needed to scale the practice. Co-ownership is a prerequisite, not a nicety.
+
+**Open Science applied to Chaos Engineering**: science requires openness — open data, open methodology, open peer review — to reach its potential. Chaos Engineering has the same requirement: if experiment designs, execution records, and findings are locked in proprietary systems, the collaborative learning that generates value cannot happen. The Open Chaos Initiative formalises an experiment definition schema: Experiment Description (with Contributions, Steady-State Hypothesis, Method, Rollbacks). The Steady-State Hypothesis is assessed *twice* — before the method executes (confirming normal pre-conditions) and after (confirming survival or recording deviation).
+
+**Key organisational insight**: reliability should not be a competitive differentiator. Sharing Chaos Engineering experiments and findings across organisations strengthens the whole industry. The discipline is at its most valuable when the community can learn from each other's experiments.
 
 ### Chapter 15 — Chaos Maturity Model
 
@@ -324,118 +322,120 @@ The Chaos Maturity Model (CMM) provides two orthogonal axes for evaluating an or
 
 **Key claim**: "Highly sophisticated, pervasive Chaos Engineering is the best proactive method for improving availability and security in the software industry." Chaos Engineering swaps uncontrolled risk for controlled risk.
 
-### Chapter 14 — Open Minds, Open Science, and Open Chaos (Russ Miles)
+### Chapter 16 — Continuous Verification (Casey Rosenthal)
 
-A chapter on organisational dynamics and the conditions for Chaos Engineering to flourish.
+Introduces **Continuous Verification (CV)** as the next evolution after CI/CD: a discipline of proactive experimentation implemented as tooling that verifies system behaviours against expectations.
 
-**The adversarial vs collaborative mindset**: a chaos team that does experiments *to* other teams (surfacing their failures and leaving them to fix the results) creates a conflict-style relationship that mirrors the worst QA-vs-Dev dynamic — eventually chaos becomes "yet another thing to circumvent." A team that works *with* other teams (co-owning the exploration, sharing the tooling) builds the trust needed to scale the practice. Co-ownership is a prerequisite, not a nicety.
+**CI/CD/CV as a progression**:
+- CI catches expectations gaps between engineers' code as quickly as possible by running integration tests on every commit.
+- CD automates the path from passing CI build to production, enabling frequent low-risk deployments.
+- CV adds proactive experimentation in production: verifying that the *output* of complex systems meets expectations, rather than validating that the *internals* work as designed.
 
-**Open Science applied to Chaos Engineering**: science requires openness — open data, open methodology, open peer review — to reach its potential. Chaos Engineering has the same requirement: if experiment designs, execution records, and findings are locked in proprietary systems, the collaborative learning that generates value cannot happen. The Open Chaos Initiative formalises an experiment definition schema: Experiment Description (with Contributions, Steady-State Hypothesis, Method, Rollbacks). The Steady-State Hypothesis is assessed *twice* — before the method executes (confirming normal pre-conditions) and after (confirming survival or recording deviation).
+**Why CV is necessary**: complex systems are open-ended and in constant flux. Validation (do internal parts match spec?) cannot keep pace with the rate of change. Verification (does output meet expectation?) is more pragmatic. CV addresses systemic properties — availability, resilience — that cannot be captured in pre-production tests.
 
-**Key organisational insight**: reliability should not be a competitive differentiator. Sharing Chaos Engineering experiments and findings across organisations strengthens the whole industry. The discipline is at its most valuable when the community can learn from each other's experiments.
+**Types of CV systems**: at one end, sophisticated chaos automation platforms running explicit experiments with control and variable groups. At the other, holistic system visualisations (Vizceral at Netflix) that allow humans to glance at the global state of a complex system and develop intuition. Automated canaries sit in between — the "variable" is a new code branch, and the CD pipeline promotes code only if the canary hypothesis holds.
 
-### Chapter 13 — ROI of Chaos Engineering
+**ChAP as the canonical CV example**: Chaos Automation Platform at Netflix. Monocle introspects microservice dependencies, integrates telemetry, tracing, and configuration data (timeout values, Hystrix commands), and determines which services are "safe to fail." ChAP spins up two instances (control + variable) per experiment, routes a small fraction of production traffic to each, and runs for 45 minutes. If the KPI (SPS) deviates between groups, the experiment is immediately shut down and the owning team notified. All five advanced Chaos Engineering principles are implemented in ChAP.
 
-The central challenge: "No one tells the story of the incident that didn't happen." Attribution is structurally difficult — many factors change concurrently with a new chaos programme. Worse, successful chaos programmes are self-limiting: improved availability typically triggers faster feature release, which increases complexity, which makes maintaining availability harder. The ROI may be invisible; the signal erases itself.
+**Future CV directions**: performance testing at subsystem granularity; data artifact verification (Jepsen-style continuous database consistency checks); correctness verification at infrastructure, application, and business logic layers. Business logic is the hardest to verify because it is innovative and changes rapidly; mismatches between layers are an inevitable source of incidents.
 
-**Kirkpatrick Model** (originally from educational training evaluation, applied here to chaos engineering):
-- **Level 1 — Reaction**: did participants feel they learned something? Survey/questionnaire. Sufficient justification for lightweight, low-cost programmes. If stakeholders don't value the programme, it will not produce learning.
-- **Level 2 — Learning**: can you enumerate what was actually learned? Facilitator-captured discoveries, recorded disproved hypotheses. More rigorous than reaction alone.
-- **Level 3 — Transfer**: did learning change behaviour? Engineers fixing vulnerabilities, allocating more resources to safety, building more robustly. Harder to observe and record.
-- **Level 4 — Results**: can learning be correlated with a business outcome? Reduced downtime, fewer security incidents, reduced degraded time. Most difficult but most convincing.
+### Chapter 17 — Let's Get Cyber-Physical (Nathan Aschbacher)
 
-**ChAP ROI case study (Netflix)**: For each disproved hypothesis, ChAP recorded the delta in SPS (starts per second) between variable and control group. Each disproved hypothesis was bucketed against the probability distribution of actual incident durations and SPS impact. Summing "SPS saved" — the hypothetical loss prevented by finding the vulnerability in ChAP rather than in a production incident — produced a chart increasing over time. This achieved **Level 2** (demonstrable learning) in the Kirkpatrick framework, which was sufficient for Netflix's internal justification.
+Extends Chaos Engineering to **cyber-physical systems (CPSs)** — embedded, hardware-software systems deployed into and interacting with the physical world (autonomous vehicles, industrial control systems, avionics). Consequences of failure can be life-threatening.
 
-**Collateral ROI**: value accrued that is different from the primary goal. Two examples:
-1. *Scenario design*: before any experiment runs, stakeholders are assembled and asked "what do you think will happen?" Isolated pockets of knowledge surface; cross-team dependencies become visible; high-probability-of-failure scenarios are identified and fixed before the Game Day runs. This is valuable even if the experiment never executes.
-2. *Team formation*: the exercise brings together people who have never worked together. This social knowledge — how to communicate under pressure, individual idiosyncrasies — pays dividends during real incidents, when there is no time to make introductions.
+**Failure Mode and Effects Analysis (FMEA)**: the established Functional Safety practice (required by standards like ISO 26262, DO-178C, IEC 61508) for assessing risk. Process: enumerate functions → enumerate all possible failures → rank severity/likelihood/detectability → compute risk priority numbers. FMEA puts engineers in a failure-first mindset and, with experienced cross-disciplinary teams, extracts significant uncertainty. But FMEA is limited: it treats one failure at a time (not simultaneous multipoint failures), relies on human imagination to enumerate failure modes, and documents imagined effects rather than empirically measuring real ones.
 
-**Key claim**: "You will feel the value of experiments almost immediately, before you can articulate that value." If feeling the value is sufficient, do not spend engineering effort on formal ROI measurement. Only invest in formal measurement (Kirkpatrick Levels 3–4) if an objective justification is required by stakeholders.
+**Where Chaos Engineering extends FMEA**: chaos experiments can validate or invalidate every FMEA assumption — inject failures enumerated in the FMEA and measure real effects; inject out-of-scope failures to see whether they should have been in-scope; use multiple independent expert teams to perform FMEA and compare discrepancies; feed findings back into the FMEA document.
 
-### Chapter 12 — The Experiment Selection Problem (and a Solution) (Peter Alvaro)
+**The multipoint failure problem**: traditional FMEA assumes single-point failures, which was reasonable when multi-point independent failures in electro-mechanical systems were extremely unlikely. Software changes this — a single software bug replicates identically everywhere it is called; a bad function creates simultaneous correlated failures across an entire system. Standard FMEA constraints break down in software-intensive CPSs.
 
-The experiment selection problem: for a distributed system with 20 services, there are 2²⁰ (over a million) distinct combinations of node crashes alone. An exhaustive search is computationally intractable. The chapter frames two current approaches and proposes a third.
+**Experiment target priority for CPSs**: start with the things you trust most (your critical assumptions), not the obvious black boxes. The parts of a system most trusted and most widely depended on become the largest risk vectors if they fail, precisely because nothing has been designed to tolerate their failure. For CPSs specifically: **start with timing constraints**. Embedded engineers trust local clocks absolutely; in interconnected software-intensive systems, timing assumptions cascade catastrophically. Distributed systems engineers have learned to distrust wall clocks; embedded engineers are becoming distributed systems engineers.
 
-**Random search** (Chaos Monkey): uniform random sampling over the fault space. Simple, requires no domain knowledge, but performs poorly — unlikely to surface bugs requiring concurrent multi-fault conditions; provides no coverage metric; cannot terminate when "enough" has been tested.
+**Probe effect**: in CPSs, instrumenting the system to run chaos experiments or take measurements can itself alter system behaviour (probe resistance/capacitance in electrical systems; branch prediction effects, cache pollution, and timing perturbation in software). Mitigations: (a) characterise the probe's footprint independently before injecting chaos; (b) use dummy probes (same resource profile but no fault injection) to calibrate baseline probe effect; (c) select experimental targets insensitive to the probe's side effects.
 
-**Expert-guided selection**: the current state of the art. Expensive; requires expertise that takes years to develop; dependent on the communicability of human intuition — which is limited. An expert's job is not just choosing which experiments to run, but identifying which to *skip* (either because we already know an experiment will trigger a bug, or because a soft dependency means a downstream fault cannot propagate to user-visible failure). Ordering matters: testing X thoroughly before Y can rule out many Y-experiments based on what X-experiments revealed.
+**Long-term vision**: Aschbacher argues Chaos Engineering can create the "material properties" of software — context-independent, empirically measured characteristics (like tensile strength in materials science) that allow engineers to reason about complex software-intensive systems without building every prototype. This would let design-time analysis (analogous to Finite Element Analysis in mechanical engineering) catch failure modes before production.
 
-**The communicability problem**: human intuition is powerful but opaque — experts trained via the "pain suit" (Rosenthal et al., Netflix Tech Blog 2015, where system alerts are converted to physical sensations on the wearer's skin) develop instinct, not knowledge. Knowledge implies communicability; instinct cannot be trained into others, cannot be documented, cannot be automated.
+### Chapter 18 — HOP Meets Chaos Engineering (Bob Edwards)
 
-**Lineage-Driven Fault Injection (LDFI)** (Alvaro, Disorderly Labs): automation of end-to-end experiment selection using distributed tracing infrastructure:
-1. Collect traces of successful system executions — these reveal the redundancy structure (failovers, retries, fallbacks, replicated paths) that allowed computation to succeed.
-2. Model these traces as Boolean formulae representing "sufficient conditions for success."
-3. Submit the formula to a SAT solver: which faults, if injected simultaneously, would eliminate all currently known paths to success? The solution is the highest-value next experiment.
-4. Incorporate prioritisation (likelihood of fault, topological graph metrics) via integer linear programming to rank experiments.
+**Human and Organisational Performance (HOP)**: an approach from manufacturing for improving organisational structures and processes to optimise for safety. Rooted in the same "new view" safety philosophy (Dekker et al.) as Chaos Engineering. Not a prescriptive process — flexible and arts-based. The five HOP principles, which align directly with Chaos Engineering's underlying philosophy:
 
-**Key insight**: fault tolerance *is* redundancy. A fault-tolerant system is one with enough alternative computation paths that partial failure cannot prevent success. Tracing exposes those paths. LDFI finds the minimal set of simultaneous faults that would eliminate all known paths — i.e., the highest-probability way to disprove the hypothesis.
+1. **Error is normal**: humans make mistakes; the goal is not zero errors but building the capacity to fail safely (crumple zones, not just brake assist). Build both prevention *and* recovery.
+2. **Blame fixes nothing**: blame drives important information underground. Accountability means focusing on learning and improving, not finding someone to punish.
+3. **Context drives behavior**: the systems surrounding work (safety metrics, production targets, observation programs) drive behaviour — often in ways misaligned with the actual goal. What behaviour is your metric system incentivising?
+4. **Learning and improving is vital**: learning must be usable by practitioners in practice, not just theory. The "Learning Team" model. Chaos Engineering verifies that improvements made actually produce the desired system output.
+5. **Intentional response matters**: when incidents happen, how the organisation responds — at all levels — sets the tone. Intentional learning-focused responses prevent the blame reflex.
 
-Deployed with industrial collaborators at Netflix, Huawei, and eBay. Requires a mature distributed tracing infrastructure. The integration work (extracting data from specific tracing deployments, mapping to specific fault injection frameworks) is non-trivial but formulaic.
+**HOP + Chaos Engineering in practice**: in manufacturing, simulation training rooms model the control room but usually model the *ideal* state. In a real plant, valve 3 has been hanging and only closes 80%. The Chaos Engineering approach: modify the simulator to represent the actual degraded state of the site. New operators must now respond to a valve that appears to close but doesn't fully divert flow — real-time problem solving under the actual chaos of operations. A "decay algorithm" randomising component degradation across simulation runs could approximate production entropy.
 
-**Contra Allspaw (ch. 11)**: deliberately positions automation as complementary to human expertise, not as replacement for human judgement. The goal is to automate the *selection* step so humans can focus on what they do uniquely: interpreting surprising results, providing explanations, and repairing bugs.
+**Key synthesis**: HOP is about building confidence in organisational improvements through verification. Chaos Engineering is about building confidence in technical systems through verification. Both are empirical: they want to see the system operating under turbulent conditions, not just test known requirements.
 
-### Chapter 11 — People in the Loop (John Allspaw)
+### Chapter 19 — Chaos Engineering on a Database (Liu Tang and Hao Weng)
 
-A philosophical counterargument to automation-first approaches to Chaos Engineering. Allspaw (CTO of Etsy, MSc in Human Factors and Systems Safety from Lund University) argues that Chaos Engineering's power comes precisely from the human cognitive activities it generates — and that automating those away is self-defeating.
+The most technically detailed chapter: applying Chaos Engineering to TiDB (PingCAP's open-source distributed HTAP database). The database context imposes a stronger correctness requirement than availability services: data loss is unacceptable. 100% unit test coverage does not equal a fault-tolerant system.
 
-**The Substitution Myth** (Hollnagel): the belief that automation can be substituted for human action without changing the rest of the system — that work can be decomposed into tasks that are allocated to humans or machines according to their respective strengths. This is a myth: "capitalising on some strength of computers does not replace a human weakness. It creates new human strengths and weaknesses — often in unanticipated ways." Tasks in real complex systems are highly interdependent; substitution changes the system fundamentally.
+**Motivating failure**: a snapshot corruption bug in TiDB's Raft-based replication. The follower received a snapshot with corrupted size metadata because Linux's page cache flushing failed silently (SLUB memory allocation error). This class of failure is only observable in the full production environment and cannot be reproduced via unit or integration tests — it requires chaos.
 
-**Function allocation / HABA-MABA** (Fitts List, 1951): original framework prescribing which tasks should be allocated to humans vs machines. Allspaw presents this as a useful historical frame — but notes it has been extensively critiqued by Cognitive Systems Engineering for ignoring systemic interdependence.
+**TiDB's 5-step Chaos Engineering methodology**:
+1. Define steady state via Prometheus metrics: QPS, P99/P95 latency, CPU, memory.
+2. List hypotheses for specific failure scenarios (e.g., "isolating a TiKV node from a 3-replica cluster: QPS drops then recovers; 40,000 regions on a single node: CPU/memory remain stable").
+3. Pick a hypothesis.
+4. Inject fault, monitor, verify. QPS not recovering → either leader re-election failed or client routing is broken → bug found.
+5. Automate via Schrodinger; repeat.
 
-**Ironies of Automation** (Bainbridge): two key ironies:
-1. Designer errors in automation are a major source of operating problems — automation is not bug-free; it requires expertise to maintain.
-2. The designer who tries to eliminate the operator still leaves the operator to do the tasks the designer cannot think how to automate.
+**Fault injection taxonomy**:
+- *Application level*: SIGKILL/SIGTERM random process kills; SIGSTOP/SIGCONT; renice for priority; `pthread_setaffinity_np` for concurrency bugs.
+- *CPU/memory*: while-true loop (100% CPU saturation); cgroup resource limiting.
+- *Network*: three network partition types (complete/partial/simplex); `tc` for latency injection and packet reordering; bandwidth saturation; iptables connection restriction. 80% of 136 network-partition failures in 25 famous open-source systems were catastrophic; data loss was the most common (27%).
+- *Filesystem*: FUSE-mounted directory with rule-based fault injection (e.g., /a/b/c → 20 ms read/write delay; /a/b/d → NoSpace write error). The injector intercepts I/O operations via hook, applies rules per path, and passes non-matching operations through to the real directory.
 
-Applied to chaos experiment selection automation: while automated tooling (see ch. 12) can help generate candidate experiments, it introduces new tasks (maintaining the automation, deciding when to run it, pausing it during incidents) that may exceed the work it eliminates.
+**Schrodinger platform**: Kubernetes-based automated chaos experimentation. Components: *Cat* (TiDB cluster under test); *Box* (experiment template/configuration); *Nemesis* (fault injectors); *Test Case* (procedure, inputs, expected outputs). Runs 7 clusters simultaneously, 24/7 without stopping. With Schrodinger, a multi-step experiment that previously required manual cluster deployment, configuration, fault injection, and failure detection runs automatically at a few clicks.
 
-**Confidence-building as a human cognitive activity**: the process of forming hypotheses, defining steady state, and interpreting results is valuable *because* it forces engineers to articulate their mental models, expose disagreements, and update their understanding. These are "generative dialogues" — the artifact of the process (the experiment) is less important than the process itself. Automating the process away removes the learning.
+**Key claim**: even a distributed database with 20 million unit test cases and comprehensive integration tests cannot capture failures that emerge from production-specific system interactions. Chaos Engineering is the necessary complement.
 
-**Timing of experiments**: real-world practice is highly context-dependent — experiments are delayed for partner-team deployments, paused during incidents (to avoid ambiguity), or triggered by surprising production behaviour. These contextual judgements require human situational awareness and cannot be reduced to rules.
+### Chapter 20 — The Case for Security Chaos Engineering (Aaron Rinehart)
 
-**People cannot be "out of the loop"**: "People are responsible, and software cannot be. An essential part of being human is the ability to enter into commitments and to be responsible for the courses of action they anticipate. A computer can never enter into a commitment." (Winograd and Flores) — therefore Chaos Engineering ultimately serves to help people fulfil their irreducible responsibility to design and operate complex systems.
+**Security Chaos Engineering (SCE)** defined: "The identification of security control failures through proactive experimentation to build confidence in the system's ability to defend against malicious conditions in production." Developed by Rinehart at UnitedHealth Group; released as open-source tooling (ChaoSlingr).
 
-### Chapter 10 — Humanistic Chaos (Andy Fleener)
+**The core argument**: security incident root causes are predominantly "human factors" and "system glitches" — not sophisticated attackers. Most malicious code exploits low-hanging fruit: weak passwords, outdated software, misconfigured controls, human unawareness. The current RCA-and-blame model entrenches these failures rather than eliminating them. Hindsight bias confuses our personal narrative with truth; true attribution is never fully knowable.
 
-Applies chaos engineering principles to *human and organisational systems*. At SportsEngine, Fleener ran three case studies treating the organisation as a complex system and applying the Principles of Chaos Engineering to its sociotechnical side.
+**Security feedback loops are missing**: security controls are designed for Day 0 of production. The system around them changes continuously via CI/CD. Red and Purple Team exercises are run infrequently (monthly/annually) and produce artifacts (reports, alerts) that rapidly become stale. The system may fundamentally change between exercises. SCE runs continuously and keeps pace with the rate of change.
 
-**Core thesis**: organisations are systems of systems. Some are explicit (vacation policy, on-call rota); others are tribal knowledge (only communicate with George via Slack). Tribal knowledge systems are inherently less reliable; poorly mapped explicit systems are worse still. The gap between **work-as-imagined** and **work-as-done** is the primary source of organisational latent risk ("dark debt," from the SNAFUcatchers STELLA report).
+**SCE vs Red/Purple Teaming**:
+- Red Teaming problems: results are reports; incentivises outfoxing the Blue Team rather than shared understanding; focuses on malicious attack chains rather than systemic vulnerabilities.
+- Purple Teaming problems: highly resource-intensive; only covers a small percentage of the portfolio; no regression mechanism to reapply past findings.
+- SCE advantage: holistic system focus (not adversarial); isolated and controlled simple experiments (not complex attack chains); continuous and automated; collaborative learning culture; reproducible.
 
-**Weak signals**: in technical systems, USE metrics (Utilisation/Saturation/Errors) monitor key bottlenecks before failure becomes loud. The organisational equivalent: "we need to talk to Emma" signals a single point of failure; on-call shifts ending on Monday being more tiring than Friday is a signal approaching a capacity boundary. Dr. Todd Conklin: "You'll never hear a weak signal in failure — the signal in failure is loud." Safety signals must be read during success, not failure.
+**Security Game Days**: introduce controlled security failure modes to measure: how effectively detection tools, techniques, and processes detected the failure; which tools provided signal; how useful that data was; whether the system operated as intended.
 
-**Cook's principles of complex systems**: organisations are hazardous (latent failures everywhere); well-defended (catastrophe requires a sequence); and humans play a dual role as both defenders and producers of failure.
+**ChaoSlingr** (UnitedHealth Group, open source): framework for security chaos experiments on AWS. Components: Generatr (identifies the injection target and calls Slingr), Slingr (injects the failure), Trackr (logs experiment details). Lambda function-based, auto-configuration via Terraform, configurable frequency. Key finding: a misconfigured port was correctly blocked by firewall only 50% of the time; a commodity cloud configuration tool *always* caught it but logged it in a form inaccessible to the security team. Neither team had known this gap existed.
 
-**Three case studies**:
-1. *Gaming Game Days*: ran incident response Game Days with a deliberately removed subject-matter expert ("X is on vacation today"). Surfaced single points of failure in incident response knowledge. Outcome: engineers who went on long vacations without being paged — the success metric.
-2. *Connecting the Dots*: inspired by Etsy's bootcamp concept (every new hire spends time on a different team before joining their team). Implemented a rotation: one engineer from each product team spent a sprint on the Platform Ops team. Also created "Operations Advocate" roles — dedicated Ops engineers assigned to product teams. Both initiatives deliberately injected friction to widen communication pathways. Blast radius from the rotation: production pressure occasionally pulled engineers back; the experiment was eventually ended when margins disappeared.
-3. *Changing a Basic Assumption* (Goldratt): employee-driven initiatives — a mentorship programme and Spotify-style team health checks — that started as individual engineer experiments. Both grew into cultural pillars. The key: explicitly stating "I want to try something" and framing it as an experiment with a rollback plan.
+**Core principle**: "Do Less, Better" (Charles Nwatu, Netflix security engineer). Build fewer security controls, but verify that they actually work. Without feedback loops, security drifts into unknown failure states, just as systems without development feedback loops drift into unreliable operational readiness.
 
-**Westrum's organisational typology**: pathological (novelty crushed) → bureaucratic (novelty causes problems) → generative (novelty is implemented). Chaos Engineering experiments on human systems require a generative organisation. Use Westrum's model as a readiness sniff test before attempting larger experiments.
+### Chapter 21 — Conclusion (Rosenthal & Jones)
 
-**Leadership as an emergent property** (Barker): leadership is "a phenomenon that moves the organisation forward" — decision-making within bounded context, pushing accountability to the sharp end (practitioners). Local rationality applies.
+Three counter-intuitive rules that are true despite appearing false:
 
-**Altitude and direction**: every experiment needs margin to avoid catastrophic failure and a stated direction (explicit unacceptable outcome). When rip cords become commonplace, rethink the experiment.
+1. **Redundancy does not make a system safer** (Challenger O-ring): the secondary O-ring caused engineers to normalise primary O-ring failures, allowing the Shuttle to operate outside specification over time. Redundancy without discipline creates complacency.
+2. **Removing complexity from a stable system can make it less safe**: functionality that makes the system safe is embedded in the complexity. You cannot surgically remove "accidental complexity" without also removing some safety properties.
+3. **Efficiency makes a system more brittle**: allowance for inefficiency enables the system to absorb shock and allows people to make creative decisions. Highly optimised systems fail catastrophically rather than gracefully.
 
-### Chapter 9 — Creating Foresight (Nora Jones)
+**Above the line vs below the line**: tools are "below the line." People, organisation, and human interaction are "above the line." Software engineers are drawn to below-the-line solutions — it is psychologically satisfying to reduce an incident to a single line of code and fix it. The conclusion explicitly resists this: the most productive investments are above the line. Better alignment around how to react to hazards often produces more reliability improvement than writing more code.
 
-The most underappreciated chapter in the book: reframes Game Day as a *cognitive exercise* for building resilience culture, not a checklist for finding bugs.
+**Rasmussen's conclusion** (cited directly): "The most promising general approach to improved risk management appears to be an explicit identification of the boundaries of safe operation together with efforts to make these boundaries visible to the actors and to give them an opportunity to learn to cope with the boundaries." — This is exactly what Chaos Engineering does.
 
-**Three-phase model**: Before / During / After. The industry chronically underinvests in Before (preparation, alignment, framing) and After (debrief, synthesis, follow-up). The During phase is the visible part; Before and After are where the actual learning transfer happens.
+**Final claim**: "Tools don't create resilience. People do. But tools can help. Chaos Engineering is an essential tool in our pursuit of resilient systems."
 
-**Goal is not finding vulnerabilities**: the primary goal of a Game Day is *distilling expertise from humans* — surfacing the mental models of senior engineers and making them legible and transferable. If no vulnerabilities are found, the exercise still succeeded if mental models were refined. (→ directly contradicts the common framing of "we run chaos to break things and fix them")
+## Notable Quotes
 
-**Law of Fluency** (David Woods): *expert performance becomes fluent to the degree that it is opaque to the performer.* Experts cannot perceive their own expertise — they have automatised skills to the point that introspection misrepresents what they actually do. This is why external facilitators and cognitive interviews are essential: the expert cannot self-report what makes them effective.
+> "Chaos Engineering is the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production." (introduction, citing principlesofchaos.org)
 
-**Cognitive interviews** (adapted from aviation, medicine, maritime): structured interview technique designed to elicit implicit knowledge from domain experts. Used in the Before phase to extract mental models from the people who know the system best, before the exercise surfaces gaps between what experts assume and what the system actually does.
+> "Chaos Engineering is about making the chaos inherent in the system visible." (introduction)
 
-**Resilience = positive adaptive capacity** (Sidney Dekker): resilience is not the absence of errors or minimising negative outcomes — it is the *enhancement of positive adaptive capabilities*. This distinguishes resilience engineering from traditional reliability engineering. Game Days succeed by measuring whether adaptive capacity grew, not merely whether bugs were found.
+> "Chaos Monkey is a management principle instantiated in running code." (introduction)
 
-**Five Game Day roles**: Designer/Facilitator (third party, not the system expert — ensures objectivity and learning focus); Commander (has authority to abort); Scribe (timestamped record); Observer (watches what humans do, not just what systems do); Correspondent (communicates status externally).
+> "In complex systems, we acknowledge that one person can't hold all of the pieces in their head." (ch. 1)
 
-**ChAP experience at Netflix**: Netflix's Chaos Automation Platform ran automated experiments at scale, but the team discovered that mostly only Chaos Engineers ran experiments — not service teams. Automation alone did not solve adoption. The *process* of automating — the dashboard, the surfacing of system behaviour through metrics — created enormous organisational value by making tacit system knowledge legible. The lesson: the artifact of automation is sometimes less valuable than the act of automating.
-
-**Gary Klein — expert vs novice mental models**: experienced engineers use pattern-matching from prior incidents to navigate novel situations; novices follow procedure. Building resilient organisations requires mechanisms to transfer expert pattern libraries — not just procedures — across teams and tenure levels. Game Days are an experiential mechanism for that transfer.
-
-**Automation ironies**: as automation handles normal operations, humans lose the practice needed to handle abnormal operations — precisely the scenarios where automation hands back control. Regular Game Days counteract this by deliberately creating abnormal scenarios that humans must navigate without automation assistance.
+> "Adding new features to software (or safety properties like availability and security) requires the addition of complexity." (ch. 1)
 
 ## Related Pages
 
