@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache…">
+  <meta property="og:title" content="Inference Optimization — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache…">
+  <title>Inference Optimization — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html" aria-current="page">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Inference Optimization</nav></div>
+      <h1>Inference Optimization</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/inference.html">inference</a></li><li><a class="tag-chip" href="../tags/performance.html">performance</a></li><li><a class="tag-chip" href="../tags/latency.html">latency</a></li><li><a class="tag-chip" href="../tags/throughput.html">throughput</a></li><li><a class="tag-chip" href="../tags/gpu.html">gpu</a></li><li><a class="tag-chip" href="../tags/quantization.html">quantization</a></li><li><a class="tag-chip" href="../tags/speculative-decoding.html">speculative-decoding</a></li><li><a class="tag-chip" href="../tags/kv-cache.html">kv-cache</a></li><li><a class="tag-chip" href="../tags/batching.html">batching</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#performance-metrics">Performance Metrics</a></li><li><a href="#two-bottlenecks">Two Bottlenecks</a></li><li><a href="#model-level-optimisation">Model-Level Optimisation</a></li><li class="toc-sub"><a href="#quantisation">Quantisation</a></li><li class="toc-sub"><a href="#distillation-and-pruning">Distillation and Pruning</a></li><li class="toc-sub"><a href="#speculative-decoding">Speculative Decoding</a></li><li class="toc-sub"><a href="#parallel-decoding">Parallel Decoding</a></li><li class="toc-sub"><a href="#kv-cache-optimisation">KV Cache Optimisation</a></li><li><a href="#service-level-optimisation">Service-Level Optimisation</a></li><li class="toc-sub"><a href="#batching-strategies">Batching Strategies</a></li><li class="toc-sub"><a href="#prefilldecode-decoupling">Prefill–Decode Decoupling</a></li><li class="toc-sub"><a href="#prompt-caching">Prompt Caching</a></li><li class="toc-sub"><a href="#parallelism-strategies">Parallelism Strategies</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>Inference optimization is the engineering discipline of reducing the cost, latency, and memory usage of serving large language model predictions in production, without materially degrading model quality. (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 9)</p>
+<h2 id="performance-metrics">Performance Metrics</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TTFT</strong></td>
+<td>Time to first token — latency from request to first generated token</td>
+</tr>
+<tr>
+<td><strong>TPOT</strong></td>
+<td>Time per output token — average latency of each generated token</td>
+</tr>
+<tr>
+<td><strong>Total latency</strong></td>
+<td>TTFT + (TPOT × output_token_count)</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>Tokens generated per second across all concurrent requests</td>
+</tr>
+<tr>
+<td><strong>Goodput</strong></td>
+<td>Requests per second that satisfy the latency SLO</td>
+</tr>
+</tbody></table></div>
+<p><strong>MFU (Model FLOP/s Utilization):</strong> ratio of actual throughput to theoretical peak FLOP/s of the hardware. A well-tuned system reaches 30–60% MFU.</p>
+<p><strong>MBU (Model Bandwidth Utilization):</strong> <code>(parameter_count × bytes/param × tokens/s) / theoretical_peak_bandwidth</code>. Memory bandwidth is the binding constraint during decode.</p>
+<h2 id="two-bottlenecks">Two Bottlenecks</h2>
+<p>LLM inference has two distinct computational phases with different bottlenecks:</p>
+<ul>
+<li><strong>Prefill (compute-bound):</strong> process the prompt — many matrix multiplications; GPU compute is the limit.</li>
+<li><strong>Decode (memory bandwidth-bound):</strong> generate output tokens one by one; the weights must be loaded from GPU memory for each token step; data movement is the limit.</li>
+</ul>
+<p><strong>Memory hierarchy:</strong></p>
+<ul>
+<li>CPU DRAM: 25–50 GB/s bandwidth, large capacity</li>
+<li>GPU HBM (high-bandwidth memory): 256 GB/s – 1.5 TB/s, moderate capacity</li>
+<li>GPU SRAM (on-chip): &gt;10 TB/s, tiny capacity</li>
+</ul>
+<p>Matrix multiplication exceeds 90% of neural network FLOPs; the gap between compute and memory bandwidth determines which phase is the bottleneck.</p>
+<p><strong>Deployment economics:</strong> Online APIs optimise for latency (stream tokens to user); batch APIs optimise for throughput/cost (Google and OpenAI offer ~50% cost discount with hours-long turnaround, suitable for offline processing).</p>
+<h2 id="model-level-optimisation">Model-Level Optimisation</h2>
+<h3 id="quantisation">Quantisation</h3>
+<p>Reduce the numerical precision of weights (and optionally activations). Most popular inference optimisation technique.</p>
+<ul>
+<li><strong>Post-training quantisation (PTQ):</strong> quantise after training; low overhead.</li>
+<li><strong>Quantisation-aware training (QAT):</strong> simulate low precision during training; better quality but doesn&#39;t reduce training cost.</li>
+<li>Common targets: FP16/BF16 → INT8 → INT4. Performance degrades more at very low precision.</li>
+</ul>
+<p>See <a href="../concepts/finetuning.html">Finetuning</a> for numerical format details.</p>
+<h3 id="distillation-and-pruning">Distillation and Pruning</h3>
+<p><strong>Distillation:</strong> train a smaller student model on teacher outputs; see <a href="../concepts/dataset-engineering.html">Dataset Engineering</a>.</p>
+<p><strong>Pruning:</strong> remove weights with small magnitudes to create sparse models. Reduces parameter count but requires hardware that natively supports sparse matrix operations to realise speed gains — sparse models can perform <em>slower</em> on hardware without sparsity support.</p>
+<h3 id="speculative-decoding">Speculative Decoding</h3>
+<p>The decode phase is sequential (each token depends on the previous). Speculative decoding breaks this bottleneck:</p>
+<ol>
+<li>A small, fast <strong>draft model</strong> generates K candidate tokens sequentially.</li>
+<li>The large <strong>target model</strong> verifies all K tokens in parallel (verification is a prefill-style operation).</li>
+<li>Accept tokens up to the first disagreement; the target model fills in from there.</li>
+</ol>
+<p><strong>Benefit:</strong> when draft tokens are accepted, the target model generates K tokens per forward pass instead of 1. DeepMind used a 4B-parameter draft model for a Chinchilla-70B target and achieved &gt;50% latency reduction.</p>
+<p><strong>Inference with reference (context-based drafting):</strong> instead of a separate draft model, propose draft tokens directly from the input context (e.g., copy-paste from retrieved documents). Effective for retrieval, multi-turn conversation, and code completion; achieves approximately 2× speedup without a separate draft model.</p>
+<h3 id="parallel-decoding">Parallel Decoding</h3>
+<p>Techniques that avoid strict sequential generation:</p>
+<ul>
+<li><strong>Lookahead decoding:</strong> uses the Jacobi iteration method to generate multiple candidate continuations simultaneously.</li>
+<li><strong>Medusa:</strong> adds multiple decoding heads to the base model; each head proposes future tokens; verified in parallel. Achieves ~1.9× speedup on Llama 3.1 with no external draft model.</li>
+</ul>
+<h3 id="kv-cache-optimisation">KV Cache Optimisation</h3>
+<p>The KV (key-value) cache stores intermediate attention states to avoid recomputing them on each decode step.</p>
+<p><strong>KV cache size formula:</strong></p>
+<pre><code>size = 2 × B × S × L × H × M
+</code></pre>
+<p>Where: B = batch size, S = sequence length, L = number of layers, H = number of attention heads, M = bytes per element. Grows linearly with sequence length.</p>
+<p><strong>Llama 2 13B example:</strong> batch=32, seq=2048 → ~54 GB KV cache, exceeding the model weights.</p>
+<p><strong>Attention variants that reduce KV cache size:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Multi-head attention (MHA)</td>
+<td>Full KV cache per head (baseline)</td>
+</tr>
+<tr>
+<td>Multi-query attention (MQA)</td>
+<td>All heads share one K and V; large reduction</td>
+</tr>
+<tr>
+<td>Grouped-query attention (GQA)</td>
+<td>Groups of heads share K and V; generalises MHA and MQA</td>
+</tr>
+<tr>
+<td>Cross-layer attention</td>
+<td>Layers share KV cache across the layer axis</td>
+</tr>
+<tr>
+<td>Local/windowed attention</td>
+<td>Each token attends to a fixed window; avoids O(n²) growth</td>
+</tr>
+</tbody></table></div>
+<p>Character.AI achieved &gt;20× KV cache reduction through aggressive attention optimisation.</p>
+<p><strong>PagedAttention (vLLM):</strong> inspired by OS virtual memory, stores KV cache in non-contiguous blocks. Eliminates internal fragmentation; multiple sequences can share physical blocks (useful for parallel beam search or shared system prompts).</p>
+<p><strong>FlashAttention:</strong> a hardware-aware kernel that fuses attention operations to minimise HBM round-trips. Operates in GPU SRAM for the inner loop; avoids materialising the full attention matrix. Hardware-specific; significant practical speedup.</p>
+<h2 id="service-level-optimisation">Service-Level Optimisation</h2>
+<h3 id="batching-strategies">Batching Strategies</h3>
+<p>Processing multiple requests together amortises the cost of loading model weights into SRAM.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Description</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Static batching</strong></td>
+<td>Wait until a full batch is assembled</td>
+<td>Simple; wastes GPU if batch takes long to fill</td>
+</tr>
+<tr>
+<td><strong>Dynamic batching</strong></td>
+<td>Assemble within a time window</td>
+<td>More practical; still padded to max length</td>
+</tr>
+<tr>
+<td><strong>Continuous (in-flight) batching</strong></td>
+<td>Per-step scheduling (Orca paper); new requests inserted as slots free</td>
+<td>Eliminates padding waste; short responses return immediately without waiting for long ones</td>
+</tr>
+</tbody></table></div>
+<p>Continuous batching is the state-of-the-art for production LLM serving.</p>
+<h3 id="prefilldecode-decoupling">Prefill–Decode Decoupling</h3>
+<p>Separate GPU instances handle prefill and decode phases:</p>
+<ul>
+<li>Prefill is compute-bound → needs compute-optimised hardware.</li>
+<li>Decode is memory-bound → needs memory-bandwidth-optimised hardware.</li>
+</ul>
+<p>Running them together means neither phase can use hardware optimally. Splitting them improves both throughput and latency.</p>
+<p><strong>Typical ratio:</strong> 2:1 to 4:1 decode-to-prefill instances for long-input workloads. Communication overhead (transferring KV cache via NVLink or similar) is acceptable relative to the gain.</p>
+<h3 id="prompt-caching">Prompt Caching</h3>
+<p>System prompts are often identical across requests. Prompt caching processes the system prompt once and reuses the KV cache states.</p>
+<ul>
+<li><strong>Anthropic:</strong> up to 90% cost reduction, 75% latency reduction for cache hits.</li>
+<li><strong>Google Gemini:</strong> 75% cost discount on cached tokens + a small cache storage fee.</li>
+</ul>
+<p>Best suited for long system prompts or shared context that changes rarely.</p>
+<h3 id="parallelism-strategies">Parallelism Strategies</h3>
+<p>For models too large to fit on a single device:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Tensor parallelism</strong></td>
+<td>Split individual weight matrices across devices; high bandwidth required</td>
+</tr>
+<tr>
+<td><strong>Pipeline parallelism</strong></td>
+<td>Assign layers to devices sequentially; bubble overhead during decode</td>
+</tr>
+<tr>
+<td><strong>Data parallelism</strong></td>
+<td>Replicate full model; each device serves different requests</td>
+</tr>
+<tr>
+<td><strong>Sequence parallelism</strong></td>
+<td>Split long sequences across devices during prefill</td>
+</tr>
+</tbody></table></div>
+<p>Most large-scale deployments combine tensor and pipeline parallelism.</p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>Prefill is compute-bound; decode is memory bandwidth-bound — they require different optimisation strategies and can benefit from being run on separate hardware.</li>
+<li>Quantisation is the most universally applicable model-level optimisation; INT8 is often lossless, INT4 requires more care.</li>
+<li>Speculative decoding offers substantial latency reduction (&gt;50%) when a fast draft model with high acceptance rate is available; inference with reference is a simpler alternative for retrieval/coding tasks.</li>
+<li>Continuous batching is the baseline for production serving — it eliminates head-of-line blocking and improves GPU utilisation.</li>
+<li>KV cache management dominates memory at large batch sizes/sequence lengths; PagedAttention and attention variants (GQA, MQA) are the primary mitigations.</li>
+<li>Prompt caching yields the largest practical cost savings for applications with long, stable system prompts.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/finetuning.html">Finetuning</a> — quantisation appears in both training and inference; QLoRA bridges them</li>
+<li><a href="../concepts/foundation-models.html">Foundation Models</a> — model architecture choices (MQA, GQA, MoE) directly affect inference cost</li>
+<li><a href="../concepts/ai-engineering-architecture.html">Ai Engineering Architecture</a> — inference optimisation is one layer of the broader AI application architecture</li>
+<li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a> — distillation produces smaller models optimised for inference cost</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

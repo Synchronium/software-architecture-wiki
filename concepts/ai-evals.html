@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Evaluation methodology: perplexity, pass@k, BLEU/ROUGE, embeddings, AI-as-a-judge, comparative evaluation (Elo/Bradley-Terry, LMSYS Arena); factual…">
+  <meta property="og:title" content="AI Evaluation — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Evaluation methodology: perplexity, pass@k, BLEU/ROUGE, embeddings, AI-as-a-judge, comparative evaluation (Elo/Bradley-Terry, LMSYS Arena); factual…">
+  <title>AI Evaluation — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html" aria-current="page">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> AI Evaluation</nav></div>
+      <h1>AI Evaluation</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/evaluation.html">evaluation</a></li><li><a class="tag-chip" href="../tags/evals.html">evals</a></li><li><a class="tag-chip" href="../tags/benchmarks.html">benchmarks</a></li><li><a class="tag-chip" href="../tags/embeddings.html">embeddings</a></li><li><a class="tag-chip" href="../tags/perplexity.html">perplexity</a></li><li><a class="tag-chip" href="../tags/hallucination.html">hallucination</a></li><li><a class="tag-chip" href="../tags/metrics.html">metrics</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-evaluation-is-hard">Why Evaluation Is Hard</a></li><li><a href="#language-modelling-metrics">Language Modelling Metrics</a></li><li class="toc-sub"><a href="#entropy-and-cross-entropy">Entropy and Cross Entropy</a></li><li class="toc-sub"><a href="#perplexity">Perplexity</a></li><li class="toc-sub"><a href="#bits-per-character-bits-per-byte">Bits per Character / Bits per Byte</a></li><li><a href="#exact-evaluation-methods">Exact Evaluation Methods</a></li><li class="toc-sub"><a href="#functional-correctness">Functional Correctness</a></li><li class="toc-sub"><a href="#similarity-measurements">Similarity Measurements</a></li><li><a href="#embeddings">Embeddings</a></li><li><a href="#ai-as-a-judge">AI as a Judge</a></li><li class="toc-sub"><a href="#specialised-judge-types">Specialised Judge Types</a></li><li><a href="#comparative-evaluation">Comparative Evaluation</a></li><li class="toc-sub"><a href="#pairwise-comparisons">Pairwise Comparisons</a></li><li class="toc-sub"><a href="#lmsys-chatbot-arena">LMSYS Chatbot Arena</a></li><li><a href="#evaluation-criteria-for-applications">Evaluation Criteria for Applications</a></li><li class="toc-sub"><a href="#factual-consistency">Factual Consistency</a></li><li class="toc-sub"><a href="#safety">Safety</a></li><li class="toc-sub"><a href="#instruction-following">Instruction-Following</a></li><li><a href="#model-selection-workflow">Model Selection Workflow</a></li><li class="toc-sub"><a href="#open-source-vs-model-api">Open Source vs Model API</a></li><li class="toc-sub"><a href="#public-benchmarks">Public Benchmarks</a></li><li><a href="#designing-an-evaluation-pipeline">Designing an Evaluation Pipeline</a></li><li class="toc-sub"><a href="#step-1-evaluate-all-components">Step 1 — Evaluate all components</a></li><li class="toc-sub"><a href="#step-2-create-an-evaluation-guideline">Step 2 — Create an evaluation guideline</a></li><li class="toc-sub"><a href="#step-3-define-evaluation-methods-and-data">Step 3 — Define evaluation methods and data</a></li><li class="toc-sub"><a href="#step-4-evaluate-the-evaluation-pipeline-itself">Step 4 — Evaluate the evaluation pipeline itself</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>AI evaluation is the discipline of measuring the quality of AI system outputs — covering both the underlying foundation model and the end-to-end application built on top of it. Because foundation model outputs are open-ended rather than a fixed label, evaluation is substantially harder than in classical ML and requires explicit investment. (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 3–4)</p>
+<h2 id="why-evaluation-is-hard">Why Evaluation Is Hard</h2>
+<p>Four properties of foundation models make them difficult to evaluate:</p>
+<ol>
+<li><strong>Intelligence is multi-dimensional.</strong> There is no single agreed metric for general-purpose capability — models can excel on some benchmarks while failing on others.</li>
+<li><strong>Open-ended outputs.</strong> Classical ML has a ground truth label per input; foundation model outputs are free-form text, images, or code. Correctness is often a matter of degree, not kind.</li>
+<li><strong>Black-box models.</strong> Many frontier models are accessible only via API; their internals are unavailable. Researchers cannot inspect weight distributions or attributions.</li>
+<li><strong>Benchmark saturation.</strong> Models can be deliberately or inadvertently trained on benchmark data (data contamination), inflating reported scores. Even valid benchmarks often cluster models at ceiling, making discrimination difficult.</li>
+</ol>
+<h2 id="language-modelling-metrics">Language Modelling Metrics</h2>
+<p>These metrics measure how well a model fits a reference distribution. They are used for model comparison, data contamination detection, deduplication, and anomaly detection — not for evaluating whether specific outputs are good.</p>
+<h3 id="entropy-and-cross-entropy">Entropy and Cross Entropy</h3>
+<ul>
+<li><strong>Entropy H(P):</strong> average bits needed to encode a symbol from distribution P using an optimal code. Low entropy = predictable distribution.</li>
+<li><strong>Cross entropy H(P,Q):</strong> average bits needed to encode samples from P using a code optimised for Q. Decomposes as: <strong>H(P,Q) = H(P) + KL(P‖Q)</strong>. The KL divergence term is zero only when P = Q, so cross entropy is always ≥ entropy. During training, minimising cross entropy between the data distribution and the model is equivalent to minimising KL divergence.</li>
+</ul>
+<h3 id="perplexity">Perplexity</h3>
+<p>Perplexity (PPL) is the exponentiated average cross entropy per token:</p>
+<ul>
+<li><strong>PPL = 2^H</strong> (log base 2) or <strong>PPL = e^H</strong> (natural log), depending on convention.</li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>PPL = 1 → perfect prediction (model assigns all probability to the correct next token).</li>
+<li>PPL = K → the model is effectively choosing uniformly among K candidates at each step.</li>
+<li>Lower perplexity = better fit to the reference distribution.</li>
+</ul>
+<p><strong>Perplexity is useful for:</strong> comparing models on the same held-out dataset; detecting data contamination (suspiciously low perplexity on a benchmark suggests training overlap); deduplication (high similarity between training and test data).</p>
+<p><strong>Limitations:</strong> perplexity does not measure whether outputs are helpful, accurate, or safe — a model can have low perplexity while hallucinating. It is also not comparable across different tokenisers.</p>
+<h3 id="bits-per-character-bits-per-byte">Bits per Character / Bits per Byte</h3>
+<p>BPC and BPB normalise perplexity by character or byte count rather than token count, making it comparable across models with different tokenisers. Useful for multilingual comparisons where tokenisation efficiency varies significantly.</p>
+<h2 id="exact-evaluation-methods">Exact Evaluation Methods</h2>
+<h3 id="functional-correctness">Functional Correctness</h3>
+<p>Used primarily for code generation. A generated program is correct if it passes a test suite. The <strong>pass@k</strong> metric is the probability that at least one of k generated samples passes all tests:</p>
+<p><strong>pass@k = 1 − C(n−c, k) / C(n, k)</strong></p>
+<p>where n is the number of samples generated, c is the number that pass. Direct computation is high-variance; the formula above is an unbiased estimator. Common choices: pass@1 (production quality), pass@10 or pass@100 (ceiling capability).</p>
+<h3 id="similarity-measurements">Similarity Measurements</h3>
+<p>When a reference answer exists, generated outputs can be compared against it:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Approach</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exact match</td>
+<td>Binary string equality</td>
+<td>Too strict; misses paraphrase</td>
+</tr>
+<tr>
+<td>Lexical similarity (BLEU, ROUGE)</td>
+<td>N-gram overlap</td>
+<td>Misses semantic equivalence; rewards surface patterns</td>
+</tr>
+<tr>
+<td>Semantic similarity</td>
+<td>Embedding cosine similarity</td>
+<td>Requires a good embedding model; can conflate near-synonyms</td>
+</tr>
+</tbody></table></div>
+<p><strong>BLEU</strong> was designed for machine translation; it measures n-gram precision (with a brevity penalty). <strong>ROUGE</strong> measures n-gram recall; ROUGE-L additionally uses longest common subsequence. Both are standard in NLP benchmarks but correlate poorly with human preferences for open-ended generation.</p>
+<h2 id="embeddings">Embeddings</h2>
+<p>An embedding is a dense real-valued vector representing a piece of content (text, image, audio). Well-trained embeddings place semantically similar content close together in the vector space.</p>
+<p>Key embedding models:</p>
+<ul>
+<li><strong>BERT</strong> — bidirectional transformer encoder; produces contextualised text embeddings.</li>
+<li><strong>Sentence Transformers</strong> — fine-tuned BERT variants optimised for sentence-level similarity.</li>
+<li><strong>CLIP</strong> — multimodal; maps text and images into a shared embedding space, enabling cross-modal similarity search.</li>
+<li><strong>ULIP / ImageBind</strong> — multimodal embeddings covering text, image, audio, video, depth, and other modalities.</li>
+</ul>
+<p><strong>Cosine similarity</strong> is the standard distance measure for embeddings: <strong>cos(u, v) = (u·v) / (‖u‖ ‖v‖)</strong>. Values range from −1 (opposite) to +1 (identical direction). Cosine similarity is preferred over Euclidean distance for high-dimensional sparse embeddings.</p>
+<p>Embeddings are used for: semantic similarity evaluation, RAG retrieval (→ <a href="../concepts/rag.html">Rag</a>), classification, clustering, de-duplication of training data, and anomaly detection.</p>
+<h2 id="ai-as-a-judge">AI as a Judge</h2>
+<p>Rather than relying on human evaluation (slow, expensive) or lexical metrics (shallow), an LLM can act as an evaluator — judging whether another model&#39;s output is good.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Orders of magnitude faster and cheaper than human evaluation.</li>
+<li>Can apply nuanced criteria specified in natural language.</li>
+<li>GPT-4 agreement with human labels reaches ~85% in published studies.</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>Inconsistency: the same prompt can produce different judgements across runs.</li>
+<li>Criteria ambiguity: abstract rubrics (e.g. &quot;helpfulness&quot;) lead to variable interpretation.</li>
+<li>Additional cost and latency in the evaluation pipeline.</li>
+</ul>
+<p><strong>Known biases:</strong></p>
+<ul>
+<li><strong>Self-bias (self-enhancement bias):</strong> models prefer their own outputs when acting as judges.</li>
+<li><strong>First-position bias:</strong> models tend to prefer the first candidate in a pairwise comparison.</li>
+<li><strong>Verbosity bias:</strong> models favour longer, more detailed responses regardless of accuracy.</li>
+</ul>
+<p>Mitigation: randomise candidate ordering; run multiple evaluations with different orderings; use specialised judge models (reward models) trained explicitly for evaluation rather than general-purpose LLMs.</p>
+<h3 id="specialised-judge-types">Specialised Judge Types</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Judge type</th>
+<th>Trained on</th>
+<th>Output</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reward model</td>
+<td>(prompt, winner, loser) triples</td>
+<td>Scalar score</td>
+<td>RLHF training signal; response ranking</td>
+</tr>
+<tr>
+<td>Reference-based judge</td>
+<td>Examples with reference answers</td>
+<td>Correctness judgement</td>
+<td>Fact-checking, summarisation quality</td>
+</tr>
+<tr>
+<td>Preference model</td>
+<td>Human pairwise preferences</td>
+<td>Win probability</td>
+<td>Arena-style comparisons</td>
+</tr>
+</tbody></table></div>
+<h2 id="comparative-evaluation">Comparative Evaluation</h2>
+<p>Rather than scoring outputs in isolation (pointwise), comparative evaluation ranks candidates against each other (pairwise), which is often more reliable — humans find relative judgements easier to make consistently than absolute scores.</p>
+<h3 id="pairwise-comparisons">Pairwise Comparisons</h3>
+<p>Present two model outputs for the same prompt; ask which is better. Repeat across many (prompt, model-A, model-B) triples. Aggregate using a rating algorithm:</p>
+<ul>
+<li><strong>Elo:</strong> standard chess rating; updated after each game; simple but assumes transitivity and equilibrium.</li>
+<li><strong>Bradley-Terry:</strong> probabilistic pairwise model; more statistically principled than Elo.</li>
+<li><strong>TrueSkill:</strong> Bayesian rating that handles uncertainty; better for sparse comparison graphs.</li>
+</ul>
+<h3 id="lmsys-chatbot-arena">LMSYS Chatbot Arena</h3>
+<p>A large-scale public leaderboard that gathers pairwise human preferences via a chat interface. Users rate pairs of anonymised model responses; votes feed a Bradley-Terry ranker. As of 2024, it is the most widely cited comparative evaluation platform for open-ended chat.</p>
+<p><strong>Challenges:</strong></p>
+<ul>
+<li><strong>Scalability:</strong> pairwise comparisons scale as O(n²) in the number of models.</li>
+<li><strong>Quality control:</strong> volunteer raters vary in quality and may be gamed.</li>
+<li><strong>Transitivity assumption:</strong> if A &gt; B and B &gt; C, it does not follow that A &gt; C in all respects.</li>
+<li><strong>Pointwise–comparative gap:</strong> a model rated best in pairwise comparison is not necessarily best on all tasks.</li>
+</ul>
+<h2 id="evaluation-criteria-for-applications">Evaluation Criteria for Applications</h2>
+<p>Chapter 4 (Huyen) introduces <strong>evaluation-driven development</strong>: define evaluation criteria before building — analogous to test-driven development. Applications with unclear evaluation criteria are, paradoxically, worse than undeployed applications: they consume maintenance cost with no insight into whether they are working.</p>
+<p>Four evaluation criterion buckets:</p>
+<ol>
+<li><strong>Domain-specific capability</strong> — can the model do the underlying task (code, math, legal reasoning)?</li>
+<li><strong>Generation capability</strong> — factual consistency, safety, fluency, coherence.</li>
+<li><strong>Instruction-following capability</strong> — does the model produce outputs that match the requested format and constraints?</li>
+<li><strong>Cost and latency</strong> — time to first token, time per total query, cost per output token, tokens per minute (scale).</li>
+</ol>
+<h3 id="factual-consistency">Factual Consistency</h3>
+<p>Two settings:</p>
+<ul>
+<li><strong>Local</strong> — output evaluated against explicitly provided context (summarisation, RAG). Easier: context is given.</li>
+<li><strong>Global</strong> — output evaluated against open world knowledge (general chatbots, fact-checking). Harder: requires first retrieving relevant facts.</li>
+</ul>
+<p>Evaluation methods in ascending sophistication:</p>
+<ul>
+<li><strong>AI as a judge</strong> with a factual consistency prompt (GPT-4 outperforms prior specialised metrics in studies).</li>
+<li><strong>Self-verification (SelfCheckGPT)</strong> — generate N alternative outputs; if they disagree with the original, the original is likely hallucinated. Expensive.</li>
+<li><strong>Knowledge-augmented verification (SAFE, Google DeepMind)</strong> — decompose output into statements → make each self-contained → issue search queries → judge consistency against search results.</li>
+<li><strong>Textual entailment</strong> — frame factual consistency as a classification task (entailment / contradiction / neutral). Specialised models (e.g. DeBERTa-v3-base-mnli-fever-anli, 184 M parameters) can be fine-tuned for this.</li>
+</ul>
+<p>Benchmark: <strong>TruthfulQA</strong> — 817 questions spanning 38 domains that humans commonly answer incorrectly. Comes with GPT-judge, a finetuned evaluator. GPT-3 achieves ~58%; human experts ~94%.</p>
+<h3 id="safety">Safety</h3>
+<p>Six categories of unsafe outputs: inappropriate language, harmful recommendations, hate speech, violence, stereotypes, political/religious bias. Multiple studies (Feng, Motoki, Hartman 2023) show that models carry measurable political biases baked in from post-training.</p>
+<p>Evaluation options: general-purpose AI judges (Claude, GPT-4) with appropriate prompts; specialised classifiers trained on toxicity detection (Facebook hate speech, Perspective API, Skolkovo toxicity); benchmarks RealToxicityPrompts (100K naturally occurring prompts) and BOLD.</p>
+<h3 id="instruction-following">Instruction-Following</h3>
+<p>Instruction-following capability is whether the model follows the format/constraint constraints given, independent of whether it understands the content. Key distinction: a model can understand sentiment but output &quot;HAPPY&quot; instead of &quot;POSITIVE&quot; — poor instruction following, adequate capability.</p>
+<p>Benchmarks:</p>
+<ul>
+<li><strong>IFEval</strong> (Google) — 25 automatically verifiable instruction types (keyword presence, length constraints, JSON format, bullet counts, etc.). Score = fraction of instructions followed.</li>
+<li><strong>INFOBench</strong> — broader notion: adds content constraints, linguistic guidelines, and style rules. Verification is done via AI judge answering per-criterion yes/no questions. GPT-4 is more reliable than MTurk annotators on this benchmark.</li>
+</ul>
+<p>Practical advice: curate your own benchmark for your specific instructions. Public benchmarks miss the instructions that matter for your application.</p>
+<h2 id="model-selection-workflow">Model Selection Workflow</h2>
+<p>A four-step iterative process: (1) hard-attribute filtering, (2) public benchmark screening, (3) private evaluation pipeline, (4) production monitoring.</p>
+<p><strong>Hard attributes</strong> (things you cannot or will not change): licence type, data privacy constraints, on-device requirement, latency hard limits. These can dramatically reduce the candidate pool before any experimentation begins.</p>
+<p><strong>Soft attributes</strong> (improvable): accuracy, toxicity level, factual consistency — these can change with prompting or finetuning.</p>
+<h3 id="open-source-vs-model-api">Open Source vs Model API</h3>
+<p>Seven decision axes:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>Model API</th>
+<th>Self-hosted</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Data privacy</td>
+<td>Must send data externally; risk of provider policy changes</td>
+<td>Data stays local</td>
+</tr>
+<tr>
+<td>Data lineage/copyright</td>
+<td>Commercial contracts may offer protection</td>
+<td>Less legal recourse; more exposure</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Best proprietary models ahead of best open source (likely indefinitely, given incentive structure)</td>
+<td>Open source models closing gap but will likely lag</td>
+</tr>
+<tr>
+<td>Functionality</td>
+<td>Better scaling, function calling, structured outputs; logprobs often hidden</td>
+<td>Full logprob access; finetuning flexibility</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Per-token; no fixed overhead</td>
+<td>High fixed engineering/infrastructure cost</td>
+</tr>
+<tr>
+<td>Control</td>
+<td>Rate limits; risk of losing access; opaque versioning</td>
+<td>Freeze models; inspect changes</td>
+</tr>
+<tr>
+<td>On-device</td>
+<td>Impossible</td>
+<td>Possible</td>
+</tr>
+</tbody></table></div>
+<p>Key observations:</p>
+<ul>
+<li>Best models will stay behind APIs — model providers have no incentive to open source their strongest models.</li>
+<li>Open source models lack feedback loops from production usage, compounding the performance gap.</li>
+<li>Proprietary models are more likely to over-censor — important for applications that need to generate real faces, simulate physical AI characters, etc.</li>
+</ul>
+<h3 id="public-benchmarks">Public Benchmarks</h3>
+<p>Thousands of benchmarks exist (BIG-bench has 214; lm-evaluation-harness supports 400+). Key problems:</p>
+<ol>
+<li><strong>Data contamination</strong> — benchmarks published before a model&#39;s training cutoff are likely in the training data. Even 13-token n-gram overlap is detectable. Perplexity screening is cheaper but less accurate. OpenAI found 13 benchmarks with ≥40% contamination in GPT-3&#39;s training data.</li>
+<li><strong>Benchmark saturation</strong> — models train on public benchmarks until ceiling is hit; new harder benchmarks must be continuously introduced.</li>
+<li><strong>Selection ambiguity</strong> — no principled method for choosing which benchmarks to aggregate; leaderboards often differ significantly (HuggingFace LLM Leaderboard vs Stanford HELM share only 2 of 10 benchmarks).</li>
+<li><strong>Correlation problem</strong> — benchmarks testing similar things (e.g. WinoGrande + MMLU + ARC-C all highly correlated) over-weight that dimension in aggregated rankings.</li>
+</ol>
+<p>Public leaderboards use simple averaging (HuggingFace) or mean win rate (HELM) — both are proxies with significant flaws. Use public benchmarks to filter, not to select.</p>
+<h2 id="designing-an-evaluation-pipeline">Designing an Evaluation Pipeline</h2>
+<p>A four-step process for custom application evaluation:</p>
+<h3 id="step-1-evaluate-all-components">Step 1 — Evaluate all components</h3>
+<p>Evaluate both end-to-end output and each intermediate component separately. Evaluate per-turn (quality of each response) and per-task (did the system complete the goal?). Task-based evaluation is more important — what users care about is goal completion.</p>
+<h3 id="step-2-create-an-evaluation-guideline">Step 2 — Create an evaluation guideline</h3>
+<p>Define what &quot;good&quot; means before you start evaluating. Include both positive criteria and out-of-scope handling (what should the application refuse or redirect?). LinkedIn found that first hurdle in deploying generative AI was creating a clear evaluation guideline — a correct response is not always a good response (e.g. &quot;You are a terrible fit&quot; is correct but unhelpful for a job assessment tool).</p>
+<p><strong>Scoring rubrics:</strong> choose a scale (binary 0/1, ternary -1/0/1, or 1–5) and create rubric examples for each value. Validate rubrics with human annotators. Use 2–3 evaluation criteria on average (LangChain&#39;s State of AI 2023).</p>
+<p><strong>Tie to business metrics:</strong> define the usefulness threshold (minimum acceptable score) and map evaluation metric values to business outcomes (e.g. factual consistency 80% → 30% of support requests automated; 98% → 90% automated).</p>
+<h3 id="step-3-define-evaluation-methods-and-data">Step 3 — Define evaluation methods and data</h3>
+<p>Mix evaluation methods: cheap classifier on 100% of data + expensive AI judge on 1% of data. When logprobs are available, use them for confidence-sensitive evaluation (classification confidence, perplexity estimation).</p>
+<p><strong>Annotated evaluation data:</strong> use production data where possible. Slice data by: user tier, traffic source, known failure modes, out-of-scope inputs. Slicing avoids Simpson&#39;s paradox (model A outperforms model B on every slice but loses on aggregated data due to slice size differences).</p>
+<p><strong>Sample size guidance (from OpenAI):</strong> to detect a 10% score difference at 95% confidence, ~100 examples are needed; for 3%, ~1,000; for 1%, ~10,000. The median benchmark in lm-evaluation-harness has 1,000 examples.</p>
+<h3 id="step-4-evaluate-the-evaluation-pipeline-itself">Step 4 — Evaluate the evaluation pipeline itself</h3>
+<p>Questions to ask: Do better responses actually get higher scores? Is the pipeline reproducible (same result twice)? Are metrics correlated (if so, some are redundant)? Does the pipeline add acceptable latency/cost?</p>
+<p>Track all variables across evaluation runs: evaluation data version, rubric version, AI judge prompt, and sampling configuration (temperature = 0 for AI judges to maximise reproducibility).</p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>Foundation model evaluation is inherently harder than classical ML: outputs are open-ended, models are black-boxes, and benchmark saturation is common.</li>
+<li>Perplexity measures distribution fit, not output quality — it is useful for contamination detection and model comparison, not for end-to-end application evaluation.</li>
+<li>Pass@k is the standard metric for functional correctness in code generation; it requires running generated code against a test suite.</li>
+<li>Lexical similarity metrics (BLEU, ROUGE) are widely used but weakly correlated with human preferences for open-ended tasks.</li>
+<li>AI-as-a-judge offers speed and cost advantages but carries systematic biases (self-bias, position bias, verbosity bias) that must be mitigated.</li>
+<li>Comparative evaluation (pairwise + Elo/Bradley-Terry) is more reliable than pointwise scoring for open-ended tasks but scales quadratically.</li>
+<li>Evaluation-driven development: define criteria before building. Applications with no evaluation pipeline are worse than undeployed applications.</li>
+<li>Public benchmarks filter out bad models; private evaluation pipelines select among good ones. Public benchmarks are nearly always contaminated.</li>
+<li>Model API vs self-hosting is a seven-axis decision; the performance gap between proprietary and open source models is likely to persist due to incentive structures.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/llm-sampling.html">Llm Sampling</a> — sampling parameters that affect output diversity and consistency</li>
+<li><a href="../concepts/foundation-models.html">Foundation Models</a> — the models being evaluated</li>
+<li><a href="../concepts/ai-engineering.html">Ai Engineering</a> — evaluation as a core discipline within AI engineering</li>
+<li><a href="../concepts/rag.html">Rag</a> — retrieval augmentation to ground outputs (reduces hallucination, changes what evaluation must cover)</li>
+<li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a> — prompts used to elicit outputs that are then evaluated</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-agents.html">AI Agents</a></li><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li><li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li><li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

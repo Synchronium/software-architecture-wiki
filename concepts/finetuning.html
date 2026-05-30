@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="When to finetune vs RAG; memory bottleneck; quantisation (FP32→INT4); PEFT; LoRA (low-rank decomposition, rank, alpha, multi-LoRA serving); QLoRA; model…">
+  <meta property="og:title" content="Finetuning — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="When to finetune vs RAG; memory bottleneck; quantisation (FP32→INT4); PEFT; LoRA (low-rank decomposition, rank, alpha, multi-LoRA serving); QLoRA; model…">
+  <title>Finetuning — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html" aria-current="page">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Finetuning</nav></div>
+      <h1>Finetuning</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/finetuning.html">finetuning</a></li><li><a class="tag-chip" href="../tags/peft.html">peft</a></li><li><a class="tag-chip" href="../tags/lora.html">lora</a></li><li><a class="tag-chip" href="../tags/quantization.html">quantization</a></li><li><a class="tag-chip" href="../tags/transfer-learning.html">transfer-learning</a></li><li><a class="tag-chip" href="../tags/model-merging.html">model-merging</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#when-to-finetune">When to Finetune</a></li><li><a href="#memory-bottleneck">Memory Bottleneck</a></li><li><a href="#numerical-representations-and-quantisation">Numerical Representations and Quantisation</a></li><li><a href="#parameter-efficient-finetuning-peft">Parameter-Efficient Finetuning (PEFT)</a></li><li class="toc-sub"><a href="#adapter-based-methods">Adapter-Based Methods</a></li><li class="toc-sub"><a href="#soft-prompt-based-methods">Soft Prompt-Based Methods</a></li><li><a href="#model-merging">Model Merging</a></li><li><a href="#finetuning-tactics">Finetuning Tactics</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>Finetuning is the process of adapting a pre-trained model to a specific task by further training all or part of the model&#39;s weights. It is one form of transfer learning — the technique of transferring knowledge gained on a data-rich task to accelerate learning on a data-scarce one. (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 7)</p>
+<h2 id="when-to-finetune">When to Finetune</h2>
+<p>The model adaptation decision tree, from cheapest to most expensive: prompt engineering → few-shot prompting → RAG → finetuning → train from scratch.</p>
+<p><strong>Reasons to finetune:</strong></p>
+<ul>
+<li>The model&#39;s outputs are behaviourally wrong — wrong format, wrong style, wrong level of specificity — rather than informationally wrong.</li>
+<li>Domain-specific output syntax (rare SQL dialects, DSLs, complex schemas) not sufficiently covered in pre-training.</li>
+<li>Need to distil a large model&#39;s behaviour into a smaller model for cost/latency reasons.</li>
+<li>Bias mitigation — exposing the model to carefully curated counter-examples.</li>
+</ul>
+<p><strong>Reasons not to finetune:</strong></p>
+<ul>
+<li>Finetuning on task A can degrade performance on tasks B and C (sometimes called the alignment tax).</li>
+<li>Requires ML expertise, annotated data, and continual maintenance; base models improve faster than most teams can iterate on finetuned models.</li>
+<li>Many improvements achievable by finetuning can also be achieved by prompt engineering or RAG.</li>
+</ul>
+<p><strong>The RAG vs finetuning heuristic:</strong> &quot;Finetuning is for form, RAG is for facts.&quot; (Ovadia et al., 2024 demonstrated that RAG outperforms finetuning on current-event question answering for Mistral 7B, Llama 2-7B, and Orca 2-7B.)</p>
+<h2 id="memory-bottleneck">Memory Bottleneck</h2>
+<p>Finetuning is significantly more memory-intensive than inference because the backward pass requires storing gradients and optimiser states.</p>
+<p><strong>Memory for inference:</strong> <code>N × M × 1.2</code> where N = parameter count, M = bytes per parameter (1.2 accounts for activations and KV cache). A 13B model at 2 bytes/param ≈ 31 GB.</p>
+<p><strong>Memory for training:</strong> model weights + activations + gradients + optimiser states. With Adam (two states per trainable parameter), each trainable parameter requires 3× memory beyond its weight. For a 13B model, full finetuning with Adam ≈ 56 GB (weights) + activation memory — far beyond most consumer GPUs (12–48 GB).</p>
+<p><strong>Activation memory</strong> can dwarf weight memory if activations are stored for gradient computation. <strong>Gradient checkpointing</strong> (recomputing activations on demand rather than storing them) reduces memory at the cost of increased computation time.</p>
+<h2 id="numerical-representations-and-quantisation">Numerical Representations and Quantisation</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Bits</th>
+<th>Bytes</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FP64</td>
+<td>64</td>
+<td>8</td>
+<td>Rarely used in neural networks</td>
+</tr>
+<tr>
+<td>FP32</td>
+<td>32</td>
+<td>4</td>
+<td>Standard training precision</td>
+</tr>
+<tr>
+<td>TF32</td>
+<td>19</td>
+<td>—</td>
+<td>NVIDIA GPU optimised; named for FP32 compatibility</td>
+</tr>
+<tr>
+<td>BF16</td>
+<td>16</td>
+<td>2</td>
+<td>Wide range, less precision; designed for TPUs; Llama 2&#39;s native format</td>
+</tr>
+<tr>
+<td>FP16</td>
+<td>16</td>
+<td>2</td>
+<td>Half precision; higher precision, narrower range than BF16</td>
+</tr>
+<tr>
+<td>INT8</td>
+<td>8</td>
+<td>1</td>
+<td>Integer quantisation</td>
+</tr>
+<tr>
+<td>INT4 / FP4</td>
+<td>4</td>
+<td>0.5</td>
+<td>Extreme quantisation</td>
+</tr>
+</tbody></table></div>
+<p><strong>Quantisation</strong> converts weights (and optionally activations) to a lower-precision format. It reduces memory footprint and can improve throughput, but small value changes can compound into quality degradation.</p>
+<ul>
+<li><strong>Post-training quantisation (PTQ):</strong> quantise after training; the most common approach.</li>
+<li><strong>Quantisation-aware training (QAT):</strong> simulate low-precision during training so the model learns to compensate; does not reduce training cost.</li>
+<li>BitNet b1.58 (Ma et al., 2024) achieves performance comparable to 16-bit Llama 2 at only 1.58 bits per parameter up to 3.9B parameters.</li>
+</ul>
+<blockquote>
+<p><strong>Warning:</strong> Loading a model in the wrong numerical format causes silent quality degradation. Llama 2 is BF16; many teams initially loaded it as FP16 and experienced unexpectedly poor results.</p>
+</blockquote>
+<h2 id="parameter-efficient-finetuning-peft">Parameter-Efficient Finetuning (PEFT)</h2>
+<p>PEFT techniques achieve performance close to full finetuning while training only a small fraction of the model&#39;s parameters. Fewer trainable parameters means lower gradient and optimiser-state memory.</p>
+<p><strong>Full finetuning:</strong> all parameters are trainable; requires the most memory and data.</p>
+<p><strong>Partial finetuning:</strong> freeze early layers, update only later layers. Houlsby et al. (2019) showed that with BERT large, updating 25% of parameters is needed to match full finetuning on GLUE — not parameter-efficient.</p>
+<h3 id="adapter-based-methods">Adapter-Based Methods</h3>
+<p>Insert small trainable modules into frozen layers. The original Houlsby et al. (2019) approach inserts two adapters per transformer block; performance within 0.4% of full finetuning using only 3% of trainable parameters. <strong>Downside:</strong> adds inference latency.</p>
+<p><strong>LoRA (Low-Rank Adaptation)</strong> — Hu et al. (2021); the dominant PEFT technique.</p>
+<p>For a weight matrix W (n × m), LoRA:</p>
+<ol>
+<li>Decomposes W into two smaller matrices A (n × r) and B (r × m) where r is the LoRA rank.</li>
+<li>Updates W′ = W + (α/r) × AB, where α scales the contribution.</li>
+<li>Only A and B are trained; W remains frozen.</li>
+</ol>
+<p>On GPT-3, LoRA achieves comparable or better performance to full finetuning using only 4.7M trainable parameters (0.0027% of full finetuning). <strong>No inference latency overhead</strong> — A and B can be merged back into W before serving.</p>
+<p><strong>Why LoRA works:</strong> Pre-training implicitly minimises a model&#39;s intrinsic dimension. Larger, better-trained models have lower intrinsic dimensions — making them easier to adapt with fewer parameters.</p>
+<p><strong>LoRA configurations:</strong></p>
+<ul>
+<li>Rank r: typically 4–64; increasing r beyond a certain value yields no discernible improvement and may overfit.</li>
+<li>Apply to: attention matrices W_q, W_k, W_v, W_o; Databricks found the biggest gain from applying to feedforward layers as well.</li>
+<li>α: controls contribution scaling; α:r ratio typically 1:8 to 8:1.</li>
+</ul>
+<p><strong>Multi-LoRA serving:</strong> keep W, A, B separate so multiple task-specific adapters share one base model. For 100 customers with LoRA rank 8 on a 4096×4096 matrix: merged option requires 1.68B parameters; separate adapters require only 23.3M.</p>
+<p><strong>QLoRA (Dettmers et al., 2023):</strong> store base model weights in 4-bit NF4; dequantise to BF16 for forward/backward pass. Enables finetuning a 65B-parameter model on a single 48 GB GPU. Adds quantisation/dequantisation overhead.</p>
+<h3 id="soft-prompt-based-methods">Soft Prompt-Based Methods</h3>
+<p>Instead of adding adapter modules, prepend trainable continuous vectors (soft prompts) to the input. Unlike hard prompts (human-readable, static), soft prompts are optimised via backpropagation. Variants differ in where soft tokens are inserted:</p>
+<ul>
+<li><strong>Prefix tuning</strong> (Li &amp; Liang, 2021): prepend at every transformer layer.</li>
+<li><strong>Prompt tuning</strong> (Lester et al., 2021): prepend only to the embedded input.</li>
+</ul>
+<p>Much less common than LoRA in practice (huggingface/peft GitHub issue analysis, Oct 2024).</p>
+<h2 id="model-merging">Model Merging</h2>
+<p>Model merging combines multiple models (often finetuned models) into a single model. Can be done without GPUs if no further finetuning is needed.</p>
+<p><strong>Multi-task finetuning approaches:</strong></p>
+<ul>
+<li><strong>Simultaneous:</strong> train on all task data at once; harder to learn multiple skills simultaneously.</li>
+<li><strong>Sequential:</strong> train on tasks one after another; risks catastrophic forgetting (model forgets earlier tasks).</li>
+<li><strong>Model merging:</strong> finetune on each task independently in parallel, then merge; avoids catastrophic forgetting.</li>
+</ul>
+<p><strong>Task vectors</strong> (delta parameters) = finetuned model − base model. Task arithmetic (Ilharco et al., 2022) lets you add or subtract capabilities.</p>
+<p><strong>Three merging approaches:</strong></p>
+<ol>
+<li><p><strong>Summing:</strong> average or weighted-average of weight matrices. <em>Linear combination</em> (simple, often effective; &quot;model soups&quot;). <em>SLERP</em> (spherical linear interpolation; defined only for two vectors; more geometrically principled).</p>
+<ul>
+<li>TIES (Yadav et al., 2023) and DARE (Yu et al., 2023) first prune redundant task vector parameters before merging; reduces interference between tasks.</li>
+</ul>
+</li>
+<li><p><strong>Layer stacking (frankenmerging):</strong> take layers from different models and stack them; typically requires further finetuning. Used to create MoE models from dense checkpoints (Komatsuzaki et al., 2022). Goliath-120B merged two Llama 2-70B models using 72/80 layers each.</p>
+</li>
+<li><p><strong>Concatenation:</strong> concatenate adapters; increases parameter count proportionally; not recommended as it defeats the memory savings.</p>
+</li>
+</ol>
+<p><strong>On-device use case:</strong> merging multiple task-specific adapters into one reduces on-device memory footprint. Apple merged multiple LoRA adapters into a 3B-parameter base model for iPhone features.</p>
+<h2 id="finetuning-tactics">Finetuning Tactics</h2>
+<p><strong>Development paths:</strong></p>
+<p><em>Progression path:</em> test code with cheapest model → validate data with mid-size model → push performance with best model → map price/performance frontier across model sizes.</p>
+<p><em>Distillation path:</em> strong model + small dataset → generate synthetic training data → train smaller model.</p>
+<p><strong>Key hyperparameters:</strong></p>
+<ul>
+<li><strong>Learning rate:</strong> experiment in range 1e-7 to 1e-3; start from end of pre-training LR × (0.1–1). Use learning rate schedules.</li>
+<li><strong>Batch size:</strong> larger = more stable; constrained by hardware memory. Use gradient accumulation to simulate larger batches.</li>
+<li><strong>Number of epochs:</strong> 1–2 for millions of examples; 4–10 for thousands. Monitor training/validation loss divergence for overfitting.</li>
+<li><strong>Prompt loss weight:</strong> for instruction finetuning, prompts should contribute less to loss than responses. Default ~10% for prompt, 100% for response.</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>Finetune only after exhausting prompt engineering; finetuning and prompting are complementary.</li>
+<li><strong>RAG is for facts; finetuning is for form.</strong></li>
+<li>Memory is the primary finetuning bottleneck; PEFT and quantisation make finetuning accessible on consumer hardware.</li>
+<li>LoRA is the dominant PEFT technique — parameter-efficient, data-efficient, and inference-latency-neutral.</li>
+<li>Model merging enables multi-task capability without catastrophic forgetting; task arithmetic allows surgical capability addition and removal.</li>
+<li>A small dataset of 50–100 examples should show measurable improvement if finetuning will help at all.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/ai-agents.html">Ai Agents</a> — finetuning can teach tool-use behaviour via synthesised trajectory data</li>
+<li><a href="../concepts/rag.html">Rag</a> — the complementary approach to finetuning; prefer RAG for information-based failures</li>
+<li><a href="../concepts/foundation-models.html">Foundation Models</a> — the starting point for finetuning; post-training (SFT, RLHF, DPO) is finetuning at the model development layer</li>
+<li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a> — acquiring and synthesising finetuning data</li>
+<li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a> — the first adaptation technique to exhaust before reaching for finetuning</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li><li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

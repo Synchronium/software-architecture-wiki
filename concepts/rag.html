@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Retrieval-augmented generation; term-based (TF-IDF, BM25) vs embedding-based retrieval; ANN algorithms (LSH, HNSW, FAISS); hybrid search with RRF;…">
+  <meta property="og:title" content="Retrieval-Augmented Generation (RAG) — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Retrieval-augmented generation; term-based (TF-IDF, BM25) vs embedding-based retrieval; ANN algorithms (LSH, HNSW, FAISS); hybrid search with RRF;…">
+  <title>Retrieval-Augmented Generation (RAG) — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html" aria-current="page">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Retrieval-Augmented Generation (RAG)</nav></div>
+      <h1>Retrieval-Augmented Generation (RAG)</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/rag.html">rag</a></li><li><a class="tag-chip" href="../tags/retrieval.html">retrieval</a></li><li><a class="tag-chip" href="../tags/vector-database.html">vector-database</a></li><li><a class="tag-chip" href="../tags/embeddings.html">embeddings</a></li><li><a class="tag-chip" href="../tags/information-retrieval.html">information-retrieval</a></li><li><a class="tag-chip" href="../tags/context.html">context</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-rag-persists-despite-long-contexts">Why RAG Persists Despite Long Contexts</a></li><li><a href="#architecture">Architecture</a></li><li><a href="#retrieval-algorithms">Retrieval Algorithms</a></li><li class="toc-sub"><a href="#term-based-retrieval">Term-Based Retrieval</a></li><li class="toc-sub"><a href="#embedding-based-semantic-retrieval">Embedding-Based (Semantic) Retrieval</a></li><li class="toc-sub"><a href="#hybrid-search">Hybrid Search</a></li><li><a href="#retrieval-optimisation-techniques">Retrieval Optimisation Techniques</a></li><li class="toc-sub"><a href="#chunking-strategy">Chunking Strategy</a></li><li class="toc-sub"><a href="#reranking">Reranking</a></li><li class="toc-sub"><a href="#query-rewriting-reformulation">Query Rewriting (Reformulation)</a></li><li class="toc-sub"><a href="#contextual-retrieval-anthropic-2024">Contextual Retrieval (Anthropic, 2024)</a></li><li><a href="#evaluation-metrics">Evaluation Metrics</a></li><li><a href="#rag-beyond-text">RAG Beyond Text</a></li><li><a href="#memory-model-for-agents">Memory Model for Agents</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>Retrieval-Augmented Generation (RAG) is a technique that enhances a model&#39;s generation by retrieving relevant information from external memory sources and injecting it into the model&#39;s context. The pattern separates a system&#39;s instruction (common to all queries) from its context (specific to each query). (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 6)</p>
+<p>Coined in Lewis et al. (2020), RAG addresses knowledge-intensive tasks where all available knowledge cannot fit in the model&#39;s context. The relevant subset is retrieved on-demand for each query.</p>
+<h2 id="why-rag-persists-despite-long-contexts">Why RAG Persists Despite Long Contexts</h2>
+<p>Expanding context length does not eliminate the need for RAG:</p>
+<ol>
+<li><strong>Data always grows</strong> — the total amount of available data exceeds any fixed context limit, regardless of how large that limit becomes.</li>
+<li><strong>&quot;Lost in the middle&quot; effect</strong> — models process tokens at the beginning and end of long contexts better than the middle (Liu et al. 2023). Retrieving only the most relevant chunks avoids burying key information in the middle.</li>
+<li><strong>Cost and latency</strong> — every input token incurs cost and latency. RAG selects only the relevant tokens, reducing both.</li>
+</ol>
+<p>Anthropic&#39;s guidance: for knowledge bases under 200,000 tokens (~500 pages), include the entire knowledge base in the context directly. RAG becomes beneficial beyond that scale.</p>
+<h2 id="architecture">Architecture</h2>
+<p>A RAG system has two components:</p>
+<ul>
+<li><strong>Retriever</strong> — processes and indexes external data; retrieves the most relevant chunks for each query.</li>
+<li><strong>Generator</strong> — a foundation model that uses the retrieved context and the original query to generate a response.</li>
+</ul>
+<p>The retriever&#39;s quality is the dominant determinant of overall RAG system quality.</p>
+<h2 id="retrieval-algorithms">Retrieval Algorithms</h2>
+<h3 id="term-based-retrieval">Term-Based Retrieval</h3>
+<p>Relevance is computed via lexical overlap — matching query terms to document terms.</p>
+<p><strong>TF-IDF:</strong> score(D, Q) = Σ IDF(t) × f(t, D), where IDF(t) = log(N / C(t)). Term frequency (TF) measures how often a term appears in a document; IDF down-weights common terms.</p>
+<p><strong>BM25 (Okapi BM25):</strong> a TF-IDF refinement that normalises term frequency by document length. The standard baseline for information retrieval; still widely competitive against modern approaches.</p>
+<p><strong>Implementation:</strong> Elasticsearch (built on Lucene&#39;s inverted index) and BM25 are the dominant production solutions.</p>
+<p><strong>Strengths:</strong> fast to index and query; works well out of the box; interpretable.</p>
+<p><strong>Weaknesses:</strong> lexical, not semantic — &quot;transformer architecture&quot; may return results about electric devices or films; cannot be improved as much through finetuning.</p>
+<h3 id="embedding-based-semantic-retrieval">Embedding-Based (Semantic) Retrieval</h3>
+<p>Relevance is computed by semantic similarity in vector space.</p>
+<p><strong>Indexing:</strong> each data chunk is converted to an embedding using an embedding model (BERT, Sentence Transformers, CLIP for multimodal). Embeddings are stored in a <strong>vector database</strong>.</p>
+<p><strong>Querying:</strong> the query is embedded with the same model; the vector database retrieves the k nearest neighbours by cosine similarity.</p>
+<p><strong>ANN algorithms</strong> for vector search at scale:</p>
+<ul>
+<li><strong>LSH</strong> (Locality-Sensitive Hashing) — hashes similar vectors into buckets; trades accuracy for speed. Used in FAISS and Annoy.</li>
+<li><strong>HNSW</strong> (Hierarchical Navigable Small World) — multi-layer graph; high accuracy and fast queries; expensive to build.</li>
+<li><strong>Product Quantization</strong> — decomposes vectors into lower-dimensional subvectors; enables fast approximate distance computation. Core of FAISS.</li>
+<li><strong>IVF</strong> (Inverted File Index) — K-means clustering + centroid search. Combined with PQ forms FAISS&#39;s backbone.</li>
+<li><strong>Annoy</strong> — tree-based; multiple random binary trees; Spotify&#39;s open-source implementation.</li>
+</ul>
+<p><strong>Strengths:</strong> semantic understanding; can be fine-tuned end-to-end; adapts to natural language queries.</p>
+<p><strong>Weaknesses:</strong> slow (embedding generation + vector search); expensive (embedding cost, vector storage, search); obscures specific keywords (error codes, product names) — use contextual retrieval to mitigate.</p>
+<h3 id="hybrid-search">Hybrid Search</h3>
+<p>Production systems combine term-based and embedding-based retrieval:</p>
+<ul>
+<li><strong>Sequential (cascade):</strong> cheap term-based retriever fetches candidates → expensive embedding-based reranker selects the best.</li>
+<li><strong>Parallel (ensemble):</strong> multiple retrievers run simultaneously; results merged via <strong>Reciprocal Rank Fusion (RRF)</strong>. Score(D) = Σ 1/(k + r_i(D)) where k=60 is a smoothing constant.</li>
+</ul>
+<h2 id="retrieval-optimisation-techniques">Retrieval Optimisation Techniques</h2>
+<h3 id="chunking-strategy">Chunking Strategy</h3>
+<p>Documents are split into chunks before indexing. Key decisions:</p>
+<ul>
+<li><strong>Unit:</strong> characters, words, sentences, paragraphs, or tokens.</li>
+<li><strong>Overlap:</strong> overlapping chunks prevent important context from being split across boundary. Common: 10–20% overlap.</li>
+<li><strong>Recursive splitting:</strong> start with sections; if too large, split into paragraphs; if still too large, sentences.</li>
+<li><strong>Size trade-off:</strong> smaller chunks → more diverse information, but risk losing cross-chunk context; larger chunks → more context, but fewer can fit in the model context window.</li>
+</ul>
+<p>Chunk size must not exceed the embedding model&#39;s or the generator model&#39;s context limit.</p>
+<h3 id="reranking">Reranking</h3>
+<p>After initial retrieval, rerank candidates using a more precise but more expensive mechanism:</p>
+<ul>
+<li>Use a cross-encoder (a model that jointly encodes query + document) to score each (query, document) pair.</li>
+<li>Rank by recency for time-sensitive applications.</li>
+<li>Position matters: because of the lost-in-the-middle effect, place the highest-scoring documents at the beginning or end of the context, not the middle.</li>
+</ul>
+<h3 id="query-rewriting-reformulation">Query Rewriting (Reformulation)</h3>
+<p>Ambiguous follow-up questions (e.g. &quot;How about Emily Doe?&quot;) need to be rewritten into standalone queries before retrieval. Rewriting can be done by another LLM: &quot;Given this conversation, rewrite the last user input to be fully self-contained.&quot;</p>
+<h3 id="contextual-retrieval-anthropic-2024">Contextual Retrieval (Anthropic, 2024)</h3>
+<p>Augment each chunk with 50–100 tokens of AI-generated context that explains the chunk&#39;s relationship to the original document before indexing. This addresses the problem of orphaned chunks that lack surrounding context. Prompt: &quot;Please give a short succinct context to situate this chunk within the overall document for the purposes of improving search retrieval.&quot;</p>
+<h2 id="evaluation-metrics">Evaluation Metrics</h2>
+<p><strong>Retriever metrics:</strong></p>
+<ul>
+<li><strong>Context precision</strong> (a.k.a. context relevance) — of documents retrieved, what fraction are relevant? Computable without annotating the full database; AI judges can evaluate pairwise (query, retrieved doc).</li>
+<li><strong>Context recall</strong> — of all relevant documents, what fraction is retrieved? Requires annotating all documents for each query — expensive; often omitted in production.</li>
+<li><strong>NDCG, MAP, MRR</strong> — ranking-aware metrics when document order matters.</li>
+</ul>
+<p><strong>Embedding quality:</strong> MTEB benchmark (Muennighoff et al. 2023) evaluates embeddings across retrieval, classification, and clustering tasks.</p>
+<p><strong>End-to-end:</strong> evaluate whether the final generated response is high quality (factual consistency, relevance). Retriever quality only matters insofar as it improves the generator&#39;s output.</p>
+<h2 id="rag-beyond-text">RAG Beyond Text</h2>
+<p><strong>Multimodal RAG:</strong> use a shared embedding space (CLIP) to index both text and images; retrieve both modalities for a given query; pass to a multimodal generator.</p>
+<p><strong>Tabular data (Text-to-SQL):</strong> for structured databases, the RAG analogue is: (1) text-to-SQL — convert the natural language query to a SQL query; (2) SQL execution; (3) generation — respond based on the SQL result. An intermediate step may select which tables to query when many tables exist.</p>
+<h2 id="memory-model-for-agents">Memory Model for Agents</h2>
+<p>Three memory types an AI model uses:</p>
+<ul>
+<li><strong>Internal knowledge</strong> — encoded in model weights during training; shared across all queries; updated only by retraining.</li>
+<li><strong>Short-term memory</strong> — the model&#39;s context window; fast access; limited capacity; lost between sessions.</li>
+<li><strong>Long-term memory</strong> — external storage accessed via retrieval (RAG); persists across sessions; can be updated without retraining.</li>
+</ul>
+<p><strong>Memory management strategies:</strong></p>
+<ul>
+<li><strong>FIFO</strong> — discard the oldest context when the limit is reached. Simple but loses potentially critical early messages.</li>
+<li><strong>Summarisation</strong> — replace conversation history with a generated summary. Reduces tokens while preserving key information.</li>
+<li><strong>Reflection-based</strong> — after each step, the agent evaluates whether new information should be inserted, merged with, or used to replace existing memory (Liu et al. 2023).</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>RAG is a context construction technique, not just a long-context workaround; it remains relevant even with very long context windows because data grows without bound and token cost/quality concerns persist.</li>
+<li>Term-based retrieval (BM25/Elasticsearch) is the right starting point: fast, cheap, and competitive.</li>
+<li>Embedding-based retrieval improves with finetuning but is significantly more expensive to operate; vector database cost can reach 20–50% of model API spend.</li>
+<li>Hybrid search (cascade or ensemble + RRF) is the production norm.</li>
+<li>Chunking and contextual retrieval decisions have outsized impact on retrieval quality.</li>
+<li>Evaluate retrieval and generation quality separately (context precision, end-to-end factual consistency) and together.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/ai-evals.html">Ai Evals</a> — factual consistency evaluation is particularly important for RAG outputs</li>
+<li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a> — context construction is complementary to instruction crafting</li>
+<li><a href="../concepts/foundation-models.html">Foundation Models</a> — the generator models RAG augments</li>
+<li><a href="../concepts/llm-sampling.html">Llm Sampling</a> — hallucination is reduced by grounding outputs in retrieved context</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-agents.html">AI Agents</a></li><li><a href="../concepts/ai-engineering.html">AI Engineering</a></li><li><a href="../sources/ai-engineering.html">AI Engineering</a></li><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/ai-evals.html">AI Evaluation</a></li><li><a href="../concepts/finetuning.html">Finetuning</a></li><li><a href="../concepts/foundation-models.html">Foundation Models</a></li><li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li><li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

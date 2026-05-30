@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="*AI Engineering* — Chip Huyen">
+  <meta property="og:title" content="AI Engineering — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="*AI Engineering* — Chip Huyen">
+  <title>AI Engineering — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html" aria-current="page">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../sources/index.html">Sources</a> <span class="sep">›</span> AI Engineering</nav></div>
+      <h1>AI Engineering</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../sources/index.html">source</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/foundation-models.html">foundation-models</a></li><li><a class="tag-chip" href="../tags/machine-learning.html">machine-learning</a></li><li><a class="tag-chip" href="../tags/inference.html">inference</a></li><li><a class="tag-chip" href="../tags/rag.html">rag</a></li><li><a class="tag-chip" href="../tags/agents.html">agents</a></li><li><a class="tag-chip" href="../tags/prompt-engineering.html">prompt-engineering</a></li><li><a class="tag-chip" href="../tags/finetuning.html">finetuning</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#overview">Overview</a></li><li><a href="#key-claims">Key Claims</a></li><li><a href="#chapter-notes">Chapter Notes</a></li><li class="toc-sub"><a href="#chapter-1-introduction-to-building-ai-applications-with-foundation-models">Chapter 1 — Introduction to Building AI Applications with Foundation Models</a></li><li class="toc-sub"><a href="#chapter-2-understanding-foundation-models">Chapter 2 — Understanding Foundation Models</a></li><li class="toc-sub"><a href="#chapter-3-evaluation-methodology">Chapter 3 — Evaluation Methodology</a></li><li class="toc-sub"><a href="#chapter-4-evaluate-ai-systems">Chapter 4 — Evaluate AI Systems</a></li><li class="toc-sub"><a href="#chapter-5-prompt-engineering">Chapter 5 — Prompt Engineering</a></li><li class="toc-sub"><a href="#chapter-6-rag-and-agents">Chapter 6 — RAG and Agents</a></li><li class="toc-sub"><a href="#chapter-7-finetuning">Chapter 7 — Finetuning</a></li><li class="toc-sub"><a href="#chapter-8-dataset-engineering">Chapter 8 — Dataset Engineering</a></li><li class="toc-sub"><a href="#chapter-9-inference-optimization">Chapter 9 — Inference Optimization</a></li><li class="toc-sub"><a href="#chapter-10-ai-engineering-architecture-and-user-feedback">Chapter 10 — AI Engineering Architecture and User Feedback</a></li><li><a href="#notable-quotes">Notable Quotes</a></li><li><a href="#related-pages">Related Pages</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Authors:</strong> <a href="../authors/chip-huyen.html">Chip Huyen</a>
+<strong>Published:</strong> 2024
+<strong>Slug:</strong> <code>ai-engineering</code></p>
+<h2 id="overview">Overview</h2>
+<p>AI Engineering, by Chip Huyen, is a comprehensive guide to building production applications on top of foundation models (large language models and multimodal models). It distinguishes AI engineering from traditional ML engineering: where ML engineering builds models, AI engineering adapts and orchestrates existing ones. The book argues that the availability of powerful foundation models via APIs has dramatically lowered the barrier to building AI applications, creating a fast-growing engineering discipline.</p>
+<p>The book is structured around the full AI engineering lifecycle: understanding how models work, evaluating them systematically, adapting them via prompt engineering and RAG, finetuning them for specific tasks, engineering training datasets, optimising inference, and designing feedback loops. It emphasises evaluation as a first-class concern and treats the probabilistic, non-deterministic nature of LLMs as the central challenge that every technique must address.</p>
+<p>The intended audience is engineers building AI applications — particularly those coming from software engineering or ML backgrounds who want a systematic framework rather than ad-hoc experimentation.</p>
+<h2 id="key-claims">Key Claims</h2>
+<ul>
+<li>AI engineering = building applications on top of foundation models; it differs from ML engineering chiefly in that it adapts models rather than building them (→ ch. 1)</li>
+<li>Foundation models are general-purpose; task-specific adaptation is cheaper than building models from scratch (→ ch. 1)</li>
+<li>Evaluation is the most important and underrated activity in AI engineering — open-ended outputs make it much harder than in classical ML (→ ch. 1, 3)</li>
+<li>The probabilistic, sampling-based nature of LLMs is the root cause of hallucination and inconsistency (→ ch. 2)</li>
+<li>Scaling law (Chinchilla): for compute-optimal training, training tokens should be ~20× the number of parameters (→ ch. 2)</li>
+<li>Post-training (SFT + preference finetuning) uses only ~2% of the compute of pre-training but dramatically improves usability and alignment (→ ch. 2)</li>
+<li>Sampling variables (temperature, top-k, top-p) are underappreciated levers that significantly affect model behaviour (→ ch. 2)</li>
+<li>Test-time compute — generating multiple outputs and selecting the best — can substitute for larger model size (→ ch. 2)</li>
+</ul>
+<h2 id="chapter-notes">Chapter Notes</h2>
+<h3 id="chapter-1-introduction-to-building-ai-applications-with-foundation-models">Chapter 1 — Introduction to Building AI Applications with Foundation Models</h3>
+<p>Traces the evolution from language models → LLMs → foundation models (multimodal). Defines AI engineering and distinguishes it from traditional ML engineering. Three factors driving its growth: general-purpose capabilities, increased investment, and low entry barrier via model-as-a-service APIs.</p>
+<p>Surveys use cases across eight categories: coding, image/video production, writing, education, conversational bots, information aggregation, data organisation, workflow automation. Notes the enterprise preference for internal-facing applications first, and for close-ended (classification) tasks over open-ended ones, as they are easier to evaluate.</p>
+<p>Introduces planning considerations: use case evaluation, AI product defensibility (technology, data, distribution moats), the last-mile challenge (demo → production gap), and maintenance challenges including rapid pace of change, regulations, and IP uncertainty.</p>
+<p>Describes the three-layer AI engineering stack: application development (evaluation, prompt engineering, AI interface), model development (modelling/training, dataset engineering, inference optimisation), and infrastructure (serving, data, compute, monitoring). Notes that the application development layer is the most differentiated for most organisations — it is where competitive advantage is created when models are commodities.</p>
+<h3 id="chapter-2-understanding-foundation-models">Chapter 2 — Understanding Foundation Models</h3>
+<p>Covers training data, model architecture, model scale, post-training, sampling, and the probabilistic nature of AI.</p>
+<p><strong>Training data:</strong> Common Crawl is the dominant source, but its quality is poor and its language distribution is heavily English-biased. English accounts for ~46% of Common Crawl; many high-population languages (Punjabi, Swahili, Urdu, Bengali) are under-represented by 50–200×. This creates meaningful performance gaps: GPT-4 performs much better in English than in Telugu or Burmese. Under-representation also makes inference more expensive for under-resourced languages (Burmese requires ~10× the tokens of English for the same content).</p>
+<p><strong>Transformer architecture:</strong> Addresses seq2seq&#39;s limitations — slow sequential processing and relying only on the final hidden state. Introduces the attention mechanism (Q/K/V vectors), which allows the model to attend to any prior token when generating each output. Inference has two phases: prefill (parallel input processing) and decode (sequential token generation). This asymmetry motivates many inference optimisation techniques. The KV cache (storing key and value vectors across decoding steps) is central to inference efficiency.</p>
+<p><strong>Model architecture alternatives:</strong> RWKV (RNN-based, parallelisable for training), SSMs (state space models, better long-range memory), Mamba (SSM scaled to 3B params, linear scaling with sequence length), Jamba (hybrid transformer/Mamba). None have yet displaced the transformer in practice.</p>
+<p><strong>Model scale:</strong> Three proxy metrics: number of parameters (learning capacity), number of training tokens (knowledge acquired), and FLOPs (training cost). Mixture-of-experts (MoE) models (e.g. Mixtral 8×7B) have large total parameter counts but activate only a fraction per token, making them cheaper to run than their parameter count suggests. Scaling bottlenecks: publicly available training data may be exhausted within a few years; data centres already consuming 1–2% of global electricity, projected to reach 4–20% by 2030.</p>
+<p><strong>Scaling law (Chinchilla):</strong> For compute-optimal training, training tokens ≈ 20× number of parameters. Both model size and dataset size should be scaled equally. Meta&#39;s Llama opted for smaller models (better inference economics) at the cost of slightly suboptimal training performance. For production, inference cost matters as much as training-time optimality.</p>
+<p><strong>Post-training:</strong> Two steps: (1) Supervised finetuning (SFT) on demonstration data (prompt, response) pairs to shift from completion to conversation. (2) Preference finetuning to align with human preference. RLHF trains a reward model on comparison data (winning vs losing responses) then uses PPO to maximise reward model scores. DPO is a simpler alternative (Llama 3 switched from RLHF to DPO). Post-training uses only ~2% of pre-training compute.</p>
+<p><strong>Sampling:</strong> Each output token is sampled from a probability distribution over the vocabulary. Temperature scales logits before softmax — higher temperature increases diversity but reduces coherence. Top-k restricts sampling to the k most likely tokens. Top-p (nucleus sampling) restricts to the smallest set whose cumulative probability exceeds p. Test-time compute generates multiple outputs and selects the best via reward model, highest average logprob, or majority voting.</p>
+<p><strong>Structured outputs:</strong> Techniques to force outputs to follow a specific format: prompting (unreliable), post-processing (cheap, works for small corrections), constrained sampling (filters logits to valid tokens per grammar), finetuning (most reliable). LinkedIn&#39;s defensive YAML parser improved correct output rate from 90% to 99.99%.</p>
+<p><strong>Probabilistic nature:</strong> Inconsistency (same prompt → different outputs) and hallucination are both consequences of sampling. Two hypotheses for hallucination: (1) self-delusion — the model conditions on its own generated text as if it were ground truth, allowing errors to snowball; (2) training–knowledge mismatch — SFT labellers include knowledge the model doesn&#39;t have, teaching it to fill gaps with plausible-sounding but false content.</p>
+<h3 id="chapter-3-evaluation-methodology">Chapter 3 — Evaluation Methodology</h3>
+<p>Covers the theory and metrics underlying AI evaluation, establishing why evaluation is uniquely difficult for foundation models and what measurement tools exist.</p>
+<p><strong>Why evaluation is hard:</strong> Four factors — multi-dimensional intelligence (no single metric captures capability), open-ended outputs (no fixed ground truth), black-box models (API-only access, no interpretability), and benchmark saturation (models trained on test data inflate scores; ceilings make discrimination hard).</p>
+<p><strong>Language modelling metrics:</strong> Entropy measures predictability of a distribution; cross entropy H(P,Q) = H(P) + KL(P‖Q) is the training objective and equals entropy only when model Q = true distribution P. Perplexity (PPL = 2^H or e^H) is the exponentiated average cross entropy per token — PPL = K means the model chooses uniformly among K tokens. Used for model comparison, data contamination detection, and deduplication; not a proxy for output quality. BPC/BPB normalise by character/byte to allow cross-tokeniser comparison.</p>
+<p><strong>Functional correctness:</strong> For code generation: pass@k = probability that at least 1 of k samples passes all tests. Unbiased estimator: 1 − C(n−c, k)/C(n, k). Common settings: pass@1 (production quality), pass@10 or pass@100 (capability ceiling).</p>
+<p><strong>Similarity measurements:</strong> Exact match, lexical similarity (BLEU, ROUGE with n-gram overlap), semantic similarity (embedding cosine similarity). BLEU measures n-gram precision (machine translation); ROUGE measures recall. Both weakly correlate with human preference for open-ended tasks.</p>
+<p><strong>Embeddings:</strong> Dense vectors placing semantically similar content close together. Key models: BERT (contextualised text), Sentence Transformers (sentence-level), CLIP (text+image shared space), ULIP/ImageBind (broader multimodal). Cosine similarity is the standard distance metric.</p>
+<p><strong>AI as a judge:</strong> LLM-based evaluation. Speed/cost advantage over human judges; GPT-4 agrees with humans ~85% of the time. Key biases: self-bias (models prefer their own outputs), first-position bias (preference for whichever candidate appears first), verbosity bias (preference for longer answers). Specialised judges: reward models (trained on win/loss triples, output scalar score), reference-based judges (fact-checking against known answer), preference models (win probability for pairwise comparison).</p>
+<p><strong>Comparative evaluation:</strong> Pairwise comparisons ranked by Elo, Bradley-Terry (more principled), or TrueSkill (Bayesian). LMSYS Chatbot Arena is the de facto public leaderboard using Bradley-Terry on volunteer pairwise ratings. Challenges: O(n²) scaling, quality control, transitivity assumption violations, gap between pairwise winner and best on specific tasks.</p>
+<h3 id="chapter-4-evaluate-ai-systems">Chapter 4 — Evaluate AI Systems</h3>
+<p>Applies the theoretical evaluation tools from Chapter 3 to real application development. Introduces <strong>evaluation-driven development</strong>: define evaluation criteria before building — applications without a clear evaluation pipeline are worse than undeployed applications (they consume maintenance cost with no visibility into whether they work).</p>
+<p><strong>Evaluation criteria taxonomy:</strong> Four buckets — domain-specific capability (can the model do the task?), generation capability (factual consistency, safety, fluency), instruction-following capability (does output match requested format/constraints?), and cost/latency (time to first token, total query time, TPM, cost per token).</p>
+<p><strong>Factual consistency:</strong> Two settings — local (against provided context; used in RAG, summarisation) and global (against world knowledge; used in chatbots). Evaluation ladder: AI judge → SelfCheckGPT (self-verification by sampling N outputs and checking consistency) → SAFE (Google DeepMind: decompose → make statements self-contained → search-augment → judge). Can also frame as textual entailment (entailment/contradiction/neutral). TruthfulQA benchmark: 817 questions covering 38 categories; human experts 94%, GPT-3 ~58%.</p>
+<p><strong>Safety:</strong> Six categories (inappropriate language, harmful recommendations, hate speech, violence, stereotypes, political bias). General-purpose judges or specialised classifiers (Perspective API, Facebook hate-speech model). Benchmarks: RealToxicityPrompts (100K prompts), BOLD. Note: GPT-4 leans left-wing/libertarian, Llama leans authoritarian (Feng et al., 2023; Motoki et al., 2023).</p>
+<p><strong>Instruction-following:</strong> IFEval (25 auto-verifiable instruction types: keyword inclusion, length constraints, JSON format, bullet count) and INFOBench (broader: content constraints, linguistic style, tone; verified by AI judge yes/no questions per criterion). Recommendation: build a custom instruction benchmark specific to your application&#39;s needs.</p>
+<p><strong>Model selection workflow:</strong> Four steps: (1) filter by hard attributes (licence, data privacy, on-device, latency); (2) screen with public benchmarks; (3) run private evaluation pipeline; (4) monitor in production. Iterative — decisions from early steps can be reversed by later information.</p>
+<p><strong>Open source vs model API (seven axes):</strong> data privacy, data lineage/copyright, performance (proprietary will likely remain ahead — incentives favour keeping best models behind APIs), functionality (APIs: better scaling/function-calling/structured outputs; self-hosted: logprob access, finetuning flexibility), cost (API: per-token; self-host: high fixed engineering cost), control/access/transparency (API risk: opaque versioning, rate limits, loss of access; self-host risk: operational burden), on-device deployment.</p>
+<p><strong>Public benchmark navigation:</strong> thousands of benchmarks but all have issues — data contamination (detectable via n-gram overlap or perplexity), saturation (benchmarks designed pre-frontier become ceilings), selection ambiguity (HuggingFace LLM Leaderboard and HELM share only 2 of 10 benchmarks), correlation problem (WinoGrande/MMLU/ARC-C highly correlated; inflates that dimension). Use public leaderboards to filter; run private evaluation to select.</p>
+<p><strong>Designing a private evaluation pipeline (four steps):</strong> (1) evaluate all components — end-to-end AND each intermediate stage; per-turn AND per-task; (2) create evaluation guideline — define good and bad, scoring rubrics with examples, validate with humans, tie to business metrics (map factual consistency % to automation %; set usefulness threshold); (3) define evaluation methods and data — mix cheap classifiers on 100% data with expensive AI judges on 1%; slice data by user tier/failure mode/out-of-scope; bootstrap to test reliability; sample size: ~100 examples to detect 10% difference at 95% confidence, ~1,000 for 3%, ~10,000 for 1%; (4) evaluate the evaluation pipeline — check reproducibility, metric correlation, cost/latency overhead, and whether better model outputs actually score higher.</p>
+<h3 id="chapter-5-prompt-engineering">Chapter 5 — Prompt Engineering</h3>
+<p>Covers both how to write effective prompts and how to defend applications against prompt attacks.</p>
+<p><strong>Prompt anatomy:</strong> task description, examples (shots), the task, and context. System prompt vs user prompt — both concatenated under the hood; system prompt advantage comes from position (first) and post-training to prioritise it. Chat templates differ across model families and versions; wrong template causes silent failure.</p>
+<p><strong>In-context learning:</strong> few-shot learning demonstrated in GPT-3 paper (Brown et al. 2020). Zero-shot vs few-shot vs k-shot. François Chollet: a foundation model is a library of programs activated by prompts. ICL as continual learning — context can override training cut-off date.</p>
+<p><strong>Best practices:</strong> write clear explicit instructions (specify output format, persona, what to do with edge cases); provide context; use compact example formats to save tokens; use end-of-prompt markers for structured outputs. Break complex tasks into subtask chains (prompt decomposition) for monitoring, debugging, parallelisation, and cost optimisation. Give the model time to think via chain-of-thought (Wei et al. 2022): &quot;think step by step&quot; reduces hallucination (LinkedIn), costs more tokens. Self-critique (self-eval). Iterate systematically with versioned prompts, experiment tracking, and full-pipeline evaluation.</p>
+<p><strong>Prompt tooling:</strong> DSPy, OpenPrompt, Promptbreeder (evolutionary mutation), TextGrad. Cautions: hidden API calls multiply costs; tool bugs are common (wrong templates, typos, token concatenation). Principle: write prompts manually first; inspect all tool-generated prompts.</p>
+<p><strong>Defensive prompt engineering:</strong> three attack categories — (1) prompt extraction: reverse prompt engineering by tricking model into repeating system prompt; (2) jailbreaking/injection: direct manual attacks (obfuscation, output formatting manipulation, roleplaying/DAN), automated attacks (PAIR: AI attacker generates prompts iteratively, &lt;20 queries to jailbreak), indirect prompt injection (malicious instructions in tool outputs — web pages, emails, database records); (3) information extraction: training data extraction (Nasr et al. 2023; ~1% memorisation rate; repeated token attack), copyright regurgitation, PII probing.</p>
+<p><strong>Defences:</strong> model level (instruction hierarchy: system &gt; user &gt; model output &gt; tool output; OpenAI&#39;s approach, 63% robustness improvement); prompt level (explicit prohibitions, repeat system prompt, warn about specific attacks); system level (code sandbox isolation, human approval for DB mutations, topic filters, output guardrails). Two key security metrics: violation rate and false refusal rate.</p>
+<h3 id="chapter-6-rag-and-agents">Chapter 6 — RAG and Agents</h3>
+<p>Covers context construction patterns: RAG for retrieval and agents for broader tool use.</p>
+<p><strong>RAG motivation:</strong> long contexts don&#39;t eliminate RAG because data grows without bound, models perform poorly in the middle of very long contexts (Liu et al. 2023), and per-token cost/latency matters. Anthropic: if knowledge base &lt; 200,000 tokens, include everything directly.</p>
+<p><strong>Retrieval algorithms:</strong> term-based (TF-IDF, BM25, Elasticsearch inverted index — fast, cheap, strong baseline) vs embedding-based (semantic — FAISS/HNSW/Annoy/IVF; cosine similarity; more powerful but 20–50% of model API spend in vector DB alone). Hybrid search (sequential cascade or parallel RRF) is the production norm.</p>
+<p><strong>Retrieval optimisation:</strong> chunking strategy (unit, size, overlap; recursive splitting; overlap prevents boundary cuts); reranking (cascade: cheap filter then expensive rerank; recency boost for time-sensitive apps); query rewriting (rewrite ambiguous follow-ups into standalone queries using another model); contextual retrieval (Anthropic: prepend 50–100 token AI-generated context summary to each chunk before indexing).</p>
+<p><strong>Evaluation:</strong> context precision (retrieved docs that are relevant) and context recall (relevant docs that are retrieved); NDCG/MAP/MRR for ranking; MTEB for embedding quality; end-to-end factual consistency.</p>
+<p><strong>Beyond text:</strong> multimodal RAG (CLIP for cross-modal embedding search); tabular RAG (text-to-SQL → SQL execution → generation).</p>
+<p><strong>Agents:</strong> defined by environment + tool inventory + planning capability. Three tool categories: knowledge augmentation (retrieval, web search, SQL), capability extension (calculator, code interpreter, image captioner), write actions (email send, DB mutations — require explicit human approval). Function calling is the API mechanism for tool use.</p>
+<p><strong>Planning:</strong> plan generation (prompt with CoT + few-shot examples); validate plans before execution; natural language plans (more robust to tool API changes); control flows (sequential, parallel, if-statement, for-loop); ReAct framework (Yao et al. 2022: thought/act/observation interleaved); Reflexion (Shinn et al. 2023: dedicated evaluator + self-reflection module to propose new trajectories). Multi-agent: planner, evaluator, executor, intent classifier as separate components.</p>
+<p><strong>Agent failure modes:</strong> invalid tool, invalid parameters, incorrect parameter values, goal failure (wrong constraint), reflection error (agent incorrectly believes task is done); tool failures (wrong outputs, translation errors); efficiency failures (excessive steps/cost).</p>
+<p><strong>Memory:</strong> internal knowledge (weights) + short-term memory (context) + long-term memory (external storage via retrieval). Management: FIFO, summarisation, reflection-based (insert/merge/replace). Memory management is essential for agents to handle information overflow within and across sessions.</p>
+<p><strong>LLM planning debate:</strong> Yann LeCun / Kambhampati: autoregressive LLMs cannot plan; counter: LLMs encode world models (Hao et al. 2023) and can backtrack by replanning; FM agents and RL agents expected to converge.</p>
+<h3 id="chapter-7-finetuning">Chapter 7 — Finetuning</h3>
+<p>Covers when and how to finetune foundation models. Frames finetuning as one point in the model adaptation ladder: prompt engineering → few-shot → RAG → finetuning → train from scratch.</p>
+<p><strong>When to finetune:</strong> for behavioural failures (wrong format, wrong style, wrong specificity); not for information failures (use RAG). &quot;Finetuning is for form, RAG is for facts.&quot; (Ovadia et al., 2024). Core tension: finetuning on task A can degrade performance on tasks B and C.</p>
+<p><strong>Memory bottleneck:</strong> inference memory = N × M × 1.2 (parameters + activations + KV cache). Training memory additionally includes gradients and optimiser states; Adam requires 3× memory per trainable parameter beyond weight storage. A 13B model: ~31 GB for inference, ~56 GB+ for full finetuning. Gradient checkpointing trades compute for memory.</p>
+<p><strong>Numerical representations:</strong> FP32 (standard training), FP16/BF16 (16-bit; different range/precision trade-offs; Llama 2 is BF16 — loading in FP16 causes silent quality degradation), TF32 (NVIDIA GPU optimised), INT8/INT4 (extreme quantisation). BitNet b1.58: 1.58 bits/parameter, performance comparable to 16-bit Llama 2 up to 3.9B params.</p>
+<p><strong>Quantisation:</strong> PTQ (post-training quantisation) is the norm; QAT (quantisation-aware training) produces better inference quality but doesn&#39;t reduce training cost. Reduced precision reduces memory and can improve throughput.</p>
+<p><strong>PEFT (parameter-efficient finetuning):</strong> Houlsby et al. (2019) — within 0.4% of full finetuning at 3% of trainable parameters. Two families: adapter-based (add modules; LoRA dominates) and soft prompt-based (trainable continuous tokens; less popular).</p>
+<p><strong>LoRA:</strong> Decomposes weight matrix W (n×m) into A (n×r) × B (r×m); W′ = W + (α/r)AB; only A and B are trained. GPT-3: comparable performance with 0.0027% of full finetuning trainable parameters. Rank r: 4–64 typically sufficient; increasing r rarely helps. Apply to attention matrices W_q, W_k, W_v, W_o; feedforward layers also valuable. Multi-LoRA serving keeps adapters separate from base model — 100 customers: 23.3M params vs 1.68B for merged option. QLoRA stores base in 4-bit NF4, enabling 65B finetuning on a single 48 GB GPU.</p>
+<p><strong>Model merging:</strong> combine multiple finetuned models into one. Approaches: summing (linear combination / model soups; SLERP; TIES/DARE prune redundant task vector parameters first), layer stacking (frankenmerging; used to build MoEs from dense checkpoints; Goliath-120B from two 70B models), concatenation (not recommended — no memory saving). Task arithmetic: add/subtract task vectors (delta = finetuned − base) to add/remove capabilities.</p>
+<p><strong>Practical tactics:</strong> development paths — progression (cheapest→strongest, map price/performance frontier) and distillation (strongest model→synthetic data→smaller model). Key hyperparameters: learning rate (1e-7 to 1e-3), batch size (larger = more stable; gradient accumulation for constrained hardware), epochs (1–2 for millions; 4–10 for thousands), prompt loss weight (~10% default — model learns mostly from responses).</p>
+<h3 id="chapter-8-dataset-engineering">Chapter 8 — Dataset Engineering</h3>
+<p>Covers the data lifecycle for finetuning: curation, acquisition, synthesis, and processing.</p>
+<p><strong>Data-centric AI:</strong> the shift from model-centric (better architectures) to data-centric (better datasets for same model). Llama 3&#39;s improvements over Llama 2 are primarily from data quality and diversity improvements, not architecture changes.</p>
+<p><strong>Three core criteria:</strong> (1) Quality — six dimensions: relevant, aligned, consistent, correctly formatted, sufficiently unique, compliant. 10K carefully crafted instructions &gt; 100K noisy ones (Yi model); 1,000 LIMA examples match GPT-4 in 43% of comparisons. (2) Coverage — domain, task, linguistic, format diversity; performance gains plateau around 282 finetuning tasks but remain positive. (3) Quantity — full finetuning: tens of thousands to millions; PEFT: hundreds to thousands; stronger base models need fewer examples; use 50-example pilot before committing to large dataset.</p>
+<p><strong>Data acquisition:</strong> Own application data is highest priority (matches production distribution, enables data flywheel). Public datasets (Hugging Face, Kaggle, data.gov). Annotation guidelines are as hard to create as annotations themselves.</p>
+<p><strong>Data synthesis:</strong> augmentation (derives from real data) vs synthesis (generates from scratch). Traditional methods: rule-based templates (Faker); image augmentation (rotate/crop/flip/perturb); simulation (CARLA for autonomous driving; self-play for game agents — OpenAI Dota 2: 180 years of games per day). AI-powered: paraphrasing/translation (MetaMath: 15K → 400K examples; outperforms larger models); instruction synthesis (Self-Instruct seed → Alpaca&#39;s 52K examples); reverse instruction (take long content → generate the prompt that would elicit it — avoids AI hallucinations in responses); model bootstrapping (Li et al. 2023: weak model → generate instructions for high-quality content → finetune → repeat).</p>
+<p><strong>Llama 3 synthesis pipeline:</strong> generate problem descriptions → generate solutions → AI unit tests → AI self-correction → code translation + filtering → code back-translation + filtering → 2.7M synthetic coding examples.</p>
+<p><strong>Limitations of synthetic data:</strong> quality control (can&#39;t always verify); superficial imitation (Gudibande et al. 2023: style without factual accuracy); model collapse (Shumailov et al. 2023: recursive AI-generated training causes irreversible quality degradation; mix with real data to mitigate); obscure data lineage (inherited copyright/contamination from teacher models).</p>
+<p><strong>Model distillation:</strong> train small student on large teacher&#39;s outputs. DistilBERT: 40% smaller, 97% capability, 60% faster. Distillation requires checking teacher model&#39;s licence.</p>
+<p><strong>Data processing pipeline:</strong> inspect (statistics, manual review, inter-annotator disagreement), deduplicate (MinHash/Bloom filter/semantic similarity; 0.1% data repeated 100× degrades 800M model to 400M performance), clean and filter (HTML removal → +20% accuracy at Databricks; PII/toxicity removal), format (apply correct chat template — wrong template causes silent bugs; finetuned model prompts can be much shorter than prompt-engineered equivalents).</p>
+<h3 id="chapter-9-inference-optimization">Chapter 9 — Inference Optimization</h3>
+<p>Covers the computational bottlenecks of LLM serving and how to address them at the model, hardware, and service levels.</p>
+<p><strong>Two bottlenecks:</strong> prefill (process prompt) is compute-bound; decode (generate tokens one by one) is memory bandwidth-bound. They have fundamentally different optimisation profiles. The key metrics are TTFT, TPOT, total latency, throughput, goodput, MFU (FLOP/s utilisation), and MBU (memory bandwidth utilisation).</p>
+<p><strong>GPU memory hierarchy:</strong> CPU DRAM (25–50 GB/s) → GPU HBM (256 GB/s – 1.5 TB/s) → GPU SRAM (&gt;10 TB/s). Matrix multiplication &gt;90% of neural network FLOPs; memory bandwidth is the binding constraint during decode.</p>
+<p><strong>Model-level techniques:</strong></p>
+<ul>
+<li><strong>Quantisation</strong> (most popular): PTQ after training; QAT during training. INT8 generally lossless; INT4 requires more care.</li>
+<li><strong>Pruning:</strong> removes small-magnitude weights; requires hardware sparse matrix support to realise gains.</li>
+<li><strong>Speculative decoding:</strong> fast draft model generates K tokens → target model verifies in parallel (same compute profile as prefill). DeepMind 4B draft for Chinchilla-70B: &gt;50% latency reduction. <em>Inference with reference</em>: draft tokens from input context (not a separate model) — ~2× speedup for retrieval/coding/multi-turn.</li>
+<li><strong>Parallel decoding:</strong> Lookahead (Jacobi method); Medusa (multiple decoding heads; ~1.9× speedup on Llama 3.1).</li>
+</ul>
+<p><strong>KV cache:</strong> size formula <code>2 × B × S × L × H × M</code>; grows linearly with sequence length. Llama 2 13B at batch=32, seq=2048: ~54 GB. Variants to reduce it: MQA, GQA (generalises MQA), cross-layer attention, windowed attention. Character.AI: &gt;20× reduction. PagedAttention (vLLM): non-contiguous blocks, eliminates fragmentation. FlashAttention: hardware-aware fused kernel that avoids materialising the full attention matrix.</p>
+<p><strong>Service-level techniques:</strong></p>
+<ul>
+<li><strong>Batching:</strong> static → dynamic (time window) → continuous/in-flight (Orca paper — per-step scheduling, no head-of-line blocking). Continuous batching is the production standard.</li>
+<li><strong>Prefill/decode decoupling:</strong> separate GPU instances per phase; ratio 2:1 to 4:1 for long inputs.</li>
+<li><strong>Prompt caching:</strong> reuse KV cache for identical system prompts. Anthropic: 90% cost reduction, 75% latency reduction. Google Gemini: 75% cost discount + storage fee.</li>
+<li><strong>Deployment economics:</strong> online APIs (latency-optimised) vs batch APIs (50% cost discount, hours turnaround).</li>
+</ul>
+<h3 id="chapter-10-ai-engineering-architecture-and-user-feedback">Chapter 10 — AI Engineering Architecture and User Feedback</h3>
+<p>Covers the five-step progressive architecture for production AI applications and the feedback systems that enable continuous improvement.</p>
+<p><strong>Five-step progressive architecture:</strong></p>
+<ol>
+<li>Enhance context (RAG, tools)</li>
+<li>Guardrails (input: PII masking + reverse dictionary; output: format, factual consistency, toxicity, brand-risk; retry logic; human fallback)</li>
+<li>Model router (intent classifier → specialised models; fast/cheap: GPT-2/BERT/Llama 7B) + model gateway (unified API; access control; fallback policies; logging — examples: Portkey, MLflow AI Gateway, Kong, Cloudflare)</li>
+<li>Caching (exact: LRU/LFU/FIFO; semantic: embedding + threshold — higher failure risk; data-leak risk for personalised responses shared across users)</li>
+<li>Agent patterns</li>
+</ol>
+<p><strong>Monitoring:</strong></p>
+<ul>
+<li>Key incident metrics: MTTD, MTTR, CFR.</li>
+<li><strong>Model drift</strong> is the critical AI-specific risk: system prompt changes, user behaviour shifts, and provider-side model updates all change behaviour silently. Chen et al. (2023): notable GPT-4 March vs June 2023 differences. Voiceflow: 10% drop across GPT-3.5 versions. Mitigation: version pinning, continuous evals on live traffic.</li>
+</ul>
+<p><strong>Orchestration frameworks:</strong> LangChain, LlamaIndex, Flowise, Langflow, Haystack. Start without one; add when complexity justifies it.</p>
+<p><strong>User feedback:</strong> the data flywheel. Explicit (thumbs, stars, comments) vs implicit (early termination, error correction, complaints, regeneration request, conversation length/diversity). User edits = direct DPO preference pairs (original = loser, edit = winner).</p>
+<p><strong>Feedback design:</strong> non-intrusive collection; action-correlated signals (Midjourney grid; GitHub Copilot Tab=accept, continue=reject). Biases: leniency (Uber average 4.8; &lt;4.6 risks deactivation), randomness, position, preference (length/flattery), recency.</p>
+<p><strong>Degenerate feedback loops:</strong> exposure bias amplifies distribution; sycophancy (Sharma et al. 2023 — RLHF models favour users&#39; stated views). Mitigate with blind comparison studies and output diversity monitoring.</p>
+<h2 id="notable-quotes">Notable Quotes</h2>
+<blockquote>
+<p>&quot;AI engineering—the process of building applications on top of readily available models—[has become] one of the fastest-growing engineering disciplines.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;The journey from 0 to 60 is easy, whereas progressing from 60 to 100 becomes exceedingly challenging.&quot; (ch. 1, citing Ding et al., 2023)</p>
+</blockquote>
+<blockquote>
+<p>&quot;In AI, there are generally three types of competitive advantages: technology, data, and distribution.&quot; (ch. 1)</p>
+</blockquote>
+<blockquote>
+<p>&quot;Foundation models are aggregations of the opinions of the masses, containing within them, literally, a world of possibilities. Anything with a non-zero probability, no matter how far-fetched or wrong, can be generated by AI.&quot; (ch. 2)</p>
+</blockquote>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../concepts/foundation-models.html">Foundation Models</a> — what foundation models are and how they work</li>
+<li><a href="../concepts/ai-engineering.html">Ai Engineering</a> — AI engineering as a discipline</li>
+<li><a href="../concepts/llm-sampling.html">Llm Sampling</a> — sampling strategies and the probabilistic nature of LLMs</li>
+<li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a> — ch. 5</li>
+<li><a href="../concepts/rag.html">Rag</a> — ch. 6</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-agents.html">AI Agents</a></li><li><a href="../concepts/ai-engineering.html">AI Engineering</a></li><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/ai-evals.html">AI Evaluation</a></li><li><a href="../authors/chip-huyen.html">Chip Huyen</a></li><li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li><li><a href="../concepts/finetuning.html">Finetuning</a></li><li><a href="../concepts/foundation-models.html">Foundation Models</a></li><li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li><li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li><li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li><li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

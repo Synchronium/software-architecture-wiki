@@ -57,6 +57,10 @@
       <summary>Concepts</summary>
       <ul>
         <li><a class="section-index-link" href="concepts/index.html">Index</a></li>
+        <li><a href="concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="concepts/ai-evals.html">AI Evaluation</a></li>
         <li><a href="concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
         <li><a href="concepts/api-design.html">API Design</a></li>
         <li><a href="concepts/api-gateway.html">API Gateway</a></li>
@@ -77,20 +81,27 @@
         <li><a href="concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="concepts/coupling.html">Coupling</a></li>
         <li><a href="concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
         <li><a href="concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="concepts/foundation-models.html">Foundation Models</a></li>
         <li><a href="concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="concepts/inference-optimization.html">Inference Optimization</a></li>
         <li><a href="concepts/integration-styles.html">Integration Styles</a></li>
         <li><a href="concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="concepts/messaging.html">Messaging</a></li>
         <li><a href="concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="concepts/modularity.html">Modularity</a></li>
         <li><a href="concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
         <li><a href="concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="concepts/software-complexity.html">Software Complexity</a></li>
@@ -230,6 +241,7 @@
         <li><a class="section-index-link" href="sources/index.html">Index</a></li>
         <li><a href="sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
         <li><a href="sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="sources/ai-engineering.html">AI Engineering</a></li>
         <li><a href="sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
         <li><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
@@ -263,6 +275,7 @@
         <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
@@ -380,6 +393,20 @@
 <li><a href="concepts/oauth2-and-authn.html">Oauth2 And Authn</a> — OAuth2 roles, JWT, grants (Auth Code, PKCE, Client Credentials), OIDC, refresh tokens (informed by: mastering-api-architecture)</li>
 <li><a href="concepts/threat-modeling.html">Threat Modeling</a> — STRIDE, DREAD, OWASP API Top 10, six-step process, rate limiting strategies (informed by: mastering-api-architecture)</li>
 <li><a href="concepts/zero-trust.html">Zero Trust</a> — Zonal architecture critique, NCSC eight principles, service mesh + OAuth2 implementation stack (informed by: mastering-api-architecture)</li>
+</ul>
+<h3>AI &amp; Machine Learning</h3>
+<ul>
+<li><a href="concepts/foundation-models.html">Foundation Models</a> — What foundation models are; transformer architecture (prefill/decode, KV cache, MoE); training data constraints; Chinchilla scaling law; post-training (SFT, RLHF, DPO) (informed by: ai-engineering)</li>
+<li><a href="concepts/ai-engineering.html">Ai Engineering</a> — AI engineering as a discipline vs ML engineering; three-layer stack (application dev, model dev, infrastructure); product planning; last-mile challenge; use case taxonomy (informed by: ai-engineering)</li>
+<li><a href="concepts/llm-sampling.html">Llm Sampling</a> — Sampling strategies (temperature, top-k, top-p); test-time compute; structured outputs; hallucination (self-delusion + knowledge-mismatch hypotheses); inconsistency mitigation (informed by: ai-engineering)</li>
+<li><a href="concepts/ai-evals.html">Ai Evals</a> — Evaluation methodology: perplexity, pass@k, BLEU/ROUGE, embeddings, AI-as-a-judge, comparative evaluation (Elo/Bradley-Terry, LMSYS Arena); factual consistency, safety, instruction-following; model selection workflow; API vs self-hosting; evaluation pipeline design; benchmark contamination (informed by: ai-engineering)</li>
+<li><a href="concepts/prompt-engineering.html">Prompt Engineering</a> — Prompt anatomy; system vs user prompt; chat templates; in-context learning (zero/few-shot, CoT); prompt decomposition; defensive prompt engineering (extraction, jailbreaking, injection, information extraction); three-layer defence (model/prompt/system) (informed by: ai-engineering)</li>
+<li><a href="concepts/rag.html">Rag</a> — Retrieval-augmented generation; term-based (TF-IDF, BM25) vs embedding-based retrieval; ANN algorithms (LSH, HNSW, FAISS); hybrid search with RRF; chunking; reranking; contextual retrieval; text-to-SQL; memory model (informed by: ai-engineering)</li>
+<li><a href="concepts/ai-agents.html">Ai Agents</a> — Agent planning (ReAct, Reflexion); tool categories (knowledge, capability, write actions); function calling; multi-agent systems; planning/tool/efficiency failure modes; safety and compound errors; LLM planning debate (informed by: ai-engineering)</li>
+<li><a href="concepts/finetuning.html">Finetuning</a> — When to finetune vs RAG; memory bottleneck; quantisation (FP32→INT4); PEFT; LoRA (low-rank decomposition, rank, alpha, multi-LoRA serving); QLoRA; model merging (task arithmetic, TIES/DARE, frankenmerging); finetuning tactics (informed by: ai-engineering)</li>
+<li><a href="concepts/dataset-engineering.html">Dataset Engineering</a> — Data-centric AI; three criteria (quality, coverage, quantity); acquisition and annotation; data synthesis (rule-based, simulation, AI-powered, reverse instruction); model distillation; model collapse; data processing pipeline (informed by: ai-engineering)</li>
+<li><a href="concepts/inference-optimization.html">Inference Optimization</a> — Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache management (PagedAttention, FlashAttention, GQA/MQA); continuous batching; prefill-decode decoupling; prompt caching (informed by: ai-engineering)</li>
+<li><a href="concepts/ai-engineering-architecture.html">Ai Engineering Architecture</a> — Five-step progressive architecture (context enhancement, guardrails, router/gateway, caching, agents); model drift detection; orchestration frameworks; user feedback systems (explicit vs implicit, edit-as-preference, degenerate feedback loops, sycophancy) (informed by: ai-engineering)</li>
 </ul>
 <h3>Data</h3>
 <ul>
@@ -514,6 +541,8 @@
 <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a> — <em>Software Architecture Metrics</em> — Ciceri et al. (fully ingested 2026-05-22)</li>
 <li><a href="sources/accelerate.html">Accelerate</a> — <em>Accelerate: The Science of Lean Software and DevOps</em> — Forsgren, Humble &amp; Kim (fully ingested 2026-05-18)</li>
 <li><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a> — <em>Site Reliability Engineering</em> — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)</li>
+<li><a href="sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em></li>
+<li><a href="sources/ai-engineering.html">Ai Engineering</a> — <em>AI Engineering</em> — Chip Huyen (fully ingested 2026-05-30)</li>
 <li><a href="sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em> — Rosenthal &amp; Jones (eds.); complex systems theory, Five Advanced Principles, Game Days, LDFI, Chaos Maturity Model, Continuous Verification, Security Chaos Engineering, organisational/human factors (informed by: chaos-engineering)</li>
 </ul>
 <hr>
@@ -561,6 +590,7 @@
 <li><a href="authors/gene-kim.html">Gene Kim</a> — Co-author of <em>Accelerate</em>; founder and CTO of Tripwire; co-author of <em>The Phoenix Project</em> and <em>The DevOps Handbook</em>; high-performing technology organisation researcher</li>
 <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a> — Co-author of <em>Chaos Engineering</em>; built and managed Netflix&#39;s Chaos Engineering team; co-creator of the Principles of Chaos Engineering</li>
 <li><a href="authors/nora-jones.html">Nora Jones</a> — Co-author of <em>Chaos Engineering</em>; Netflix Chaos Engineering team; safety science and sociotechnical systems perspective</li>
+<li><a href="authors/chip-huyen.html">Chip Huyen</a> — Author of <em>AI Engineering</em>; Stanford lecturer (CS 329S: ML Systems Design); ML systems and AI engineering specialist</li>
 </ul>
 </div>
     </main>

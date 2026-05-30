@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="All 46 pages in the Concepts section of the Software Architecture wiki.">
+  <meta name="description" content="All 57 pages in the Concepts section of the Software Architecture wiki.">
   <meta property="og:title" content="Concepts — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="All 46 pages in the Concepts section of the Software Architecture wiki.">
+  <meta property="og:description" content="All 57 pages in the Concepts section of the Software Architecture wiki.">
   <title>Concepts — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -57,6 +57,10 @@
       <summary>Concepts</summary>
       <ul>
         <li><a class="section-index-link" href="../concepts/index.html" aria-current="page">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
         <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
         <li><a href="../concepts/api-design.html">API Design</a></li>
         <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
@@ -77,20 +81,27 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
         <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
         <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
         <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
         <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
         <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
         <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
         <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
@@ -230,6 +241,7 @@
         <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
         <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
         <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
         <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
@@ -263,6 +275,7 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
@@ -307,9 +320,25 @@
     <div class="tag-index-header">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> Concepts</nav>
       <h1>Concepts</h1>
-      <p class="tag-count">46 pages</p>
+      <p class="tag-count">57 pages</p>
     </div>
     <ul class="tag-index-list">
+    <li class="tag-index-item">
+      <a href="../concepts/ai-agents.html">AI Agents</a>
+      <p class="summary">Agent planning (ReAct, Reflexion); tool categories (knowledge, capability, write actions); function calling; multi-agent systems; planning/tool/efficiency failure modes; safety and compound errors; LLM planning debate</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/ai-engineering.html">AI Engineering</a>
+      <p class="summary">AI engineering as a discipline vs ML engineering; three-layer stack (application dev, model dev, infrastructure); product planning; last-mile challenge; use case taxonomy</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a>
+      <p class="summary">Five-step progressive architecture (context enhancement, guardrails, router/gateway, caching, agents); model drift detection; orchestration frameworks; user feedback systems (explicit vs implicit, edit-as-preference, degenerate feedback loops, sycophancy)</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/ai-evals.html">AI Evaluation</a>
+      <p class="summary">Evaluation methodology: perplexity, pass@k, BLEU/ROUGE, embeddings, AI-as-a-judge, comparative evaluation (Elo/Bradley-Terry, LMSYS Arena); factual consistency, safety, instruction-following; model selection workflow; API vs self-hosting; evaluation pipeline design; benchmark contamination</p>
+    </li>
     <li class="tag-index-item">
       <a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a>
       <p class="summary">Data Warehouse, Data Lake, Data Mesh evolution; four Data Mesh principles; DPQ; OLTP vs OLAP; star/snowflake schema; DDD/Data Mesh alignment (OHS as analytical published language, CQRS for projections)</p>
@@ -391,6 +420,10 @@
       <p class="summary">Data disintegrators/integrators; five-step process; data domains; data sovereignty; connection quotas; polyglot persistence; database type selection; data ownership (single/common/joint); eventual consistency patterns; four distributed data access patterns</p>
     </li>
     <li class="tag-index-item">
+      <a href="../concepts/dataset-engineering.html">Dataset Engineering</a>
+      <p class="summary">Data-centric AI; three criteria (quality, coverage, quantity); acquisition and annotation; data synthesis (rule-based, simulation, AI-powered, reverse instruction); model distillation; model collapse; data processing pipeline</p>
+    </li>
+    <li class="tag-index-item">
       <a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a>
       <p class="summary">Fitness function automation; stages, fan-in/fan-out; CD vs CDP; cycle time as business metric; zero-downtime deployment (four phases: prepare/drain/apply/start); expand/contract relational schema pattern; trickle-then-batch schemaless migration; canary group evaluation; immutable infrastructure; EDM deployment patterns</p>
     </li>
@@ -411,6 +444,14 @@
       <p class="summary">Application-layer release control; Hodgson's four toggle types (release/experiment/ops/permission) with different lifecycles; flag lifecycle discipline; default behaviour and cohort routing; kill switches and load-shedding flags; flags as technical debt with a use-by date</p>
     </li>
     <li class="tag-index-item">
+      <a href="../concepts/finetuning.html">Finetuning</a>
+      <p class="summary">When to finetune vs RAG; memory bottleneck; quantisation (FP32→INT4); PEFT; LoRA (low-rank decomposition, rank, alpha, multi-LoRA serving); QLoRA; model merging (task arithmetic, TIES/DARE, frankenmerging); finetuning tactics</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/foundation-models.html">Foundation Models</a>
+      <p class="summary">What foundation models are; transformer architecture (prefill/decode, KV cache, MoE); training data constraints; Chinchilla scaling law; post-training (SFT, RLHF, DPO)</p>
+    </li>
+    <li class="tag-index-item">
       <a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a>
       <p class="summary">DORA four key metrics (deployment frequency, lead time for changes, change failure rate, time to restore service); empirical basis (4-year, 23K+ respondents, Accelerate); Lean conceptual basis; cluster analysis; no-tradeoff finding; CABs negatively correlated with both metrics; Goodhart's Law warning; pipeline topology variants; instrumentation; MVD; virtuous cycle mechanism; complementary metrics</p>
     </li>
@@ -423,12 +464,20 @@
       <p class="summary">GQM framework (Basili &amp; Weiss 1984): goal → questions → metrics → data tree; goal statement structure (purpose/object/issue/viewpoint); metric selection criteria (signal strength, cost, cross-question reuse); 9-step workshop; Foo Service case study (rate-limit incident → heartbeat + fail-fast ADR → 10-minute detection before user impact)</p>
     </li>
     <li class="tag-index-item">
+      <a href="../concepts/inference-optimization.html">Inference Optimization</a>
+      <p class="summary">Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache management (PagedAttention, FlashAttention, GQA/MQA); continuous batching; prefill-decode decoupling; prompt caching</p>
+    </li>
+    <li class="tag-index-item">
       <a href="../concepts/integration-styles.html">Integration Styles</a>
       <p class="summary">the four EIP integration styles (File Transfer, Shared Database, RPI, Messaging); eight decision criteria; trade-offs and when to use which style</p>
     </li>
     <li class="tag-index-item">
       <a href="../concepts/large-scale-structure.html">Large-Scale Structure</a>
       <p class="summary">organising principle for entire system; four patterns: System Metaphor, Responsibility Layers (Potential/Operations/Decision Support/Policy/Commitment), Knowledge Level, Pluggable Component Framework; Evolving Order; six essentials for strategic design</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a>
+      <p class="summary">Sampling strategies (temperature, top-k, top-p); test-time compute; structured outputs; hallucination (self-delusion + knowledge-mismatch hypotheses); inconsistency mitigation</p>
     </li>
     <li class="tag-index-item">
       <a href="../concepts/messaging.html">Messaging</a>
@@ -445,6 +494,14 @@
     <li class="tag-index-item">
       <a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a>
       <p class="summary">OAuth2 roles, JWT, grants (Auth Code, PKCE, Client Credentials), OIDC, refresh tokens</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/prompt-engineering.html">Prompt Engineering</a>
+      <p class="summary">Prompt anatomy; system vs user prompt; chat templates; in-context learning (zero/few-shot, CoT); prompt decomposition; defensive prompt engineering (extraction, jailbreaking, injection, information extraction); three-layer defence (model/prompt/system)</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a>
+      <p class="summary">Retrieval-augmented generation; term-based (TF-IDF, BM25) vs embedding-based retrieval; ANN algorithms (LSH, HNSW, FAISS); hybrid search with RRF; chunking; reranking; contextual retrieval; text-to-SQL; memory model</p>
     </li>
     <li class="tag-index-item">
       <a href="../concepts/risk-storming.html">Risk Storming</a>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agent planning (ReAct, Reflexion); tool categories (knowledge, capability, write actions); function calling; multi-agent systems; planning/tool/efficiency…">
+  <meta property="og:title" content="AI Agents — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Agent planning (ReAct, Reflexion); tool categories (knowledge, capability, write actions); function calling; multi-agent systems; planning/tool/efficiency…">
+  <title>AI Agents — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html" aria-current="page">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> AI Agents</nav></div>
+      <h1>AI Agents</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/llm.html">llm</a></li><li><a class="tag-chip" href="../tags/agents.html">agents</a></li><li><a class="tag-chip" href="../tags/planning.html">planning</a></li><li><a class="tag-chip" href="../tags/tool-use.html">tool-use</a></li><li><a class="tag-chip" href="../tags/function-calling.html">function-calling</a></li><li><a class="tag-chip" href="../tags/multi-agent.html">multi-agent</a></li><li><a class="tag-chip" href="../tags/reflection.html">reflection</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#why-agents-matter">Why Agents Matter</a></li><li><a href="#tool-categories">Tool Categories</a></li><li><a href="#planning">Planning</a></li><li class="toc-sub"><a href="#plan-generation">Plan Generation</a></li><li class="toc-sub"><a href="#plan-validation">Plan Validation</a></li><li class="toc-sub"><a href="#react-pattern-yao-et-al-2022">ReAct Pattern (Yao et al. 2022)</a></li><li class="toc-sub"><a href="#reflection-and-error-correction">Reflection and Error Correction</a></li><li class="toc-sub"><a href="#multi-agent-systems">Multi-Agent Systems</a></li><li><a href="#function-calling">Function Calling</a></li><li><a href="#tool-selection">Tool Selection</a></li><li><a href="#agent-failure-modes">Agent Failure Modes</a></li><li class="toc-sub"><a href="#planning-failures">Planning Failures</a></li><li class="toc-sub"><a href="#tool-failures">Tool Failures</a></li><li class="toc-sub"><a href="#efficiency-failures">Efficiency Failures</a></li><li><a href="#evaluation">Evaluation</a></li><li><a href="#safety-considerations">Safety Considerations</a></li><li><a href="#can-llms-plan">Can LLMs Plan?</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>An AI agent is a system that can perceive its environment and act upon it. In the context of foundation model applications, the model serves as the planning brain that analyses tasks, chooses actions from a tool inventory, executes them, and reflects on outcomes to determine whether the goal has been achieved. (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 6)</p>
+<p>RAG systems are a special case of agents — the retriever is a tool the model can use.</p>
+<h2 id="why-agents-matter">Why Agents Matter</h2>
+<p>Without tools, a model can perform one kind of action (text generation, image generation). Tools multiply an agent&#39;s capabilities. A GPT-4 agent with 13 tools (Chameleon, Lu et al. 2023) outperformed GPT-4 alone on several benchmarks: +11.37% on ScienceQA, +17% on TabMWP.</p>
+<p>Tool-augmented agents enable automation of entire workflows: research → draft → send email → update database → follow up.</p>
+<h2 id="tool-categories">Tool Categories</h2>
+<p><strong>Knowledge augmentation (read-only):</strong></p>
+<ul>
+<li>Text retriever, image retriever, SQL executor</li>
+<li>Web search (prevents model staleness; access current news, stock prices, weather)</li>
+<li>Internal APIs (inventory, Slack, email reader, people search)</li>
+</ul>
+<p><strong>Capability extension:</strong></p>
+<ul>
+<li>Calculator, calendar, timezone/unit converter</li>
+<li>Code interpreter (write and execute code; enables data analysis, automated experiments)</li>
+<li>Transcription, OCR, image captioning (expand a text-only model to process other modalities)</li>
+<li>Text-to-image, text-to-video tools (expand outputs to other modalities)</li>
+</ul>
+<p><strong>Write actions</strong> (higher capability, higher risk):</p>
+<ul>
+<li>Database mutations, email sending, bank transfers, code merges</li>
+<li>Require explicit human approval before execution for safety; treat with the same caution as write access in traditional systems</li>
+</ul>
+<h2 id="planning">Planning</h2>
+<p>Planning is the process by which the agent generates a sequence of actions (a plan) to achieve the task goal.</p>
+<h3 id="plan-generation">Plan Generation</h3>
+<p>The simplest approach: prompt engineering with chain-of-thought and few-shot examples of (task, plan) pairs. The model generates a sequence of function calls with parameters inferred from prior step outputs.</p>
+<p><strong>Natural language plans</strong> (higher level): the plan is expressed in natural language (&quot;retrieve best-selling product&quot;); a separate translation module maps each action to executable commands. More robust to tool inventory changes; reduces hallucination.</p>
+<p><strong>Plan granularity:</strong> sequential plans are simplest; complex plans may use:</p>
+<ul>
+<li><strong>Parallel</strong> — independent actions executed concurrently (reduces latency)</li>
+<li><strong>If statement</strong> — condition-dependent branching</li>
+<li><strong>For loop</strong> — repeated action until a condition is met</li>
+</ul>
+<h3 id="plan-validation">Plan Validation</h3>
+<p>Plans should be validated before execution:</p>
+<ul>
+<li>Heuristics: reject plans containing unknown tools; reject plans exceeding step budget.</li>
+<li>AI judge: ask a model to evaluate whether the plan is reasonable.</li>
+<li>Only execute validated plans.</li>
+</ul>
+<h3 id="react-pattern-yao-et-al-2022">ReAct Pattern (Yao et al. 2022)</h3>
+<p>Interleave reasoning and action at each step:</p>
+<pre><code>Thought 1: [reasoning about the current state]
+Act 1: [action taken]
+Observation 1: [result of the action]
+...
+Thought N: [task is complete]
+Act N: Finish [final response]
+</code></pre>
+<p>The interleaving forces the agent to articulate its reasoning and self-correct at each step. Reflexion (Shinn et al. 2023) extends this with a dedicated self-reflection module that analyses failures and proposes a new trajectory.</p>
+<h3 id="reflection-and-error-correction">Reflection and Error Correction</h3>
+<p>Reflection evaluates whether the plan or its execution is on track. It can occur:</p>
+<ul>
+<li>After receiving the initial task (is this feasible?)</li>
+<li>After plan generation (is this plan reasonable?)</li>
+<li>After each execution step (are we on track?)</li>
+<li>After the entire plan (has the goal been achieved?)</li>
+</ul>
+<p>Reflection can be implemented via:</p>
+<ul>
+<li>Self-critique prompts (same model)</li>
+<li>A separate evaluator agent in a multi-agent system</li>
+<li>A specialised scorer model</li>
+</ul>
+<p>If reflection detects failure, the agent generates a corrected plan. This allows learning from mistakes within a session (not via weight updates).</p>
+<h3 id="multi-agent-systems">Multi-Agent Systems</h3>
+<p>Complex agents decompose naturally into multiple interacting components:</p>
+<ul>
+<li><strong>Planner</strong> — generates plans</li>
+<li><strong>Evaluator</strong> — validates plans and inspects outcomes  </li>
+<li><strong>Executor</strong> — calls tools and executes actions</li>
+<li><strong>Intent classifier</strong> — routes queries to the right sub-agent; marks out-of-scope queries as IRRELEVANT</li>
+</ul>
+<p>Each component can be a separate model call. Most real-world agents are multi-agent systems.</p>
+<h2 id="function-calling">Function Calling</h2>
+<p>Model APIs expose function calling (tool use) as a first-class feature:</p>
+<ol>
+<li>Declare a tool inventory — each tool described by name, parameters, and documentation.</li>
+<li>Specify which tools the model may use per query (required / none / auto).</li>
+<li>The model outputs tool call specifications (function name + parameter values).</li>
+<li>Application code executes the tool and returns the result.</li>
+<li>The model incorporates the result and continues planning.</li>
+</ol>
+<p>Key practice: always log each tool call and its parameter values. Hallucinated function names or incorrect parameter values are common failure modes.</p>
+<h2 id="tool-selection">Tool Selection</h2>
+<p>No definitive guide; requires experimentation:</p>
+<ul>
+<li>Compare agent performance with different tool sets.</li>
+<li>Ablation: remove one tool at a time and measure performance drop; prune tools that don&#39;t contribute.</li>
+<li>Monitor tool usage distribution: identify unused tools (prune) and frequently failing tools (fix or replace).</li>
+<li>Prefer tools with clear APIs and extensive documentation — ambiguous tools lead to incorrect parameter values.</li>
+<li>Consider the agent&#39;s model: different models have different tool preferences (GPT-4 favours knowledge retrieval; ChatGPT favoured image captioning in Chameleon experiments).</li>
+</ul>
+<h2 id="agent-failure-modes">Agent Failure Modes</h2>
+<h3 id="planning-failures">Planning Failures</h3>
+<ul>
+<li><strong>Invalid tool</strong> — plan calls a function not in the tool inventory.</li>
+<li><strong>Invalid parameters</strong> — correct tool, wrong parameter count or types.</li>
+<li><strong>Incorrect parameter values</strong> — correct tool and structure, wrong values.</li>
+<li><strong>Goal failure</strong> — plan does not solve the task or violates constraints (e.g. exceeded budget, wrong destination).</li>
+<li><strong>Reflection error</strong> — agent is incorrectly convinced the task is complete when it isn&#39;t.</li>
+</ul>
+<h3 id="tool-failures">Tool Failures</h3>
+<ul>
+<li>Tool produces wrong output (independent of agent planning).</li>
+<li>Translation module error (when natural language plans are used).</li>
+<li>Missing tool — agent doesn&#39;t have access to the capability required by the task.</li>
+</ul>
+<h3 id="efficiency-failures">Efficiency Failures</h3>
+<ul>
+<li>Too many steps for a task that should be straightforward.</li>
+<li>Excessive API cost per task.</li>
+<li>Slow actions that delay user response unnecessarily.</li>
+</ul>
+<h2 id="evaluation">Evaluation</h2>
+<p><strong>Planning evaluation:</strong></p>
+<ul>
+<li>For each task, generate K plans; count the fraction that are valid.</li>
+<li>Average number of plans needed before a valid one is produced.</li>
+<li>Per-tool call validity rates.</li>
+<li>Failure pattern analysis: which task types and which tools fail most often?</li>
+</ul>
+<p><strong>Tool evaluation:</strong> each tool tested independently with dedicated benchmarks.</p>
+<p><strong>End-to-end evaluation:</strong> did the agent accomplish the goal within constraints? How many steps did it take? What was the cost?</p>
+<p>Agent benchmarks: Berkeley Function Calling Leaderboard, AgentOps evaluation harness, TravelPlanner benchmark.</p>
+<h2 id="safety-considerations">Safety Considerations</h2>
+<p>Write actions expose agents to the same risks as prompt injection (→ <a href="../concepts/prompt-engineering.html">Prompt Engineering</a>):</p>
+<ul>
+<li>Indirect prompt injection: malicious instructions embedded in tool outputs (emails, web pages, database records) can hijack the agent&#39;s plan.</li>
+<li>Never allow unrestricted database mutations or financial transactions; require human approval.</li>
+<li>Execute generated code in isolated sandboxes.</li>
+<li>Compound errors: 95% accuracy per step → 60% over 10 steps → 0.6% over 100 steps. More capable agents require more defensive design.</li>
+</ul>
+<h2 id="can-llms-plan">Can LLMs Plan?</h2>
+<p>An open debate. Yann LeCun (Meta) and Kambhampati (2023) argue that autoregressive LLMs cannot genuinely plan. Counter-arguments:</p>
+<ul>
+<li>Planning is search; LLMs can encode world models that enable action outcome prediction (Hao et al. 2023).</li>
+<li>LLMs can backtrack effectively by restarting with a revised plan upon detecting failure.</li>
+<li>Augmenting LLMs with search tools and state tracking may be sufficient.</li>
+</ul>
+<p>Even if LLMs cannot plan autonomously, they can contribute to hybrid planners — FM agents and RL agents are expected to converge over time.</p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>An agent is characterised by its environment, tool inventory, and planning capability — all three must be designed explicitly.</li>
+<li>Tool use multiplies capabilities but also multiplies failure modes; accuracy degrades multiplicatively with plan length.</li>
+<li>ReAct (reasoning + action interleaved) and Reflexion (dedicated self-reflection module) are the dominant planning frameworks.</li>
+<li>Write actions demand human-in-the-loop approval and sandbox isolation.</li>
+<li>Multi-agent systems are the norm for anything non-trivial; plan separately from execution, validate before executing.</li>
+</ul>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/rag.html">Rag</a> — RAG is a special case of agent; retrieval is the tool</li>
+<li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a> — chain-of-thought and system prompt design underlie agent planning; prompt injection is the primary security threat</li>
+<li><a href="../concepts/ai-evals.html">Ai Evals</a> — agent evaluation; task-based vs turn-based evaluation</li>
+<li><a href="../concepts/llm-sampling.html">Llm Sampling</a> — test-time compute and sampling strategies affect planning quality</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/finetuning.html">Finetuning</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>
