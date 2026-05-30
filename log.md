@@ -2,6 +2,66 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 9–11 (book complete)
+
+Ingested chapters 9 (Continual Learning and Test in Production), 10 (Infrastructure and Tooling for MLOps), and 11 (The Human Side of Machine Learning) from *Designing Machine Learning Systems* (Huyen, 2022). Book is now fully ingested.
+
+**New pages created:**
+- **concepts/continual-learning** — stateless retraining vs stateful training (fine-tuning; Grubhub: 45× compute reduction, 20% purchase increase); model iteration vs data iteration; why continual learning (distribution shifts, rare events, continuous cold start — TikTok 10-minute personalisation); four maturity stages (manual stateless → automated stateless → automated stateful → trigger-based); champion/challenger pattern; data freshness value (Facebook: weekly→daily = 1% loss reduction); test in production methods (shadow deployment, A/B testing — 630K samples, canary release, interleaving — 12K samples with Thompson Sampling, bandits, contextual bandits)
+- **concepts/mlops-infrastructure** — four-layer MLOps stack (storage/compute, resource management, ML platform, dev environment); cloud repatriation (Dropbox $75M, a16z $100B market cap); multi-cloud (81%); Docker (Dockerfile→image→container) + Kubernetes; Jupyter notebook weaknesses (non-linear execution, reproducibility, version control, no unit testing); workflow orchestration tool comparison (Airflow, Argo, Prefect, Metaflow — best dev→prod UX); model store (eight artifact types, MLflow); feature store (management/computation/consistency functions, eliminates training-serving skew; Feast/Tecton; 40% companies use one); build vs buy framework (company stage, competitive advantage, tool maturity)
+
+**Updated pages:**
+- **sources/designing-machine-learning-systems** — chapter notes for chs 9–11 filled in; Related Pages expanded; book now marked fully ingested
+- **index.md** — two new concept pages added; source updated from "in progress: chs 1–8" to "fully ingested 2026-05-30"
+
+## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 7–8
+
+Ingested chapters 7 (Model Deployment and Prediction Service) and 8 (Data Distribution Shifts and Monitoring) from *Designing Machine Learning Systems* (Huyen, 2022).
+
+**New pages created:**
+- **concepts/data-distribution-shifts** — covariate shift / label shift / concept drift / feature change / label schema change taxonomy; degenerate feedback loop mechanism (popularity bias, filter bubbles, resume screening), detection (popularity diversity, accuracy vs popularity buckets), correction (randomisation, positional features, two-model decomposition); distribution shift detection methods (KS test, two-sample tests, feature validation/Great Expectations/Deequ, prediction monitoring, sliding vs cumulative statistics); proactive design (slow vs fast features, per-context models); retraining strategies (stateless vs stateful, data window selection)
+
+**Updated pages:**
+- **sources/designing-machine-learning-systems** — chapter notes for chs 7–8 filled in (deployment myths, batch/online/streaming prediction, training-serving skew, compression/quantisation/pruning/distillation/low-rank factorisation, edge vs cloud, compiler/IR/autoTVM, monitoring toolbox, observability vs monitoring); stubs remain for chs 9–11
+- **index.md** — new concept page added; source progress updated to chs 1–8
+
+**No duplicate pages created** — ch 7 deployment/compression/quantisation material integrated into source notes (already covered by inference-optimization.md from AI Engineering); ch 8 monitoring toolbox material complements existing operations/monitoring.md.
+
+## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 5–6
+
+Ingested chapters 5 (Feature Engineering) and 6 (Model Development and Offline Evaluation) from *Designing Machine Learning Systems* (Huyen, 2022).
+
+**New pages created:**
+- **concepts/feature-engineering** — MNAR/MAR/MCAR missing value taxonomy; scaling (min-max, standardisation, log); discretisation; categorical hashing trick; feature crossing; positional embeddings; data leakage causes (time-correlated splits, scaling before splitting, test-stat imputation, data duplication, group leakage, data generation process) and detection; feature importance (Facebook top-10 = 50%); feature generalisation (coverage × distribution overlap); best practices
+- **concepts/model-development** — six model selection tips (SOTA trap, simplicity, human bias, now-vs-later, trade-offs, assumptions); four phases of ML adoption; ensembles (bagging/boosting/stacking; 20/22 Kaggle winners); experiment tracking; data versioning challenges; ML debugging (silent failure, slow validation, cross-functional complexity); distributed training (data/model/pipeline parallelism; sync vs async SGD; gradient staleness); AutoML (hyperparameter tuning, NAS, learned optimisers, EfficientNets); offline evaluation baselines (random, heuristic, zero rule, human, existing); evaluation methods (perturbation, invariance, directional expectation, calibration/Platt scaling, confidence, slice-based/Simpson's paradox)
+
+**Updated pages:**
+- **sources/designing-machine-learning-systems** — chapter notes for chs 5–6 filled in; stubs remain for chs 7–11
+- **index.md** — new concept pages added; source progress updated to chs 1–6
+
+## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 3–4
+
+Ingested chapters 3 (Data Engineering Fundamentals) and 4 (Training Data) from *Designing Machine Learning Systems* (Huyen, 2022).
+
+**Updated pages:**
+- **sources/designing-machine-learning-systems** — chapter notes for chs 3–4 filled in; stubs remain for chs 5–11
+- **concepts/dataset-engineering** — added "Handling the Lack of Labels" section (weak supervision/Snorkel/LFs, semi-supervision/self-training, transfer learning, active learning) and "Natural Labels and Feedback Loops" section (feedback loop length, implicit vs explicit labels, window selection trade-off) from ch 4; added designing-machine-learning-systems to sources
+- **index.md** — source progress updated to chs 1–4
+
+**No new pages created** — ch 3's data engineering material (data models, storage engines, batch/stream processing, dataflow modes) is already covered by existing pages in databases/ and streams/ (from Kleppmann's DDIA). Ch 4 material was synthesised into the existing dataset-engineering concept page rather than duplicating.
+
+## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 1–2
+
+Ingested chapters 1 (Overview of Machine Learning Systems) and 2 (Introduction to Machine Learning Systems Design) from *Designing Machine Learning Systems* (Huyen, 2022). New book started.
+
+**New pages created:**
+- **sources/designing-machine-learning-systems** — source page with overview, key claims, detailed chapter notes for chs 1–2; stubs for chs 3–11
+- **concepts/ml-systems-design** — new concept page: when to use ML (nine conditions plus three when not to); research vs production differences (silent failure, latency is a distribution, throughput vs latency trade-off, messy/biased/shifting data, fairness and interpretability as first-class concerns); four system requirements (reliability/scalability/maintainability/adaptability — scalability encompasses model count not just resource scaling); business vs ML objective alignment (tie ML metrics to business metrics; A/B testing as the bridge); problem framing (task type taxonomy: binary/multiclass/multilabel/regression/hierarchical; framing choices affect maintenance cost; decoupling multiple objectives into separate models); iterative six-step development cycle; mind vs data debate (Sutton's "Bitter Lesson" vs Pearl/Manning)
+
+**Updated pages:**
+- **authors/chip-huyen** — added designing-machine-learning-systems to books list and author sources; added book description section
+- **index.md** — ml-systems-design added to AI & ML section; source entry added as in-progress chs 1–2
+
 ## [2026-05-30] ingest | AI Engineering — Chip Huyen — Chapters 9–10 (book complete)
 
 Ingested chapters 9 (Inference Optimization) and 10 (AI Engineering Architecture and User Feedback) from *AI Engineering* (Huyen, 2024). Book fully ingested.

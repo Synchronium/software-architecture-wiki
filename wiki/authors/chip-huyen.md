@@ -2,14 +2,14 @@
 title: "Chip Huyen"
 type: author
 tags: [author]
-sources: [ai-engineering]
+sources: [ai-engineering, designing-machine-learning-systems]
 created: 2026-05-30
 updated: 2026-05-30
 ---
 
 # Chip Huyen
 
-**Books in this wiki:** [[sources/ai-engineering]]
+**Books in this wiki:** [[sources/ai-engineering]], [[sources/designing-machine-learning-systems]]
 
 ## Background
 
@@ -22,6 +22,10 @@ Huyen consistently argues that the engineering and operational aspects of ML —
 In *AI Engineering*, she extends this perspective to the foundation model era: the shift from training models to adapting them does not reduce the importance of rigour — it changes where that rigour must be applied (evaluation, prompt design, dataset curation, inference cost).
 
 ## Books
+
+### [[sources/designing-machine-learning-systems]] — *Designing Machine Learning Systems* (2022)
+
+A holistic guide to building and operating traditional ML systems in production. Covers the full lifecycle: data engineering, training data curation, feature engineering, model development, deployment, monitoring, continual learning, and infrastructure. The central argument is that the ML algorithm is a small part of the system — business requirements, data pipelines, deployment, monitoring, and feedback loops are equally important and systematically underemphasised in ML education.
 
 ### [[sources/ai-engineering]] — *AI Engineering* (2024)
 

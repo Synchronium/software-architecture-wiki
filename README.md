@@ -60,6 +60,7 @@ Reading the files directly on GitHub will show the raw `[[wikilink]]` syntax —
 | *Site Reliability Engineering* | Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy (eds.) |
 | *Chaos Engineering: System Resiliency in Practice* | Casey Rosenthal & Nora Jones (eds.) |
 | *AI Engineering* | Chip Huyen |
+| *Designing Machine Learning Systems* | Chip Huyen |
 
 ## How this wiki was built
 

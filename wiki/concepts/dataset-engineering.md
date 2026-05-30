@@ -2,7 +2,7 @@
 title: "Dataset Engineering"
 type: concept
 tags: [ai, llm, data, dataset, data-quality, data-synthesis, annotation, distillation]
-sources: [ai-engineering]
+sources: [ai-engineering, designing-machine-learning-systems]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -75,6 +75,32 @@ Priority order of data sources:
 **Specialist data challenges:**
 - CoT data requires step-by-step explanations, which are slow and expensive to annotate manually — CoT datasets are therefore rare.
 - Tool use data may need simulation rather than human annotation because human tool preferences differ from AI tool preferences.
+
+### Handling the Lack of Labels
+
+(→ [[sources/designing-machine-learning-systems]] ch. 4)
+
+When ground truth labels are unavailable or expensive, four techniques:
+
+**Weak supervision (Snorkel):** encode expert heuristics as labelling functions (LFs) — keyword checks, regex, DB lookups, outputs from other models. LFs produce noisy labels that are combined, denoised, and reweighted. No ground truth required; privacy-preserving (only cleared data subset needs to be seen). Versioned, reusable, adaptable without relabelling. Stanford Medicine study: 8 hours of LF writing ≈ nearly one year of hand labelling, with LFs reused across tasks.
+
+**Semi-supervision:** a small set of seed labels + structural assumptions generates more labels. Self-training: train model on labelled data → high-confidence predictions become new labels → repeat. Perturbation-based: small perturbations to a sample shouldn't change its label; perturbed copies inherit original labels.
+
+**Transfer learning:** pretrained base model (from a data-rich task like language modelling) is fine-tuned on a downstream task with far fewer labels. Larger pretrained models achieve better downstream performance. (→ [[concepts/finetuning]])
+
+**Active learning:** model selects the samples most informative for learning rather than labelling at random. Uncertainty sampling (label examples model is least confident about); query-by-committee (label examples multiple candidate models disagree on). Achieves higher accuracy with fewer labels; especially powerful for systems with real-time incoming data.
+
+### Natural Labels and Feedback Loops
+
+Tasks where labels can be automatically inferred from system behaviour:
+- Recommender systems: click / no-click after a time window.
+- ETA prediction: actual trip duration vs predicted.
+- Ad click-through rate: actual clicks vs predicted.
+- Stock price prediction: actual price after prediction horizon.
+
+63% of companies work with tasks with natural labels (Huyen, 2022 survey). **Feedback loop length:** time from prediction to label. Short (minutes) for recommendation clicks; long (months) for fraud dispute windows. Long feedback loops delay model improvement; premature window closure creates false negatives (Twitter Ads: some ad clicks arrive hours after impression).
+
+**Implicit vs explicit labels:** implicit (no-click after window = negative) vs explicit (user downvote). Implicit labels have higher volume but weaker signal. Choice of feedback signal type and window length is a business decision requiring stakeholder alignment.
 
 ## Data Synthesis
 
