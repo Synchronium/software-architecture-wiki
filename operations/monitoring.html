@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs (ratio definition, percentiles, Little's Law); SLOs (error budget, burn rate…">
+  <meta name="description" content="Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs/SLOs; burn rate alerting; three-layer ML monitoring taxonomy (golden signals/generic…">
   <meta property="og:title" content="Monitoring — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs (ratio definition, percentiles, Little's Law); SLOs (error budget, burn rate…">
+  <meta property="og:description" content="Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs/SLOs; burn rate alerting; three-layer ML monitoring taxonomy (golden signals/generic…">
   <title>Monitoring — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -74,6 +74,7 @@
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/finetuning.html">Finetuning</a></li>
         <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -322,16 +334,16 @@
       <h1>Monitoring</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
       </div>
-      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/monitoring.html">monitoring</a></li><li><a class="tag-chip" href="../tags/sli.html">sli</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/alerting.html">alerting</a></li><li><a class="tag-chip" href="../tags/dashboards.html">dashboards</a></li><li><a class="tag-chip" href="../tags/observability.html">observability</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li></ul>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/monitoring.html">monitoring</a></li><li><a class="tag-chip" href="../tags/sli.html">sli</a></li><li><a class="tag-chip" href="../tags/slos.html">slos</a></li><li><a class="tag-chip" href="../tags/alerting.html">alerting</a></li><li><a class="tag-chip" href="../tags/dashboards.html">dashboards</a></li><li><a class="tag-chip" href="../tags/observability.html">observability</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li><li><a class="tag-chip" href="../tags/machine-learning.html">machine-learning</a></li><li><a class="tag-chip" href="../tags/ml-monitoring.html">ml-monitoring</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
   </div><details class="toc" open>
     <summary>Contents</summary>
-    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#counters-vs-gauges">Counters vs Gauges</a></li><li><a href="#black-box-vs-white-box-monitoring">Black-Box vs White-Box Monitoring</a></li><li><a href="#metrics">Metrics</a></li><li><a href="#service-level-indicators-slis">Service-Level Indicators (SLIs)</a></li><li><a href="#service-level-objectives-slos">Service-Level Objectives (SLOs)</a></li><li><a href="#the-four-golden-signals">The Four Golden Signals</a></li><li><a href="#symptoms-vs-causes">Symptoms vs Causes</a></li><li><a href="#alert-quality-criteria">Alert Quality Criteria</a></li><li><a href="#monitoring-output-taxonomy-sre">Monitoring Output Taxonomy (SRE)</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#dashboards">Dashboards</a></li><li><a href="#economic-value-framing-nygard">Economic Value Framing (Nygard)</a></li><li><a href="#on-call">On-Call</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+    <ol><li><a href="#key-claims">Key Claims</a></li><li><a href="#definition">Definition</a></li><li><a href="#counters-vs-gauges">Counters vs Gauges</a></li><li><a href="#black-box-vs-white-box-monitoring">Black-Box vs White-Box Monitoring</a></li><li><a href="#metrics">Metrics</a></li><li><a href="#service-level-indicators-slis">Service-Level Indicators (SLIs)</a></li><li><a href="#service-level-objectives-slos">Service-Level Objectives (SLOs)</a></li><li><a href="#the-four-golden-signals">The Four Golden Signals</a></li><li><a href="#symptoms-vs-causes">Symptoms vs Causes</a></li><li><a href="#alert-quality-criteria">Alert Quality Criteria</a></li><li><a href="#monitoring-output-taxonomy-sre">Monitoring Output Taxonomy (SRE)</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#dashboards">Dashboards</a></li><li><a href="#economic-value-framing-nygard">Economic Value Framing (Nygard)</a></li><li><a href="#on-call">On-Call</a></li><li><a href="#ml-model-monitoring">ML Model Monitoring</a></li><li class="toc-sub"><a href="#the-ml-monitoring-problem">The ML Monitoring Problem</a></li><li class="toc-sub"><a href="#three-layer-ml-monitoring-taxonomy">Three-Layer ML Monitoring Taxonomy</a></li><li class="toc-sub"><a href="#actuals-and-outcome-measurement">Actuals and Outcome Measurement</a></li><li class="toc-sub"><a href="#drift-detection">Drift Detection</a></li><li class="toc-sub"><a href="#slos-for-ml-systems">SLOs for ML Systems</a></li><li class="toc-sub"><a href="#pre-rollout-validation-for-ml">Pre-Rollout Validation for ML</a></li><li class="toc-sub"><a href="#privacy-in-ml-monitoring">Privacy in ML Monitoring</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
   </details>
   <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="key-claims">Key Claims</h2>
 <ul>
@@ -566,6 +578,118 @@
 <li><strong>&quot;Give back the pager&quot;</strong>: if a service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets standards. Alert flap prevention: minimum duration (≥2 evaluation cycles) before an alert fires prevents transient collection failures from paging.</li>
 </ul>
 <p><strong>Incident psychology</strong>: stress hormones impair deliberate, rational cognition and promote habitual responses — exactly the wrong mode for complex incident handling. Reducing on-call stress through clear escalation paths, runbooks, and blameless postmortem culture enables the deliberate thinking complex incidents require. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 11)</p>
+<h2 id="ml-model-monitoring">ML Model Monitoring</h2>
+<p>Standard distributed systems monitoring is necessary but not sufficient for ML systems. ML models can fail silently — <code>predict()</code> returns successfully but with wrong answers. (→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 9)</p>
+<blockquote>
+<p><strong>Key distinction:</strong> Monitoring = data about system performance; observability = property of a system that allows inferring behaviour from that data. ML teams often conflate the two and neglect the latter.</p>
+</blockquote>
+<h3 id="the-ml-monitoring-problem">The ML Monitoring Problem</h3>
+<p>ML model developers are trained to think in terms of pre-deployment optimisation (offline metrics on held-out data), not post-deployment detection. This creates a structural blind spot: offline evaluation doesn&#39;t detect distribution shift, label distribution change, or upstream data pipeline failures.</p>
+<p><strong>Train/serve skew</strong> is the most dangerous ML-specific failure mode — the model receives different feature values in production than it saw during training. It manifests as degraded model quality with no infrastructure errors. Standard golden signals don&#39;t catch it; model-specific monitoring is required.</p>
+<h3 id="three-layer-ml-monitoring-taxonomy">Three-Layer ML Monitoring Taxonomy</h3>
+<p>(→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 9, Table 9-1)</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Signals</th>
+<th>Who owns it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Layer 1 — System health</strong></td>
+<td>Golden signals: latency, traffic, errors, saturation; also resource utilisation, queue depth</td>
+<td>Infrastructure/SRE</td>
+</tr>
+<tr>
+<td><strong>Layer 2 — Basic model health</strong></td>
+<td>Model output distribution, prediction confidence, output range checks, throughput of the model API</td>
+<td>ML engineering</td>
+</tr>
+<tr>
+<td><strong>Layer 3 — Model quality</strong></td>
+<td>Actual business outcomes vs predictions; drift detection; sliced performance; business metric correlation</td>
+<td>ML + product + business</td>
+</tr>
+</tbody></table></div>
+<p>Layer 1 uses standard distributed systems monitoring. Layer 2 can be instrumented generically. Layer 3 is the hardest: it requires domain knowledge to define what &quot;good&quot; looks like and collaboration with product/business stakeholders to instrument business outcomes.</p>
+<h3 id="actuals-and-outcome-measurement">Actuals and Outcome Measurement</h3>
+<p>To evaluate model quality in production, actuals (ground truth) are required. Four cases:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Description</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Real-time actuals</strong></td>
+<td>Outcome arrives immediately after prediction (e.g., click on a ranked result)</td>
+<td>Ideal; log (prediction, outcome) pairs and compute metrics continuously</td>
+</tr>
+<tr>
+<td><strong>Delayed actuals</strong></td>
+<td>Outcome arrives with a lag (e.g., fraud label comes after transaction review)</td>
+<td>Use proxy metrics in the interim; join delayed actuals when available</td>
+</tr>
+<tr>
+<td><strong>Biased actuals</strong></td>
+<td>Only a subset of outcomes is observed (e.g., only items shown to users can receive feedback)</td>
+<td>Adjust for selection bias; use exploration strategies; treat feedback loops carefully</td>
+</tr>
+<tr>
+<td><strong>No actuals</strong></td>
+<td>No ground truth signal is available</td>
+<td>Fall back to proxy metrics; use A/B comparison against a baseline model</td>
+</tr>
+</tbody></table></div>
+<h3 id="drift-detection">Drift Detection</h3>
+<p><strong>Feature drift</strong> (input distribution diverges from training) and <strong>concept drift</strong> (the relationship between features and labels changes) are the two primary ML-specific degradation modes.</p>
+<p>Common statistical measures:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PSI (Population Stability Index)</strong></td>
+<td>Measures shift in a feature distribution between training and serving; PSI &gt; 0.2 flags severe drift</td>
+</tr>
+<tr>
+<td><strong>KL divergence</strong></td>
+<td>Measures information loss when approximating one distribution with another; asymmetric</td>
+</tr>
+<tr>
+<td><strong>Wasserstein distance</strong></td>
+<td>Earth-mover distance between distributions; symmetric and interpretable in units of the original feature</td>
+</tr>
+</tbody></table></div>
+<p><strong>Data quality checks</strong> are the first line of defence before statistical drift detection:</p>
+<ul>
+<li><em>Categorical features:</em> unexpected cardinality, unexpected missing rate, type mismatches, volume anomalies</li>
+<li><em>Numerical features:</em> out-of-range values, increased missingness, type mismatches, moving-average anomalies</li>
+</ul>
+<h3 id="slos-for-ml-systems">SLOs for ML Systems</h3>
+<p>ML system SLOs must go beyond uptime. They should encompass:</p>
+<ul>
+<li><strong>Model quality thresholds</strong> — minimum acceptable accuracy, precision, recall, or AUC (per domain). These are as important as availability SLOs for model-dependent business processes.</li>
+<li><strong>Confidence/calibration bounds</strong> — alert when a model that was previously well-calibrated becomes overconfident or underconfident.</li>
+<li><strong>Business metric correlation</strong> — when ML directly drives a business metric (conversion, revenue), that metric participates in the SLO.</li>
+<li><strong>Entanglement with adjacent systems</strong> — an ML model&#39;s SLO may be violated by an upstream data pipeline failure or a downstream rule engine change. SLO scope must reflect the system boundary, not just the model API.</li>
+</ul>
+<h3 id="pre-rollout-validation-for-ml">Pre-Rollout Validation for ML</h3>
+<p>Before routing live traffic to a new model version:</p>
+<ol>
+<li><strong>Sandbox evaluation</strong> — offline metrics on held-out and stress-test distributions</li>
+<li><strong>Shadow mode</strong> — new model receives production features and makes predictions, but results are not served to users; serving path is fully exercised without user exposure</li>
+<li><strong>Canary</strong> — route 1–5% of live traffic to the new model; monitor Layer 1–3 signals</li>
+<li><strong>Staged ramp-up</strong> — progressively increase traffic percentage with bake periods; roll back if any signal degrades</li>
+</ol>
+<h3 id="privacy-in-ml-monitoring">Privacy in ML Monitoring</h3>
+<p>PII must be stripped or anonymised at the first egress point from the production system — not at the dashboard or analytics layer. Monitoring pipelines that ingest raw prediction logs may handle sensitive personal data (user behaviour, health signals, financial information). The cost of a data breach from a monitoring pipeline is equal to the cost of a breach from the production system.</p>
 <h2 id="related-concepts">Related Concepts</h2>
 <ul>
 <li><a href="../operations/observability.html">Observability</a> — observability extends monitoring with logs and traces for root cause diagnosis</li>
@@ -582,7 +706,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/ai-engineering.html">AI Engineering</a></li><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+        <ul><li><a href="../concepts/ai-engineering.html">AI Engineering</a></li><li><a href="../operations/automation.html">Automation</a></li><li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li><li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li><li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li><li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li><li><a href="../operations/error-budgets.html">Error Budgets</a></li><li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li><li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li><li><a href="../operations/incident-management.html">Incident Management</a></li><li><a href="../operations/manageability.html">Manageability</a></li><li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li><li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li><li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li><li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li><li><a href="../operations/observability.html">Observability</a></li><li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li><li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li><li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li><li><a href="../distributed/serverless.html">Serverless Computing</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../reference/technology-glossary.html">Technology Glossary</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

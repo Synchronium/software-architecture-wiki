@@ -74,6 +74,7 @@
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="../concepts/dataset-engineering.html" aria-current="page">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/finetuning.html">Finetuning</a></li>
         <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -331,11 +343,11 @@
     <span class="listen-experimental">← experimental</span>
   </div><details class="toc" open>
     <summary>Contents</summary>
-    <ol><li><a href="#definition">Definition</a></li><li><a href="#three-core-data-criteria">Three Core Data Criteria</a></li><li class="toc-sub"><a href="#1-data-quality">1. Data Quality</a></li><li class="toc-sub"><a href="#2-data-coverage">2. Data Coverage</a></li><li class="toc-sub"><a href="#3-data-quantity">3. Data Quantity</a></li><li><a href="#data-acquisition-and-annotation">Data Acquisition and Annotation</a></li><li><a href="#data-synthesis">Data Synthesis</a></li><li class="toc-sub"><a href="#traditional-techniques">Traditional Techniques</a></li><li class="toc-sub"><a href="#ai-powered-synthesis">AI-Powered Synthesis</a></li><li class="toc-sub"><a href="#limitations-of-ai-generated-data">Limitations of AI-Generated Data</a></li><li class="toc-sub"><a href="#model-distillation">Model Distillation</a></li><li><a href="#data-processing-pipeline">Data Processing Pipeline</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#three-core-data-criteria">Three Core Data Criteria</a></li><li class="toc-sub"><a href="#1-data-quality">1. Data Quality</a></li><li class="toc-sub"><a href="#2-data-coverage">2. Data Coverage</a></li><li class="toc-sub"><a href="#3-data-quantity">3. Data Quantity</a></li><li><a href="#data-acquisition-and-annotation">Data Acquisition and Annotation</a></li><li class="toc-sub"><a href="#handling-the-lack-of-labels">Handling the Lack of Labels</a></li><li class="toc-sub"><a href="#natural-labels-and-feedback-loops">Natural Labels and Feedback Loops</a></li><li><a href="#data-synthesis">Data Synthesis</a></li><li class="toc-sub"><a href="#traditional-techniques">Traditional Techniques</a></li><li class="toc-sub"><a href="#ai-powered-synthesis">AI-Powered Synthesis</a></li><li class="toc-sub"><a href="#limitations-of-ai-generated-data">Limitations of AI-Generated Data</a></li><li class="toc-sub"><a href="#model-distillation">Model Distillation</a></li><li><a href="#data-processing-pipeline">Data Processing Pipeline</a></li><li><a href="#key-takeaways">Key Takeaways</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
   </details>
   <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Dataset engineering is the discipline of creating training datasets that allow models to be trained to the desired level of performance within a given budget. As fewer organisations train models from scratch, data has become the primary differentiator for AI performance. (→ <a href="../sources/ai-engineering.html">Ai Engineering</a> ch. 8)</p>
-<p>The shift from model-centric AI (design better architectures) to <strong>data-centric AI</strong> (design better datasets for the same model) defines the current era. Llama 3&#39;s performance gains over Llama 2 are &quot;primarily driven by improvements in data quality and diversity as well as by increased training scale&quot; — with no significant architecture changes.</p>
+<p>The shift from model-centric AI (design better architectures) to <strong>data-centric AI</strong> (design better datasets for the same model) defines the current era. Llama 3&#39;s performance gains over Llama 2 are &quot;primarily driven by improvements in data quality and diversity as well as by increased training scale&quot; — with no significant architecture changes. A practitioner example: Landing AI&#39;s steel defect inspection model went from 80% to 93% accuracy by spending &gt;90% of engineering effort on iterative data labelling improvement — standardising criteria, resolving annotator disagreements, adding hard examples — with no change to model architecture. (→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 15)</p>
 <h2 id="three-core-data-criteria">Three Core Data Criteria</h2>
 <h3 id="1-data-quality">1. Data Quality</h3>
 <p>Six quality characteristics for finetuning data:</p>
@@ -419,6 +431,23 @@
 <li>CoT data requires step-by-step explanations, which are slow and expensive to annotate manually — CoT datasets are therefore rare.</li>
 <li>Tool use data may need simulation rather than human annotation because human tool preferences differ from AI tool preferences.</li>
 </ul>
+<h3 id="handling-the-lack-of-labels">Handling the Lack of Labels</h3>
+<p>(→ <a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a> ch. 4)</p>
+<p>When ground truth labels are unavailable or expensive, four techniques:</p>
+<p><strong>Weak supervision (Snorkel):</strong> encode expert heuristics as labelling functions (LFs) — keyword checks, regex, DB lookups, outputs from other models. LFs produce noisy labels that are combined, denoised, and reweighted. No ground truth required; privacy-preserving (only cleared data subset needs to be seen). Versioned, reusable, adaptable without relabelling. Stanford Medicine study: 8 hours of LF writing ≈ nearly one year of hand labelling, with LFs reused across tasks.</p>
+<p><strong>Semi-supervision:</strong> a small set of seed labels + structural assumptions generates more labels. Self-training: train model on labelled data → high-confidence predictions become new labels → repeat. Perturbation-based: small perturbations to a sample shouldn&#39;t change its label; perturbed copies inherit original labels.</p>
+<p><strong>Transfer learning:</strong> pretrained base model (from a data-rich task like language modelling) is fine-tuned on a downstream task with far fewer labels. Larger pretrained models achieve better downstream performance. (→ <a href="../concepts/finetuning.html">Finetuning</a>)</p>
+<p><strong>Active learning:</strong> model selects the samples most informative for learning rather than labelling at random. Uncertainty sampling (label examples model is least confident about); query-by-committee (label examples multiple candidate models disagree on). Achieves higher accuracy with fewer labels; especially powerful for systems with real-time incoming data.</p>
+<h3 id="natural-labels-and-feedback-loops">Natural Labels and Feedback Loops</h3>
+<p>Tasks where labels can be automatically inferred from system behaviour:</p>
+<ul>
+<li>Recommender systems: click / no-click after a time window.</li>
+<li>ETA prediction: actual trip duration vs predicted.</li>
+<li>Ad click-through rate: actual clicks vs predicted.</li>
+<li>Stock price prediction: actual price after prediction horizon.</li>
+</ul>
+<p>63% of companies work with tasks with natural labels (Huyen, 2022 survey). <strong>Feedback loop length:</strong> time from prediction to label. Short (minutes) for recommendation clicks; long (months) for fraud dispute windows. Long feedback loops delay model improvement; premature window closure creates false negatives (Twitter Ads: some ad clicks arrive hours after impression).</p>
+<p><strong>Implicit vs explicit labels:</strong> implicit (no-click after window = negative) vs explicit (user downvote). Implicit labels have higher volume but weaker signal. Choice of feedback signal type and window length is a business decision requiring stakeholder alignment.</p>
 <h2 id="data-synthesis">Data Synthesis</h2>
 <p>Data synthesis generates new data programmatically to increase quantity, coverage, or quality. Two types:</p>
 <ul>
@@ -496,7 +525,7 @@
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/finetuning.html">Finetuning</a></li><li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li></ul>
+        <ul><li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li><li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li><li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li><li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li><li><a href="../concepts/finetuning.html">Finetuning</a></li><li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li><li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li><li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li><li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li></ul>
       </aside>
     </main>
   </div>

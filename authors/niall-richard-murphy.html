@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Co-editor of *Site Reliability Engineering*; Google SRE in Dublin; incident response, federation, cross-site coordination">
+  <meta name="description" content="Co-editor of *Site Reliability Engineering*; co-author of *Reliable Machine Learning*; Google SRE in Dublin; incident response, federation, SRE applied to…">
   <meta property="og:title" content="Niall Richard Murphy — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="Co-editor of *Site Reliability Engineering*; Google SRE in Dublin; incident response, federation, cross-site coordination">
+  <meta property="og:description" content="Co-editor of *Site Reliability Engineering*; co-author of *Reliable Machine Learning*; Google SRE in Dublin; incident response, federation, SRE applied to…">
   <title>Niall Richard Murphy — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -74,6 +74,7 @@
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/finetuning.html">Finetuning</a></li>
         <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -322,7 +334,7 @@
       <h1>Niall Richard Murphy</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../authors/index.html">author</a>
-        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
       </div>
       <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/author.html">author</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -333,7 +345,7 @@
     <summary>Contents</summary>
     <ol><li><a href="#background">Background</a></li><li><a href="#core-positions">Core Positions</a></li><li><a href="#books">Books</a></li></ol>
   </details>
-  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></p>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><p><strong>Books in this wiki:</strong> <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a>, <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></p>
 <h2 id="background">Background</h2>
 <p>Niall Richard Murphy is a Site Reliability Engineer based in Dublin and one of the four editors of the SRE book. He led Google&#39;s Ads SRE team in Europe and has worked on production engineering across multiple Google services. He has also published independently on internet history and engineering practice.</p>
 <h2 id="core-positions">Core Positions</h2>
@@ -341,9 +353,11 @@
 <h2 id="books">Books</h2>
 <h3><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> — <em>Site Reliability Engineering</em> (2016)</h3>
 <p>Co-editor; the book&#39;s emergent-management and federation chapters bear his imprint, as do the chapters covering incident response and managing reliability across geographically distributed sites.</p>
+<h3><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> — <em>Reliable Machine Learning</em> (2022)</h3>
+<p>Co-author; brings direct SRE lineage from the original SRE book into the ML context, arguing that ML systems are production systems deserving the same engineering discipline, plus additional vigilance for ML-specific failure modes.</p>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
+        <ul><li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li></ul>
       </aside>
     </main>
   </div>

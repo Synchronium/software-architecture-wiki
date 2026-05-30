@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Feature operations (missing value handling MNAR/MAR/MCAR, scaling, discretisation, categorical encoding/hashing trick, feature crossing, positional…">
+  <meta property="og:title" content="Feature Engineering — Software Architecture">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Software Architecture">
+  <meta property="og:description" content="Feature operations (missing value handling MNAR/MAR/MCAR, scaling, discretisation, categorical encoding/hashing trick, feature crossing, positional…">
+  <title>Feature Engineering — Software Architecture</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../pagefind/pagefind-ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="../index.html">Software Architecture</a>
+    <div class="header-controls">
+      <button class="search-toggle" type="button" aria-label="Search">Search</button>
+      <button class="theme-toggle" type="button" aria-label="Colour scheme: Auto. Click to change.">Auto</button>
+    </div>
+  </header>
+  <dialog class="search-dialog" id="search-dialog" aria-label="Search">
+    <button class="search-close" type="button" aria-label="Close search">✕</button>
+    <div id="search"></div>
+  </dialog>
+  <div class="layout">
+    <details class="sidebar-wrapper" open>
+    <summary class="sidebar-toggle">Navigation</summary>
+    <nav class="sidebar" aria-label="Wiki sections">
+    <a class="jump-to-content" href="#main-content">Jump to content ↓</a>
+    <ul class="nav-top-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../overview.html">Overview</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <details>
+      <summary>Styles</summary>
+      <ul>
+        <li><a class="section-index-link" href="../styles/index.html">Index</a></li>
+        <li><a href="../styles/architecture-styles.html">Architecture Styles</a></li>
+        <li><a href="../styles/event-driven-architecture.html">Event-Driven Architecture</a></li>
+        <li><a href="../styles/layered-architecture.html">Layered Architecture</a></li>
+        <li><a href="../styles/microkernel-architecture.html">Microkernel Architecture</a></li>
+        <li><a href="../styles/microservices-architecture.html">Microservices Architecture</a></li>
+        <li><a href="../styles/modular-monolith.html">Modular Monolith Architecture</a></li>
+        <li><a href="../styles/soa-architecture.html">Orchestration-Driven Service-Oriented Architecture (SOA)</a></li>
+        <li><a href="../styles/pipeline-architecture.html">Pipeline Architecture</a></li>
+        <li><a href="../styles/ports-and-adapters.html">Ports and Adapters (Hexagonal Architecture)</a></li>
+        <li><a href="../styles/service-based-architecture.html">Service-Based Architecture</a></li>
+        <li><a href="../styles/space-based-architecture.html">Space-Based Architecture</a></li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Concepts</summary>
+      <ul>
+        <li><a class="section-index-link" href="../concepts/index.html">Index</a></li>
+        <li><a href="../concepts/ai-agents.html">AI Agents</a></li>
+        <li><a href="../concepts/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../concepts/ai-engineering-architecture.html">AI Engineering Architecture</a></li>
+        <li><a href="../concepts/ai-evals.html">AI Evaluation</a></li>
+        <li><a href="../concepts/data-mesh.html">Analytical Data Patterns: Data Warehouse, Data Lake, Data Mesh</a></li>
+        <li><a href="../concepts/api-design.html">API Design</a></li>
+        <li><a href="../concepts/api-gateway.html">API Gateway</a></li>
+        <li><a href="../concepts/api-testing.html">API Testing</a></li>
+        <li><a href="../concepts/architect-soft-skills.html">Architect Soft Skills: Diagramming, Team Leadership, Negotiation, and Career</a></li>
+        <li><a href="../concepts/architectural-decomposition.html">Architectural Decomposition</a></li>
+        <li><a href="../concepts/architecture-characteristics.html">Architecture Characteristics</a></li>
+        <li><a href="../concepts/adrs.html">Architecture Decision Records (ADRs)</a></li>
+        <li><a href="../concepts/architecture-documentation.html">Architecture Documentation</a></li>
+        <li><a href="../concepts/fitness-functions.html">Architecture Fitness Functions</a></li>
+        <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
+        <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
+        <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
+        <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
+        <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
+        <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
+        <li><a href="../concepts/core-domain.html">Core Domain and Strategic Distillation</a></li>
+        <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
+        <li><a href="../concepts/coupling.html">Coupling</a></li>
+        <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
+        <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
+        <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
+        <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
+        <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
+        <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html" aria-current="page">Feature Engineering</a></li>
+        <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
+        <li><a href="../concepts/finetuning.html">Finetuning</a></li>
+        <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
+        <li><a href="../concepts/four-key-metrics.html">Four Key Metrics (DORA)</a></li>
+        <li><a href="../concepts/fracture-planes.html">Fracture Planes</a></li>
+        <li><a href="../concepts/goal-question-metric.html">Goal-Question-Metric (GQM)</a></li>
+        <li><a href="../concepts/inference-optimization.html">Inference Optimization</a></li>
+        <li><a href="../concepts/integration-styles.html">Integration Styles</a></li>
+        <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
+        <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
+        <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
+        <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
+        <li><a href="../concepts/modularity.html">Modularity</a></li>
+        <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
+        <li><a href="../concepts/prompt-engineering.html">Prompt Engineering</a></li>
+        <li><a href="../concepts/rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+        <li><a href="../concepts/risk-storming.html">Risk Storming</a></li>
+        <li><a href="../concepts/service-granularity.html">Service Granularity</a></li>
+        <li><a href="../concepts/software-complexity.html">Software Complexity</a></li>
+        <li><a href="../concepts/stability-patterns.html">Stability Patterns</a></li>
+        <li><a href="../concepts/supple-design.html">Supple Design</a></li>
+        <li><a href="../concepts/cognitive-load.html">Team Cognitive Load</a></li>
+        <li><a href="../concepts/team-topologies-model.html">Team Topologies Model</a></li>
+        <li><a href="../concepts/technical-vs-domain-partitioning.html">Technical vs Domain Partitioning</a></li>
+        <li><a href="../concepts/threat-modeling.html">Threat Modeling</a></li>
+        <li><a href="../concepts/ubiquitous-language.html">Ubiquitous Language</a></li>
+        <li><a href="../concepts/westrum-culture.html">Westrum Organisational Culture</a></li>
+        <li><a href="../concepts/zero-trust.html">Zero Trust</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Distributed</summary>
+      <ul>
+        <li><a class="section-index-link" href="../distributed/index.html">Index</a></li>
+        <li><a href="../distributed/backpressure.html">Backpressure</a></li>
+        <li><a href="../distributed/broadcast-protocols.html">Broadcast Protocols</a></li>
+        <li><a href="../distributed/caching.html">Caching</a></li>
+        <li><a href="../distributed/cap-theorem.html">CAP Theorem</a></li>
+        <li><a href="../distributed/consensus-algorithms.html">Consensus Algorithms</a></li>
+        <li><a href="../distributed/consistency-models.html">Consistency Models</a></li>
+        <li><a href="../distributed/cdn.html">Content Delivery Networks (CDNs)</a></li>
+        <li><a href="../distributed/control-plane-data-plane.html">Control Plane / Data Plane</a></li>
+        <li><a href="../distributed/crdts.html">CRDTs (Conflict-free Replicated Data Types)</a></li>
+        <li><a href="../distributed/distributed-transactions.html">Distributed Transactions</a></li>
+        <li><a href="../distributed/dns.html">DNS (Domain Name System)</a></li>
+        <li><a href="../distributed/failure-detection.html">Failure Detection</a></li>
+        <li><a href="../distributed/fallacies-of-distributed-computing.html">Fallacies of Distributed Computing</a></li>
+        <li><a href="../distributed/http.html">HTTP</a></li>
+        <li><a href="../distributed/idempotency.html">Idempotency</a></li>
+        <li><a href="../distributed/leader-election.html">Leader Election</a></li>
+        <li><a href="../distributed/load-balancing.html">Load Balancing</a></li>
+        <li><a href="../distributed/logical-clocks.html">Logical Clocks</a></li>
+        <li><a href="../distributed/partitioning.html">Partitioning</a></li>
+        <li><a href="../distributed/queueing-theory.html">Queueing Theory for Architects</a></li>
+        <li><a href="../distributed/rate-limiting.html">Rate Limiting and Upstream Resiliency</a></li>
+        <li><a href="../distributed/replication.html">Replication</a></li>
+        <li><a href="../distributed/scalability.html">Scalability</a></li>
+        <li><a href="../distributed/serverless.html">Serverless Computing</a></li>
+        <li><a href="../distributed/system-models.html">System Models</a></li>
+        <li><a href="../distributed/tls.html">TLS (Transport Layer Security)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Operations</summary>
+      <ul>
+        <li><a class="section-index-link" href="../operations/index.html">Index</a></li>
+        <li><a href="../operations/automation.html">Automation</a></li>
+        <li><a href="../operations/availability.html">Availability</a></li>
+        <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a></li>
+        <li><a href="../operations/common-failure-causes.html">Common Failure Causes</a></li>
+        <li><a href="../operations/data-integrity.html">Data Integrity</a></li>
+        <li><a href="../operations/error-budgets.html">Error Budgets</a></li>
+        <li><a href="../operations/incident-management.html">Incident Management</a></li>
+        <li><a href="../operations/manageability.html">Manageability</a></li>
+        <li><a href="../operations/monitoring.html">Monitoring</a></li>
+        <li><a href="../operations/observability.html">Observability</a></li>
+        <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Patterns</summary>
+      <ul>
+        <li><a class="section-index-link" href="../patterns/index.html">Index</a></li>
+        <li><a href="../patterns/anti-corruption-layer.html">Anticorruption Layer (ACL)</a></li>
+        <li><a href="../patterns/branch-by-abstraction.html">Branch by Abstraction</a></li>
+        <li><a href="../patterns/bulkhead.html">Bulkhead Pattern</a></li>
+        <li><a href="../patterns/business-logic-patterns.html">Business Logic Implementation Patterns</a></li>
+        <li><a href="../patterns/circuit-breaker.html">Circuit Breaker</a></li>
+        <li><a href="../patterns/context-map.html">Context Map and Bounded Context Integration Patterns</a></li>
+        <li><a href="../patterns/domain-model.html">Domain Model Pattern</a></li>
+        <li><a href="../patterns/mvc-web-presentation.html">MVC and Web Presentation Patterns</a></li>
+        <li><a href="../patterns/outbox-pattern.html">Outbox Pattern</a></li>
+        <li><a href="../patterns/parallel-run.html">Parallel Run</a></li>
+        <li><a href="../patterns/progressive-delivery.html">Progressive Delivery</a></li>
+        <li><a href="../patterns/repository.html">Repository Pattern</a></li>
+        <li><a href="../patterns/retry.html">Retry</a></li>
+        <li><a href="../patterns/saga.html">Saga Pattern</a></li>
+        <li><a href="../patterns/sidecar-service-mesh.html">Sidecar / Service Mesh</a></li>
+        <li><a href="../patterns/specification.html">Specification Pattern</a></li>
+        <li><a href="../patterns/strangler-fig.html">Strangler Fig Pattern</a></li>
+        <li><a href="../patterns/timeout.html">Timeout</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Databases</summary>
+      <ul>
+        <li><a class="section-index-link" href="../databases/index.html">Index</a></li>
+        <li><a href="../databases/data-models.html">Data Models</a></li>
+        <li><a href="../databases/encoding-and-evolution.html">Encoding and Evolution</a></li>
+        <li><a href="../databases/object-relational-mapping.html">Object-Relational Mapping Patterns</a></li>
+        <li><a href="../databases/storage-engines.html">Storage Engines</a></li>
+        <li><a href="../databases/transactions.html">Transactions</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Streams</summary>
+      <ul>
+        <li><a class="section-index-link" href="../streams/index.html">Index</a></li>
+        <li><a href="../streams/batch-processing.html">Batch Processing</a></li>
+        <li><a href="../streams/change-data-capture.html">Change Data Capture</a></li>
+        <li><a href="../streams/event-sourcing-cqrs.html">Event Sourcing and CQRS</a></li>
+        <li><a href="../streams/stream-processing.html">Stream Processing</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Comparisons</summary>
+      <ul>
+        <li><a class="section-index-link" href="../comparisons/index.html">Index</a></li>
+        <li><a href="../comparisons/api-protocol-selection.html">API Protocol Selection: REST vs gRPC vs GraphQL</a></li>
+        <li><a href="../comparisons/architecture-styles-comparison.html">Architecture Styles Comparison</a></li>
+        <li><a href="../comparisons/build-vs-buy.html">Build vs Buy vs Adopt (Open-Source)</a></li>
+        <li><a href="../comparisons/consistency-model-selection.html">Consistency Model Selection</a></li>
+        <li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li>
+        <li><a href="../comparisons/decomposition-strategy.html">Decomposition Strategy: How Far to Break Up a System</a></li>
+        <li><a href="../comparisons/migration-pattern-selection.html">Migration Pattern Selection</a></li>
+        <li><a href="../comparisons/orchestration-vs-choreography.html">Orchestration vs Choreography</a></li>
+        <li><a href="../comparisons/performance-and-capacity.html">Performance and Capacity Decision Guide</a></li>
+        <li><a href="../comparisons/stability-pattern-selection.html">Stability Pattern Selection</a></li>
+        <li><a href="../comparisons/sync-vs-async-communication.html">Synchronous vs Asynchronous Communication</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Reference</summary>
+      <ul>
+        <li><a class="section-index-link" href="../reference/index.html">Index</a></li>
+        <li><a href="../reference/technology-glossary.html">Technology Glossary</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a class="section-index-link" href="../sources/index.html">Index</a></li>
+        <li><a href="../sources/a-philosophy-of-software-design.html">A Philosophy of Software Design</a></li>
+        <li><a href="../sources/accelerate.html">Accelerate: The Science of Lean Software and DevOps</a></li>
+        <li><a href="../sources/ai-engineering.html">AI Engineering</a></li>
+        <li><a href="../sources/building-event-driven-microservices.html">Building Event-Driven Microservices</a></li>
+        <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
+        <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
+        <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
+        <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
+        <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
+        <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
+        <li><a href="../sources/fundamentals-of-software-architecture.html">Fundamentals of Software Architecture</a></li>
+        <li><a href="../sources/learning-domain-driven-design.html">Learning Domain-Driven Design</a></li>
+        <li><a href="../sources/mastering-api-architecture.html">Mastering API Architecture</a></li>
+        <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
+        <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
+        <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
+        <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
+        <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
+        <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
+        <li><a href="../sources/software-architecture-the-hard-parts.html">Software Architecture: The Hard Parts</a></li>
+        <li><a href="../sources/team-topologies.html">Team Topologies: Organising Business and Technology Teams for Fast Flow</a></li>
+        <li><a href="../sources/understanding-distributed-systems.html">Understanding Distributed Systems</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Authors</summary>
+      <ul>
+        <li><a class="section-index-link" href="../authors/index.html">Index</a></li>
+        <li><a href="../authors/adam-bellemare.html">Adam Bellemare</a></li>
+        <li><a href="../authors/alexander-von-zitzewitz.html">Alexander von Zitzewitz</a></li>
+        <li><a href="../authors/andrew-harmel-law.html">Andrew Harmel-Law</a></li>
+        <li><a href="../authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a></li>
+        <li><a href="../authors/betsy-beyer.html">Betsy Beyer</a></li>
+        <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
+        <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
+        <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
+        <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
+        <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
+        <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
+        <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
+        <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
+        <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
+        <li><a href="../authors/eric-evans.html">Eric Evans</a></li>
+        <li><a href="../authors/gene-kim.html">Gene Kim</a></li>
+        <li><a href="../authors/gregor-hohpe.html">Gregor Hohpe</a></li>
+        <li><a href="../authors/ian-gorton.html">Ian Gorton</a></li>
+        <li><a href="../authors/james-gough.html">James Gough</a></li>
+        <li><a href="../authors/jennifer-petoff.html">Jennifer Petoff</a></li>
+        <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
+        <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
+        <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
+        <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
+        <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
+        <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
+        <li><a href="../authors/martin-kleppmann.html">Martin Kleppmann</a></li>
+        <li><a href="../authors/matthew-auburn.html">Matthew Auburn</a></li>
+        <li><a href="../authors/matthew-skelton.html">Matthew Skelton</a></li>
+        <li><a href="../authors/michael-keeling.html">Michael Keeling</a></li>
+        <li><a href="../authors/michael-nygard.html">Michael Nygard</a></li>
+        <li><a href="../authors/neal-ford.html">Neal Ford</a></li>
+        <li><a href="../authors/niall-richard-murphy.html">Niall Richard Murphy</a></li>
+        <li><a href="../authors/nicole-forsgren.html">Nicole Forsgren</a></li>
+        <li><a href="../authors/nora-jones.html">Nora Jones</a></li>
+        <li><a href="../authors/patrick-kua.html">Patrick Kua</a></li>
+        <li><a href="../authors/pramod-sadalage.html">Pramod Sadalage</a></li>
+        <li><a href="../authors/rebecca-parsons.html">Rebecca Parsons</a></li>
+        <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
+        <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
+        <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
+        <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
+        <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
+      </ul>
+    </details>
+    </nav>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.sidebar-wrapper');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script>
+    <main id="main-content" data-pagefind-body>
+      
+    <div class="page-header">
+      <div class="breadcrumb-row"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> <a href="../concepts/index.html">Concepts</a> <span class="sep">›</span> Feature Engineering</nav></div>
+      <h1>Feature Engineering</h1>
+      <div class="page-meta">
+        <a class="page-type-badge" href="../concepts/index.html">concept</a>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
+      </div>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/ai.html">ai</a></li><li><a class="tag-chip" href="../tags/machine-learning.html">machine-learning</a></li><li><a class="tag-chip" href="../tags/data.html">data</a></li><li><a class="tag-chip" href="../tags/features.html">features</a></li><li><a class="tag-chip" href="../tags/preprocessing.html">preprocessing</a></li><li><a class="tag-chip" href="../tags/data-leakage.html">data-leakage</a></li><li><a class="tag-chip" href="../tags/feature-store.html">feature-store</a></li></ul>
+    </div><div class="listen-bar" data-pagefind-ignore>
+    <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
+    <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
+    <span class="listen-experimental">← experimental</span>
+  </div><details class="toc" open>
+    <summary>Contents</summary>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#operations">Operations</a></li><li class="toc-sub"><a href="#missing-value-handling">Missing Value Handling</a></li><li class="toc-sub"><a href="#feature-scaling">Feature Scaling</a></li><li class="toc-sub"><a href="#discretisation-binning">Discretisation (Binning)</a></li><li class="toc-sub"><a href="#categorical-encoding">Categorical Encoding</a></li><li class="toc-sub"><a href="#feature-crossing">Feature Crossing</a></li><li class="toc-sub"><a href="#positional-embeddings">Positional Embeddings</a></li><li><a href="#data-leakage">Data Leakage</a></li><li class="toc-sub"><a href="#common-sources">Common Sources</a></li><li class="toc-sub"><a href="#detection">Detection</a></li><li><a href="#feature-importance-and-generalisability">Feature Importance and Generalisability</a></li><li><a href="#best-practices">Best Practices</a></li><li><a href="#feature-lifecycle">Feature Lifecycle</a></li><li><a href="#feature-stores">Feature Stores</a></li><li><a href="#metadata-tracking">Metadata Tracking</a></li><li><a href="#how-different-sources-treat-it">How Different Sources Treat It</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+  </details>
+  <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
+<p>Feature engineering is the process of transforming raw data into a form that makes it easier for ML models to learn from. Despite the rise of deep learning, feature engineering remains essential for structured/tabular data and for metadata and behavioural signals that deep learning doesn&#39;t learn automatically. (→ <a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a> ch. 5)</p>
+<h2 id="operations">Operations</h2>
+<h3 id="missing-value-handling">Missing Value Handling</h3>
+<p>Missing values come in three types with different causes and appropriate responses:</p>
+<ul>
+<li><strong>MNAR (missing not at random):</strong> the value is missing <em>because</em> of the value itself — e.g., high earners not disclosing income, or a blood glucose sensor failing above the measurement range. MNAR is hardest to handle because the missingness is informative.</li>
+<li><strong>MAR (missing at random):</strong> the value is missing because of <em>another observable variable</em> — e.g., married people less likely to disclose age. Once that other variable is conditioned on, the remaining missingness is random.</li>
+<li><strong>MCAR (missing completely at random):</strong> truly random, no pattern. Rare in practice.</li>
+</ul>
+<p>Strategies:</p>
+<ul>
+<li><strong>Deletion:</strong> drop the column (if most values missing and not predictive) or drop the row (if MCAR and few rows affected). Never delete rows from test data.</li>
+<li><strong>Imputation:</strong> replace with a default value, mean, median, or mode. Use with care — imputation adds noise and obscures distribution. For MNAR, mean/median is likely to mislead.</li>
+</ul>
+<h3 id="feature-scaling">Feature Scaling</h3>
+<p>Models that use gradient descent or distance metrics are sensitive to feature scale; tree-based models are not.</p>
+<ul>
+<li><strong>Min-max normalisation:</strong> rescales to [0, 1]. Sensitive to outliers — one outlier compresses the rest of the range.</li>
+<li><strong>Standardisation (Z-score):</strong> subtracts mean, divides by standard deviation → zero mean, unit variance. Handles outliers better.</li>
+<li><strong>Log transformation:</strong> useful for right-skewed distributions (e.g., income, word frequency). Compresses large values.</li>
+</ul>
+<p><strong>Critical rule:</strong> compute scaling statistics (mean, min, max) on the <em>training set only</em>, then apply to the validation and test sets. Scaling before splitting leaks test statistics into training — a form of data leakage.</p>
+<h3 id="discretisation-binning">Discretisation (Binning)</h3>
+<p>Continuous features can be discretised into buckets. Makes the model less sensitive to small numerical variations but introduces artificial discontinuities at bin boundaries. Generally more useful for decision trees (where the algorithm itself finds good splits) than for models that assume smooth functions.</p>
+<h3 id="categorical-encoding">Categorical Encoding</h3>
+<p>Naïve approaches (one-hot, label encoding) assume a fixed, known category set. In production, new categories appear constantly — new products, new cities, new user agents.</p>
+<p><strong>Hashing trick:</strong> hash category values into a fixed-size integer space. Eliminates the fixed-vocabulary problem. Used by Vowpal Wabbit and widely at scale. At a reasonable hash space size, collision rates are low: Booking.com found &lt;0.5% accuracy loss at 50% hash collision rate.</p>
+<h3 id="feature-crossing">Feature Crossing</h3>
+<p>Combine multiple features to model non-linear interactions explicitly. The model <code>f(x₁, x₂)</code> can be expressed as a linear model over a crossed feature <code>x₁ × x₂</code>. Essential for linear/logistic regression, which cannot otherwise capture non-linear relationships. Can cause feature space explosion — hashing is frequently applied to crossed features to bound the space.</p>
+<h3 id="positional-embeddings">Positional Embeddings</h3>
+<p>Encode position within a sequence as a learnable vector:</p>
+<ul>
+<li><strong>Discrete learned embeddings (BERT-style):</strong> each position has a learned vector; bounded by max sequence length.</li>
+<li><strong>Sinusoidal fixed embeddings (original Transformer):</strong> deterministic mathematical function of position; generalises to unseen lengths.</li>
+<li><strong>Continuous Fourier features:</strong> generalisation to arbitrary spatial coordinates; used in NeRF and similar models.</li>
+</ul>
+<h2 id="data-leakage">Data Leakage</h2>
+<p>Data leakage occurs when label information that would not be available at inference time is inadvertently included in the training features. Leakage produces optimistically biased offline metrics that do not hold up in production.</p>
+<h3 id="common-sources">Common Sources</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Random train/test split on time-correlated data</td>
+<td>Future data leaks into training set. Always split by time.</td>
+</tr>
+<tr>
+<td>Scaling before splitting</td>
+<td>Test-set mean/std used in training features. Scale after splitting, using train statistics only.</td>
+</tr>
+<tr>
+<td>Imputation with test statistics</td>
+<td>Missing values filled using statistics that include the test set.</td>
+</tr>
+<tr>
+<td>Data duplication across splits</td>
+<td>CIFAR-10: 3.3% of test images had near-duplicate training images, inflating benchmark scores.</td>
+</tr>
+<tr>
+<td>Group leakage</td>
+<td>Same patient&#39;s multiple scans in both train and test; model memorises per-patient signal not applicable to new patients.</td>
+</tr>
+<tr>
+<td>Leakage from data generation process</td>
+<td>COVID-19 X-ray models learned to distinguish scanner type (proxy for hospital, proxy for COVID prevalence) rather than pathology.</td>
+</tr>
+</tbody></table></div>
+<h3 id="detection">Detection</h3>
+<ul>
+<li><strong>Predictive power measurement:</strong> if a feature is suspiciously predictive, investigate whether it is causal or correlated-via-the-label.</li>
+<li><strong>Ablation studies:</strong> remove suspected features and observe performance change.</li>
+<li><strong>Train/test distribution comparison:</strong> features should have similar distributions in both splits.</li>
+</ul>
+<h2 id="feature-importance-and-generalisability">Feature Importance and Generalisability</h2>
+<p><strong>Feature importance:</strong> XGBoost&#39;s built-in importance scores and SHAP values identify which features contribute most. Facebook found that the top 10 features account for ~50% of total model importance; the last 300 features contribute less than 1%. Pruning unimportant features reduces latency, training cost, and maintenance burden.</p>
+<p><strong>Feature generalisability:</strong> two axes:</p>
+<ul>
+<li><strong>Coverage:</strong> the fraction of production samples for which a feature has a value. A feature present in only 1% of samples may add little even if it has high signal for those samples.</li>
+<li><strong>Distribution overlap:</strong> does the feature distribution in production match training? A feature can be high-coverage but with a shifted distribution that harms generalisation.</li>
+</ul>
+<p>Generalisation and specificity trade off — a very task-specific feature may have high signal but narrow applicability.</p>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Split by time, not randomly</strong> — for time-series or event data.</li>
+<li><strong>Oversample after splitting</strong> — resampling applied to training data only.</li>
+<li><strong>Scale after splitting</strong> — use training-set statistics, apply to all splits.</li>
+<li><strong>Remove unused features</strong> — every feature is a maintenance liability and an inference cost.</li>
+<li><strong>Track feature lineage</strong> — know the origin and transformation history of every feature; enables debugging.</li>
+<li><strong>Inspect distributions</strong> — shift between training and serving distributions (feature skew) is a common silent failure mode.</li>
+</ol>
+<h2 id="feature-lifecycle">Feature Lifecycle</h2>
+<p><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> (ch. 4) describes a 10-step lifecycle as the operational unit of feature management:</p>
+<ol>
+<li>Data collection</li>
+<li>Data cleaning</li>
+<li>Candidate feature definition (code describing the extraction algorithm)</li>
+<li>Feature value extraction (running the code against data)</li>
+<li>Feature store storage</li>
+<li>Feature evaluation (signal quality, coverage, distribution overlap)</li>
+<li>Model training/serving (feature is live in a production model)</li>
+<li>Feature definition updates (versioned changes to extraction code)</li>
+<li>Deletion of feature values (remove computed values for deprecated features)</li>
+<li>Feature discontinuation (retire the definition)</li>
+</ol>
+<p>The distinction between <em>feature definition</em> (the code) and <em>feature value</em> (a specific computed output) is fundamental: changing the definition invalidates prior values.</p>
+<h2 id="feature-stores">Feature Stores</h2>
+<p>A feature store is the infrastructure layer that manages feature definitions, computes and stores feature values, and serves them to training and serving pipelines. (→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 4)</p>
+<p><strong>API requirements:</strong></p>
+<ol>
+<li>Store feature definitions (code + metadata)</li>
+<li>Store feature values (computed outputs)</li>
+<li>Serve data efficiently — must not stall GPU/TPU compute; I/O is often the bottleneck</li>
+<li>Coordinate metadata writes across distributed computation jobs</li>
+</ol>
+<p><strong>Storage patterns:</strong></p>
+<ul>
+<li><em>Columns (structured):</em> column-oriented storage (BigQuery, Parquet) for tabular ML data — efficient for pipelines that read feature subsets</li>
+<li><em>Blobs (unstructured):</em> object stores for images, audio, video — accessed by key, not columnar scan</li>
+</ul>
+<p><strong>Transforming features:</strong> Feature stores can host transformation logic that runs the same code path at training and serving time — the primary mechanism for eliminating train/serve skew. Transformations can be materialised (precomputed) for latency-critical serving paths.</p>
+<p><strong>Legal use restrictions:</strong> A raw feature (e.g., age) may have legal restrictions — usable for insurance only with specific bucketing. The solution is a compliant <em>transforming feature</em> that applies the legally required transformation, allowing restricted use without banning the raw feature from all contexts.</p>
+<h2 id="metadata-tracking">Metadata Tracking</h2>
+<p>Four types of feature metadata needed for reliable ML systems (→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 4):</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Key fields</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dataset metadata</td>
+<td>Provenance, location, responsible person, creation date, use restrictions</td>
+</tr>
+<tr>
+<td>Feature metadata</td>
+<td>Definition version, responsible person, creation date, use restrictions</td>
+</tr>
+<tr>
+<td>Label metadata</td>
+<td>Definition version, set version, source, confidence</td>
+</tr>
+<tr>
+<td>Pipeline metadata</td>
+<td>Run history, performance, dependencies</td>
+</tr>
+</tbody></table></div>
+<p>Design choice: one unified metadata system (simpler joins, harder to evolve independently) vs multiple systems (decoupled, require shared IDs or a meta-metadata layer).</p>
+<h2 id="how-different-sources-treat-it">How Different Sources Treat It</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Perspective</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></td>
+<td>Operations (scaling, encoding, crossing, embeddings), data leakage taxonomy, best practices</td>
+</tr>
+<tr>
+<td><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></td>
+<td>Feature lifecycle as the operational unit; feature stores to eliminate train/serve skew; metadata systems; legal use restrictions</td>
+</tr>
+</tbody></table></div>
+<h2 id="related-concepts">Related Concepts</h2>
+<ul>
+<li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a> — training data acquisition and synthesis upstream of feature engineering</li>
+<li><a href="../concepts/ml-systems-design.html">Ml Systems Design</a> — feature engineering sits within the broader ML lifecycle</li>
+<li><a href="../concepts/finetuning.html">Finetuning</a> — foundation model finetuning reduces but does not eliminate feature engineering for structured inputs</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — feature drift monitoring is a key production concern</li>
+</ul>
+</div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
+        <h2>Referenced by</h2>
+        <ul><li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li><li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li><li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li><li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li></ul>
+      </aside>
+    </main>
+  </div>
+  <footer class="site-footer">
+    A personal knowledge base synthesised from key books in the field. <a href="https://github.com/Synchronium/software-architecture-wiki">GitHub</a> · <a href="https://github.com/Synchronium/software-architecture-wiki/issues">Feedback &amp; suggestions</a>
+  </footer>
+  <script defer src="../pagefind/pagefind-ui.js"></script>
+  <script defer src="../assets/main.js"></script>
+</body>
+</html>

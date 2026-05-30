@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis)">
+  <meta name="description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking; ML incident response (harder detection,…">
   <meta property="og:title" content="Incident Management — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis)">
+  <meta property="og:description" content="Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking; ML incident response (harder detection,…">
   <title>Incident Management — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -74,6 +74,7 @@
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/finetuning.html">Finetuning</a></li>
         <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -322,16 +334,16 @@
       <h1>Incident Management</h1>
       <div class="page-meta">
         <a class="page-type-badge" href="../operations/index.html">concept</a>
-        <span class="page-updated">Updated 27<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
       </div>
-      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/incident-management.html">incident-management</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li><li><a class="tag-chip" href="../tags/postmortems.html">postmortems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/sre.html">sre</a></li></ul>
+      <ul class="tag-list" aria-label="Tags"><li><a class="tag-chip" href="../tags/incident-management.html">incident-management</a></li><li><a class="tag-chip" href="../tags/on-call.html">on-call</a></li><li><a class="tag-chip" href="../tags/postmortems.html">postmortems</a></li><li><a class="tag-chip" href="../tags/reliability.html">reliability</a></li><li><a class="tag-chip" href="../tags/operations.html">operations</a></li><li><a class="tag-chip" href="../tags/sre.html">sre</a></li><li><a class="tag-chip" href="../tags/machine-learning.html">machine-learning</a></li></ul>
     </div><div class="listen-bar" data-pagefind-ignore>
     <button class="listen-btn" type="button" aria-label="Listen to this page">Listen</button>
     <button class="listen-stop" type="button" aria-label="Stop listening" hidden>Stop</button>
     <span class="listen-experimental">← experimental</span>
   </div><details class="toc" open>
     <summary>Contents</summary>
-    <ol><li><a href="#definition">Definition</a></li><li><a href="#troubleshooting-the-hypothetico-deductive-method">Troubleshooting: The Hypothetico-Deductive Method</a></li><li><a href="#incident-command-structure">Incident Command Structure</a></li><li class="toc-sub"><a href="#roles">Roles</a></li><li class="toc-sub"><a href="#only-ops-modifies-the-system">Only Ops Modifies the System</a></li><li class="toc-sub"><a href="#live-incident-document">Live Incident Document</a></li><li class="toc-sub"><a href="#handoff-protocol">Handoff Protocol</a></li><li class="toc-sub"><a href="#when-to-declare-an-incident">When to Declare an Incident</a></li><li class="toc-sub"><a href="#best-practices">Best Practices</a></li><li><a href="#postmortem-culture">Postmortem Culture</a></li><li class="toc-sub"><a href="#blameless-postmortems">Blameless Postmortems</a></li><li class="toc-sub"><a href="#postmortem-triggers">Postmortem Triggers</a></li><li class="toc-sub"><a href="#review-process">Review Process</a></li><li class="toc-sub"><a href="#postmortem-as-culture">Postmortem as Culture</a></li><li><a href="#outage-tracking">Outage Tracking</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
+    <ol><li><a href="#definition">Definition</a></li><li><a href="#troubleshooting-the-hypothetico-deductive-method">Troubleshooting: The Hypothetico-Deductive Method</a></li><li><a href="#incident-command-structure">Incident Command Structure</a></li><li class="toc-sub"><a href="#roles">Roles</a></li><li class="toc-sub"><a href="#only-ops-modifies-the-system">Only Ops Modifies the System</a></li><li class="toc-sub"><a href="#live-incident-document">Live Incident Document</a></li><li class="toc-sub"><a href="#handoff-protocol">Handoff Protocol</a></li><li class="toc-sub"><a href="#when-to-declare-an-incident">When to Declare an Incident</a></li><li class="toc-sub"><a href="#best-practices">Best Practices</a></li><li><a href="#postmortem-culture">Postmortem Culture</a></li><li class="toc-sub"><a href="#blameless-postmortems">Blameless Postmortems</a></li><li class="toc-sub"><a href="#postmortem-triggers">Postmortem Triggers</a></li><li class="toc-sub"><a href="#review-process">Review Process</a></li><li class="toc-sub"><a href="#postmortem-as-culture">Postmortem as Culture</a></li><li><a href="#outage-tracking">Outage Tracking</a></li><li><a href="#ml-incident-response">ML Incident Response</a></li><li class="toc-sub"><a href="#ml-specific-differences">ML-Specific Differences</a></li><li class="toc-sub"><a href="#three-guiding-principles">Three Guiding Principles</a></li><li class="toc-sub"><a href="#ml-troubleshooting-approach">ML Troubleshooting Approach</a></li><li class="toc-sub"><a href="#privacy-preserving-incident-response">Privacy-Preserving Incident Response</a></li><li class="toc-sub"><a href="#rpo-and-rto-for-ml-systems">RPO and RTO for ML Systems</a></li><li><a href="#related-concepts">Related Concepts</a></li></ol>
   </details>
   <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><h2 id="definition">Definition</h2>
 <p>Incident management is the structured process for responding to production problems — detecting, containing, investigating, and learning from events that impair service reliability. Effective incident management limits the duration and blast radius of incidents and converts failures into organisational knowledge. (→ <a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a> ch. 12–15)</p>
@@ -452,18 +464,46 @@
 <blockquote>
 <p><strong>Postmortems vs outage tracking</strong>: postmortems provide deep insight per incident; outage tracking provides breadth across all incidents, including those too small for a postmortem. Both are necessary; neither substitutes for the other.</p>
 </blockquote>
+<h2 id="ml-incident-response">ML Incident Response</h2>
+<p>ML incidents use the same command structure and phases as standard incidents, but differ significantly in three dimensions. (→ <a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 11)</p>
+<h3 id="ml-specific-differences">ML-Specific Differences</h3>
+<p><strong>Detection is harder.</strong> ML failures manifest as silent quality degradation — <code>predict()</code> returns successfully with wrong answers. Infrastructure monitoring never fires. The detection signal comes from quality metrics (click-through rate, revenue per recommendation, customer complaints about &quot;weird results&quot;). By the time user-facing metrics degrade visibly, the underlying failure may be weeks old.</p>
+<p><strong>Broader organisational scope.</strong> ML outages routinely involve finance, product, legal, and partner teams — not just engineering. The shared economic impact of ML systems creates shared incident responsibility.</p>
+<p><strong>Fuzzy timeline and resolution.</strong> &quot;When did the outage start?&quot; is often unanswerable precisely. &quot;Is it resolved?&quot; means returning to approximately previous quality on a model now weeks behind the world, not restoring a prior state.</p>
+<h3 id="three-guiding-principles">Three Guiding Principles</h3>
+<ol>
+<li><strong>Public</strong> — ML quality failures often first appear as user complaints or business metric drops, not as alert pages. These signals are noisy but early and should not be dismissed.</li>
+<li><strong>Fuzzy</strong> — the boundary between &quot;broken&quot; and &quot;not yet good enough&quot; is not always clear for ML systems. Declare incidents based on measurable business or quality metric thresholds agreed upon before incidents occur.</li>
+<li><strong>Unbounded</strong> — troubleshooting an ML outage routinely requires coordinating across ML engineers, data engineers, product managers, and business leaders. Plan for this scope before incidents occur.</li>
+</ol>
+<h3 id="ml-troubleshooting-approach">ML Troubleshooting Approach</h3>
+<p><strong>Start from the model&#39;s output, not the data.</strong> The question to ask is: &quot;What is the model predicting, and why is that wrong?&quot; Working backward from the wrong output to the cause is far more tractable than searching forward through data pipelines.</p>
+<p><strong>Look at the whole system.</strong> ML outages are often caused on one side of the system (training pipeline, feature store, upstream data schema change) but detected on the other side (serving, business metrics). Step back early and consider system-wide explanations before narrowing to specific components.</p>
+<p><strong>Business leaders at the boundary.</strong> Many ML incidents require a mitigation decision with significant revenue consequences. Production engineers must be prepared to escalate quickly, and business leaders must be available for consultation even during off-hours. Pre-negotiating escalation paths before incidents is as important as pre-negotiating SLOs.</p>
+<h3 id="privacy-preserving-incident-response">Privacy-Preserving Incident Response</h3>
+<p>Under pressure to resolve an ML outage, engineers may access raw user data (query logs, personal information, purchase history) without appropriate controls. This is an ethical violation with legal consequences in many jurisdictions. The constraints:</p>
+<ul>
+<li>Raw query logs correlating to individual users are PII in most jurisdictions.</li>
+<li>Access to customer financial data (investment decisions, purchase history) during incident response constitutes insider knowledge under some legal frameworks.</li>
+<li>Incident pressure does not suspend privacy obligations.</li>
+</ul>
+<p>Recommended mitigations: access-controlled data access with justification logging; dual-key oversight (no single engineer has unmonitored raw data access); pre-authorised anonymised test datasets specifically for debugging; audit trails reviewed in postmortems.</p>
+<h3 id="rpo-and-rto-for-ml-systems">RPO and RTO for ML Systems</h3>
+<p>Most ML systems have no meaningful recovery point objective (RPO). They exist to adapt to the current state of the world — there is no prior state to restore to. The &quot;resolution&quot; of an ML incident means returning to approximately previous quality on a model that has since fallen behind the world, not true rollback.</p>
+<p>Recovery time objective (RTO) for ML includes model retraining time — often hours to days — not just detection and fix time. SLO modelling must account for this.</p>
 <h2 id="related-concepts">Related Concepts</h2>
 <ul>
-<li><a href="../operations/monitoring.html">Monitoring</a> — SLOs and burn rate alerting detect incidents; alert quality determines on-call effectiveness</li>
+<li><a href="../operations/monitoring.html">Monitoring</a> — SLOs and burn rate alerting detect incidents; alert quality determines on-call effectiveness; ML monitoring taxonomy</li>
 <li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a> — the broader discipline; error budgets quantify incident impact</li>
 <li><a href="../operations/error-budgets.html">Error Budgets</a> — incident severity is expressed as error budget consumed</li>
 <li><a href="../operations/observability.html">Observability</a> — logs and traces enable effective examination and diagnosis during incidents</li>
 <li><a href="../operations/chaos-engineering.html">Chaos Engineering</a> — deliberate failure injection to surface incident response gaps before real incidents</li>
 <li><a href="../operations/automation.html">Automation</a> — automating common incident responses (failover, rollback) reduces MTTR</li>
+<li><a href="../concepts/ml-systems-design.html">Ml Systems Design</a> — ML-specific failure modes and silent failure characteristics that make ML incident detection hard</li>
 </ul>
 </div><aside class="backlinks" aria-label="Referenced by" data-pagefind-ignore>
         <h2>Referenced by</h2>
-        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
+        <ul><li><a href="../operations/availability.html">Availability</a></li><li><a href="../comparisons/cost-vs-availability.html">Cost vs Availability Decision Guide</a></li><li><a href="../operations/monitoring.html">Monitoring</a></li><li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li><li><a href="../operations/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li><li><a href="../operations/testing-for-reliability.html">Testing for Reliability</a></li></ul>
       </aside>
     </main>
   </div>

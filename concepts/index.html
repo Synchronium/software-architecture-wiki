@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="All 57 pages in the Concepts section of the Software Architecture wiki.">
+  <meta name="description" content="All 63 pages in the Concepts section of the Software Architecture wiki.">
   <meta property="og:title" content="Concepts — Software Architecture">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Software Architecture">
-  <meta property="og:description" content="All 57 pages in the Concepts section of the Software Architecture wiki.">
+  <meta property="og:description" content="All 63 pages in the Concepts section of the Software Architecture wiki.">
   <title>Concepts — Software Architecture</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
   <link rel="stylesheet" href="../assets/style.css">
@@ -74,6 +74,7 @@
         <li><a href="../concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="../concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="../concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="../concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="../concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="../concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="../concepts/coupling.html">Coupling</a></li>
         <li><a href="../concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="../concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="../concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="../concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="../concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="../concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="../concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="../concepts/finetuning.html">Finetuning</a></li>
         <li><a href="../concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="../concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="../concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="../concepts/messaging.html">Messaging</a></li>
+        <li><a href="../concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="../concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="../concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="../concepts/modularity.html">Modularity</a></li>
         <li><a href="../concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="../sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="../sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="../sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="../sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="../sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="../sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="../sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="../sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="../sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="../sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="../sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="../sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="../sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="../sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="../authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="../authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="../authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="../authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="../authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="../authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="../authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="../authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="../authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="../authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="../authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="../authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="../authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="../authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="../authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="../authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="../authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="../authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="../authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="../authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="../authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="../authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="../authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="../authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -320,7 +332,7 @@
     <div class="tag-index-header">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Software Architecture</a> <span class="sep">›</span> Concepts</nav>
       <h1>Concepts</h1>
-      <p class="tag-count">57 pages</p>
+      <p class="tag-count">63 pages</p>
     </div>
     <ul class="tag-index-list">
     <li class="tag-index-item">
@@ -392,6 +404,10 @@
       <p class="summary">Four reuse techniques: code replication, shared library, shared service, sidecar; core reuse principle (reuse = abstraction + slow rate of change); versioning discipline; orthogonal coupling</p>
     </li>
     <li class="tag-index-item">
+      <a href="../concepts/continual-learning.html">Continual Learning and Test in Production</a>
+      <p class="summary">Stateless retraining vs stateful training (fine-tuning); four stages of continual learning maturity; champion/challenger pattern; test in production methods (shadow deployment, A/B testing, canary release, interleaving experiments, bandits, contextual bandits); data freshness value; continuous ML challenges (feedback loops, emergency response, stable A/B baselines)</p>
+    </li>
+    <li class="tag-index-item">
       <a href="../concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a>
       <p class="summary">Eight Accelerate-validated CD capabilities; key empirical findings: config-in-VCS more predictive than code, developer-owned tests, trunk-based development, loosely coupled architecture as the single largest CD lever; shift-left security (DevSecOps); lightweight change approval vs CABs; relationship between CD, culture, burnout, and job satisfaction</p>
     </li>
@@ -420,6 +436,10 @@
       <p class="summary">Data disintegrators/integrators; five-step process; data domains; data sovereignty; connection quotas; polyglot persistence; database type selection; data ownership (single/common/joint); eventual consistency patterns; four distributed data access patterns</p>
     </li>
     <li class="tag-index-item">
+      <a href="../concepts/data-distribution-shifts.html">Data Distribution Shifts</a>
+      <p class="summary">Covariate shift/label shift/concept drift/feature change/label schema change taxonomy; degenerate feedback loops (mechanism, detection, correction via randomisation and positional features); detection methods (KS test, two-sample tests, feature validation, prediction monitoring, sliding vs cumulative statistics); proactive design; retraining strategies</p>
+    </li>
+    <li class="tag-index-item">
       <a href="../concepts/dataset-engineering.html">Dataset Engineering</a>
       <p class="summary">Data-centric AI; three criteria (quality, coverage, quantity); acquisition and annotation; data synthesis (rule-based, simulation, AI-powered, reverse instruction); model distillation; model collapse; data processing pipeline</p>
     </li>
@@ -438,6 +458,10 @@
     <li class="tag-index-item">
       <a href="../concepts/evolutionary-database-design.html">Evolutionary Database Design</a>
       <p class="summary">Expand/contract pattern; Flyway/Liquibase; shared DB decomposition; reporting antipattern; Newman's ~12 database decomposition patterns (database view, wrapping service, tracer write, synchronize in application, etc.)</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/feature-engineering.html">Feature Engineering</a>
+      <p class="summary">Feature operations (missing value handling MNAR/MAR/MCAR, scaling, discretisation, categorical encoding/hashing trick, feature crossing, positional embeddings); data leakage causes and detection; feature importance (top 10 = 50% importance); feature generalisation (coverage × distribution overlap); best practices (split by time, scale after split)</p>
     </li>
     <li class="tag-index-item">
       <a href="../concepts/feature-flags.html">Feature Flags</a>
@@ -482,6 +506,18 @@
     <li class="tag-index-item">
       <a href="../concepts/messaging.html">Messaging</a>
       <p class="summary">Command/Document/Event message types; one-way/req-resp/broadcast styles; Request-Reply (sync block vs async callback; Return Address; Correlation Identifier); point-to-point/pub-sub/datatype channels; Pub-Sub as distributed Observer (push vs pull; channel design); at-least-once delivery; guaranteed delivery; exactly-once via idempotency; invalid vs dead letter channel; backlogs; poison message isolation; competing consumers; data safety trade-off (publisher confirms + persistent queues + manual ACKs); quorum queues (RAFT); RabbitMQ internals; Pipes and Filters; Message Router; Message Bus; Messaging Bridge; Aggregator; Resequencer; Composed Message Processor; Scatter-Gather; Routing Slip; Process Manager; Message Broker (architectural pattern); Envelope Wrapper; Content Enricher; Content Filter; Claim Check; Normalizer; Canonical Data Model; Messaging Gateway; Messaging Mapper; Transactional Client; Polling Consumer; Event-Driven Consumer; Competing Consumers; Message Dispatcher; Selective Consumer; Durable Subscriber; Idempotent Receiver; Service Activator; Control Bus; Detour; Wire Tap; Message History; Message Store; Smart Proxy; Test Message; Channel Purger</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/ml-systems-design.html">ML Systems Design</a>
+      <p class="summary">When to use ML (nine conditions); research vs production differences (silent failure, latency vs throughput, messy data, fairness, interpretability); four system requirements (reliability, scalability, maintainability, adaptability); business vs ML objective alignment; problem framing (task types, decoupling objectives); mind vs data debate</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a>
+      <p class="summary">Four-layer MLOps stack (storage/compute, resource management, ML platform, dev environment); cloud repatriation; Docker + Kubernetes; workflow orchestration tools (Airflow/Argo/Prefect/Metaflow); model store (8 artifact types); feature store (management/computation/consistency, eliminates training-serving skew); build vs buy framework</p>
+    </li>
+    <li class="tag-index-item">
+      <a href="../concepts/model-development.html">Model Development and Offline Evaluation</a>
+      <p class="summary">Six model selection tips; four phases of ML adoption; ensembles (bagging/boosting/stacking); experiment tracking and data versioning challenges; ML debugging; distributed training (data/model/pipeline parallelism); AutoML (hyperparameter tuning, NAS, learned optimisers); offline evaluation baselines; evaluation methods (perturbation, invariance, directional expectation, calibration, confidence, slice-based/Simpson's paradox)</p>
     </li>
     <li class="tag-index-item">
       <a href="../concepts/model-driven-design.html">Model-Driven Design</a>

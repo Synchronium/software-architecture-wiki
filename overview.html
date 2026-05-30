@@ -74,6 +74,7 @@
         <li><a href="concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="concepts/coupling.html">Coupling</a></li>
         <li><a href="concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="concepts/finetuning.html">Finetuning</a></li>
         <li><a href="concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="concepts/messaging.html">Messaging</a></li>
+        <li><a href="concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="concepts/modularity.html">Modularity</a></li>
         <li><a href="concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -322,7 +334,7 @@
       <h1>Overview — Software Architecture</h1>
       <div class="page-meta">
         <span class="page-type-badge">overview</span>
-        <span class="page-updated">Updated 29<sup>th</sup> May 2026</span>
+        <span class="page-updated">Updated 30<sup>th</sup> May 2026</span>
       </div>
       
     </div><div class="listen-bar" data-pagefind-ignore>
@@ -331,13 +343,13 @@
     <span class="listen-experimental">← experimental</span>
   </div><details class="toc" open>
     <summary>Contents</summary>
-    <ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#the-central-question">The Central Question</a></li><li><a href="#major-themes">Major Themes</a></li><li class="toc-sub"><a href="#architecture-is-more-than-structure">Architecture Is More Than Structure</a></li><li class="toc-sub"><a href="#failures-are-unavoidable-design-for-production-not-qa">Failures Are Unavoidable — Design for Production, Not QA</a></li><li class="toc-sub"><a href="#coordination-is-expensive">Coordination Is Expensive</a></li><li class="toc-sub"><a href="#the-consistency-vs-availability-trade-off">The Consistency vs. Availability Trade-off</a></li><li class="toc-sub"><a href="#architecture-characteristics-drive-style-selection">Architecture Characteristics Drive Style Selection</a></li><li class="toc-sub"><a href="#storage-engines-physics-drives-design">Storage Engines: Physics Drives Design</a></li><li class="toc-sub"><a href="#scalability-is-empirical">Scalability Is Empirical</a></li><li class="toc-sub"><a href="#the-api-contract-as-architectural-seam">The API Contract as Architectural Seam</a></li><li class="toc-sub"><a href="#integration-styles-are-architectural-choices">Integration Styles Are Architectural Choices</a></li><li class="toc-sub"><a href="#domain-logic-patterns-are-chosen-not-inherited">Domain Logic Patterns Are Chosen, Not Inherited</a></li><li class="toc-sub"><a href="#security-from-perimeter-to-zero-trust">Security: From Perimeter to Zero Trust</a></li><li class="toc-sub"><a href="#deployment-release">Deployment ≠ Release</a></li><li class="toc-sub"><a href="#governance-is-architecture-in-motion">Governance Is Architecture in Motion</a></li><li class="toc-sub"><a href="#architecture-quality-is-measurable">Architecture Quality Is Measurable</a></li><li class="toc-sub"><a href="#complexity-is-the-enemy-of-maintainability">Complexity Is the Enemy of Maintainability</a></li><li class="toc-sub"><a href="#team-structure-is-architecture">Team Structure Is Architecture</a></li><li class="toc-sub"><a href="#delivery-performance-has-four-leading-indicators">Delivery Performance Has Four Leading Indicators</a></li><li class="toc-sub"><a href="#transactions-isolation-levels-are-widely-misunderstood">Transactions: Isolation Levels Are Widely Misunderstood</a></li><li class="toc-sub"><a href="#batch-and-stream-processing-as-derived-data">Batch and Stream Processing as Derived Data</a></li><li class="toc-sub"><a href="#the-data-communication-layer-is-the-missing-piece">The Data Communication Layer Is the Missing Piece</a></li><li class="toc-sub"><a href="#domain-driven-design-language-before-architecture">Domain-Driven Design: Language Before Architecture</a></li><li class="toc-sub"><a href="#monolith-decomposition-is-a-journey-not-a-cut-over">Monolith Decomposition Is a Journey, Not a Cut-over</a></li><li class="toc-sub"><a href="#consensus-is-required-for-linearizability">Consensus Is Required for Linearizability</a></li><li class="toc-sub"><a href="#observability-is-not-optional">Observability Is Not Optional</a></li><li class="toc-sub"><a href="#50-of-architecture-is-soft-skills">~50% of Architecture Is Soft Skills</a></li><li class="toc-sub"><a href="#sre-operationalises-reliability-as-an-engineering-discipline">SRE Operationalises Reliability as an Engineering Discipline</a></li><li class="toc-sub"><a href="#chaos-engineering-discovers-unknown-failure-modes">Chaos Engineering Discovers Unknown Failure Modes</a></li><li class="toc-sub"><a href="#performance-is-queueing-theory-in-disguise">Performance Is Queueing Theory in Disguise</a></li><li class="toc-sub"><a href="#stability-patterns-form-a-composable-set-not-independent-choices">Stability Patterns Form a Composable Set, Not Independent Choices</a></li><li class="toc-sub"><a href="#release-is-progressive-not-atomic">Release Is Progressive, Not Atomic</a></li><li class="toc-sub"><a href="#cost-is-a-quality-attribute">Cost Is a Quality Attribute</a></li><li><a href="#sources-in-this-wiki">Sources in This Wiki</a></li><li><a href="#open-questions">Open Questions</a></li><li><a href="#key-authors">Key Authors</a></li></ol>
+    <ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#the-central-question">The Central Question</a></li><li><a href="#major-themes">Major Themes</a></li><li class="toc-sub"><a href="#architecture-is-more-than-structure">Architecture Is More Than Structure</a></li><li class="toc-sub"><a href="#failures-are-unavoidable-design-for-production-not-qa">Failures Are Unavoidable — Design for Production, Not QA</a></li><li class="toc-sub"><a href="#coordination-is-expensive">Coordination Is Expensive</a></li><li class="toc-sub"><a href="#the-consistency-vs-availability-trade-off">The Consistency vs. Availability Trade-off</a></li><li class="toc-sub"><a href="#architecture-characteristics-drive-style-selection">Architecture Characteristics Drive Style Selection</a></li><li class="toc-sub"><a href="#storage-engines-physics-drives-design">Storage Engines: Physics Drives Design</a></li><li class="toc-sub"><a href="#scalability-is-empirical">Scalability Is Empirical</a></li><li class="toc-sub"><a href="#the-api-contract-as-architectural-seam">The API Contract as Architectural Seam</a></li><li class="toc-sub"><a href="#integration-styles-are-architectural-choices">Integration Styles Are Architectural Choices</a></li><li class="toc-sub"><a href="#domain-logic-patterns-are-chosen-not-inherited">Domain Logic Patterns Are Chosen, Not Inherited</a></li><li class="toc-sub"><a href="#security-from-perimeter-to-zero-trust">Security: From Perimeter to Zero Trust</a></li><li class="toc-sub"><a href="#deployment-release">Deployment ≠ Release</a></li><li class="toc-sub"><a href="#governance-is-architecture-in-motion">Governance Is Architecture in Motion</a></li><li class="toc-sub"><a href="#architecture-quality-is-measurable">Architecture Quality Is Measurable</a></li><li class="toc-sub"><a href="#complexity-is-the-enemy-of-maintainability">Complexity Is the Enemy of Maintainability</a></li><li class="toc-sub"><a href="#team-structure-is-architecture">Team Structure Is Architecture</a></li><li class="toc-sub"><a href="#delivery-performance-has-four-leading-indicators">Delivery Performance Has Four Leading Indicators</a></li><li class="toc-sub"><a href="#transactions-isolation-levels-are-widely-misunderstood">Transactions: Isolation Levels Are Widely Misunderstood</a></li><li class="toc-sub"><a href="#batch-and-stream-processing-as-derived-data">Batch and Stream Processing as Derived Data</a></li><li class="toc-sub"><a href="#the-data-communication-layer-is-the-missing-piece">The Data Communication Layer Is the Missing Piece</a></li><li class="toc-sub"><a href="#domain-driven-design-language-before-architecture">Domain-Driven Design: Language Before Architecture</a></li><li class="toc-sub"><a href="#monolith-decomposition-is-a-journey-not-a-cut-over">Monolith Decomposition Is a Journey, Not a Cut-over</a></li><li class="toc-sub"><a href="#ml-systems-are-production-systems-with-additional-failure-modes">ML Systems Are Production Systems — With Additional Failure Modes</a></li><li class="toc-sub"><a href="#consensus-is-required-for-linearizability">Consensus Is Required for Linearizability</a></li><li class="toc-sub"><a href="#observability-is-not-optional">Observability Is Not Optional</a></li><li class="toc-sub"><a href="#50-of-architecture-is-soft-skills">~50% of Architecture Is Soft Skills</a></li><li class="toc-sub"><a href="#sre-operationalises-reliability-as-an-engineering-discipline">SRE Operationalises Reliability as an Engineering Discipline</a></li><li class="toc-sub"><a href="#chaos-engineering-discovers-unknown-failure-modes">Chaos Engineering Discovers Unknown Failure Modes</a></li><li class="toc-sub"><a href="#performance-is-queueing-theory-in-disguise">Performance Is Queueing Theory in Disguise</a></li><li class="toc-sub"><a href="#stability-patterns-form-a-composable-set-not-independent-choices">Stability Patterns Form a Composable Set, Not Independent Choices</a></li><li class="toc-sub"><a href="#release-is-progressive-not-atomic">Release Is Progressive, Not Atomic</a></li><li class="toc-sub"><a href="#cost-is-a-quality-attribute">Cost Is a Quality Attribute</a></li><li><a href="#sources-in-this-wiki">Sources in This Wiki</a></li><li><a href="#open-questions">Open Questions</a></li><li><a href="#key-authors">Key Authors</a></li></ol>
   </details>
   <script>(function(){var q=matchMedia('(min-width:721px)'),e=document.querySelector('.toc');if(!e)return;if(!q.matches)e.removeAttribute('open');q.addEventListener('change',function(ev){if(ev.matches)e.setAttribute('open','');});})();</script><div class="page-body"><blockquote>
-<p>This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: <strong>21 sources fully ingested.</strong></p>
+<p>This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: <strong>24 sources fully ingested.</strong></p>
 </blockquote>
 <h2 id="at-a-glance">At a Glance</h2>
-<p>The wiki&#39;s working view of the field, in seven claims:</p>
+<p>The wiki&#39;s working view of the field, in eight claims:</p>
 <ol>
 <li><strong>Architecture is decisions made under uncertainty.</strong> Every choice trades quality attributes against each other; there is no best architecture, only better fits for a context. The architect&#39;s job is to identify the <em>fewest</em> characteristics that matter most and accept under-optimisation on the rest.</li>
 <li><strong>Failures are a fact, not an edge case.</strong> Design for production, not QA: assume hardware fails, networks partition, clocks drift, configs corrupt. Minimise blast radius and stop propagation — don&#39;t try to prevent every failure.</li>
@@ -346,6 +358,7 @@
 <li><strong>Governance must be automated and continuous, not periodic and manual.</strong> Architectural decisions degrade silently. <a href="concepts/fitness-functions.html">Fitness Functions</a> in <a href="concepts/deployment-pipelines.html">Deployment Pipelines</a> are the mechanism that makes governance survive over time.</li>
 <li><strong>Complexity accumulates incrementally and must be deliberately resisted.</strong> Tactical programming defers cost to every future reader; strategic programming invests ~10–15% in design and pays back compoundingly. Information hiding, deep modules, and bounded contexts are the techniques.</li>
 <li><strong>The empirical evidence supports counter-intuitive practices.</strong> Speed and stability correlate positively (not in tension); trunk-based development beats long-lived branches; CABs hurt rather than help; loose architectural coupling matters more than test automation for delivery performance (<a href="sources/accelerate.html">Accelerate</a>).</li>
+<li><strong>ML systems fail silently and require a lifecycle approach.</strong> An ML model calling <code>predict()</code> successfully with wrong answers is a production failure invisible to all standard monitoring. Models are never done — they degrade as the world changes, and the response is continuous monitoring, retraining, and organisational disciplines that parallel (but extend) conventional SRE practice.</li>
 </ol>
 <hr>
 <h2 id="the-central-question">The Central Question</h2>
@@ -508,6 +521,14 @@
 <li><strong>Parallel Run</strong> (→ <a href="patterns/parallel-run.html">Parallel Run</a>): run both implementations simultaneously; return results from the old; compare against the new. Use to verify correctness before committing to the new path (GitHub Scientist).</li>
 </ul>
 <p><strong>Database decomposition</strong> is the hard part. Every shared-database coupling is a hidden contract. Newman&#39;s taxonomy of ~12 decomposition patterns includes database views (read-only facade over old schema), wrapping services (API encapsulates shared table access), tracer writes (dual-write with progressive migration), and synchronise-in-application (two stores kept consistent via application code, used transitionally). See <a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a>.</p>
+<h3 id="ml-systems-are-production-systems-with-additional-failure-modes">ML Systems Are Production Systems — With Additional Failure Modes</h3>
+<p>Three recent sources (<a href="sources/ai-engineering.html">Ai Engineering</a>, <a href="sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a>, <a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a>) establish a coherent synthesis: ML systems are production distributed systems with all the failure modes of conventional systems <em>plus</em> additional ML-specific ones.</p>
+<p><strong>The ML lifecycle is cyclic and never done.</strong> Huyen&#39;s six-step cycle (project scoping → data engineering → model development → deployment → monitoring → business analysis → repeat) and the RML team&#39;s ML loop (data → training → evaluation → SLOs → launch → monitor → data) both frame ML as a continuous operational concern, not a one-time build. <a href="concepts/continual-learning.html">Continual Learning</a> is the mechanism for closing the loop; <a href="concepts/data-distribution-shifts.html">Data Distribution Shifts</a> is the primary driver of model degradation over time.</p>
+<p><strong>Silent failure is the defining production risk.</strong> A model calling <code>predict()</code> successfully and returning wrong answers will never be detected by infrastructure monitoring. This requires a three-layer monitoring strategy: system health (standard golden signals), basic model health (model size, serving error rate), and domain-specific quality signals (business metrics — CTR, revenue, engagement). The monitoring hierarchy is <a href="operations/monitoring.html">Monitoring</a> extended by ML-specific content. See <a href="concepts/ml-systems-design.html">Ml Systems Design</a> for the full failure mode taxonomy.</p>
+<p><strong>Feature generation is the most common failure source.</strong> Bugs in feature computation are invisible to aggregate accuracy metrics; train/serve skew (same feature computed differently at training vs serving time) is pervasive; upstream data schema changes silently corrupt models trained on the old format (&quot;better is not better, better is different&quot;). Feature stores are the primary mechanism for eliminating train/serve skew.</p>
+<p><strong>ML incidents are harder to detect, broader in scope, and fuzzier in timeline.</strong> Standard incident management (see <a href="operations/incident-management.html">Incident Management</a>) applies, but ML incidents manifest as quality degradation rather than error spikes, routinely involve finance, legal, and product stakeholders (not just engineering), and have no sharp start or end boundary. The ML-specific troubleshooting heuristic: start from the model&#39;s output (what is it predicting, and why is that wrong?) rather than searching forward through data pipelines.</p>
+<p><strong>An evaluation = metric + distribution — always.</strong> A model&#39;s accuracy is meaningless without specifying the evaluation distribution. The fairness crisis of the late 2010s largely traced to models evaluated on distributions that did not represent affected populations. Statistical parity (equal error rates across groups) and calibration (consistent score semantics across groups) are mathematically incompatible when base rates differ — which is almost always the case. Fairness is a process of continuous monitoring, not an endpoint. See <a href="concepts/ai-evals.html">Ai Evals</a> and <a href="concepts/model-development.html">Model Development</a>.</p>
+<p><strong>Foundation models change the engineering default, not the reliability challenge.</strong> Chip Huyen&#39;s <a href="sources/ai-engineering.html">Ai Engineering</a> frames AI engineering as adapting, evaluating, and operating foundation models rather than training from scratch. RAG (<a href="concepts/rag.html">Rag</a>), finetuning (<a href="concepts/finetuning.html">Finetuning</a>), and agent architectures (<a href="concepts/ai-agents.html">Ai Agents</a>) are the primary adaptation mechanisms. Inference optimisation (<a href="concepts/inference-optimization.html">Inference Optimization</a>) — speculative decoding, continuous batching, KV cache management — is the dominant serving engineering challenge at scale. The monitoring and reliability concerns are continuous with conventional production systems: model drift, degenerate feedback loops, and sycophancy (models that shift to match user views rather than providing accurate information) are the ML-specific additions.</p>
 <h3 id="consensus-is-required-for-linearizability">Consensus Is Required for Linearizability</h3>
 <p>DDIA and <a href="sources/understanding-distributed-systems.html">Understanding Distributed Systems</a> agree: linearizability requires consensus. Fault-tolerant consensus (Raft, Paxos, Zab) requires a strict majority quorum, has overhead from synchronous replication, and is sensitive to network delays. ZooKeeper and etcd implement consensus as a service for leader election, partition assignment, and distributed locks. The full equivalence theorem: linearizable CAS ≡ total order broadcast ≡ atomic transaction commit ≡ distributed locks ≡ uniqueness constraints — all require consensus. See <a href="distributed/consensus-algorithms.html">Consensus Algorithms</a>.</p>
 <h3 id="observability-is-not-optional">Observability Is Not Optional</h3>
@@ -668,6 +689,24 @@
 <td>Rosenthal &amp; Jones (eds.)</td>
 <td>2026-05-28</td>
 </tr>
+<tr>
+<td><a href="sources/ai-engineering.html">Ai Engineering</a></td>
+<td>AI Engineering</td>
+<td>Chip Huyen</td>
+<td>2026-05-30</td>
+</tr>
+<tr>
+<td><a href="sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></td>
+<td>Designing Machine Learning Systems</td>
+<td>Chip Huyen</td>
+<td>2026-05-30</td>
+</tr>
+<tr>
+<td><a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a></td>
+<td>Reliable Machine Learning</td>
+<td>Chen, Murphy, Parisa, Sculley, Underwood</td>
+<td>2026-05-30</td>
+</tr>
 </tbody></table></div>
 <hr>
 <h2 id="open-questions">Open Questions</h2>
@@ -681,7 +720,9 @@
 <li>Team Topologies assumes one team per component and one component per team. How does this interact with platform engineering, where a single platform team may be the effective owner of infrastructure used by dozens of stream-aligned teams?</li>
 <li>SRE&#39;s &quot;100% is always the wrong target&quot; argument depends on users having degradation thresholds below 100%. Where does this break down — life-critical systems, financial settlement, regulated environments — and how should SLO targets be set in those contexts?</li>
 <li>Chaos engineering&#39;s &quot;experimentation creates new knowledge&quot; claim sits uneasily with the practical experience that most chaos experiments confirm what was already known. What does a high-value experiment look like in a mature programme, and at what point does running more experiments stop adding value?</li>
-<li>The eight-page lint pass added <a href="concepts/feature-flags.html">Feature Flags</a> as application-layer release control and <a href="concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> as a quality attribute. Both deserve their own ingest source — multi-tenancy, deep security, and ML systems remain genuinely unaddressed by the current corpus.</li>
+<li>The eight-page lint pass added <a href="concepts/feature-flags.html">Feature Flags</a> as application-layer release control and <a href="concepts/cost-as-architectural-force.html">Cost As Architectural Force</a> as a quality attribute. Both deserve their own ingest source — multi-tenancy and deep security remain genuinely unaddressed by the current corpus (ML systems are now covered by three ingested sources).</li>
+<li>The &quot;models predict their training labels, not ground truth&quot; finding (→ <a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a> ch. 15) implies that any validation pipeline that draws test sets from the same corrupted source as training will always give correct results on corrupted data. What organisational mechanisms produce truly independent label validation — and how should they be treated as a reliability requirement, not an ML nicety?</li>
+<li>RML and DMLS agree that ML failures are silent (model calls succeed; answers are wrong), but they disagree implicitly on the primary detection mechanism: DMLS prioritises statistical drift detection; RML prioritises business metric degradation (clicks, revenue). Which is more actionable as an early warning signal, and can they be ordered in a monitoring priority hierarchy?</li>
 </ul>
 <hr>
 <h2 id="key-authors">Key Authors</h2>
@@ -725,6 +766,9 @@
 <li><a href="authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a> — wrote ch. 1 of <em>Site Reliability Engineering</em>; originator of the term SRE; creator of the error budget model</li>
 <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a> — co-editor of <em>Chaos Engineering</em>; built Netflix&#39;s Chaos Engineering team; co-author of the Principles of Chaos Engineering</li>
 <li><a href="authors/nora-jones.html">Nora Jones</a> — co-editor of <em>Chaos Engineering</em>; safety science and sociotechnical perspective on resilience</li>
+<li><a href="authors/chip-huyen.html">Chip Huyen</a> — <em>AI Engineering</em>; <em>Designing Machine Learning Systems</em>; Stanford lecturer; ML systems and AI engineering specialist</li>
+<li><a href="authors/niall-richard-murphy.html">Niall Richard Murphy</a> — co-editor of <em>Site Reliability Engineering</em>; co-author of <em>Reliable Machine Learning</em>; SRE discipline applied to ML systems</li>
+<li><a href="authors/d-sculley.html">D Sculley</a> — co-author of <em>Reliable Machine Learning</em>; Google research scientist; coined &quot;hidden technical debt in machine learning systems&quot;</li>
 </ul>
 </div>
     </main>

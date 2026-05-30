@@ -74,6 +74,7 @@
         <li><a href="concepts/architecture-quantum.html">Architecture Quantum</a></li>
         <li><a href="concepts/bounded-contexts.html">Bounded Contexts and Domain-Driven Design</a></li>
         <li><a href="concepts/reuse-patterns.html">Code Reuse Patterns</a></li>
+        <li><a href="concepts/continual-learning.html">Continual Learning and Test in Production</a></li>
         <li><a href="concepts/continuous-delivery-practices.html">Continuous Delivery Practices</a></li>
         <li><a href="concepts/contracts.html">Contracts in Distributed Architecture</a></li>
         <li><a href="concepts/conways-law.html">Conway's Law</a></li>
@@ -81,11 +82,13 @@
         <li><a href="concepts/cost-as-architectural-force.html">Cost as an Architectural Force</a></li>
         <li><a href="concepts/coupling.html">Coupling</a></li>
         <li><a href="concepts/data-decomposition.html">Data Decomposition</a></li>
+        <li><a href="concepts/data-distribution-shifts.html">Data Distribution Shifts</a></li>
         <li><a href="concepts/dataset-engineering.html">Dataset Engineering</a></li>
         <li><a href="concepts/deployment-pipelines.html">Deployment Pipelines</a></li>
         <li><a href="concepts/eventstorming.html">EventStorming</a></li>
         <li><a href="concepts/evolutionary-architecture.html">Evolutionary Architecture</a></li>
         <li><a href="concepts/evolutionary-database-design.html">Evolutionary Database Design</a></li>
+        <li><a href="concepts/feature-engineering.html">Feature Engineering</a></li>
         <li><a href="concepts/feature-flags.html">Feature Flags</a></li>
         <li><a href="concepts/finetuning.html">Finetuning</a></li>
         <li><a href="concepts/foundation-models.html">Foundation Models</a></li>
@@ -97,6 +100,9 @@
         <li><a href="concepts/large-scale-structure.html">Large-Scale Structure</a></li>
         <li><a href="concepts/llm-sampling.html">LLM Sampling and Probabilistic Outputs</a></li>
         <li><a href="concepts/messaging.html">Messaging</a></li>
+        <li><a href="concepts/ml-systems-design.html">ML Systems Design</a></li>
+        <li><a href="concepts/mlops-infrastructure.html">MLOps Infrastructure and Tooling</a></li>
+        <li><a href="concepts/model-development.html">Model Development and Offline Evaluation</a></li>
         <li><a href="concepts/model-driven-design.html">Model-Driven Design</a></li>
         <li><a href="concepts/modularity.html">Modularity</a></li>
         <li><a href="concepts/oauth2-and-authn.html">OAuth2 and Authentication</a></li>
@@ -246,6 +252,7 @@
         <li><a href="sources/building-evolutionary-architectures.html">Building Evolutionary Architectures</a></li>
         <li><a href="sources/chaos-engineering.html">Chaos Engineering: System Resiliency in Practice</a></li>
         <li><a href="sources/designing-data-intensive-applications.html">Designing Data-Intensive Applications</a></li>
+        <li><a href="sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a></li>
         <li><a href="sources/domain-driven-design.html">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
         <li><a href="sources/enterprise-integration-patterns.html">Enterprise Integration Patterns</a></li>
         <li><a href="sources/foundations-of-scalable-systems.html">Foundations of Scalable Systems</a></li>
@@ -255,6 +262,7 @@
         <li><a href="sources/monolith-to-microservices.html">Monolith to Microservices</a></li>
         <li><a href="sources/patterns-of-enterprise-application-architecture.html">Patterns of Enterprise Application Architecture</a></li>
         <li><a href="sources/release-it.html">Release It! Design and Deploy Production-Ready Software</a></li>
+        <li><a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a></li>
         <li><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a></li>
         <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a></li>
         <li><a href="sources/software-architecture-patterns.html">Software Architecture Patterns</a></li>
@@ -275,9 +283,11 @@
         <li><a href="authors/bobby-woolf.html">Bobby Woolf</a></li>
         <li><a href="authors/carola-lilienthal.html">Carola Lilienthal</a></li>
         <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a></li>
+        <li><a href="authors/cathy-chen.html">Cathy Chen</a></li>
         <li><a href="authors/chip-huyen.html">Chip Huyen</a></li>
         <li><a href="authors/chris-jones.html">Chris Jones</a></li>
         <li><a href="authors/christian-ciceri.html">Christian Ciceri</a></li>
+        <li><a href="authors/d-sculley.html">D. Sculley</a></li>
         <li><a href="authors/daniel-bryant.html">Daniel Bryant</a></li>
         <li><a href="authors/dave-farley.html">Dave Farley</a></li>
         <li><a href="authors/eoin-woods.html">Eoin Woods</a></li>
@@ -290,6 +300,7 @@
         <li><a href="authors/jez-humble.html">Jez Humble</a></li>
         <li><a href="authors/joao-rosa.html">João Rosa</a></li>
         <li><a href="authors/john-ousterhout.html">John Ousterhout</a></li>
+        <li><a href="authors/kranti-parisa.html">Kranti Parisa</a></li>
         <li><a href="authors/manuel-pais.html">Manuel Pais</a></li>
         <li><a href="authors/mark-richards.html">Mark Richards</a></li>
         <li><a href="authors/martin-fowler.html">Martin Fowler</a></li>
@@ -308,6 +319,7 @@
         <li><a href="authors/rene-weiss.html">René Weiss</a></li>
         <li><a href="authors/roberto-vitillo.html">Roberto Vitillo</a></li>
         <li><a href="authors/sam-newman.html">Sam Newman</a></li>
+        <li><a href="authors/todd-underwood.html">Todd Underwood</a></li>
         <li><a href="authors/vlad-khononov.html">Vlad Khononov</a></li>
         <li><a href="authors/zhamak-dehghani.html">Zhamak Dehghani</a></li>
       </ul>
@@ -407,6 +419,12 @@
 <li><a href="concepts/dataset-engineering.html">Dataset Engineering</a> — Data-centric AI; three criteria (quality, coverage, quantity); acquisition and annotation; data synthesis (rule-based, simulation, AI-powered, reverse instruction); model distillation; model collapse; data processing pipeline (informed by: ai-engineering)</li>
 <li><a href="concepts/inference-optimization.html">Inference Optimization</a> — Inference metrics (TTFT, TPOT, throughput, goodput, MFU, MBU); prefill (compute-bound) vs decode (memory bandwidth-bound); speculative decoding; KV cache management (PagedAttention, FlashAttention, GQA/MQA); continuous batching; prefill-decode decoupling; prompt caching (informed by: ai-engineering)</li>
 <li><a href="concepts/ai-engineering-architecture.html">Ai Engineering Architecture</a> — Five-step progressive architecture (context enhancement, guardrails, router/gateway, caching, agents); model drift detection; orchestration frameworks; user feedback systems (explicit vs implicit, edit-as-preference, degenerate feedback loops, sycophancy) (informed by: ai-engineering)</li>
+<li><a href="concepts/ml-systems-design.html">Ml Systems Design</a> — When to use ML (nine conditions); research vs production differences (silent failure, latency vs throughput, messy data, fairness, interpretability); four system requirements (reliability, scalability, maintainability, adaptability); business vs ML objective alignment; problem framing (task types, decoupling objectives); mind vs data debate (informed by: designing-machine-learning-systems)</li>
+<li><a href="concepts/feature-engineering.html">Feature Engineering</a> — Feature operations (missing value handling MNAR/MAR/MCAR, scaling, discretisation, categorical encoding/hashing trick, feature crossing, positional embeddings); data leakage causes and detection; feature importance (top 10 = 50% importance); feature generalisation (coverage × distribution overlap); best practices (split by time, scale after split) (informed by: designing-machine-learning-systems)</li>
+<li><a href="concepts/model-development.html">Model Development</a> — Six model selection tips; four phases of ML adoption; ensembles (bagging/boosting/stacking); experiment tracking and data versioning challenges; ML debugging; distributed training (data/model/pipeline parallelism); AutoML (hyperparameter tuning, NAS, learned optimisers); offline evaluation baselines; evaluation methods (perturbation, invariance, directional expectation, calibration, confidence, slice-based/Simpson&#39;s paradox) (informed by: designing-machine-learning-systems)</li>
+<li><a href="concepts/data-distribution-shifts.html">Data Distribution Shifts</a> — Covariate shift/label shift/concept drift/feature change/label schema change taxonomy; degenerate feedback loops (mechanism, detection, correction via randomisation and positional features); detection methods (KS test, two-sample tests, feature validation, prediction monitoring, sliding vs cumulative statistics); proactive design; retraining strategies (informed by: designing-machine-learning-systems)</li>
+<li><a href="concepts/continual-learning.html">Continual Learning</a> — Stateless retraining vs stateful training (fine-tuning); four stages of continual learning maturity; champion/challenger pattern; test in production methods (shadow deployment, A/B testing, canary release, interleaving experiments, bandits, contextual bandits); data freshness value; continuous ML challenges (feedback loops, emergency response, stable A/B baselines) (informed by: designing-machine-learning-systems, reliable-machine-learning)</li>
+<li><a href="concepts/mlops-infrastructure.html">Mlops Infrastructure</a> — Four-layer MLOps stack (storage/compute, resource management, ML platform, dev environment); cloud repatriation; Docker + Kubernetes; workflow orchestration tools (Airflow/Argo/Prefect/Metaflow); model store (8 artifact types); feature store (management/computation/consistency, eliminates training-serving skew); build vs buy framework (informed by: designing-machine-learning-systems)</li>
 </ul>
 <h3>Data</h3>
 <ul>
@@ -451,11 +469,11 @@
 <li><a href="operations/common-failure-causes.html">Common Failure Causes</a> — failure taxonomy: hardware, incorrect error handling (2014 study), configuration changes, SPOFs, gray failures, resource leaks, cascading/metastable failures; risk = probability × impact; airline/Black Friday/&quot;Trampled&quot; case studies; building-for-tests vs building-for-production; GC death spiral, queue management (LIFO/CoDel), deadline propagation, latency vs capacity cache (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)</li>
 <li><a href="operations/error-budgets.html">Error Budgets</a> — error budget = 1 − SLO target; resolves dev/ops conflict by aligning incentives; budget exhaustion triggers release freeze; burn rate alerting; 100% is wrong target argument (informed by: site-reliability-engineering)</li>
 <li><a href="operations/manageability.html">Manageability</a> — Dynamic configuration (config store, runtime re-read); feature flags (progressive rollout, A/B testing, kill switch, deployment-release decoupling); operational triad: monitor → observe → manage (informed by: understanding-distributed-systems)</li>
-<li><a href="operations/monitoring.html">Monitoring</a> — Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs (ratio definition, percentiles, Little&#39;s Law); SLOs (error budget, burn rate alerting, stakeholder alignment); SRE output taxonomy (alerts/tickets/logs); dashboards (SLO/API/service types); chaos testing; on-call practices (informed by: understanding-distributed-systems, release-it, site-reliability-engineering)</li>
+<li><a href="operations/monitoring.html">Monitoring</a> — Black-box vs white-box monitoring; metrics and pre-aggregation; SLIs/SLOs; burn rate alerting; three-layer ML monitoring taxonomy (golden signals/generic ML signals/domain-specific quality); four actuals cases; drift detection (PSI, KL divergence, Wasserstein); ML SLOs and privacy in monitoring (informed by: understanding-distributed-systems, release-it, site-reliability-engineering, reliable-machine-learning)</li>
 <li><a href="operations/observability.html">Observability</a> — Observability as superset of monitoring; three telemetry sources (metrics, logs, traces); structured event logs (one event per work unit, request ID, sampling); distributed tracing (trace ID propagation, spans, Zipkin/X-Ray); metrics and traces as derived views of event logs; Newman: log aggregation first, correlation IDs, Jaeger, synthetic transactions (informed by: understanding-distributed-systems, monolith-to-microservices)</li>
 <li><a href="operations/site-reliability-engineering.html">Site Reliability Engineering</a> — SRE as discipline: dev/ops conflict; error budgets; toil cap (50%); SLO-driven alerting; blameless postmortems; SRE vs DevOps distinction; applicability outside Google (informed by: site-reliability-engineering)</li>
 <li><a href="operations/automation.html">Automation</a> — Automation vs autonomy; 5-level hierarchy (manual → autonomous); safety properties (rate limiting, idempotency); MySQL on Borg case study (informed by: site-reliability-engineering)</li>
-<li><a href="operations/incident-management.html">Incident Management</a> — Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking (Outalator aggregation/tagging/analysis) (informed by: site-reliability-engineering)</li>
+<li><a href="operations/incident-management.html">Incident Management</a> — Hypothetico-deductive troubleshooting; ICS roles; &quot;only Ops modifies&quot;; blameless postmortems; outage tracking; ML incident response (harder detection, broader scope, fuzzy timeline, RPO/RTO for ML) (informed by: site-reliability-engineering, reliable-machine-learning)</li>
 <li><a href="operations/testing-for-reliability.html">Testing For Reliability</a> — Zero-MTTR via pre-production testing; traditional test hierarchy; production tests (config tests, stress tests, canary); production probes; barrier defence pattern; configuration file risk management (informed by: site-reliability-engineering)</li>
 <li><a href="operations/data-integrity.html">Data Integrity</a> — Data integrity vs availability distinction; replication ≠ recoverability; failure mode matrix (cause × scope × rate); defence in depth: soft deletion / tiered backups / out-of-band validation; point-in-time recovery; continuously test restore; Gmail and Google Music case studies (informed by: site-reliability-engineering)</li>
 </ul>
@@ -541,9 +559,10 @@
 <li><a href="sources/software-architecture-metrics.html">Software Architecture Metrics</a> — <em>Software Architecture Metrics</em> — Ciceri et al. (fully ingested 2026-05-22)</li>
 <li><a href="sources/accelerate.html">Accelerate</a> — <em>Accelerate: The Science of Lean Software and DevOps</em> — Forsgren, Humble &amp; Kim (fully ingested 2026-05-18)</li>
 <li><a href="sources/site-reliability-engineering.html">Site Reliability Engineering</a> — <em>Site Reliability Engineering</em> — Beyer, Jones, Petoff, Murphy (fully ingested 2026-05-27)</li>
-<li><a href="sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em></li>
-<li><a href="sources/ai-engineering.html">Ai Engineering</a> — <em>AI Engineering</em> — Chip Huyen (fully ingested 2026-05-30)</li>
 <li><a href="sources/chaos-engineering.html">Chaos Engineering</a> — <em>Chaos Engineering: System Resiliency in Practice</em> — Rosenthal &amp; Jones (eds.); complex systems theory, Five Advanced Principles, Game Days, LDFI, Chaos Maturity Model, Continuous Verification, Security Chaos Engineering, organisational/human factors (informed by: chaos-engineering)</li>
+<li><a href="sources/ai-engineering.html">Ai Engineering</a> — <em>AI Engineering</em> — Chip Huyen (fully ingested 2026-05-30)</li>
+<li><a href="sources/designing-machine-learning-systems.html">Designing Machine Learning Systems</a> — <em>Designing Machine Learning Systems</em> — Chip Huyen (fully ingested 2026-05-30)</li>
+<li><a href="sources/reliable-machine-learning.html">Reliable Machine Learning</a> — <em>Reliable Machine Learning</em> — Chen, Murphy, Parisa, Sculley, Underwood (fully ingested 2026-05-30)</li>
 </ul>
 <hr>
 <h2>Authors</h2>
@@ -585,12 +604,16 @@
 <li><a href="authors/betsy-beyer.html">Betsy Beyer</a> — Co-editor of <em>Site Reliability Engineering</em>; Google Technical Writer for SRE; cultural and documentary aspects of reliability</li>
 <li><a href="authors/chris-jones.html">Chris Jones</a> — Co-editor of <em>Site Reliability Engineering</em>; Google SRE on App Engine; platform-service and capacity-planning perspective</li>
 <li><a href="authors/jennifer-petoff.html">Jennifer Petoff</a> — Co-editor of <em>Site Reliability Engineering</em>; Google SRE Programme Manager; training, on-call rotation design, postmortem culture</li>
-<li><a href="authors/niall-richard-murphy.html">Niall Richard Murphy</a> — Co-editor of <em>Site Reliability Engineering</em>; Google SRE in Dublin; incident response, federation, cross-site coordination</li>
+<li><a href="authors/niall-richard-murphy.html">Niall Richard Murphy</a> — Co-editor of <em>Site Reliability Engineering</em>; co-author of <em>Reliable Machine Learning</em>; Google SRE in Dublin; incident response, federation, SRE applied to ML systems</li>
 <li><a href="authors/benjamin-treynor-sloss.html">Benjamin Treynor Sloss</a> — Wrote Ch. 1 of <em>Site Reliability Engineering</em>; VP Engineering at Google; originator of the term &quot;Site Reliability Engineering&quot;; creator of the error budget model</li>
 <li><a href="authors/gene-kim.html">Gene Kim</a> — Co-author of <em>Accelerate</em>; founder and CTO of Tripwire; co-author of <em>The Phoenix Project</em> and <em>The DevOps Handbook</em>; high-performing technology organisation researcher</li>
 <li><a href="authors/casey-rosenthal.html">Casey Rosenthal</a> — Co-author of <em>Chaos Engineering</em>; built and managed Netflix&#39;s Chaos Engineering team; co-creator of the Principles of Chaos Engineering</li>
 <li><a href="authors/nora-jones.html">Nora Jones</a> — Co-author of <em>Chaos Engineering</em>; Netflix Chaos Engineering team; safety science and sociotechnical systems perspective</li>
 <li><a href="authors/chip-huyen.html">Chip Huyen</a> — Author of <em>AI Engineering</em>; Stanford lecturer (CS 329S: ML Systems Design); ML systems and AI engineering specialist</li>
+<li><a href="authors/cathy-chen.html">Cathy Chen</a> — Co-author of <em>Reliable Machine Learning</em>; ML systems practitioner; SRE approach to ML production operations</li>
+<li><a href="authors/kranti-parisa.html">Kranti Parisa</a> — Co-author of <em>Reliable Machine Learning</em>; ML engineering practitioner; data management and fairness</li>
+<li><a href="authors/d-sculley.html">D Sculley</a> — Co-author of <em>Reliable Machine Learning</em>; Google research scientist; coined &quot;hidden technical debt in machine learning systems&quot;</li>
+<li><a href="authors/todd-underwood.html">Todd Underwood</a> — Co-author of <em>Reliable Machine Learning</em>; SRE practitioner; applying SRE discipline to ML training and serving pipelines</li>
 </ul>
 </div>
     </main>
