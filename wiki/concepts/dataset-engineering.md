@@ -2,7 +2,7 @@
 title: "Dataset Engineering"
 type: concept
 tags: [ai, llm, data, dataset, data-quality, data-synthesis, annotation, distillation]
-sources: [ai-engineering, designing-machine-learning-systems]
+sources: [ai-engineering, designing-machine-learning-systems, reliable-machine-learning]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -13,7 +13,7 @@ updated: 2026-05-30
 
 Dataset engineering is the discipline of creating training datasets that allow models to be trained to the desired level of performance within a given budget. As fewer organisations train models from scratch, data has become the primary differentiator for AI performance. (→ [[sources/ai-engineering]] ch. 8)
 
-The shift from model-centric AI (design better architectures) to **data-centric AI** (design better datasets for the same model) defines the current era. Llama 3's performance gains over Llama 2 are "primarily driven by improvements in data quality and diversity as well as by increased training scale" — with no significant architecture changes.
+The shift from model-centric AI (design better architectures) to **data-centric AI** (design better datasets for the same model) defines the current era. Llama 3's performance gains over Llama 2 are "primarily driven by improvements in data quality and diversity as well as by increased training scale" — with no significant architecture changes. A practitioner example: Landing AI's steel defect inspection model went from 80% to 93% accuracy by spending >90% of engineering effort on iterative data labelling improvement — standardising criteria, resolving annotator disagreements, adding hard examples — with no change to model architecture. (→ [[sources/reliable-machine-learning]] ch. 15)
 
 ## Three Core Data Criteria
 

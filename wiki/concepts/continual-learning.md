@@ -2,7 +2,7 @@
 title: "Continual Learning and Test in Production"
 type: concept
 tags: [ai, machine-learning, mlops, deployment, testing, bandits, a-b-testing, continual-learning]
-sources: [designing-machine-learning-systems]
+sources: [designing-machine-learning-systems, reliable-machine-learning]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -98,6 +98,51 @@ Empirical comparison: a standard A/B test requires ~630,000 samples to reach sig
 Extend bandits to make exploration context-dependent. Instead of choosing globally which model to deploy, contextual bandits choose which action (recommendation, prediction) to show a given user given their context. This is essentially a partial-feedback supervised learning problem: the model observes reward only for the action it took, not for counterfactual actions.
 
 Contextual bandits are the principled solution to the degenerate feedback loop problem — they explicitly separate exploration (showing suboptimal items to learn their value) from exploitation. (→ [[concepts/data-distribution-shifts]])
+
+## Continuous ML Challenges (RML Perspective)
+
+[[sources/reliable-machine-learning]] (ch. 10) frames continuous ML as: a system that accepts a steady stream of new code that changes production behaviour. Every new trained model is effectively a new code release — but one driven by data, not developers. This reframing has serious operational implications.
+
+Six major challenges:
+
+| Challenge | Description |
+|-----------|-------------|
+| **External distribution shift** | World events (COVID, regulatory changes, market shocks) shift the data distribution; model trained before the event degrades silently |
+| **Feedback loops** | Model predictions influence user behaviour, which feeds back into training data; the model becomes a co-author of its own future training set |
+| **Temporal effects** | Seasonal, weekly, and daily patterns require models to be explicitly aware of time-of-day and calendar effects |
+| **Emergency response** | A feedback loop gone wrong must be detectable and stoppable in real time — not in the next scheduled evaluation window |
+| **New launches** | New products, features, or markets have no history; staged ramp-ups are required to avoid poisoning the model with atypical early data |
+| **Model lifecycle management** | Models must be managed, not shipped — maintaining multiple concurrent versions, monitoring each independently, deprecating safely |
+
+### Crisis Response Steps
+
+When continuous ML goes wrong (feedback loop, bad data push, distribution bomb), the response follows a defined sequence:
+
+1. **Stop training** — halt new model pushes to prevent the bad signal from compounding
+2. **Fall back** — switch to a simpler model, a lookup table, or a deterministic rule as a temporary replacement
+3. **Roll back** — revert to the last known-good model checkpoint
+4. **Remove bad data** — purge the corrupting data from the training set
+5. **Roll through** — if the corruption is irreversible, accept atypical data and wait for the distribution to normalise
+
+### Stable Baseline Strategies for A/B Tests
+
+A/B tests in continuous ML require a stable control group — but a continuously-updating model is not stable. Four approaches to creating a stable baseline:
+
+| Strategy | Description | Trade-offs |
+|----------|-------------|-----------|
+| **Fallback-as-baseline** | Use the static fallback model as the control | Simple; baseline may be much weaker than challenger |
+| **Stop trainer** | Freeze the current model at test start as the control | Accurate baseline; baseline degrades over test duration as world changes |
+| **Delay trainer** | Time-lag the trainer — control receives data N days later than challenger | Control updates, but lags; complex to implement |
+| **Parallel universe** | Run a completely independent training pipeline with its own data universe | Most robust; takes time to stabilise; highest cost |
+
+> **Key recommendation:** Treat ALL production ML systems as continuous ML systems, even if retraining is only triggered manually. The questions "when will this model be retrained?" and "what will happen when it is?" should have explicit answers before a model enters production. (→ [[sources/reliable-machine-learning]] ch. 10)
+
+## How Different Sources Treat It
+
+| Source | Perspective |
+|--------|-------------|
+| [[sources/designing-machine-learning-systems]] | Maturity stages (manual → trigger-based), stateless vs stateful training, test-in-production methods (shadow, A/B, canary, bandits) |
+| [[sources/reliable-machine-learning]] | Continuous ML as a data-as-code problem; six operational challenges; crisis response protocol; stable baseline strategies for A/B testing |
 
 ## Related Concepts
 

@@ -1,10 +1,10 @@
 ---
 title: "Monitoring"
 type: concept
-tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call]
-sources: [understanding-distributed-systems, release-it, site-reliability-engineering]
+tags: [monitoring, sli, slos, alerting, dashboards, observability, reliability, on-call, machine-learning, ml-monitoring]
+sources: [understanding-distributed-systems, release-it, site-reliability-engineering, reliable-machine-learning]
 created: 2026-05-14
-updated: 2026-05-29
+updated: 2026-05-30
 ---
 
 # Monitoring
@@ -234,6 +234,80 @@ A healthy on-call rotation requires that developers are responsible for operatin
 - **"Give back the pager"**: if a service generates unsustainable operational load, SRE can return on-call responsibility to the developer team until the service meets standards. Alert flap prevention: minimum duration (≥2 evaluation cycles) before an alert fires prevents transient collection failures from paging.
 
 **Incident psychology**: stress hormones impair deliberate, rational cognition and promote habitual responses — exactly the wrong mode for complex incident handling. Reducing on-call stress through clear escalation paths, runbooks, and blameless postmortem culture enables the deliberate thinking complex incidents require. (→ [[sources/site-reliability-engineering]] ch. 11)
+
+## ML Model Monitoring
+
+Standard distributed systems monitoring is necessary but not sufficient for ML systems. ML models can fail silently — `predict()` returns successfully but with wrong answers. (→ [[sources/reliable-machine-learning]] ch. 9)
+
+> **Key distinction:** Monitoring = data about system performance; observability = property of a system that allows inferring behaviour from that data. ML teams often conflate the two and neglect the latter.
+
+### The ML Monitoring Problem
+
+ML model developers are trained to think in terms of pre-deployment optimisation (offline metrics on held-out data), not post-deployment detection. This creates a structural blind spot: offline evaluation doesn't detect distribution shift, label distribution change, or upstream data pipeline failures.
+
+**Train/serve skew** is the most dangerous ML-specific failure mode — the model receives different feature values in production than it saw during training. It manifests as degraded model quality with no infrastructure errors. Standard golden signals don't catch it; model-specific monitoring is required.
+
+### Three-Layer ML Monitoring Taxonomy
+
+(→ [[sources/reliable-machine-learning]] ch. 9, Table 9-1)
+
+| Layer | Signals | Who owns it |
+|-------|---------|------------|
+| **Layer 1 — System health** | Golden signals: latency, traffic, errors, saturation; also resource utilisation, queue depth | Infrastructure/SRE |
+| **Layer 2 — Basic model health** | Model output distribution, prediction confidence, output range checks, throughput of the model API | ML engineering |
+| **Layer 3 — Model quality** | Actual business outcomes vs predictions; drift detection; sliced performance; business metric correlation | ML + product + business |
+
+Layer 1 uses standard distributed systems monitoring. Layer 2 can be instrumented generically. Layer 3 is the hardest: it requires domain knowledge to define what "good" looks like and collaboration with product/business stakeholders to instrument business outcomes.
+
+### Actuals and Outcome Measurement
+
+To evaluate model quality in production, actuals (ground truth) are required. Four cases:
+
+| Case | Description | Approach |
+|------|-------------|----------|
+| **Real-time actuals** | Outcome arrives immediately after prediction (e.g., click on a ranked result) | Ideal; log (prediction, outcome) pairs and compute metrics continuously |
+| **Delayed actuals** | Outcome arrives with a lag (e.g., fraud label comes after transaction review) | Use proxy metrics in the interim; join delayed actuals when available |
+| **Biased actuals** | Only a subset of outcomes is observed (e.g., only items shown to users can receive feedback) | Adjust for selection bias; use exploration strategies; treat feedback loops carefully |
+| **No actuals** | No ground truth signal is available | Fall back to proxy metrics; use A/B comparison against a baseline model |
+
+### Drift Detection
+
+**Feature drift** (input distribution diverges from training) and **concept drift** (the relationship between features and labels changes) are the two primary ML-specific degradation modes.
+
+Common statistical measures:
+
+| Metric | Use |
+|--------|-----|
+| **PSI (Population Stability Index)** | Measures shift in a feature distribution between training and serving; PSI > 0.2 flags severe drift |
+| **KL divergence** | Measures information loss when approximating one distribution with another; asymmetric |
+| **Wasserstein distance** | Earth-mover distance between distributions; symmetric and interpretable in units of the original feature |
+
+**Data quality checks** are the first line of defence before statistical drift detection:
+
+- *Categorical features:* unexpected cardinality, unexpected missing rate, type mismatches, volume anomalies
+- *Numerical features:* out-of-range values, increased missingness, type mismatches, moving-average anomalies
+
+### SLOs for ML Systems
+
+ML system SLOs must go beyond uptime. They should encompass:
+
+- **Model quality thresholds** — minimum acceptable accuracy, precision, recall, or AUC (per domain). These are as important as availability SLOs for model-dependent business processes.
+- **Confidence/calibration bounds** — alert when a model that was previously well-calibrated becomes overconfident or underconfident.
+- **Business metric correlation** — when ML directly drives a business metric (conversion, revenue), that metric participates in the SLO.
+- **Entanglement with adjacent systems** — an ML model's SLO may be violated by an upstream data pipeline failure or a downstream rule engine change. SLO scope must reflect the system boundary, not just the model API.
+
+### Pre-Rollout Validation for ML
+
+Before routing live traffic to a new model version:
+
+1. **Sandbox evaluation** — offline metrics on held-out and stress-test distributions
+2. **Shadow mode** — new model receives production features and makes predictions, but results are not served to users; serving path is fully exercised without user exposure
+3. **Canary** — route 1–5% of live traffic to the new model; monitor Layer 1–3 signals
+4. **Staged ramp-up** — progressively increase traffic percentage with bake periods; roll back if any signal degrades
+
+### Privacy in ML Monitoring
+
+PII must be stripped or anonymised at the first egress point from the production system — not at the dashboard or analytics layer. Monitoring pipelines that ingest raw prediction logs may handle sensitive personal data (user behaviour, health signals, financial information). The cost of a data breach from a monitoring pipeline is equal to the cost of a breach from the production system.
 
 ## Related Concepts
 

@@ -1,10 +1,10 @@
 ---
 title: "Incident Management"
 type: concept
-tags: [incident-management, on-call, postmortems, reliability, operations, sre]
-sources: [site-reliability-engineering]
+tags: [incident-management, on-call, postmortems, reliability, operations, sre, machine-learning]
+sources: [site-reliability-engineering, reliable-machine-learning]
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Incident Management
@@ -149,11 +149,54 @@ Google's system ("Outalator") passively receives all alerts and supports: (→ [
 
 > **Postmortems vs outage tracking**: postmortems provide deep insight per incident; outage tracking provides breadth across all incidents, including those too small for a postmortem. Both are necessary; neither substitutes for the other.
 
+## ML Incident Response
+
+ML incidents use the same command structure and phases as standard incidents, but differ significantly in three dimensions. (→ [[sources/reliable-machine-learning]] ch. 11)
+
+### ML-Specific Differences
+
+**Detection is harder.** ML failures manifest as silent quality degradation — `predict()` returns successfully with wrong answers. Infrastructure monitoring never fires. The detection signal comes from quality metrics (click-through rate, revenue per recommendation, customer complaints about "weird results"). By the time user-facing metrics degrade visibly, the underlying failure may be weeks old.
+
+**Broader organisational scope.** ML outages routinely involve finance, product, legal, and partner teams — not just engineering. The shared economic impact of ML systems creates shared incident responsibility.
+
+**Fuzzy timeline and resolution.** "When did the outage start?" is often unanswerable precisely. "Is it resolved?" means returning to approximately previous quality on a model now weeks behind the world, not restoring a prior state.
+
+### Three Guiding Principles
+
+1. **Public** — ML quality failures often first appear as user complaints or business metric drops, not as alert pages. These signals are noisy but early and should not be dismissed.
+2. **Fuzzy** — the boundary between "broken" and "not yet good enough" is not always clear for ML systems. Declare incidents based on measurable business or quality metric thresholds agreed upon before incidents occur.
+3. **Unbounded** — troubleshooting an ML outage routinely requires coordinating across ML engineers, data engineers, product managers, and business leaders. Plan for this scope before incidents occur.
+
+### ML Troubleshooting Approach
+
+**Start from the model's output, not the data.** The question to ask is: "What is the model predicting, and why is that wrong?" Working backward from the wrong output to the cause is far more tractable than searching forward through data pipelines.
+
+**Look at the whole system.** ML outages are often caused on one side of the system (training pipeline, feature store, upstream data schema change) but detected on the other side (serving, business metrics). Step back early and consider system-wide explanations before narrowing to specific components.
+
+**Business leaders at the boundary.** Many ML incidents require a mitigation decision with significant revenue consequences. Production engineers must be prepared to escalate quickly, and business leaders must be available for consultation even during off-hours. Pre-negotiating escalation paths before incidents is as important as pre-negotiating SLOs.
+
+### Privacy-Preserving Incident Response
+
+Under pressure to resolve an ML outage, engineers may access raw user data (query logs, personal information, purchase history) without appropriate controls. This is an ethical violation with legal consequences in many jurisdictions. The constraints:
+
+- Raw query logs correlating to individual users are PII in most jurisdictions.
+- Access to customer financial data (investment decisions, purchase history) during incident response constitutes insider knowledge under some legal frameworks.
+- Incident pressure does not suspend privacy obligations.
+
+Recommended mitigations: access-controlled data access with justification logging; dual-key oversight (no single engineer has unmonitored raw data access); pre-authorised anonymised test datasets specifically for debugging; audit trails reviewed in postmortems.
+
+### RPO and RTO for ML Systems
+
+Most ML systems have no meaningful recovery point objective (RPO). They exist to adapt to the current state of the world — there is no prior state to restore to. The "resolution" of an ML incident means returning to approximately previous quality on a model that has since fallen behind the world, not true rollback.
+
+Recovery time objective (RTO) for ML includes model retraining time — often hours to days — not just detection and fix time. SLO modelling must account for this.
+
 ## Related Concepts
 
-- [[operations/monitoring]] — SLOs and burn rate alerting detect incidents; alert quality determines on-call effectiveness
+- [[operations/monitoring]] — SLOs and burn rate alerting detect incidents; alert quality determines on-call effectiveness; ML monitoring taxonomy
 - [[operations/site-reliability-engineering]] — the broader discipline; error budgets quantify incident impact
 - [[operations/error-budgets]] — incident severity is expressed as error budget consumed
 - [[operations/observability]] — logs and traces enable effective examination and diagnosis during incidents
 - [[operations/chaos-engineering]] — deliberate failure injection to surface incident response gaps before real incidents
 - [[operations/automation]] — automating common incident responses (failover, rollback) reduces MTTR
+- [[concepts/ml-systems-design]] — ML-specific failure modes and silent failure characteristics that make ML incident detection hard

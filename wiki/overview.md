@@ -2,17 +2,17 @@
 title: "Overview — Software Architecture"
 type: overview
 tags: []
-sources: [understanding-distributed-systems, fundamentals-of-software-architecture, mastering-api-architecture, building-evolutionary-architectures, designing-data-intensive-applications, software-architecture-the-hard-parts, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design, team-topologies, domain-driven-design, monolith-to-microservices, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, release-it, foundations-of-scalable-systems, software-architecture-metrics, accelerate, a-philosophy-of-software-design, site-reliability-engineering, chaos-engineering]
-updated: 2026-05-29
+sources: [understanding-distributed-systems, fundamentals-of-software-architecture, mastering-api-architecture, building-evolutionary-architectures, designing-data-intensive-applications, software-architecture-the-hard-parts, software-architecture-patterns, building-event-driven-microservices, learning-domain-driven-design, team-topologies, domain-driven-design, monolith-to-microservices, enterprise-integration-patterns, patterns-of-enterprise-application-architecture, release-it, foundations-of-scalable-systems, software-architecture-metrics, accelerate, a-philosophy-of-software-design, site-reliability-engineering, chaos-engineering, ai-engineering, designing-machine-learning-systems, reliable-machine-learning]
+updated: 2026-05-30
 ---
 
 # Overview — Software Architecture
 
-> This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: **21 sources fully ingested.**
+> This page is the evolving high-level synthesis of everything in the wiki. It is rewritten (not appended) as understanding develops. Current state: **24 sources fully ingested.**
 
 ## At a Glance
 
-The wiki's working view of the field, in seven claims:
+The wiki's working view of the field, in eight claims:
 
 1. **Architecture is decisions made under uncertainty.** Every choice trades quality attributes against each other; there is no best architecture, only better fits for a context. The architect's job is to identify the *fewest* characteristics that matter most and accept under-optimisation on the rest.
 2. **Failures are a fact, not an edge case.** Design for production, not QA: assume hardware fails, networks partition, clocks drift, configs corrupt. Minimise blast radius and stop propagation — don't try to prevent every failure.
@@ -21,6 +21,7 @@ The wiki's working view of the field, in seven claims:
 5. **Governance must be automated and continuous, not periodic and manual.** Architectural decisions degrade silently. [[concepts/fitness-functions]] in [[concepts/deployment-pipelines]] are the mechanism that makes governance survive over time.
 6. **Complexity accumulates incrementally and must be deliberately resisted.** Tactical programming defers cost to every future reader; strategic programming invests ~10–15% in design and pays back compoundingly. Information hiding, deep modules, and bounded contexts are the techniques.
 7. **The empirical evidence supports counter-intuitive practices.** Speed and stability correlate positively (not in tension); trunk-based development beats long-lived branches; CABs hurt rather than help; loose architectural coupling matters more than test automation for delivery performance ([[sources/accelerate]]).
+8. **ML systems fail silently and require a lifecycle approach.** An ML model calling `predict()` successfully with wrong answers is a production failure invisible to all standard monitoring. Models are never done — they degrade as the world changes, and the response is continuous monitoring, retraining, and organisational disciplines that parallel (but extend) conventional SRE practice.
 
 ---
 
@@ -253,6 +254,22 @@ Newman (→ [[sources/monolith-to-microservices]]) establishes that "big bang" r
 
 **Database decomposition** is the hard part. Every shared-database coupling is a hidden contract. Newman's taxonomy of ~12 decomposition patterns includes database views (read-only facade over old schema), wrapping services (API encapsulates shared table access), tracer writes (dual-write with progressive migration), and synchronise-in-application (two stores kept consistent via application code, used transitionally). See [[concepts/evolutionary-database-design]].
 
+### ML Systems Are Production Systems — With Additional Failure Modes
+
+Three recent sources ([[sources/ai-engineering]], [[sources/designing-machine-learning-systems]], [[sources/reliable-machine-learning]]) establish a coherent synthesis: ML systems are production distributed systems with all the failure modes of conventional systems *plus* additional ML-specific ones.
+
+**The ML lifecycle is cyclic and never done.** Huyen's six-step cycle (project scoping → data engineering → model development → deployment → monitoring → business analysis → repeat) and the RML team's ML loop (data → training → evaluation → SLOs → launch → monitor → data) both frame ML as a continuous operational concern, not a one-time build. [[concepts/continual-learning]] is the mechanism for closing the loop; [[concepts/data-distribution-shifts]] is the primary driver of model degradation over time.
+
+**Silent failure is the defining production risk.** A model calling `predict()` successfully and returning wrong answers will never be detected by infrastructure monitoring. This requires a three-layer monitoring strategy: system health (standard golden signals), basic model health (model size, serving error rate), and domain-specific quality signals (business metrics — CTR, revenue, engagement). The monitoring hierarchy is [[operations/monitoring]] extended by ML-specific content. See [[concepts/ml-systems-design]] for the full failure mode taxonomy.
+
+**Feature generation is the most common failure source.** Bugs in feature computation are invisible to aggregate accuracy metrics; train/serve skew (same feature computed differently at training vs serving time) is pervasive; upstream data schema changes silently corrupt models trained on the old format ("better is not better, better is different"). Feature stores are the primary mechanism for eliminating train/serve skew.
+
+**ML incidents are harder to detect, broader in scope, and fuzzier in timeline.** Standard incident management (see [[operations/incident-management]]) applies, but ML incidents manifest as quality degradation rather than error spikes, routinely involve finance, legal, and product stakeholders (not just engineering), and have no sharp start or end boundary. The ML-specific troubleshooting heuristic: start from the model's output (what is it predicting, and why is that wrong?) rather than searching forward through data pipelines.
+
+**An evaluation = metric + distribution — always.** A model's accuracy is meaningless without specifying the evaluation distribution. The fairness crisis of the late 2010s largely traced to models evaluated on distributions that did not represent affected populations. Statistical parity (equal error rates across groups) and calibration (consistent score semantics across groups) are mathematically incompatible when base rates differ — which is almost always the case. Fairness is a process of continuous monitoring, not an endpoint. See [[concepts/ai-evals]] and [[concepts/model-development]].
+
+**Foundation models change the engineering default, not the reliability challenge.** Chip Huyen's [[sources/ai-engineering]] frames AI engineering as adapting, evaluating, and operating foundation models rather than training from scratch. RAG ([[concepts/rag]]), finetuning ([[concepts/finetuning]]), and agent architectures ([[concepts/ai-agents]]) are the primary adaptation mechanisms. Inference optimisation ([[concepts/inference-optimization]]) — speculative decoding, continuous batching, KV cache management — is the dominant serving engineering challenge at scale. The monitoring and reliability concerns are continuous with conventional production systems: model drift, degenerate feedback loops, and sycophancy (models that shift to match user views rather than providing accurate information) are the ML-specific additions.
+
 ### Consensus Is Required for Linearizability
 
 DDIA and [[sources/understanding-distributed-systems]] agree: linearizability requires consensus. Fault-tolerant consensus (Raft, Paxos, Zab) requires a strict majority quorum, has overhead from synchronous replication, and is sensitive to network delays. ZooKeeper and etcd implement consensus as a service for leader election, partition assignment, and distributed locks. The full equivalence theorem: linearizable CAS ≡ total order broadcast ≡ atomic transaction commit ≡ distributed locks ≡ uniqueness constraints — all require consensus. See [[distributed/consensus-algorithms]].
@@ -326,6 +343,9 @@ Cost is in trade-off with most other -ilities and is determined far more by arch
 | [[sources/accelerate]] | Accelerate: The Science of Lean Software and DevOps | Forsgren, Humble & Kim | 2026-05-18 |
 | [[sources/site-reliability-engineering]] | Site Reliability Engineering | Beyer, Jones, Petoff, Murphy (eds.) | 2026-05-27 |
 | [[sources/chaos-engineering]] | Chaos Engineering: System Resiliency in Practice | Rosenthal & Jones (eds.) | 2026-05-28 |
+| [[sources/ai-engineering]] | AI Engineering | Chip Huyen | 2026-05-30 |
+| [[sources/designing-machine-learning-systems]] | Designing Machine Learning Systems | Chip Huyen | 2026-05-30 |
+| [[sources/reliable-machine-learning]] | Reliable Machine Learning | Chen, Murphy, Parisa, Sculley, Underwood | 2026-05-30 |
 
 ---
 
@@ -340,7 +360,9 @@ Cost is in trade-off with most other -ilities and is determined far more by arch
 - Team Topologies assumes one team per component and one component per team. How does this interact with platform engineering, where a single platform team may be the effective owner of infrastructure used by dozens of stream-aligned teams?
 - SRE's "100% is always the wrong target" argument depends on users having degradation thresholds below 100%. Where does this break down — life-critical systems, financial settlement, regulated environments — and how should SLO targets be set in those contexts?
 - Chaos engineering's "experimentation creates new knowledge" claim sits uneasily with the practical experience that most chaos experiments confirm what was already known. What does a high-value experiment look like in a mature programme, and at what point does running more experiments stop adding value?
-- The eight-page lint pass added [[concepts/feature-flags]] as application-layer release control and [[concepts/cost-as-architectural-force]] as a quality attribute. Both deserve their own ingest source — multi-tenancy, deep security, and ML systems remain genuinely unaddressed by the current corpus.
+- The eight-page lint pass added [[concepts/feature-flags]] as application-layer release control and [[concepts/cost-as-architectural-force]] as a quality attribute. Both deserve their own ingest source — multi-tenancy and deep security remain genuinely unaddressed by the current corpus (ML systems are now covered by three ingested sources).
+- The "models predict their training labels, not ground truth" finding (→ [[sources/reliable-machine-learning]] ch. 15) implies that any validation pipeline that draws test sets from the same corrupted source as training will always give correct results on corrupted data. What organisational mechanisms produce truly independent label validation — and how should they be treated as a reliability requirement, not an ML nicety?
+- RML and DMLS agree that ML failures are silent (model calls succeed; answers are wrong), but they disagree implicitly on the primary detection mechanism: DMLS prioritises statistical drift detection; RML prioritises business metric degradation (clicks, revenue). Which is more actionable as an early warning signal, and can they be ordered in a monitoring priority hierarchy?
 
 ---
 
@@ -385,3 +407,6 @@ Cost is in trade-off with most other -ilities and is determined far more by arch
 - [[authors/benjamin-treynor-sloss]] — wrote ch. 1 of *Site Reliability Engineering*; originator of the term SRE; creator of the error budget model
 - [[authors/casey-rosenthal]] — co-editor of *Chaos Engineering*; built Netflix's Chaos Engineering team; co-author of the Principles of Chaos Engineering
 - [[authors/nora-jones]] — co-editor of *Chaos Engineering*; safety science and sociotechnical perspective on resilience
+- [[authors/chip-huyen]] — *AI Engineering*; *Designing Machine Learning Systems*; Stanford lecturer; ML systems and AI engineering specialist
+- [[authors/niall-richard-murphy]] — co-editor of *Site Reliability Engineering*; co-author of *Reliable Machine Learning*; SRE discipline applied to ML systems
+- [[authors/d-sculley]] — co-author of *Reliable Machine Learning*; Google research scientist; coined "hidden technical debt in machine learning systems"

@@ -2,14 +2,14 @@
 title: "Niall Richard Murphy"
 type: author
 tags: [author]
-sources: [site-reliability-engineering]
+sources: [site-reliability-engineering, reliable-machine-learning]
 created: 2026-05-29
-updated: 2026-05-29
+updated: 2026-05-30
 ---
 
 # Niall Richard Murphy
 
-**Books in this wiki:** [[sources/site-reliability-engineering]]
+**Books in this wiki:** [[sources/site-reliability-engineering]], [[sources/reliable-machine-learning]]
 
 ## Background
 
@@ -24,3 +24,7 @@ Murphy's editorial influence is visible in the book's treatment of incident resp
 ### [[sources/site-reliability-engineering]] — *Site Reliability Engineering* (2016)
 
 Co-editor; the book's emergent-management and federation chapters bear his imprint, as do the chapters covering incident response and managing reliability across geographically distributed sites.
+
+### [[sources/reliable-machine-learning]] — *Reliable Machine Learning* (2022)
+
+Co-author; brings direct SRE lineage from the original SRE book into the ML context, arguing that ML systems are production systems deserving the same engineering discipline, plus additional vigilance for ML-specific failure modes.

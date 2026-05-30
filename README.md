@@ -61,6 +61,7 @@ Reading the files directly on GitHub will show the raw `[[wikilink]]` syntax —
 | *Chaos Engineering: System Resiliency in Practice* | Casey Rosenthal & Nora Jones (eds.) |
 | *AI Engineering* | Chip Huyen |
 | *Designing Machine Learning Systems* | Chip Huyen |
+| *Reliable Machine Learning* | Cathy Chen, Niall Richard Murphy, Kranti Parisa, D. Sculley, Todd Underwood |
 
 ## How this wiki was built
 

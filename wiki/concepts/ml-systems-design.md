@@ -2,7 +2,7 @@
 title: "ML Systems Design"
 type: concept
 tags: [ai, machine-learning, mlops, production, reliability, scalability, maintainability, adaptability]
-sources: [designing-machine-learning-systems]
+sources: [designing-machine-learning-systems, reliable-machine-learning]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -130,6 +130,45 @@ A recurring tension in ML research and practice:
 
 **Practical implication:** regardless of which camp is right, data quality and quantity are a prerequisite for any ML system. Monica Rogati's AI Hierarchy of Needs places data at the base — without good data, no ML approach succeeds.
 
+## ML Model Vulnerabilities Taxonomy
+
+[[sources/reliable-machine-learning]] (ch. 3) provides a systematic taxonomy of ML-specific failure modes, organised by stage:
+
+### Training Data Vulnerabilities
+
+| Vulnerability | Description |
+|---------------|-------------|
+| Incomplete coverage | Sensors or pipelines that fail under specific conditions create blind spots undetectable by any test set drawn from the same corrupted distribution |
+| Spurious correlations | Model learns a proxy feature correlated with the label in training but not in production |
+| Cold start | New products or entities have no history; proxy signals or content-based approaches required |
+| Feedback loops / self-fulfilling prophecies | Only top-ranked items receive user feedback; model learns only from items it previously ranked highly; exploration decays |
+| Changes in the world | External events (COVID, regulatory changes) shift the data distribution; model trained on pre-shift data silently degrades |
+
+### Label Vulnerabilities
+
+| Vulnerability | Description |
+|---------------|-------------|
+| Label noise | Systematic label error (consistent wrong pattern) is worse than random noise |
+| Wrong objective | Optimising clicks ≠ optimising satisfaction; produces clickbait |
+| Malicious feedback | Spam/ranking systems vulnerable to poisoning via manipulated user signals |
+
+### Training Method Vulnerabilities
+
+| Vulnerability | Description |
+|---------------|-------------|
+| Overfitting | Validation data becomes stale as training set grows; validation set must be refreshed periodically |
+| Instability | 1% daily error rate × 30 days = entire user base inconvenienced at least once per month; stability matters at scale |
+| Deep learning peculiarities | GPU randomisation, exploding/vanishing gradients, hyperparameter sensitivity, resource intensity, highly confident errors on adversarial inputs |
+
+### Feature Generation Vulnerabilities
+
+Feature generation is "arguably the single most common source of errors in ML systems" (→ [[sources/reliable-machine-learning]] ch. 3), for three reasons:
+1. Bugs in feature computation code are invisible to aggregate accuracy metrics.
+2. Train/serve skew: the same feature is computed by different code paths in training vs serving.
+3. Upstream dependency failures: the pipeline keeps running but the underlying data source changed without notice.
+
+> **"Better is not better, better is different":** A bug fix upstream (e.g., temperature sensor switching from Fahrenheit to Celsius) is a catastrophic distribution shift for any model trained on the old data. Always evaluate model impact before accepting upstream improvements.
+
 ## How Different Sources Treat It
 
 | Source | Perspective |
@@ -137,6 +176,7 @@ A recurring tension in ML research and practice:
 | [[sources/designing-machine-learning-systems]] | Holistic systems view of the full ML lifecycle; framing, requirements, iteration |
 | [[sources/ai-engineering]] | Narrows to foundation-model applications; evaluation and adaptation layers |
 | [[sources/dataset-engineering]] (AI Engineering ch. 8) | Data quality, synthesis, and curation as the primary lever |
+| [[sources/reliable-machine-learning]] | SRE perspective; the ML loop as a cyclic production system; monitoring taxonomy (golden signals + generic ML + domain-specific) |
 
 ## Related Concepts
 

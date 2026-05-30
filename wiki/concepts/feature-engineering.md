@@ -1,8 +1,8 @@
 ---
 title: "Feature Engineering"
 type: concept
-tags: [ai, machine-learning, data, features, preprocessing, data-leakage]
-sources: [designing-machine-learning-systems]
+tags: [ai, machine-learning, data, features, preprocessing, data-leakage, feature-store]
+sources: [designing-machine-learning-systems, reliable-machine-learning]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -97,6 +97,61 @@ Generalisation and specificity trade off — a very task-specific feature may ha
 4. **Remove unused features** — every feature is a maintenance liability and an inference cost.
 5. **Track feature lineage** — know the origin and transformation history of every feature; enables debugging.
 6. **Inspect distributions** — shift between training and serving distributions (feature skew) is a common silent failure mode.
+
+## Feature Lifecycle
+
+[[sources/reliable-machine-learning]] (ch. 4) describes a 10-step lifecycle as the operational unit of feature management:
+
+1. Data collection
+2. Data cleaning
+3. Candidate feature definition (code describing the extraction algorithm)
+4. Feature value extraction (running the code against data)
+5. Feature store storage
+6. Feature evaluation (signal quality, coverage, distribution overlap)
+7. Model training/serving (feature is live in a production model)
+8. Feature definition updates (versioned changes to extraction code)
+9. Deletion of feature values (remove computed values for deprecated features)
+10. Feature discontinuation (retire the definition)
+
+The distinction between *feature definition* (the code) and *feature value* (a specific computed output) is fundamental: changing the definition invalidates prior values.
+
+## Feature Stores
+
+A feature store is the infrastructure layer that manages feature definitions, computes and stores feature values, and serves them to training and serving pipelines. (→ [[sources/reliable-machine-learning]] ch. 4)
+
+**API requirements:**
+1. Store feature definitions (code + metadata)
+2. Store feature values (computed outputs)
+3. Serve data efficiently — must not stall GPU/TPU compute; I/O is often the bottleneck
+4. Coordinate metadata writes across distributed computation jobs
+
+**Storage patterns:**
+- *Columns (structured):* column-oriented storage (BigQuery, Parquet) for tabular ML data — efficient for pipelines that read feature subsets
+- *Blobs (unstructured):* object stores for images, audio, video — accessed by key, not columnar scan
+
+**Transforming features:** Feature stores can host transformation logic that runs the same code path at training and serving time — the primary mechanism for eliminating train/serve skew. Transformations can be materialised (precomputed) for latency-critical serving paths.
+
+**Legal use restrictions:** A raw feature (e.g., age) may have legal restrictions — usable for insurance only with specific bucketing. The solution is a compliant *transforming feature* that applies the legally required transformation, allowing restricted use without banning the raw feature from all contexts.
+
+## Metadata Tracking
+
+Four types of feature metadata needed for reliable ML systems (→ [[sources/reliable-machine-learning]] ch. 4):
+
+| Type | Key fields |
+|------|------------|
+| Dataset metadata | Provenance, location, responsible person, creation date, use restrictions |
+| Feature metadata | Definition version, responsible person, creation date, use restrictions |
+| Label metadata | Definition version, set version, source, confidence |
+| Pipeline metadata | Run history, performance, dependencies |
+
+Design choice: one unified metadata system (simpler joins, harder to evolve independently) vs multiple systems (decoupled, require shared IDs or a meta-metadata layer).
+
+## How Different Sources Treat It
+
+| Source | Perspective |
+|--------|-------------|
+| [[sources/designing-machine-learning-systems]] | Operations (scaling, encoding, crossing, embeddings), data leakage taxonomy, best practices |
+| [[sources/reliable-machine-learning]] | Feature lifecycle as the operational unit; feature stores to eliminate train/serve skew; metadata systems; legal use restrictions |
 
 ## Related Concepts
 

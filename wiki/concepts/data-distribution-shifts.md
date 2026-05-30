@@ -2,7 +2,7 @@
 title: "Data Distribution Shifts"
 type: concept
 tags: [ai, machine-learning, monitoring, production, distribution-shift, concept-drift, covariate-shift, data-quality]
-sources: [designing-machine-learning-systems]
+sources: [designing-machine-learning-systems, reliable-machine-learning]
 created: 2026-05-30
 updated: 2026-05-30
 ---
@@ -14,6 +14,8 @@ updated: 2026-05-30
 Data distribution shift (also: dataset shift) is the phenomenon in supervised learning where the data distribution a model encounters in production diverges from the distribution it was trained on. A model's performance is best immediately after training; shifts cause it to degrade over time. (→ [[sources/designing-machine-learning-systems]] ch. 8)
 
 The stationary distribution assumption — that training and production data come from the same fixed distribution — is wrong in almost all real-world deployments. Distributions change suddenly (competitor price changes, product launches, celebrity mentions), gradually (social norms, language, industry trends), and seasonally.
+
+Operational failures can produce covariate shift indirectly: a payments failure on a Spanish-language site caused Spanish-speaking users to abandon purchases, reducing Spanish-language purchase completions in training data, causing the model to learn that Spanish queries don't convert, causing it to show fewer Spanish results — which continued to degrade quality for Spanish users even after the payments system recovered. (→ [[sources/reliable-machine-learning]] ch. 2)
 
 > **Open question:** 80% of apparent drifts captured by monitoring services are caused by internal errors — bugs in pipelines, missing values incorrectly inputted, wrong model version — rather than true distribution changes. Disentangling the two is often harder than detecting the shift itself.
 

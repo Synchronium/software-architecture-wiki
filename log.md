@@ -2,6 +2,45 @@
 
 Append-only record of all wiki activity. Each entry begins with `## [YYYY-MM-DD]` for easy grepping.
 
+## [2026-05-30] lint | New AI/ML pages — post-RML and DMLS ingest
+
+Lint run focused on pages added or updated during the recent AI Engineering, Designing Machine Learning Systems, and Reliable Machine Learning ingest sessions.
+
+**Findings and fixes:**
+- **overview.md was missing the entire AI/ML synthesis** — three books fully ingested but no overview section. Added new "ML Systems Are Production Systems" theme section; added 8th "At a Glance" claim on ML silent failure; updated sources table with ai-engineering, designing-machine-learning-systems, reliable-machine-learning; added ML authors to Key Authors list; updated stale open question note; added two new open questions from the RML/DMLS synthesis.
+- **index.md stale** — reliable-machine-learning still marked "in progress". Fixed to "fully ingested 2026-05-30"; updated continual-learning, monitoring, and incident-management entries to reflect new RML content.
+- **dataset-engineering** — data-centric AI framing lacked a practitioner example. Added Landing AI steel inspection case (80%→93% accuracy via data labelling; <10% model effort, >90% data effort). Added reliable-machine-learning to sources.
+- **data-distribution-shifts** — operational covariate shift example (Spanish-language site payments failure → training label corruption → model degrades for Spanish users post-outage) not cited. Added to Definition section with RML ch. 2 citation. Added reliable-machine-learning to sources.
+- **All new ML/AI pages** — inbound link counts checked; all pages have ≥3 inbound links; no orphans.
+
+## [2026-05-30] ingest | Reliable Machine Learning — Chen, Murphy, Parisa, Sculley, Underwood — Chapter 15 (book complete)
+
+Ingested chapter 15 (Case Studies: MLOps in Practice) from *Reliable Machine Learning* (O'Reilly, 2022). Book now fully ingested.
+
+**Updated pages:**
+- **sources/reliable-machine-learning** — added chapter notes for ch 15: five practitioner case studies — Dialpad ASR/dialects (privacy-preserving data collection, model confidence as diversity proxy, data retention vs reproducibility tension); Google continuous ML traffic (app update → duplicate events → corrupted CTR labels → silent model degradation → "roll through" resolution); Landing AI steel inspection (data-centric approach: <10% model effort, >90% data labelling, 80%→93% accuracy); Dialpad NLP load testing (local profiling ≠ production; self-serve staging load-test tool adopted as standard); Google ad click prediction (click feed pipeline silent failure; model learned to predict corrupted labels; validation metrics looked normal because test set had same corruption; detection via business metrics weeks later; lesson: models predict their training labels, not ground truth)
+
+**Book completion:**
+- Moved 15-case-studies-mlops-in-practice.txt and 00-preamble.txt to processed/
+- Removed _incoming/processing/reliable-machine-learning/ directory
+- Updated README.md: Reliable Machine Learning added to ingested sources table
+
+## [2026-05-30] ingest | Reliable Machine Learning — Chen, Murphy, Parisa, Sculley, Underwood — Chapters 1–2
+
+Ingested chapters 1 (Introduction / The ML Loop) and 2 (Data Management Principles) from *Reliable Machine Learning* (O'Reilly, 2022). New book — slug `reliable-machine-learning` added to CLAUDE.md.
+
+**New pages created:**
+- **sources/reliable-machine-learning** — ML loop lifecycle (data→training→build/validate→evaluate→SLOs→launch→monitor→feedback); training pipelines as production systems; models as code; monitoring taxonomy (golden signals + generic ML signals + domain-specific model quality); SLO taxonomy (serving/training/application); data as liability framing; data lifecycle phases (creation/ingestion/processing/storage/deletion); ML pipeline sensitivity to distribution shifts (Spanish-language outage example); normalisation techniques; column-oriented storage for ML feature stores; data reliability properties (durability/consistency/version control/performance/availability); anonymisation is hard (87% of US residents identifiable by gender+age+zip); compliance requirements as SLOs
+- **authors/cathy-chen** — co-author, ML systems practitioner
+- **authors/kranti-parisa** — co-author, ML engineering practitioner
+- **authors/d-sculley** — co-author, Google researcher, "Hidden Technical Debt in ML Systems" paper
+- **authors/todd-underwood** — co-author, SRE practitioner
+
+**Updated pages:**
+- **authors/niall-richard-murphy** — added *Reliable Machine Learning* as second book; updated sources and book section
+- **concepts/ml-systems-design** — added RML perspective row to source comparison table; added reliable-machine-learning to sources frontmatter
+- **index.md** — new source and four new authors added; duplicate chaos-engineering entry fixed; niall-richard-murphy entry updated
+
 ## [2026-05-30] ingest | Designing Machine Learning Systems — Chip Huyen — Chapters 9–11 (book complete)
 
 Ingested chapters 9 (Continual Learning and Test in Production), 10 (Infrastructure and Tooling for MLOps), and 11 (The Human Side of Machine Learning) from *Designing Machine Learning Systems* (Huyen, 2022). Book is now fully ingested.
@@ -2685,3 +2724,51 @@ No new concept pages — both chapters are contextual/organisational rather than
 - `README.md` — added *Site Reliability Engineering* to the Sources ingested table
 
 **Completed:** *Site Reliability Engineering* fully ingested (all 34 chapters processed). Processing directory removed.
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 3–4
+
+**Chapters:** Basic Introduction to Models (ch. 3), Feature and Training Data (ch. 4)
+
+**Updated pages (2):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 3–4: three meanings of "model" (architecture, definition, trained model); ML model vulnerabilities taxonomy (training data, label, training method, feature generation); "Better is not better, better is different" principle; common serving failure modes; feature definition vs feature value distinction; 10-step feature lifecycle; feature store API requirements; two storage patterns; transforming features; four metadata types; legal use restrictions
+- `wiki/concepts/ml-systems-design.md` — added ML Model Vulnerabilities Taxonomy section (training data, label, training method, feature generation vulnerability tables)
+- `wiki/concepts/feature-engineering.md` — added Feature Lifecycle, Feature Stores, and Metadata Tracking sections from RML ch. 4; added reliable-machine-learning to sources
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 5–6
+
+**Chapters:** Evaluating Model Validity and Quality (ch. 5), Fairness, Privacy, and Ethical ML Systems (ch. 6, by Aileen Nielsen)
+
+**Updated pages (1):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 5–6: model validity vs model quality two-phase gate; evaluation = metric + distribution; evaluation distribution taxonomy (IID held-out, progressive validation, golden sets, stress-test, sliced, counterfactual); metric taxonomy (canary, classification, regression/ranking); bias sources taxonomy; fairness definitions impossibility (COMPAS result — statistical parity and calibration cannot be simultaneously satisfied when base rates differ); three modes of bias intervention; privacy techniques (k-anonymity, differential privacy); technical privacy measures; GDPR right-to-deletion ML difficulty; fairness as process not endpoint
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 7–8
+
+**Chapters:** Training Systems (ch. 7), Serving (ch. 8)
+
+**Updated pages (1):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 7–8: training system components (five minimum); general reliability principles for training (most failures are software not ML, race conditions in distributed training, models train too fast hazard); three common training failure modes (data sensitivity, reproducibility, compute capacity); model management system components; four serving architectures (offline/batch, online, MaaS, edge); architecture selection criteria; QPS vs latency with replicas; GPU vs CPU selection; hot-swap strategies; feature pipeline as dominant latency source at serving time; model API testing taxonomy
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 9–10
+
+**Chapters:** Monitoring and Observability for Models (ch. 9, by Niall Murphy and Aparna Dhinakaran), Continuous ML (ch. 10)
+
+**Updated pages (3):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 9–10: three-layer ML monitoring taxonomy; four actuals cases; drift detection (PSI, KL divergence, Wasserstein); data quality checks; ML SLOs; pre-rollout validation progression; privacy in monitoring; continuous ML as data-as-code; six challenges; five crisis response steps; stable baseline strategies for A/B tests
+- `wiki/operations/monitoring.md` — added ML Model Monitoring section: ML monitoring problem, train/serve skew, three-layer taxonomy, actuals cases, drift detection metrics, ML SLOs, pre-rollout validation, privacy in monitoring; added reliable-machine-learning to sources
+- `wiki/concepts/continual-learning.md` — added Continuous ML Challenges section (six challenges, crisis response steps, stable baseline strategies); added How Different Sources Treat It table; added reliable-machine-learning to sources
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 11–12
+
+**Chapters:** Incident Response (ch. 11), How Product and ML Interact (ch. 12)
+
+**Updated pages (3):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 11–12: ML incident response differences (detection harder, broader scope, fuzzy timeline); FEMA four roles; three guiding principles (public/fuzzy/unbounded); ethical on-call manifesto; RPO problem for ML; Agile-ML mismatch; six ML product development phases; build vs buy scoring framework; when ML fits a product
+- `wiki/operations/incident-management.md` — added ML Incident Response section: ML-specific differences, three guiding principles, ML troubleshooting approach (start from model output), privacy-preserving incident response, RPO/RTO for ML; added reliable-machine-learning to sources
+- `wiki/sources/reliable-machine-learning.md` — updated Related Pages to include operations/incident-management
+
+## [2026-05-30] ingest | Reliable Machine Learning — ch. 13–14
+
+**Chapters:** Integrating ML into Your Organization (ch. 13), Practical ML Org Implementation Examples (ch. 14)
+
+**Updated pages (1):**
+- `wiki/sources/reliable-machine-learning.md` — chapter notes for ch. 13–14: Galbraith Star Model applied to ML (strategy, structure, processes, rewards, people); six ML organisational roles; three archetypal ML org structures (centralised, decentralised, hybrid) with process/rewards/people trade-offs; Westrum typology applied to ML adoption; key sequencing guidance; "bigger isn't always better" ML optimisation pitfall (cart size vs cart abandonment)

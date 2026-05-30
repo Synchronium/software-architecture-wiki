@@ -84,6 +84,7 @@ Slugs are the kebab-case full book title. Use these in frontmatter `sources:` fi
 | `site-reliability-engineering` | Site Reliability Engineering — Beyer, Jones, Petoff, Murphy (eds.) |
 | `ai-engineering` | AI Engineering — Chip Huyen |
 | `designing-machine-learning-systems` | Designing Machine Learning Systems — Chip Huyen |
+| `reliable-machine-learning` | Reliable Machine Learning — Cathy Chen et al. |
 
 ---
 
